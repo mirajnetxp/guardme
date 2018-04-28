@@ -39,7 +39,7 @@ class BookingController extends Controller
 		
 		$data=array('booking' => $booking, 'setting' => $setting);
 
-        return view('admin.booking')->with($data);
+        return view('admin.booking.index')->with($data);
     }
 	
 	

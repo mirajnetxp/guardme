@@ -29,7 +29,7 @@ class ReferralController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.referral', [
+        return view('admin.referral.index', [
             'items' => Item::all()
         ]);
     }

@@ -95,6 +95,6 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 	
 	
 	
-	
+
 	
 	

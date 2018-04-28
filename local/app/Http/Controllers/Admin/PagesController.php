@@ -26,13 +26,13 @@ class PagesController extends Controller
     {
         $pages = DB::table('pages')->get();
 
-        return view('admin.pages', ['pages' => $pages]);
+        return view('admin.pages.index', ['pages' => $pages]);
     }
 	
 	
 	public function showform($id) {
       $pages = DB::select('select * from pages where page_id = ?',[$id]);
-      return view('admin.edit-page',['pages'=>$pages]);
+      return view('admin.pages.edit',['pages'=>$pages]);
    }
    
    

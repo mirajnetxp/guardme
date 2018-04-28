@@ -22,11 +22,10 @@ class WalletController extends Controller
 	public function show() {
 		$user_id = auth()->user()->id;
 		$wallet = new Transaction();
-		//$available_balance = $wallet->getWalletAvailableBalance();
-		$escrow_balance = $wallet->getWalletEscrowBalance();
+		$available_balance = $wallet->getWalletAvailableBalance();
 		$all_transactions = Transaction::where('status', 1)
 			->where('user_id', $user_id)
 			->get();
-		return view('wallet', compact('all_transactions', 'escrow_balance'));
+		return view('wallet', compact('available_balance', 'all_transactions'));
 	}
 }

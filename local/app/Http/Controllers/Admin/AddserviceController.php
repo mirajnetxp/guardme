@@ -32,7 +32,7 @@ class AddserviceController extends Controller
 
     {
 
-        return view('admin.addservice');
+        return view('admin.services.add');
 
     }
     /**

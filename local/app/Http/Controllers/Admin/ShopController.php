@@ -32,7 +32,7 @@ class ShopController extends Controller
 		
 		$data=array('shop' => $shop);
 
-        return view('admin.shop')->with($data);
+        return view('admin.shop.index')->with($data);
     }
 	
 	
@@ -80,7 +80,7 @@ class ShopController extends Controller
 	   
 	  $data=array('shop' => $shop, 'editshop' => $editshop, 'stime' => $stime, 'etime' => $etime, 'sel' => $sel, 'lev' => $lev, 'viewgallery' => $viewgallery, 
 	  'userdata' => $userdata, 'site_setting' => $site_setting);
-	  return view('admin.edit-shop')->with($data);
+	  return view('admin.shop.edit')->with($data);
       
    }
 	

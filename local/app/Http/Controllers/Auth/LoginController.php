@@ -32,6 +32,9 @@ if(auth()->check() && auth()->user()->id == 1){
             
 			return redirect('/admin');
         }
+        else if(auth()->check() && auth()->user()->admin == 3){
+            return redirect('/partners');
+        }
 		else
 		{
 			return redirect('/account');

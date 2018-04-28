@@ -85,9 +85,7 @@ Route::get('/my_bookings', 'MybookingsController@sangvish_showpage');
 Route::post('/my_bookings', ['as'=>'my_bookings','uses'=>'MybookingsController@sangvish_savedata']);
 
 
-Route::get('/wallet', 'WalletController@show');
-
-Route::post('/wallet', ['as'=>'wallet','uses'=>'WalletController@sangvish_savedata']);
+Route::get('/wallet', 'WalletController@show')->middleware("auth:web");
 
 /* Authentication routes */
 Auth::routes();
@@ -199,7 +197,7 @@ Route::group(['middleware' => 'admin'], function() {
 
 	/* sub services */
 
-	Route::get('/admin/subservices','Admin\SubservicesController@index');
+	Route::get('/admin/subservices','Admin\SubservicesController@index'); 
 	Route::get('/admin/addsubservice','Admin\AddsubserviceController@formview');
 	Route::get('/admin/addsubservice','Admin\AddsubserviceController@getservice');
 	Route::post('/admin/addsubservice', ['as'=>'admin.addsubservice','uses'=>'Admin\AddsubserviceController@addsubservicedata']);
@@ -304,8 +302,26 @@ Route::group(['prefix' => '/support/tickets', 'middleware' => 'auth'], function 
         ->name('tickets.messages.store');
 });
 
+/*Start Security Jobs Routes*/
+
+Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
+	Route::get('/create', 'JobsController@create')->name('job.create');
+	Route::get('/schedule/{id}', 'JobsController@schedule')->name('job.schedule');
+	Route::get('/broadcast/{id}', 'JobsController@broadcast')->name('job.broadcast');
+	Route::get('/payment-details/{id}', 'JobsController@paymentDetails')->name('job.payment.details');
+
+	Route::post('/create-paypal-payment/{id}', 'PaypalPaymentController@postPayment')->name('create.paypal.payment');
+	Route::get('/payment-status', 'PaypalPaymentController@getPaymentStatus')->name('payment.status');
+
+	Route::get('/job-confirmation', 'JobsController@confirmation')->name('job.confirmation');
+});
 
 
 Route::get('/phone', 'VerificationController@phone')->middleware('auth');
+
+Route::group(['middleware' => 'partners'], function() {
+	Route::get('/partners','Partners\DashboardController@index');
+});
+
 
 

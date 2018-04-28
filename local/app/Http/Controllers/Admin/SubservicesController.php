@@ -29,7 +29,8 @@ class SubservicesController extends Controller
 		 ->orderBy('subservices.subid','desc')
 		->get();
 
-        return view('admin.subservices', compact('subservices','services'));
+		
+        return view('admin.subservices.index', compact('subservices'));
     }
 	
 	public function getservice()

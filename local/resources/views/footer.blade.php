@@ -167,6 +167,29 @@ $setid=1;
 	
 	<script src="<?php echo $url;?>/js/jquery.multiselect.js"></script>
 <script>
+    class Errors{
+        constructor() {
+            this.formErrors = {};
+        }
+        record(errors) {
+            this.formErrors = errors;
+        }
+        load() {
+            $(".error-span").addClass('hide');
+            $.each(this.formErrors, function(i, v) {
+                if (typeof $('.'+ i) != 'undefined') {
+                    $('.'+ i).siblings('.error-span').html(v);
+                    $('.'+ i).siblings('.error-span').removeClass('hide');
+                }
+            });
+            if (typeof $('.error-span:eq(0)').closest('.form-group') != 'undefined') {
+				if (typeof $('.error-span:visible:eq(0)').closest('.form-group').offset() != 'undefined')
+				var scrollPosition = $('.error-span:visible:eq(0)').closest('.form-group').offset().top - 70;
+
+                $("html, body").animate({ scrollTop: scrollPosition }, 1000);
+            }
+        }
+    }
 $('#langOpt').multiselect({
     columns: 1,
     placeholder: 'Select Services'
@@ -229,6 +252,11 @@ $("select#nationality").change(function(){
         }
     });
 }).change();
+$.ajaxSetup({
+	headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	}
+});
 </script>
 
 	<?php /* ?><script src="{{ asset('js/app.js') }}"></script><?php */?>

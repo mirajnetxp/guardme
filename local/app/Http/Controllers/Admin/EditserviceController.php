@@ -33,7 +33,7 @@ class EditserviceController extends Controller
 	
 	public function showform($id) {
       $services = DB::select('select * from services where id = ?',[$id]);
-      return view('admin.editservice',['services'=>$services]);
+      return view('admin.services.edit',['services'=>$services]);
    }
 	
     /**

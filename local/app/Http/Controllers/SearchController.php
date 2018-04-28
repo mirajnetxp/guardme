@@ -33,7 +33,14 @@ class SearchController extends Controller
 		->where('shop.status', 'approved')->orderBy('shop.id','desc')
 		->groupBy('shop.id')
 		->get();
-				
+		
+		
+		
+		
+		
+		
+		
+		
 		$data = array('viewservices' => $viewservices,'shopview' => $shopview);
 		return view('search')->with($data);
 	}

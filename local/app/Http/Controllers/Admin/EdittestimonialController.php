@@ -33,7 +33,7 @@ class EdittestimonialController extends Controller
 	
 	public function showform($id) {
       $testimonials = DB::select('select * from testimonials where id = ?',[$id]);
-      return view('admin.testimonials.edit',['testimonials'=>$testimonials]);
+      return view('admin.edit-testimonial',['testimonials'=>$testimonials]);
    }
 	
     /**

@@ -32,17 +32,17 @@ class Transaction extends Model
      * @return bool
      */
     public function addMoney($params) {
-            $defaults = [
-                'debit_credit_type' => 'debit',
-                'type' => 'add_money'
-            ];
-            $defaults['title'] = !empty($params['title']) ? ($params['title']) : 'Adding balance';
-            $defaults['amount'] = !empty($params['amount']) ? ($params['amount']) : 0;
-            $defaults['paypal_id'] = !empty($params['paypal_id']) ? ($params['paypal_id']) : 0;
-            $defaults['user_id'] = !empty($params['user_id']) ? ($params['user_id']) : 0;
-            $defaults['status'] = !empty($params['status']) ? ($params['status']) : 0;
-            $defaults['paypal_payment_status'] = !empty($params['paypal_payment_status']) ? ($params['paypal_payment_status']) : null;
-            return $this->insertTransaction($defaults);
+        $defaults = [
+            'debit_credit_type' => 'debit',
+            'type' => 'add_money'
+        ];
+        $defaults['title'] = !empty($params['title']) ? ($params['title']) : 'Adding balance';
+        $defaults['amount'] = !empty($params['amount']) ? ($params['amount']) : 0;
+        $defaults['paypal_id'] = !empty($params['paypal_id']) ? ($params['paypal_id']) : 0;
+        $defaults['user_id'] = !empty($params['user_id']) ? ($params['user_id']) : 0;
+        $defaults['status'] = !empty($params['status']) ? ($params['status']) : 0;
+        $defaults['paypal_payment_status'] = !empty($params['paypal_payment_status']) ? ($params['paypal_payment_status']) : null;
+        return $this->insertTransaction($defaults);
     }
 
     /**
@@ -70,7 +70,7 @@ class Transaction extends Model
         $defaults = [
             'debit_credit_type' => 'credit',
             'type' => 'admin_fee',
-            'credit_payment_status' => 'funded'
+            'credit_payment_status' => 'paid'
         ];
         $defaults['title'] = !empty($params['title']) ? ($params['title']) : 'Admin Fee';
         $defaults['job_id'] = !empty($params['job_id']) ? ($params['job_id']) : 0;
@@ -87,7 +87,7 @@ class Transaction extends Model
         $defaults = [
             'debit_credit_type' => 'credit',
             'type' => 'vat_fee',
-            'credit_payment_status' => 'funded'
+            'credit_payment_status' => 'paid'
         ];
         $defaults['title'] = !empty($params['title']) ? ($params['title']) : 'VAT Fee';
         $defaults['job_id'] = !empty($params['job_id']) ? ($params['job_id']) : 0;
@@ -101,18 +101,18 @@ class Transaction extends Model
      * @return bool
      */
     protected function insertTransaction($params) {
-            if (empty($params['user_id'])) {
-                if (!empty(auth()->user()) && !empty(auth()->user()->id)) {
-                    $params['user_id'] = auth()->user()->id;
-                }
+        if (empty($params['user_id'])) {
+            if (!empty(auth()->user()) && !empty(auth()->user()->id)) {
+                $params['user_id'] = auth()->user()->id;
             }
-            $isEligible = false;
-            if($this->isEligibleToAddCredit($params)) {
-                $isEligible = true;
-                DB::table($this->table)->insert($params);
-            }
-            // TODO add some message for user
-            return $isEligible;
+        }
+        $isEligible = false;
+        if($this->isEligibleToAddCredit($params)) {
+            $isEligible = true;
+            DB::table($this->table)->insert($params);
+        }
+        // TODO add some message for user
+        return $isEligible;
     }
 
     protected function isEligibleToAddCredit($params) {
@@ -138,6 +138,37 @@ class Transaction extends Model
                 ->groupBy('user_id')
                 ->where('user_id', $user_id)
                 ->where('status', 1)
+                ->where('debit_credit_type', 'credit')
+                ->get()->first();
+            $total_credit = !empty($credit->total) ? ($credit->total) : 0;
+            $balance = $total_debit - $total_credit;
+            return $balance;
+        }
+    }
+
+    public function getWalletEscrowBalance() {
+        $user_id = auth()->user()->id;
+        if(!empty($user_id)) {
+            // get sum of all active debits for user
+            $debit = DB::table($this->table)
+                ->select(DB::raw('SUM(amount) as total'))
+                ->groupBy('user_id')
+                ->where('user_id', $user_id)
+                ->where('status', 1)
+                ->where('debit_credit_type', 'debit')
+                ->get()->first();
+            $total_debit = !empty($debit->total) ? ($debit->total) : 0;
+            // get sum of all active credits for user
+            $credit = DB::table($this->table)
+                ->select(DB::raw('SUM(amount) as total'))
+                ->groupBy('user_id')
+                ->where('user_id', $user_id)
+                ->where('status', 1)
+                ->where(function($query){
+                    $query->orWhere('credit_payment_status', 'paid')
+                        ->orWhere('type', 'vat_fee')
+                        ->orWhere('type', 'admin_fee');
+                })
                 ->where('debit_credit_type', 'credit')
                 ->get()->first();
             $total_credit = !empty($credit->total) ? ($credit->total) : 0;

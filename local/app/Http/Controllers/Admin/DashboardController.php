@@ -124,7 +124,7 @@ $javas.="{ label: '$curr_date', y: $date1 },";
 		'today_booking' => $today_booking, 'total_shop' =>  $total_shop, 'javas' => $javas, 'booking' => $booking, 'setting' => $setting, 'users' => $users,
 		'testimonials' => $testimonials);
 		
-		return view('admin.dashboard.index')->with($data);
+		return view('admin.index')->with($data);
 		
 		
 		

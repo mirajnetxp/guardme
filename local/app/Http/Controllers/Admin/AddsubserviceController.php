@@ -32,7 +32,7 @@ class AddsubserviceController extends Controller
 
     {
 
-        return view('admin.subservices.add');
+        return view('admin.addsubservice');
 
     }
 	
@@ -44,7 +44,7 @@ class AddsubserviceController extends Controller
 
         $services = DB::table('services')->orderBy('name', 'asc')->get();
 
-        return view('admin.subservices.add', ['services' => $services]);
+        return view('admin.addsubservice', ['services' => $services]);
 
     }
 	

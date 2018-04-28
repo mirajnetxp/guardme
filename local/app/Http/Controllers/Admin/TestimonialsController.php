@@ -28,7 +28,7 @@ class TestimonialsController extends Controller
 		                ->orderBy('id','desc')
 					   ->get();
 
-        return view('admin.testimonials.index', ['testimonials' => $testimonials]);
+        return view('admin.testimonials', ['testimonials' => $testimonials]);
     }
 	
 	

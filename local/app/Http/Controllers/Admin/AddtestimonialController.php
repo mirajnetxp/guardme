@@ -32,7 +32,7 @@ class AddtestimonialController extends Controller
 
     {
 
-        return view('admin.testimonials.add');
+        return view('admin.add-testimonial');
 
     }
     /**

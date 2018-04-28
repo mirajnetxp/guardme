@@ -48,7 +48,7 @@ class EditsubserviceController extends Controller
         
 		
 		$data = array('subservices'=>$subservices, 'services'=>$services);
-            return view('admin.subservices.edit')->with($data);
+            return view('admin.editsubservice')->with($data);
 
     }
 	

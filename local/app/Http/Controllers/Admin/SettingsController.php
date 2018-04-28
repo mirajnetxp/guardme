@@ -39,7 +39,7 @@ class SettingsController extends Controller
 		$withdraw=array("paypal","bank");
 		
 	  $data=array('settings'=>$settings, 'currency' => $currency, 'withdraw' => $withdraw);
-      return view('admin.settings.edit')->with($data);
+      return view('admin.settings')->with($data);
    }
 	
     /**

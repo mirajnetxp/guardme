@@ -28,7 +28,7 @@ class ServicesController extends Controller
 		             ->orderBy('id','desc')
 					->get();
 
-        return view('admin.services.index', ['services' => $services]);
+        return view('admin.services', ['services' => $services]);
     }
 	
 	

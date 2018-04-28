@@ -15,7 +15,7 @@
 		</div>
 		<div class="container">
 			<div class="height30"></div>
-		<div class="err-msg" align="center">Your balance is : {{ $available_balance }} GBP</div>
+		<div class="err-msg" align="center">Your Escrow balance is : £{{ $escrow_balance }}</div>
 		<div class="height30"></div>
 		<table class="table table-stripped">
 			<thead>

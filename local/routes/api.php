@@ -36,13 +36,3 @@ Route::group(['prefix' => 'verify'], function () {
     Route::post('/confirm', 'Api\VerificationController@confirm');
     Route::post('/change', 'Api\VerificationController@change');
 });
-
-/*Routes for jobs*/
-
-Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:api'], function(){
-    Route::post('create','JobsController@create')->name('api.create.job');
-    Route::post('schedule/{id}','JobsController@schedule')->name('api.schedule.job');
-    Route::post('broadcast/{id}','JobsController@broadcast')->name('api.broadcast.job');
-    Route::post('calculate-job-amount/{id}','JobsController@getJobAmount')->name('api.amount.job');
-    Route::post('activate-job/{id}','JobsController@activateJob')->name('api.activate.job');
-});

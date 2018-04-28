@@ -41,7 +41,7 @@ class WithdrawController extends Controller
 		
 		$data=array('withdraw' => $withdraw, 'setting' => $setting);
 
-        return view('admin.pending_withdraw.index')->with($data);
+        return view('admin.pending_withdraw')->with($data);
     }
 	
 	
@@ -63,7 +63,7 @@ class WithdrawController extends Controller
 		
 		$data=array('withdraw' => $withdraw, 'setting' => $setting);
 
-        return view('admin.completed_withdraw.index')->with($data);
+        return view('admin.completed_withdraw')->with($data);
     }
 	
 	

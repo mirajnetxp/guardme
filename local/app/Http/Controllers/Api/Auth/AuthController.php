@@ -13,6 +13,7 @@ use Responsive\User;
 use Responsive\Address;
 use Responsive\Country;
 use Illuminate\Support\Facades\Input;
+use Responsive\Notifications\Auth\UserVerification as UserVerificationNotification;
 
 class AuthController extends Controller
 {
@@ -325,16 +326,17 @@ class AuthController extends Controller
             $user->address_proof = $addrproofname;
             $user->sia_doc = $siadocname;
             $user->passphoto = $passphotoname;
-            $user->sia_expirydate = isset($data['sia_expirydate']) ? $data['sia_expirydate'] : '';
-            $user->sia_licence = isset($data['sia_licence']) ? $data['sia_licence'] : '';
-            $user->work_category = isset($data['work_category']) ?  $data['work_category'] : 0;
-            $user->visa_no = isset($data['visa_no']) ? $data['visa_no'] : '';
-            $user->niutr_no = isset($data['niutr_no']) ? $data['niutr_no'] : '';
+            isset($data['sia_expirydate']) ? $user->sia_expirydate = $data['sia_expirydate'] : '';
+            isset($data['sia_licence']) ? $user->sia_licence = $data['sia_licence'] : '';
+            isset($data['work_category']) ? $user->work_category = $data['work_category'] : 0;
+            isset($data['visa_no']) ? $user->visa_no = $data['visa_no'] : '';
+            isset($data['niutr_no']) ? $user->niutr_no = $data['niutr_no'] : '';
             $country = isset($data['nationality']) ? Country::where('name', $data['nationality'])->first() : null;
-            $user->nation_id = $country ? $country->id : 0;
+            $country ? $user->nation_id = $country->id : 0;
             $user->firstname = $firstname;
             $user->lastname = $lastname;
-            $user->dob = isset($data['dob']) ? $data['dob'] : '';
+            isset($data['dob']) ? $user->dob = $data['dob'] : '';
+            isset($data['gender']) ? $user->gender = $data['gender'] : '';
                                     
 			// don't save email directly if the user change their email
 			// we will save it to verify_users table with new_email column

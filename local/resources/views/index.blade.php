@@ -32,7 +32,7 @@ $setts = DB::table('settings')
     <div id="banner" class="frontpage-blocks">
         <div id="overlays"></div>
         <?php if(!empty($setts[0]->site_banner)){?>
-        <img src="https://guarddme.com/img/header-banner.jpg" class="img-responsive banner-class backimg" id="b1">
+        <img src="<?php echo $url;?>/local/images/settings/{{$setts[0]->site_banner}}" class="img-responsive banner-class backimg" id="b1">
         <?php } else {?>
         <img src="<?php echo $url;?>/img/banner.jpg" class="img-responsive bannerheight ">
         <?php } ?>

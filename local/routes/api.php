@@ -59,9 +59,6 @@ Route::group(['prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:ap
     Route::post('apply/{id}','JobsController@applyJob')->name('api.apply.job');
     Route::post('mark/hired/{id}','JobsController@markHired')->name('api.mark.hired');
     
-    Route::post('/save/{id}', 'JobsController@saveJobsToProfile');
-    Route::post('/remove/{id}', 'JobsController@removeJobsFromProfile');
-    Route::get('/saved', 'JobsController@savedJobs');
     
     Route::get('my','JobsController@myJobs')->name('api.my.jobs');
     Route::get('proposals','JobsController@myProposals')->name('api.my.proposals');

@@ -10,8 +10,6 @@ use Responsive\Transaction;
 use Responsive\User;
 use Responsive\Businesscategory;
 use Responsive\SecurityCategory;
-use Responsive\SavedJob;
-use DB;
 
 class JobsController extends Controller
 {
@@ -553,34 +551,6 @@ class JobsController extends Controller
             ->json($businessCategories, 200);
 
     }
-
-    public function saveJobsToProfile($request, $id){
-        $this->validate($request, [
-            'user_id' => 'required'
-        ]);
-        $savedJob = new SavedJob();
-        $savedJob->user_id = $request->user_id;
-        $savedJob->job_id = $id;
-        $savedJob->save();
-        return response()
-            ->json($savedJob, 200);
-    }
-
-    public function removeJobsFromProfile($id){
-        $savedJob = SavedJob::where('job_id',$id)->first();
-        $savedJob->delete();
-        $return_data = ['Job Removed from profile successfully'];
-        return response()
-            ->json($return_data, 200);
-    }
     
-    public function savedJobs($request) {
-        $this->validate($request, [
-            'user_id' => 'required'
-        ]);
-        $my_jobs =  DB::select('select security_jobs.* from security_jobs, saved_jobs where saved_jobs.job_id = security_jobs.id and saved_jobs.user_id = '.$request->user_id);
-        return response()
-            ->json($my_jobs, 200);
-    }   
     
 }

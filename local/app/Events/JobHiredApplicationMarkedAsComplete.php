@@ -16,9 +16,8 @@ class JobHiredApplicationMarkedAsComplete
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $job_application;
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * JobHiredApplicationMarkedAsComplete constructor.
+     * @param JobApplication $jobApplication
      */
     public function __construct(JobApplication $jobApplication)
     {

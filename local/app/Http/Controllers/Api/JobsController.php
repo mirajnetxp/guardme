@@ -548,11 +548,21 @@ class JobsController extends Controller
      */
     public function markApplicationAsComplete($application_id)
     {
-        //@TODO check if user is authorized to mark it as complete, means it should be the user created job. and return suitable errors.
         $application = JobApplication::find($application_id);
-        event(new JobHiredApplicationMarkedAsComplete($application));
+        $user_id = auth()->user()->id;
+        $return_status = 200;
+        $return_data = ["success"];
+        $job = Job::find($application->job_id);
+        if ($job->created_by != $user_id) {
+            $return_status = 500;
+            $return_data = ["You are not authorized to perform this action."];
+        }
+        if ($return_status == 200) {
+            event(new JobHiredApplicationMarkedAsComplete($application));
+        }
+
         return response()
-            ->json(['success'], 200);
+            ->json($return_data, $return_status);
     }
 
     /**

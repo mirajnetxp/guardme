@@ -25,17 +25,22 @@ class JobsController extends Controller {
 		// Users cannot create jobs unless company details is complete
 
 		$company = auth()->user()->company;
-		if ($company==null ) {
+		if ( $company == null ) {
 			Session::flash( 'error', 'Please Add your company profile before you can create a job.' );
+
 			return redirect( "/addcompany" );
 		}
-
+// TODO : Users cannot create jobs unless company details is complete
 		if ( ! $company->shop_name || ! $company->address || ! $company->company_email || ! $company->description || ! $company->shop_phone_no || ! $company->business_categoryid ) {
 			Session::flash( 'error', 'Please complete your company profile before you can create a job.' );
 
 			return redirect( "/company" );
 		}
 
+		if($company->status=='unapproved'){
+			Session::flash( 'doc_not_v', 'Your Account is Unverified. Please contact admin about the status of your account.' );
+			return redirect( "/contact" );
+		}
 		$all_security_categories = SecurityCategory::get();
 		$all_business_categories = Businesscategory::get();
 
@@ -101,7 +106,6 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function findJobs() {
-
 		$page_id   = Input::get( "page" );
 		$data      = \request()->all();
 		$b_cats    = Businesscategory::all();
@@ -132,7 +136,7 @@ class JobsController extends Controller {
 						return redirect()->to( '/jobs/find' )->with( 'flash_message', 'Post code not valid!' );
 					}
 
-					//$post_code_array = json_decode($json_data, true);
+//$post_code_array = json_decode($json_data, true);
 					$latitude  = $post_code_array['latitude'];
 					$longitude = $post_code_array['longitude'];
 				}
@@ -197,7 +201,10 @@ class JobsController extends Controller {
 		return view( 'jobs.find', compact( 'joblist', 'b_cats', 'locs' ) );
 	}
 
-	public function postfindJobs( Request $request ) {
+	public
+	function postfindJobs(
+		Request $request
+	) {
 		//dd($request->all());
 		$cat     = $request->cat_id;
 		$loc     = $request->loc_val;
@@ -240,12 +247,15 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function viewJob( $id ) {
+	public function viewJob($id) {
 
 		if ( ! $id ) {
 			return abort( 404 );
 		}
-
+		if ( ! Auth::Check() ) {
+			Session::flash( 'login_first', ' adcasd' );
+			return redirect()->back();
+		}
 		$user_address = [];
 		$saved_job    = '';
 		if ( Auth::check() ) {
@@ -274,10 +284,12 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function applyJob( $id ) {
+	public
+	function applyJob($id) {
 
-		if ( auth()->user()->verified == false ) {
-			return redirect()->back();
+		if ( auth()->user()->doc_verified == false ) {
+			Session::flash( 'doc_not_v', 'Your Account is Unverified. Please contact admin about the status of your account.' );
+			return redirect( "/contact" );
 		}
 		$job = Job::find( $id );
 
@@ -289,7 +301,7 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function myJobApplications( $id ) {
+	public function myJobApplications($id) {
 
 		$user_id = auth()->user()->id;
 
@@ -313,7 +325,8 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function viewApplication( $application_id, $applicant_id ) {
+	public
+	function viewApplication($application_id, $applicant_id) {
 		$ja           = new JobApplication();
 		$application  = $ja->getApplicationDetails( $application_id );
 		$work_history = $ja->getApplicantWorkHistory( $application_id );
@@ -359,7 +372,7 @@ class JobsController extends Controller {
 
 	}
 
-	public function myApplicationView( $application_id, $job_id ) {
+	public function myApplicationView($application_id, $job_id) {
 		$ja          = new JobApplication();
 		$application = $ja->getMyApplicationDetails( $application_id );
 		$job         = Job::with( [ 'poster' ] )->where( 'id', $job_id )->first();
@@ -368,7 +381,7 @@ class JobsController extends Controller {
 		return view( 'jobs.my-application-detail', compact( 'application', 'job' ) );
 	}
 
-	public function saveJobsToProfile( $id ) {
+	public function saveJobsToProfile($id) {
 		$user_id           = Auth::user()->id;
 		$savedJob          = new SavedJob();
 		$savedJob->user_id = $user_id;
@@ -376,7 +389,7 @@ class JobsController extends Controller {
 		$savedJob->save();
 	}
 
-	public function removeJobsFromProfile( $id ) {
+	public function removeJobsFromProfile($id) {
 		$savedJob = SavedJob::where( 'job_id', $id )->first();
 		$savedJob->delete();
 	}
@@ -385,19 +398,28 @@ class JobsController extends Controller {
 
 	}
 
-	public function postFavouriteJobs( $id ) {
+	public function postFavouriteJobs($id) {
 
 	}
 
-	public function getJobs( $id ) {
+	public
+	function getJobs(
+		$id
+	) {
 
 	}
 
-	public function postJobs( $id ) {
+	public
+	function postJobs(
+		$id
+	) {
 
 	}
 
-	public function leaveFeedback( $application_id ) {
+	public
+	function leaveFeedback(
+		$application_id
+	) {
 		return view( 'jobs.feedback', [ 'application_id' => $application_id ] );
 	}
 }

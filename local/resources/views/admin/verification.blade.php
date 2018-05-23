@@ -6,7 +6,13 @@
 
     @include('admin.style')
 
+    <style type="text/css">
+        .dataTables_filter {
+            display: none;
+        }
 
+        /*--------- END --------*/
+    </style>
 </head>
 
 <body>
@@ -74,53 +80,85 @@
                             <h4 class="title">Verification</h4>
                             <!-- <p class="category">Here is a subtitle for this table</p> -->
                         </div>
-						<?php $url = URL::to( "/" ); ?>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <td>Sno</td>
-                                    <td>Username</td>
-                                    <td>Email</td>
-                                    <td>Phone</td>
-                                    <td>Actions</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @php($i=1)
-                                @foreach($users as $user)
+
+                        <div class="content">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="gender" class="control-label">User Type</label>
+                                    <select name="gender" id="gender" class="form-control">
+                                        <option value="">All</option>
+                                        <option value="1">Verified</option>
+                                        <option value="2">Unverified</option>
+                                    </select>
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table id="datatable-us-veri" class="table">
+                                    <thead>
                                     <tr>
-                                        <td>{{$i}}</td>
-                                        <td>{{$user->name}}</td>
-                                        <td>{{$user->email}}</td>
-                                        <td>{{$user->phone}}</td>
-                                        <td>
-                                            <a class="btn btn-primary" href="{{route('admin.Verification.details',['id'=>$user->id])}}">Details</a>
-                                        </td>
+                                        <td>Sno</td>
+                                        <td>Username</td>
+                                        <td>Email</td>
+                                        <td>Phone</td>
+                                        <td class="hidden">Status_id</td>
+                                        <td>Status</td>
+                                        <td>Actions</td>
                                     </tr>
-                                    @php($i++)
-                                @endforeach
-                                </tbody>
-                            </table>
-                            {!! $users->render() !!}
+                                    </thead>
+                                    <tbody>
+
+                                    @php($i=1)
+                                    @foreach($users as $user)
+                                        <tr>
+                                            <td>{{$i}}</td>
+                                            <td>{{$user->name}}</td>
+                                            <td>{{$user->email}}</td>
+                                            <td>{{$user->phone}}</td>
+                                            <td class="hidden">{{$user->doc_verified?'1':'2'}}</td>
+                                            <td>{{$user->doc_verified?'Verified':'Unverified'}}</td>
+
+                                            <td>
+                                                <a class="btn btn-primary"
+                                                   href="{{route('admin.Verification.details',['id'=>$user->id])}}">Details</a>
+                                            </td>
+                                        </tr>
+                                        @php($i++)
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
 
+
+            <!-- /page content -->
+
+            @include('admin.footer')
         </div>
-
-
-        <!-- /page content -->
-
-        @include('admin.footer')
     </div>
-</div>
+    <script>
+        //    User Filtering
+        $(document).ready(function () {
+            var table = $('#datatable-us-veri').DataTable();
+            $('#gender').on('change', function () {
+                table
+                    .columns(4)
+                    .search(this.value)
+                    .draw();
+            });
+        });
 
+
+    </script>
 
 </body>
 </html>

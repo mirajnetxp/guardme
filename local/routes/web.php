@@ -284,6 +284,7 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	Route::get( '/admin/Verification', 'Admin\VerificationController@showUsers' );
 	Route::get( '/admin/Verification/uder-details/{id}', 'Admin\VerificationController@userDetail' )->name('admin.Verification.details');
 	Route::get( '/admin/user-doc/approved/{id}', 'Admin\VerificationController@userDocApproved' )->name('admin.user.doc.approved');
+	Route::get( '/admin/user-doc/decline/{id}', 'Admin\VerificationController@userDocDecline' )->name('admin.user.doc.decline');
 
 	/* end user doc Verification */
 

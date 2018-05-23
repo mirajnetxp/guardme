@@ -26,9 +26,7 @@ class VerificationController extends Controller {
 	}
 
 	public function showUsers() {
-		$users = User::where( 'admin', '=', 2 )
-		             ->where( 'doc_verified', '=', false )
-		             ->paginate( 20 );
+		$users = User::where( 'admin', '=', 2 )->get();
 
 		return view( 'admin.verification' )->with( 'users', $users );
 	}
@@ -44,7 +42,15 @@ class VerificationController extends Controller {
 		$user               = User::find( $id );
 		$user->doc_verified = true;
 		$user->save();
-		Session::flash( 'success', 'Account Verification Approved ' );
+		Session::flash( 'success', 'Account :"'.$user->name.'" Verification Approved ' );
+
+		return redirect( '/admin/Verification' );
+	}
+	public function userDocDecline( $id ) {
+		$user               = User::find( $id );
+		$user->doc_verified = false;
+		$user->save();
+		Session::flash( 'success', 'Account: "'.$user->name.'" Verification Decline ' );
 
 		return redirect( '/admin/Verification' );
 	}

@@ -28,9 +28,6 @@
             <!-- sidebar menu -->
         @include('admin.menu')
 
-
-
-
         <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->

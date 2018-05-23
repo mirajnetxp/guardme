@@ -47,17 +47,9 @@ class SearchController extends Controller {
 
 //		Users cannot show up on freelancer list unless profile is complete.
 		$query = User::where( 'admin', '=', '2' )
-						->where( 'name', '!=', '')
-						->where( 'email', '!=', '')
-						->where( 'verified', '!=', 1)
-						->where( 'gender', '!=', '')
-						->where( 'phone', '!=', '')
-						->where( 'photo', '!=', '')
-						->where( 'firstname', '!=', '')
-						->where( 'lastname', '!=', '')
-						->where( 'dob', '!=', '')
-						->where( 'address_id', '!=', '');
+						->where( 'doc_verified', '=', true)
 
+		;
 
 
 		if ( count( $data ) ) {

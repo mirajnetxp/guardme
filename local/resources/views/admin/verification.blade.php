@@ -81,6 +81,8 @@
                             <!-- <p class="category">Here is a subtitle for this table</p> -->
                         </div>
 
+
+                        <hr>
                         <div class="content">
                             <form class="form-inline">
                                 <div class="form-group">
@@ -94,8 +96,6 @@
                             </form>
 
                         </div>
-
-                        <hr>
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <table id="datatable-us-veri" class="table">

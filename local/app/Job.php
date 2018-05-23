@@ -19,6 +19,11 @@ class Job extends Model
     public function schedules() {
         return $this->hasMany(SecurityJobsSchedule::class);
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public static function calculateJobAmount($id) {
         $job = Job::find($id);
         $return_data = self::calculateJobAmountWithJobObject($job);

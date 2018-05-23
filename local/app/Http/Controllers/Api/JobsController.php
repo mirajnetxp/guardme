@@ -1,6 +1,5 @@
 <?php
 namespace Responsive\Http\Controllers\Api;
-use Responsive\Events\AwardJob;
 use Responsive\Http\Traits\JobsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +12,7 @@ use Responsive\Businesscategory;
 use Responsive\SecurityCategory;
 use Responsive\Events\JobHiredApplicationMarkedAsComplete;
 use Responsive\Feedback;
+use Responsive\Events\AwardJob;
 class JobsController extends Controller
 {
     use JobsTrait;

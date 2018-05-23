@@ -154,6 +154,10 @@ class JobApplication extends Model
         return $res;
     }
 
+    /**
+     * @param $application_id
+     * @return array
+     */
     public function isEligibleToMarkHired($application_id) {
         $error_message = '';
         $status_code = 200;

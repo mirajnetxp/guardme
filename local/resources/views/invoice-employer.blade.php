@@ -46,28 +46,22 @@
               <tbody>
                 @foreach($all_transactions as $transaction)
                   @if($transaction->title == 'Job Fee')
-                    @for($i=0;$i < $transaction->number_of_freelancers; $i++)
+                    @foreach($transaction->user_id as $i => $user)
                     <tr>
                       <td class="desc">{{$transaction->title}}</td>
-                      <td class="service">
-                        @if($transaction->user_id->count() != 0 && $transaction->user_id[$i] != null) 
-                          <a href="{{url('invoice').'?user_id='.$transaction->user_id[$i]->applied_by.'&id='.$id}}">SLOT {{$i + 1}}</a>
-                        @else
-                          SLOT {{$i + 1}}
-                        @endif
-                      </td>
+                      <td class="service"><a href="{{url('invoice').'?user_id='.$user->applied_by.'&id='.$id}}">SLOT {{$i + 1}}</a></td>
                       <td class="unit">{{date('d/m/Y',strtotime($transaction->created_at))}}</td>
                       <td class="qty">{{$transaction->status}}</td>
                       <td class="total">{{$transaction->amount/$transaction->number_of_freelancers}}</td>
                     </tr>
-                    @endfor
+                    @endforeach
                   @else
                   <tr>
                     <td class="qty">@if($transaction->title == 'Admin Fee') Commission @else {{$transaction->title}} @endif</td>
                     <td class="service"></td>
                     <td class="unit">{{date('d/m/Y',strtotime($transaction->created_at))}}</td>
                     <td class="qty">{{$transaction->status}}</td>
-                    <td class="total">{{$transaction->amount}}</td>
+                    <td class="total">{{$transaction->amount/$transaction->number_of_freelancers}}</td>
                   </tr>
                   @endif
                 @endforeach

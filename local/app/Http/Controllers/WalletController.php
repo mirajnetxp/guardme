@@ -93,7 +93,7 @@ class WalletController extends Controller
 		// return view('invoice-employer');
 		$user = auth()->user();
 		$user_id = auth()->user()->id;
-        $balance = 0;
+        $balance = '';
         
         $from = array();        
         $from = $user;
@@ -104,28 +104,27 @@ class WalletController extends Controller
             if($user->admin == 2){
                 $all_transactions = DB::select('select security_jobs.title, transactions.id, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = '.$id);
             }else if($user->admin == 0){
-                // $credit = Transaction::select(DB::raw('SUM(amount) as total'))
-                //     ->groupBy('user_id')
-                //     // ->where('user_id', $user_id)
-                //     ->where('job_id', $id)
-                //     ->where('status', 1)
-                //     ->where(function($query){
-                //         $query->orWhere('credit_payment_status', 'paid')
-                //             ->orWhere('credit_payment_status', 'funded');
-                //     })
-                //     ->where('debit_credit_type', 'credit')
-                //     ->get()->first();
-                // $total_credit = !empty($credit->total) ? ($credit->total) : 0;
-                // $balance = $total_credit;
+                $credit = Transaction::select(DB::raw('SUM(amount) as total'))
+                    ->groupBy('user_id')
+                    // ->where('user_id', $user_id)
+                    ->where('job_id', $id)
+                    ->where('status', 1)
+                    ->where(function($query){
+                        $query->orWhere('credit_payment_status', 'paid')
+                            ->orWhere('credit_payment_status', 'funded');
+                    })
+                    ->where('debit_credit_type', 'credit')
+                    ->get()->first();
+                $total_credit = !empty($credit->total) ? ($credit->total) : 0;
+                $balance = $total_credit;
 
-                $all_transactions = DB::select('select transactions.title, transactions.id, transactions.created_at, transactions.amount, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.credit_payment_status in ("paid", "funded") and security_jobs.id = '.$id);
+                $all_transactions = DB::select('select transactions.title, transactions.id, transactions.created_at, transactions.amount, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and security_jobs.id = '.$id);
                 $applied_by = JobApplication::select('applied_by')->where('job_id', $id)->get();
                 // dd($applied_by);
                 foreach ($all_transactions as $key => $transactions) {
                     if($transactions->title == 'Job Fee'){
                         $transactions->user_id = $applied_by;
                     }
-                    $balance = $transactions->amount + $balance;
                 }
                 // dd($all_transactions);
             }

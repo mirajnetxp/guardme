@@ -13,11 +13,11 @@
     <div class="error text-center" style="display: none;">
         <p>NO DATA TO SHOW</p>
       </div>
-    <section class="ad-details-page">
-      <div class="container" style="width: 80%;">
+    <section class="job-bg ad-details-page">
+      <div class="container" style="width: 85%;">
           
-        <div class="adpost-details post-resume">
-          <div class="clearfix" style="margin-bottom: 10px;">
+        <div class="section postdetails" style="border: 1px #cbc9c6 solid;">
+          <div class="clearfix" style="margin: 10px;">
             <a href="" onclick="printPage();" class="btn pull-right">Print</a>
             <!-- <a href="{{url('wallet/invoice/').'/'.$id.'?download=pdf'}}" class="btn pull-right">PDF</a> -->
           </div>
@@ -30,17 +30,16 @@
             </div>
             <div id="project">
               <div>NAME: {{$from->name}}</div>
-              <div>TRANSACTION NUMBER: @if($all_transactions->count() != 0) {{$all_transactions[0]->id}} @endif</div>
-              <div>DATE: @if($all_transactions->count() != 0) {{date('d/m/Y',strtotime($all_transactions[0]->created_at))}} @endif</div>
-              <DIV>TOTAL AMOUNT: {{$balance}}</DIV>
+              <div>TRANSACTION NUMBER: @if(count($all_transactions) != 0) {{$all_transactions[0]->id}} @endif</div>
+              <div>DATE: @if(count($all_transactions) != 0) {{date('d/m/Y',strtotime($all_transactions[0]->created_at))}} @endif</div>
+              <DIV>TOTAL AMOUNT: @if(count($all_transactions) != 0) {{$all_transactions[0]->amount / $all_transactions[0]->number_of_freelancers}} @endif</DIV>
             </div>
           </div>
           <main class="clearfix">
             <table>
               <thead>
                 <tr>
-                  <th class="service">TYPE</th>
-                  <th class="desc">DESCRIPTION</th>
+                  <th class="service">TITLE</th>
                   <th class="unit">DATE</th>
                   <th class="qty">STATUS</th>
                   <th class="total">TOTAL</th>
@@ -49,17 +48,16 @@
               <tbody>
                 @foreach($all_transactions as $transaction)
                 <tr>
-                  <td class="service">{{$transaction->debit_credit_type}}</td>
-                  <td class="desc">{{$transaction->title}}</td>
+                  <td class="service">{{$transaction->title}}</td>
                   <td class="unit">{{date('d/m/Y',strtotime($transaction->created_at))}}</td>
-                  <td class="qty">{{$transaction->credit_payment_status}}</td>
-                  <td class="total">{{$transaction->amount}}</td>
+                  <td class="qty">@if($transaction->status == 'funded') ESCROW @else {{$transaction->status}} @endif</td>
+                  <td class="total">{{$transaction->amount / $transaction->number_of_freelancers}}</td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="grand total">GRAND TOTAL</td>
+                  <td class="grand total">{{$transaction->amount / $transaction->number_of_freelancers}}</td>
                 </tr>
                 @endforeach
-                <tr>
-                  <td colspan="4" class="grand total">GRAND TOTAL</td>
-                  <td class="grand total">{{$balance}}</td>
-                </tr>
               </tbody>
             </table>
           </main>

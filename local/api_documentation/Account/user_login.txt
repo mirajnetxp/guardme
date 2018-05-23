@@ -1,0 +1,22 @@
+=========================================
+ user login
+=========================================
+
+URL:   api/account/login
+
+Type: POST
+
+Sample output
+
+{
+    "success": {
+        "token": "NMjc5NjI2MGU4ZDdkZGFmMGI1MjNiYWU2OTg0NDBmNTMiLCJpY"
+    }
+}
+
+
+
+Response:
+
+1) 200
+

@@ -11,12 +11,13 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Responsive\JobApplication;
 
-class JobHiredApplicationMarkedAsComplete
+class AwardJob
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $job_application;
+
     /**
-     * JobHiredApplicationMarkedAsComplete constructor.
+     * AwardJob constructor.
      * @param JobApplication $jobApplication
      */
     public function __construct(JobApplication $jobApplication)

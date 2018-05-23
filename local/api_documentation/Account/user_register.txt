@@ -1,0 +1,41 @@
+=========================================
+ user register
+=========================================
+
+URL: api/account/register
+
+Type: POST
+
+Sample output
+
+if user did not enter data correctly
+
+Response:
+1) 422
+
+{
+    "name": [
+        "The name field is required."
+    ],
+    "email": [
+        "The email has already been taken."
+    ],
+    "password": [
+        "The password confirmation does not match."
+    ],
+    "gender": [
+        "The gender field is required."
+    ],
+    "usertype": [
+        "The usertype field is required."
+    ]
+}
+if user enter correct data
+
+
+
+Response:
+
+1) 200
+
+array of objects of account details

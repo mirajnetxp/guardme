@@ -229,7 +229,7 @@ class User extends Authenticatable
 
     public function person_address()
     {
-        return $this->hasOne(Address::class,'user_id');
+        return $this->hasOne(Address::class);
     }
 
      public function jobs()
@@ -634,8 +634,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(JobApplication::class,'applied_by');
     }
-	public function freelancerSettings()
-	{
-		return $this->hasOne(FreelancerSetting::class,'user_id');
-	}
 }

@@ -31,8 +31,8 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-
-
+                
+                
                 <form method="POST" action="{{ route('update-company') }}" id="formID" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
@@ -52,7 +52,7 @@
                             <label>Category</label>
                             <select id="shop_category" name="shop_category" class="form-control">
                                 @foreach($b_cats as $cat)
-                                <option value="{{$cat->id}}"
+                                <option value="{{$cat->id}}" 
                                     @if($editprofile[0]->company->business_categoryid==$cat->id) {{"selected=selected"}} @endif>{{$cat->name}}</option>
                                 @endforeach
                             </select>
@@ -64,22 +64,22 @@
                         <div class="form-group{{ $errors->has('company_email') ? ' has-error' : '' }}">
                             <label for="company_email">E-Mail Address</label>
                             <input id="company_email" type="text" class="trackprogress form-control validate[required,custom[email]] text-input" name="company_email" value="<?php echo $editprofile[0]->company->company_email;?>">
-
+                            
                         </div>
 
                         <div class="form-group">
                             <label for="address">Address</label>
                             <input id="address" type="text" class=" form-control  text-input" name="address" value="<?php echo $editprofile[0]->company->address;?>">
-
+                            
                         </div>
 
 
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea name="description" class=" form-control" >{{$editprofile[0]->company->description}}</textarea>
-
+                            
                         </div>
-
+                        
                             <div class="buttons pull-right">
                                 <button type="submit" class="btn">Update</button>
                             </div>

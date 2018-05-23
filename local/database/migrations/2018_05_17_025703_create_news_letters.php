@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingsTable extends Migration
+class CreateNewsLetters extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-	    Schema::create('freelancer_settings', function (Blueprint $table) {
-		    $table->integer('user_id');
-		    $table->boolean('visible')->nullable();
-		    $table->timestamps();
-	    });
+        //
+        Schema::create('news_letters', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('user_id',50);
+			$table->string('email',300);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,6 +29,7 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-	    Schema::dropIfExists('freelancer_settings');
+        //
+        Schema::dropIfExists('news_letters');
     }
 }

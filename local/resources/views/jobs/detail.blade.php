@@ -10,7 +10,7 @@
     </style>
    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyC2C2Tp8wIjckpXAeweMhL7nOGes0Dpv2w"></script>
    <script type="text/javascript">
-       <?php if( $user_address) { ?>
+       <?php if( count($user_address) > 0 ) { ?>
         var markers = [
             {
                 "title": '{{ $job->title }}',
@@ -122,7 +122,7 @@
                 <h2 class="title">{{$job->title}}</h2>
             </div>
 
-
+            
             <div class="job-details">
                 <div class="section job-ad-item">
                     <div class="item-info">
@@ -139,13 +139,10 @@
                                     <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($job->city_town){{$job->city_town}},@endif {{$job->country}}</a></li>
                                     <!-- <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li> -->
                                     <li><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</li>
-
                                     <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory->name}}</a></li>
-
                                     <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Posted on : {{date('M d, Y',strtotime($job->created_at))}}</li>
                                 </ul>
-                            </div><!-- ad-meta -->
-
+                            </div><!-- ad-meta -->                                  
                         </div><!-- ad-info -->
                     </div><!-- item-info -->
                     <div class="social-media">

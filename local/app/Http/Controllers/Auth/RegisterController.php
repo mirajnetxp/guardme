@@ -5,6 +5,8 @@ namespace Responsive\Http\Controllers\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Auth;
+use Responsive\Address;
+use Responsive\FreelancerSetting;
 use Responsive\Referral;
 use Responsive\User;
 use Responsive\Http\Controllers\Controller;
@@ -83,24 +85,38 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
-        $user = User::create([
-            'name' => $data['name'],
+	/**
+	 * Create a new user instance after a valid registration.
+	 *
+	 * @param  array $data
+	 *
+	 * @return User
+	 */
+	protected function create( array $data ) {
+		$user = User::create( [
+			'name'     => $data['name'],
+			'email'    => $data['email'],
+			'password' => bcrypt( $data['password'] ),
+			'gender'   => $data['gender'],
+			'phone'    => $data['phoneno'],
+			'photo'    => '',
+			'admin'    => $data['usertype'],
+			'doc_verified'    => false,
+		] );
 
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'gender' => $data['gender'],
-            'phone' => $data['phoneno'],
-            'photo' => '',
-            'admin' => $data['usertype'],
-        ]);
+		if ( $user->admin == '2' ) {
+			//      Creating freelancer Settings With defalte value
+			$freelancerSetting          = new FreelancerSetting();
+			$freelancerSetting->user_id = $user->id;
+			$freelancerSetting->visible = true;
+			$freelancerSetting->save();
+		}
+
+		//		Creating Address Collum
+		$address          = new Address();
+		$address->user_id = $user->id;
+		$address->save();
+
 
         if ($refEmail = session('referral')) {
             $refUser = User::where('name', $refEmail)->first();

@@ -110,6 +110,10 @@ Route::get('/invoice', 'WalletController@freelancerInvoice');
 
 Route::post('/wallet', ['as'=>'wallet','uses'=>'WalletController@sangvish_savedata']);
 
+// Settings
+Route::get( '/settings', 'SettingController@show' );
+Route::get( '/settings/visibality', 'SettingController@visibality' );
+
 /* Authentication routes */
 Auth::routes();
 
@@ -273,6 +277,13 @@ Route::group(['middleware' => 'admin'], function() {
 
 	/* end settings */
 
+	/* start user doc Verification */
+	Route::get( '/admin/Verification', 'Admin\VerificationController@showUsers' );
+	Route::get( '/admin/Verification/uder-details/{id}', 'Admin\VerificationController@userDetail' )->name('admin.Verification.details');
+	Route::get( '/admin/user-doc/approved/{id}', 'Admin\VerificationController@userDocApproved' )->name('admin.user.doc.approved');
+	Route::get( '/admin/user-doc/decline/{id}', 'Admin\VerificationController@userDocDecline' )->name('admin.user.doc.decline');
+
+	/* end user doc Verification */
 
 	/* start shop */
 
@@ -281,6 +292,8 @@ Route::group(['middleware' => 'admin'], function() {
 	Route::post('/admin/edit-shop', ['as'=>'admin.edit-shop','uses'=>'Admin\ShopController@savedata']);
 	Route::get('/admin/shop/{id}','Admin\ShopController@destroy');
 
+	Route::get( '/admin/suspend/{id}', 'Admin\ShopController@suspend' );
+	Route::get( '/admin/unsuspend/{id}', 'Admin\ShopController@unsuspend' );
 
 	/* end shop */
 

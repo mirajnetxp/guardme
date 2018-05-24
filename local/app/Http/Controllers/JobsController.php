@@ -1,6 +1,9 @@
 <?php
+
 namespace Responsive\Http\Controllers;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Responsive\Businesscategory;
 use Responsive\JobApplication;
 use Responsive\SecurityCategory;
@@ -13,15 +16,33 @@ use Input;
 use Responsive\Transaction;
 use DB;
 
-class JobsController extends Controller
-{
-    //
-    public function create() {
-        if (!isEmployer()) {
-            return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
-        }
-        $all_security_categories = SecurityCategory::get();
-        $all_business_categories = Businesscategory::get();
+class JobsController extends Controller {
+	//
+	public function create() {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		// Users cannot create jobs unless company details is complete
+
+		$company = auth()->user()->company;
+		if ( $company == null ) {
+			Session::flash( 'error', 'Please Add your company profile before you can create a job.' );
+
+			return redirect( "/addcompany" );
+		}
+// TODO : Users cannot create jobs unless company details is complete
+		if ( ! $company->shop_name || ! $company->address || ! $company->company_email || ! $company->description || ! $company->shop_phone_no || ! $company->business_categoryid ) {
+			Session::flash( 'error', 'Please complete your company profile before you can create a job.' );
+
+			return redirect( "/company" );
+		}
+
+		if($company->status=='unapproved'){
+			Session::flash( 'doc_not_v', 'Your Account is not active. Please contact admin about the status of your account.' );
+			return redirect( "/contact" );
+		}
+		$all_security_categories = SecurityCategory::get();
+		$all_business_categories = Businesscategory::get();
 
         return view('jobs.create', compact('all_security_categories', 'all_business_categories'));
     }
@@ -201,30 +222,39 @@ class JobsController extends Controller
 
             $joblist = Job::where('status','1')->paginate(10);
 
-        }
-        //dd($joblist);
-        $request->flash();
-        return view('jobs.find',compact('joblist','b_cats','locs'));
-    }
+		}
+		//dd($joblist);
+		$request->flash();
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function viewJob($id) {
-        if (!$id) {
-            return abort(404);
-        }
-        $user_address = [];
-        $saved_job = '';
-        if(Auth::check()){
-            $user_id = auth()->user()->id;
-            $user_address = User::where('id', $user_id)->with('address')->first();
-            $saved_job = SavedJob::where('job_id',$id)->where('user_id', $user_id)->first();
-        }
-        $b_cats = Businesscategory::all();
-        $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
-        //$job = Job::find($id);
+		return view( 'jobs.find', compact( 'joblist', 'b_cats', 'locs' ) );
+	}
+
+	/**
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function viewJob($id) {
+
+		if (!$id) {
+			return abort(404);
+		}
+		if ( ! Auth::Check() ) {
+			Session::flash( 'login_first', ' Please login to view the full job description.' );
+			return redirect()->back();
+		}
+		$user_address = [];
+		$saved_job    = '';
+		if ( Auth::check() ) {
+			$user_id      = auth()->user()->id;
+			$user_address = User::where( 'id', $user_id )->with( 'address' )->first();
+			$saved_job    = SavedJob::where( 'job_id', $id )->where( 'user_id', $user_id )->first();
+		} else {
+			return redirect( '/register' );
+		}
+		$b_cats = Businesscategory::all();
+		$locs   = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
+		//$job = Job::find($id);
 
         $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
         // dd($saved_job);
@@ -235,14 +265,20 @@ class JobsController extends Controller
         return view('jobs.detail', compact('job','b_cats','locs','user_address', 'saved_job'));
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function applyJob($id) {
-        $job = Job::find($id);
-        return view('jobs.apply', ['job' => $job]);
-    }
+	/**
+	 * @param $id
+	 * @return mixed
+	 */
+	public function applyJob($id) {
+
+		if ( auth()->user()->doc_verified == false ) {
+			Session::flash( 'doc_not_v', 'Your Account is Unverified. Please contact admin about the status of your account.' );
+			return redirect( "/contact" );
+		}
+		$job = Job::find( $id );
+
+		return view( 'jobs.apply', [ 'job' => $job ] );
+	}
 
     /**
      * @param $id

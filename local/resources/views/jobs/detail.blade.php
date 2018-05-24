@@ -106,6 +106,11 @@
 
 <!-- fixed navigation bar -->
 @include('header')
+@if(session()->has('doc_not_v'))
+    <div class="container-fluid" style="background-color: #e91e63">
+        <h5 class="text-center" style="color: #ffffff">{{session()->has('doc_not_v')}}</h5>
+    </div>
+@endif
     <section class="job-bg page job-details-page">
         <div class="container">
             <div class="breadcrumb-section">
@@ -134,10 +139,13 @@
                                     <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($job->city_town){{$job->city_town}},@endif {{$job->country}}</a></li>
                                     <!-- <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li> -->
                                     <li><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</li>
+
                                     <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory->name}}</a></li>
+
                                     <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Posted on : {{date('M d, Y',strtotime($job->created_at))}}</li>
                                 </ul>
-                            </div><!-- ad-meta -->                                  
+                            </div><!-- ad-meta -->
+
                         </div><!-- ad-info -->
                     </div><!-- item-info -->
                     <div class="social-media">

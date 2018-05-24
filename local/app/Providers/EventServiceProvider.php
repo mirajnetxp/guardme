@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'Responsive\Events\JobHiredApplicationMarkedAsComplete' => [
             'Responsive\Listeners\ReleaseJobApplicationFundsToApplicant',
         ],
+        'Responsive\Events\AwardJob' => [
+            'Responsive\Listeners\AwardJobAndAdjustTransactions',
+        ],
     ];
 
     /**

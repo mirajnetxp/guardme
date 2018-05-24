@@ -44,7 +44,7 @@
         <!-- top navigation -->
        @include('admin.top')
 
-		<?php $url = URL::to("/"); ?>
+    <?php $url = URL::to("/"); ?>
 
 
         <!-- /top navigation -->
@@ -141,76 +141,72 @@
           </div>
           <!-- /top tiles -->
 
-		  <div style="clear:both;"></div>
-		  <div class="row">
+      <div style="clear:both;"></div>
+      <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="header">
-              <h4 class="title">Last 7 Days Booking Report</h4>
+              <h4 class="title">Last 7 Days Created Job</h4>
             </div>
 
 
 
-		 <script type="text/javascript">
-	window.onload = function () {
-			var dps = [
-		<?php echo $javas;?>
-		];
-
-		var chart = new CanvasJS.Chart("chartContainer",
-		{
-
-
-			title:{
-				//text: "Last 7 Days Order Report",
-				fontSize:20,
-				titleFontFamily: "Open Sans, sans-serif"
-			},
+     <script type="text/javascript">
+  window.onload = function () {
+      var dps = [
+    <?php echo $javas;?>
+    ];
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        //text: "Last 7 Days Order Report",
+        fontSize:20,
+        titleFontFamily: "Open Sans, sans-serif"
+      },
 
                         animationEnabled: true,
-			axisX:{
+      axisX:{
 
-				gridColor: "Silver",
-				tickColor: "silver"
-				//valueFormatString: "DD/MMM"
-
-			},
+        gridColor: "Silver",
+        tickColor: "silver"
+        //valueFormatString: "DD/MMM"
+      },
                         toolTip:{
                           shared:true
                         },
-			theme: "theme2",
-			axisY: {
-				gridColor: "Silver",
-				tickColor: "silver"
-			},
-			legend:{
-				verticalAlign: "center",
-				horizontalAlign: "right"
-			},
-			data: [
-			{
-				type: "line",
-				showInLegend: true,
-				lineThickness: 2,
-				name: "Orders",
-				markerType: "square",
-				color: "#F08080",
-				dataPoints: dps
-			}
-			],
-			axisX: {
+      theme: "theme2",
+      axisY: {
+        gridColor: "Silver",
+        tickColor: "silver"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right"
+      },
+      data: [
+      {
+        type: "line",
+        showInLegend: true,
+        lineThickness: 2,
+        name: "Jobs",
+        markerType: "square",
+        color: "#F08080",
+        dataPoints: dps
+      }
+      ],
+      axisX: {
         title: "Last 7 days",
        // titleFontFamily: "comic sans ms"
       },
-			axisY: {
-        title: "No of Booking",
+      axisY: {
+        title: "No Of Job Created",
         //titleFontFamily: "comic sans ms"
       },
           legend:{
             cursor:"pointer",
             itemclick:function(e){
               if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-              	e.dataSeries.visible = false;
+                e.dataSeries.visible = false;
               }
               else{
                 e.dataSeries.visible = true;
@@ -218,27 +214,18 @@
               chart.render();
             }
           }
-		});
-
+    });
 chart.render();
 }
 </script>
-
-
           <div class="content">
-        	   <div id="chartContainer" style="height: 300px; width: 100%;">
+             <div id="chartContainer" style="height: 300px; width: 100%;">
           </div>
-      	</div>
+        </div>
       </div>
     </div>
-	</div>
-
-
-
-
-		  <br/><br/>
-
-
+  </div>
+      <br/><br/>
 
           <div class="row">
 
@@ -248,39 +235,29 @@ chart.render();
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
                   <h2>Recent Booking</h2>
-
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-
                   <div class="widget_summary">
-
-
-				   <div class="x_content">
+           <div class="x_content">
                   <table class="" style="width:100%">
                     <tr>
                       <th>
                         <p>Name</p>
                       </th>
                       <th>
-
                           <p>Booking Date</p>
                        </th>
-					   <th>
-
+             <th>
                           <p>Amount</p>
-
                       </th>
-
-					  <th>
-
+            <th>
                           <p>Status</p>
 
                       </th>
                     </tr>
-
-					<?php foreach($booking as $book){?>
-					<tr height="20"></tr>
+          <?php foreach($booking as $book){?>
+          <tr height="20"></tr>
                     <tr>
                       <td>
                        <?php echo $book->name;?>
@@ -289,34 +266,25 @@ chart.render();
                        <?php echo $book->booking_date;?>
                       </td>
 
-					  <td>
+            <td>
                        <?php echo $book->total_amt.' '.$setting[0]->site_currency;?>
                       </td>
 
-					  <td>
+            <td>
                        <?php echo $book->status;?>
                       </td>
                     </tr>
-					<?php } ?>
+          <?php } ?>
                   </table>
                 </div>
-
                   </div>
-
-
-
-
-
-
                 </div>
               </div>
             </div>
             </div>
 
 
-
-
-			<div class="col-md-4 col-sm-4 col-xs-12" style="padding:5px;">
+      <div class="col-md-4 col-sm-4 col-xs-12" style="padding:5px;">
         <div class="card" style="padding:12px;">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
@@ -329,10 +297,10 @@ chart.render();
                   <div class="widget_summary">
 
 
-				   <div class="x_content">
+           <div class="x_content">
                   <table class="" style="width:100%">
                     <tr>
-					<th>
+          <th>
 
                           <p>Photo</p>
 
@@ -345,66 +313,45 @@ chart.render();
 
                           <p>Phone</p>
                        </th>
-					   <th>
-
+             <th>
                           <p>User Type</p>
-
                       </th>
-
-
                     </tr>
-
-					<?php foreach($users as $user){
-						$sta=$user->admin; if($sta==1){ $viewst="Admin"; } else if($sta==2) { $viewst="Seller"; } else if($sta==3) { $viewst="Licensed Partner"; } else if($sta==0) { $viewst="Customer"; }
-						?>
-					<tr height="10"></tr>
+          <?php foreach($users as $user){
+            $sta=$user->admin; if($sta==1){ $viewst="Admin"; } else if($sta==2) { $viewst="Seller"; } else if($sta==3) { $viewst="Licensed Partner"; } else if($sta==0) { $viewst="Customer"; }
+            ?>
+          <tr height="10"></tr>
                     <tr>
                       <?php
-					   $userphoto="/userphoto/";
-						$path ='/local/images'.$userphoto.$user->photo;
-						if($user->photo!=""){
-						?>
-						 <td><img src="<?php echo $url.$path;?>" class="thumb" width="40"></td>
-						 <?php } else { ?>
-						  <td><img src="<?php echo $url.'/local/images/nophoto.jpg';?>" class="thumb" width="40"></td>
-						 <?php } ?>
+             $userphoto="/userphoto/";
+            $path ='/local/images'.$userphoto.$user->photo;
+            if($user->photo!=""){
+            ?>
+             <td><img src="<?php echo $url.$path;?>" class="thumb" width="40"></td>
+             <?php } else { ?>
+              <td><img src="<?php echo $url.'/local/images/nophoto.jpg';?>" class="thumb" width="40"></td>
+             <?php } ?>
                       <td>
                        <?php echo $user->name;?>
                       </td>
 
-					  <td>
+            <td>
                       <?php echo $user->phone;?>
                       </td>
 
-					  <td>
+            <td>
                        <?php echo $viewst;?>
                       </td>
                     </tr>
-					<?php } ?>
+          <?php } ?>
                   </table>
                 </div>
-
                   </div>
-
-
-
-
-
-
                 </div>
               </div>
             </div>
             </div>
-
-
-
-
-
-
-
-
-
-		   <div class="col-md-4 col-sm-4 col-xs-12" style="padding:5px;">
+            <div class="col-md-4 col-sm-4 col-xs-12" style="padding:5px;">
          <div class="card" style="padding:12px;">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
@@ -417,10 +364,10 @@ chart.render();
                   <div class="widget_summary">
 
 
-				   <div class="x_content">
+           <div class="x_content">
                   <table class="" style="width:100%">
                     <tr>
-					<th style="width:25%">
+          <th style="width:25%">
 
                           <p>Photo</p>
 
@@ -434,68 +381,36 @@ chart.render();
                           <p>Description</p>
                        </th>
 
-
-
                     </tr>
 
-					<?php foreach($testimonials as $testimonial){
-						?>
-					<tr height="20"></tr>
+          <?php foreach($testimonials as $testimonial){
+            ?>
+          <tr height="20"></tr>
                     <tr>
                       <?php
-					   $testimonialphoto="/testimonialphoto/";
-						$path ='/local/images'.$testimonialphoto.$testimonial->image;
-						if($testimonial->image!=""){
-						?>
-						 <td><img src="<?php echo $url.$path;?>" class="thumb" width="40"></td>
-						 <?php } else { ?>
-						  <td><img src="<?php echo $url.'/local/images/noimage.jpg';?>" class="thumb" width="40"></td>
-						 <?php } ?>
+             $testimonialphoto="/testimonialphoto/";
+            $path ='/local/images'.$testimonialphoto.$testimonial->image;
+            if($testimonial->image!=""){
+            ?>
+             <td><img src="<?php echo $url.$path;?>" class="thumb" width="40"></td>
+             <?php } else { ?>
+              <td><img src="<?php echo $url.'/local/images/noimage.jpg';?>" class="thumb" width="40"></td>
+             <?php } ?>
                       <td>
                        <?php echo $testimonial->name;?>
                       </td>
-
-					  <td>
+            <td>
                       <?php echo substr($testimonial->description,0,40);?>
                       </td>
-
-
                     </tr>
-					<?php } ?>
+          <?php } ?>
                   </table>
                 </div>
-
                   </div>
-
-
-
-
-
-
                 </div>
               </div>
             </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
       </div>
       </div>

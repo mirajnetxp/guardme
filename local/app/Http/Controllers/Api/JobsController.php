@@ -80,9 +80,7 @@ class JobsController extends Controller
         $return_status = 500;
         if (!empty($job) && !empty($job->created_by) && $job->created_by == $logged_in_id) {
             // save job schedules
-
             $job->schedules()->createMany($schedules);
-
             $job->daily_working_hours = $working_hours;
             $job->monthly_working_days = $working_days;
             $job->per_hour_rate = $pay_per_hour;
@@ -137,7 +135,6 @@ class JobsController extends Controller
         return response()
             ->json($return_data, $return_status);
     }
-
     public function getJobAmount($id) {
         $jobDetails = Job::calculateJobAmount($id);
         return response()
@@ -179,7 +176,6 @@ class JobsController extends Controller
         return response()
             ->json($returnData, $returnStatus);
     }
-
     /**
      * @return mixed
      */
@@ -188,7 +184,6 @@ class JobsController extends Controller
         return response()
             ->json($my_jobs);
     }
-
     /**
      * @param $id
      * @param Request $request
@@ -207,7 +202,6 @@ class JobsController extends Controller
         $is_applied = $job_application->is_applied($id);
         $is_hired = $job_application->is_hired($id);
         $job = Job::find($id);
-
         if (!isFreelancer()) {
             $return_status = 500;
             $return_data = ['Only freelancers can apply on jobs'];
@@ -226,19 +220,15 @@ class JobsController extends Controller
             $job_application->job_id = $id;
             $job_application->applied_by = $user_id;
             $is_saved = $job_application->save();
-
             if ($is_saved) {
                 $return_status = 200;
                 $return_data = ['Application has been submitted successfully'];
             }
         }
-
         return response()
             ->json($return_data, $return_status);
     }
-
     public function markHired($application_id) {
-
         // check if user is authorized to mark this application as hired.
         $job_application = new JobApplication();
         $is_eligible_to_hire = $job_application->isEligibleToMarkHired($application_id);
@@ -252,11 +242,9 @@ class JobsController extends Controller
             $return_data = [$error_message];
             $return_status = 500;
         }
-
         return response()
             ->json($return_data, $return_status);
     }
-
     /**
      * @param Request $request
      * @return mixed
@@ -272,7 +260,6 @@ class JobsController extends Controller
             'paypal_payment_status' => 'required',
             'status' => 'required',
         ]);
-
         $add_money_params = [
             'paypal_id' => $posted_data['paypal_id'],
             'amount' => $posted_data['amount'],
@@ -300,11 +287,9 @@ class JobsController extends Controller
                 }
             }
         }
-
         // add money
         $walletTransaction = new Transaction();
         $re = $walletTransaction->addMoney($add_money_params);
-
         if ($re) {
             $return_data = ['Data Saved Successfully'];
             $return_status = 200;
@@ -312,7 +297,6 @@ class JobsController extends Controller
         return response()
             ->json($return_data, $return_status);
     }
-
     public function fundJobFee(Request $request) {
         $return_data = ['Unknown Error'];
         $return_status = 500;
@@ -324,7 +308,6 @@ class JobsController extends Controller
             'paypal_payment_status' => 'required',
             'status' => 'required',
         ]);
-
         $add_money_params = [
             'paypal_id' => $posted_data['paypal_id'],
             'amount' => $posted_data['amount'],
@@ -332,11 +315,9 @@ class JobsController extends Controller
             'paypal_payment_status' => $posted_data['paypal_payment_status'],
             'status' => $posted_data['status']
         ];
-
         // add money
         $walletTransaction = new Transaction();
         $re = $walletTransaction->addMoney($add_money_params);
-
         if ($re) {
             $return_data = ['Data Saved Successfully'];
             $return_status = 200;
@@ -344,46 +325,37 @@ class JobsController extends Controller
         return response()
             ->json($return_data, $return_status);
     }
-
     public function totalUserAwardedJobs()
     {
         /** @var User $user */
         $user = auth()->user();
-
         // todo: get jobs awarded to user
         $awarded_jobs_query = $user->applications()
             ->where('is_hired', true)
             ->whereDate('end_date_time','>=',date('Y-m-d'))
             ;
-
         return response()->json([
            'total_awarded_jobs' => $awarded_jobs_query->count(),
            'data' => $awarded_jobs_query->get()
         ]);
     }
-
     public function totalAppliedJobsForUser()
     {
         /** @var User $user */
         $user = auth()->user();
-
         // todo: get jobs applied by user
         $applied_jobs = $user->applications();
-
         return response()->json([
             'total_awarded_jobs' => $applied_jobs->count(),
             'data' => $applied_jobs->get()
         ]);
     }
-
     public function totalCreatedJobsForEmployer()
     {
         /** @var User $user */
         $user = auth()->user();
-
         // todo: get jobs applied by user
         $created_jobs = $user->jobs();
-
         return response()->json([
             'total_created_jobs' => $created_jobs->count(),
             'data' => $created_jobs->get()
@@ -397,7 +369,6 @@ class JobsController extends Controller
         $proposals = $ja->getMyProposals();
         return response()
             ->json($proposals, 200);
-
     }
     
     /**
@@ -411,7 +382,6 @@ class JobsController extends Controller
             'user_id' => 'required'
         ]);
         $posted_data = $request->all();
-
         $user_address = User::where('id', $posted_data['user_id'])->with('address')->first();
         $job_details = Job::with(['poster','poster.company','industory'])->where('id',$posted_data['job_id'])->first();
         
@@ -474,7 +444,6 @@ class JobsController extends Controller
                                 $latitude = $userAddressObj->latitude;
                             if(!empty($userAddressObj->latitude))
                                 $longitude = $userAddressObj->longitude;
-
                             if( $latitude > 0 && $latitude > 0 )
                                 $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
                             else
@@ -499,7 +468,6 @@ class JobsController extends Controller
                             $latitude = $userAddressObj->latitude;
                         if(!empty($userAddressObj->latitude))
                             $longitude = $userAddressObj->longitude;
-
                         if( $latitude > 0 && $latitude > 0 )
                             $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
                         else
@@ -528,7 +496,6 @@ class JobsController extends Controller
         $securityCategories = SecurityCategory::all();
         return response()
             ->json($securityCategories, 200);
-
     }
     
     /**
@@ -539,9 +506,7 @@ class JobsController extends Controller
         $businessCategories = Businesscategory::all();
         return response()
             ->json($businessCategories, 200);
-
     }
-
     /**
      * @param $application_id
      * @return mixed
@@ -560,11 +525,9 @@ class JobsController extends Controller
         if ($return_status == 200) {
             event(new JobHiredApplicationMarkedAsComplete($application));
         }
-
         return response()
             ->json($return_data, $return_status);
     }
-
     /**
      * @param $application_id
      * @param Request $request
@@ -711,7 +674,6 @@ class JobsController extends Controller
 					}
                      return 1;
                     //$badge_count = $for_user_notification['badge_count']+1;
-
                    
  }
 	

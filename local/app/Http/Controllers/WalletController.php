@@ -1,7 +1,5 @@
 <?php
-
 namespace Responsive\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +13,8 @@ use Responsive\JobApplication;
 use URL;
 use Carbon\Carbon;
 use PDF;
+use Responsive\Feedback;
+use Responsive\Job;
 
 class WalletController extends Controller
 {
@@ -39,13 +39,11 @@ class WalletController extends Controller
 		// dd($jobs);
 		return view('wallet', compact('jobs', 'wallet_data'));
 	}
-
 	public function view() {
 		$wallet = new Transaction();
 		$wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
 		$userid = auth()->user()->id;
 		$editprofile = User::where('id',$userid)->get();
-
         $user = auth()->user();
         if($user->admin == 0){
             $jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.created_at, security_jobs.number_of_freelancers from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
@@ -54,10 +52,20 @@ class WalletController extends Controller
         }else{
             $jobs = array();
         }
-        // dd($jobs);
-		return view('wallet-dashboard', compact('wallet_data', 'editprofile', 'jobs'));
-	}
 
+        $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
+        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
+        {
+            $feedback = 0;
+        }
+        else
+        {
+            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
+        }
+        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
+
+		return view('wallet-dashboard', compact('wallet_data', 'editprofile', 'jobs', 'balance','jobs','feedback'));
+	}
 	public function searchJobs(Request $request) 
     {
     	$wallet = new Transaction();
@@ -66,7 +74,6 @@ class WalletController extends Controller
     	$start_date = $request->start_date;
     	$end_date = $request->end_date;
     	$user = auth()->user();
-
     	if($keyword != ''){
 			if($user->admin == 0){
 				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by job_id');
@@ -89,7 +96,6 @@ class WalletController extends Controller
     	}
     	return view('wallet', compact('jobs', 'wallet_data'));
     }
-
 	public function invoice(Request $request, $id){
 		// return view('invoice-employer');
 		$user = auth()->user();
@@ -100,7 +106,6 @@ class WalletController extends Controller
         $from = $user;
 	    $from->date = Carbon::now();
         $all_transactions = array();
-
         if(!empty($user_id)) {
             if($user->admin == 2){
                 $all_transactions = DB::select('select security_jobs.title, transactions.id, sum(transactions.amount) as amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = '.$id.' group by transactions.type');
@@ -119,7 +124,6 @@ class WalletController extends Controller
                 //     ->get()->first();
                 // $total_credit = !empty($credit->total) ? ($credit->total) : 0;
                 // $balance = $total_credit;
-
                 $all_transactions = DB::select('select transactions.title, transactions.id, transactions.created_at, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, transactions.credit_payment_status as status, transactions.type from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.credit_payment_status in ("paid", "funded") and security_jobs.id = '.$id.' group by transactions.type');
                     // dd($all_transactions);
                 $applied_by = JobApplication::select('applied_by')->where('job_id', $id)->get();
@@ -149,18 +153,14 @@ class WalletController extends Controller
 	        	return view('invoice-employer', compact('all_transactions', 'balance', 'from', 'id'));
 	        }
         }
-
         return view('invoice-freelancer', compact('all_transactions', 'balance', 'from', 'id'));
 	}
-
     public function freelancerInvoice(Request $request){
         $user_id = $request->user_id;
         $id = $request->id;
         $all_transactions = DB::select('select security_jobs.title, transactions.id, sum(transactions.amount) as amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = '.$id.' group by transactions.type');
-
         $from = User::find($user_id);
         $from->date = Carbon::now();
-
         if($request->has('download')){
                     $pdf = PDF::loadView('invoice-freelancer', compact('all_transactions', 'balance', 'from', 'id'));
                     return $pdf->download('invoice.pdf');

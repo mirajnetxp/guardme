@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 
-
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 	@include('style')
 
@@ -395,6 +395,24 @@
 											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
                                                     <?php //echo $stime; ?> - <?php /*echo $etime; */?>
 												</a></li>
+												<li>
+
+                                                    <?php
+                                                    for($i=1;$i<=5;$i++)
+                                                    {
+                                                        if($feedback >= $i)
+                                                        {
+                                                            echo '<i class="fas fa-star" style="color: #ff0;font-size: 20px"></i>';
+                                                        }
+                                                        else
+                                                        {
+                                                            echo '<i class="far fa-star" style="color: #000;font-size: 20px"></i>';
+                                                        }
+                                                    }
+                                                    ?>
+													<small>FeedBack : {{ $feedback }}</small> <span ></span>
+
+												</li>
 											<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
 										</ul>
 									</div><!-- ad-meta -->

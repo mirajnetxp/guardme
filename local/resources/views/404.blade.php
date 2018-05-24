@@ -7,7 +7,7 @@
    @include('style')
 	
 
-
+<input value="{{ csrf_token() }}">
 
 
 </head>

@@ -111,7 +111,7 @@ if(isset(Auth::user()->verification)){
 
 						<?php if(Auth::user()->admin==0) {?>
 						<!-- <li><a href="<?php echo $url;?>/dashboard">My Dashboard</a></li> -->
-						<li><a href="{{url('/wallet')}}">Wallet</a></li>
+						
 						<!-- <li><a href="<?php echo $url;?>/dashboard">Freelancer Profile</a></li>
 						<li><a href="<?php echo $url;?>/my_bookings">My Bookings</a></li> -->
 						<?php } ?>
@@ -138,7 +138,7 @@ if(isset(Auth::user()->verification)){
 						<li <?php if(empty($shcount)){?>class="disabled"<?php } ?>><a href="<?php echo $url;?>/services" <?php if(empty($shcount)){?>class="disabled"<?php } ?>>My Services</a></li>
 						<li <?php if(empty($shcount)){?>class="disabled"<?php } ?>><a href="<?php echo $url;?>/gallery" <?php if(empty($shcount)){?>class="disabled"<?php } ?>>Shop Gallery</a></li>
 						-->
-						<li><a href="{{url('/wallet')}}">Wallet</a></li>
+						
 						<li><a href="{{url('/settings')}}">Settings</a></li>
 
 								<?php } ?>

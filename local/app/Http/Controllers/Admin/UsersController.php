@@ -15,50 +15,43 @@ use Responsive\User;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 
-class UsersController extends Controller
-{
-    /**
-     * Show a list of all of the application's users.
-     *
-     * @return Response
-     */
-    public function index()
-    {   
-        $users = DB::table( 'users' )
-                   ->leftJoin( 'address', 'users.id', '=', 'address.user_id' )
-                   ->orderBy( 'users.id', 'desc' )
-                    ->select(
-                        'users.id',
-                        'users.name',
-                        'users.email',
-                        'users.verified',
-                        'users.admin',
-                        'users.gender',
-                        'users.phone',
-                        'users.photo',
-                        'users.created_at',
-                        'users.firstname',
-                        'users.lastname',
-                        'users.dob',
-                        'users.phone_verified',
-                        'address.postcode',
-                        'address.houseno',
-                        'address.line1',
-                        'address.line2',
-                        'address.line3',
-                        'address.line4',
-                        'address.locality',
-                        'address.citytown',
-                        'address.country'
-                    )
-                   ->get();
+class UsersController extends Controller {
+	/**
+	 * Show a list of all of the application's users.
+	 *
+	 * @return Response
+	 */
+	public function index() {
+		$users = DB::table( 'users' )
+		           ->leftJoin( 'address', 'users.id', '=', 'address.user_id' )
+		           ->orderBy( 'users.id', 'desc' )
+					->select(
+						'users.id',
+						'users.name',
+						'users.email',
+						'users.verified',
+						'users.admin',
+						'users.gender',
+						'users.phone',
+						'users.photo',
+						'users.created_at',
+						'users.firstname',
+						'users.lastname',
+						'users.dob',
+						'users.phone_verified',
+						'address.postcode',
+						'address.houseno',
+						'address.line1',
+						'address.line2',
+						'address.line3',
+						'address.line4',
+						'address.locality',
+						'address.citytown',
+						'address.country'
+					)
+		           ->get();
 
-
-        $emailUnverfiedUsers = DB::table('users')->orderBy('id','desc')->where('is_phone_verfifed',1)->get();
-
-        $phoneUnverfiedUsers = DB::table('users')->orderBy('id','desc')->where('is_email_verfifed',1)->get();
-
-        return view('admin.users', ['users' => $users,'emailUnverfiedUsers' => $emailUnverfiedUsers,'phoneUnverfiedUsers'=>$phoneUnverfiedUsers ]);
+        return view('admin.users', ['users' => $users]);
     }
 	
 	
@@ -88,17 +81,5 @@ class UsersController extends Controller
       return back();
       
    }
-   	public function verifiedemail($id)
-    {
-        DB::table('users')->where('id', $id)->limit(1)->update(array('is_email_verfifed' => '1'));
-        return redirect()->back()->with('message','success to unverififed this user');
-
-    }
-    public function verifiedphone($id)
-    {
-        DB::table('users')->where('id', $id)->limit(1)->update(array('is_phone_verfifed' => '1'));
-        return redirect()->back()->with('message','success to unverififed this user');
-
-    }
 	
 }

@@ -16,9 +16,6 @@ use Responsive\Address;
 use Responsive\User;
 use Responsive\Businesscategory;
 use Responsive\Shop;
-use Responsive\Feedback;
-use Responsive\Job;
-use Responsive\Transaction;
 class ShopController extends Controller
 {
     /**
@@ -71,16 +68,6 @@ class ShopController extends Controller
         ->orderBy('id','desc')
         ->leftJoin('subservices', 'subservices.subid', '=', 'seller_services.subservice_id')
         ->get();
-                        $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
-                        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
-                        {
-                            $feedback = 0;
-                        }
-                        else
-                        {
-                            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
-                        }
-                        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
 
         $set_id=1;
         $setting = DB::table('settings')->where('id', $set_id)->get();
@@ -118,11 +105,11 @@ class ShopController extends Controller
                         $rating = DB::table('rating')->leftJoin('users', 'users.email', '=', 'rating.email')
                         ->where('rshop_id', '=', $shop_id)->orderBy('rid', 'desc')->get();
                         $data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt, 'shopcount' => $shopcount, 'shop' => $shop, 'stime' => $stime,
-                            'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'viewservice' => $viewservice, 'setting' => $setting, 'rating_count' => $rating_count, 'rating' => $rating,'balance' => $balance,'feedback' => $feedback,'jobs' => $jobs);
+                            'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'viewservice' => $viewservice, 'setting' => $setting, 'rating_count' => $rating_count, 'rating' => $rating);
                         return view('shop', compact('data', 'userid', 'editprofile', 'countries','address'))->with($data);
                     }
                     else{
-                        $data = array('rating_count' => 0,'balance' => $balance,'feedback' => $feedback,'jobs' => $jobs);
+                        $data = array('rating_count' => 0);
                         return view('shop', compact( 'userid', 'editprofile', 'countries','address'))->with($data);
                     }
     }
@@ -144,18 +131,8 @@ class ShopController extends Controller
 
         $countries = Country::all();
         $address = Address::where('user_id', Auth::user()->id)->get();
-                        $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
-                        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
-                        {
-                            $feedback = 0;
-                        }
-                        else
-                        {
-                            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
-                        }
-                        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
 
-        $data = array('rating_count' => 0,'balance' => $balance,'feedback' => $feedback,'jobs' => $jobs);
+        $data = array('rating_count' => 0);
         return view('verification', compact( 'userid', 'editprofile', 'countries','address'));
     }
 
@@ -195,16 +172,6 @@ public function sangvish_viewshop_old()
 
         $countries = Country::all();
         $address = Address::where('user_id', Auth::user()->id)->get();
-                        $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
-                        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
-                        {
-                            $feedback = 0;
-                        }
-                        else
-                        {
-                            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
-                        }
-                        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
 
         $shop = DB::table('shop')->where('seller_email', '=', $sellermail)->get();
                 if($editprofile[0]->admin == 0){ // employer
@@ -236,11 +203,11 @@ public function sangvish_viewshop_old()
                         $rating = DB::table('rating')->leftJoin('users', 'users.email', '=', 'rating.email')
                         ->where('rshop_id', '=', $shop_id)->orderBy('rid', 'desc')->get();
                         $data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt, 'shopcount' => $shopcount, 'shop' => $shop, 'stime' => $stime,
-                            'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'viewservice' => $viewservice, 'setting' => $setting, 'rating_count' => $rating_count, 'rating' => $rating,'balance' => $balance,'feedback' => $feedback,'jobs' => $jobs);
+                            'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'viewservice' => $viewservice, 'setting' => $setting, 'rating_count' => $rating_count, 'rating' => $rating);
                         return view('shop', compact('data', 'userid', 'editprofile', 'countries','address'))->with($data);
                     }
                     else{
-                        $data = array('rating_count' => 0,'balance' => $balance,'feedback' => $feedback,'jobs' => $jobs);
+                        $data = array('rating_count' => 0);
                         return view('shop-old', compact( 'userid', 'editprofile', 'countries','address'))->with($data);
                     }
     }
@@ -319,23 +286,13 @@ function updatecompany(Request $request)
 		$siteid=1;
 		$site_setting=DB::select('select * from settings where id = ?',[$siteid]);
 
-                        $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
-                        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
-                        {
-                            $feedback = 0;
-                        }
-                        else
-                        {
-                            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
-                        }
-                        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
 
 
 
                 $address = Address::where('user_id', Auth::user()->id)->get();
                 $categories = \Responsive\Businesscategory::all();
 		$data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt,'address'=>$address, 'shopcount' => $shopcount, 'shop' => $shop, 'admin_email_id' => $admin_email_id,
-		'site_setting' => $site_setting,'categories'=>$categories,'balance' => $balance,'feedback' => $feedback,'jobs' => $jobs);
+		'site_setting' => $site_setting,'categories'=>$categories);
             return view('addshop')->with($data);
     }
 
@@ -432,22 +389,12 @@ function updatecompany(Request $request)
 		$editshop = DB::select('select * from shop where id = ?',[$requestid]);
 
 
-                        $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
-                        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
-                        {
-                            $feedback = 0;
-                        }
-                        else
-                        {
-                            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
-                        }
-                        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
 
 
 
 
 		$data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt, 'shopcount' => $shopcount, 'shop' => $shop, 'stime' => $stime,
-		'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'requestid' => $requestid, 'editshop' => $editshop,'balance' => $balance,'feedback' => $feedback,'jobs' => $jobs);
+		'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'requestid' => $requestid, 'editshop' => $editshop);
             return view('editshop')->with($data);
     }
 

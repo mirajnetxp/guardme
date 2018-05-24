@@ -38,7 +38,7 @@ return [
     'twilio' => [
         'from'    => env('TWILIO_FROM'),
         'token'   => env('TWILIO_TOKEN'),
-        'account' => env('TWILIO_SID'),
+        'account' => env('TWILIO_ACCOUNT'),
     ],
 
     'facebook' => [
@@ -51,12 +51,6 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID','62137224865-kh7adl3qg0775kbio5d00bl190d2sim2.apps.googleusercontent.com'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET','wNlLtWJvUV7l1DIhDBWQItzx'),
         'redirect' => env('GOOGLE_REDIRECT','https://guarddme.com/account/login/google/callback'),
-    ],
-    
-    'nexmo' => [
-    'key' => env('NEXMO_KEY'),
-    'secret' => env('NEXMO_SECRET'),
-    'sms_from' => '15556666666',
     ],
 
 ];

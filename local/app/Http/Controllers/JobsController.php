@@ -83,16 +83,6 @@ class JobsController extends Controller {
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->get();
         $my_jobs = Job::getMyJobs();
-                $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
-        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
-        {
-            $feedback = 0;
-        }
-        else
-        {
-            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
-        }
-        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
         return view('jobs.my', compact('my_jobs','editprofile'));
     }
 
@@ -100,7 +90,7 @@ class JobsController extends Controller {
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->get();
         $my_jobs =  DB::select('select security_jobs.* from security_jobs, saved_jobs where saved_jobs.job_id = security_jobs.id and saved_jobs.user_id = '.$userid);
-        return view('jobs.saved', compact(['my_jobs','editprofile','balance','feedback','jobs']));
+        return view('jobs.saved', compact('my_jobs','editprofile'));
     }
 
     /**
@@ -268,11 +258,11 @@ class JobsController extends Controller {
 
         $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
         // dd($saved_job);
-        $job_gtsaw = DB::table('security_jobs')->find($id);
+
         if (empty($job)) {
             return abort(404);
         }
-        return view('jobs.detail', compact('job','b_cats','locs','user_address', 'saved_job', 'job_gtsaw'));
+        return view('jobs.detail', compact('job','b_cats','locs','user_address', 'saved_job'));
     }
 
 	/**

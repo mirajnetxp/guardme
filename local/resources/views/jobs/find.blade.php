@@ -34,23 +34,27 @@
 
 <!-- fixed navigation bar -->
 @include('header')
-
-    <section class="job-bg page job-list-page">
-        <div class="container">
-            <div class="breadcrumb-section">
-                <!-- breadcrumb -->
-                <ol class="breadcrumb">
-                    <li><a href="{{URL::to('/')}}">Home</a></li>
-                    <li>Jobs</li>
-                </ol><!-- breadcrumb -->                        
-                <h2 class="title">Jobs</h2>
-            </div>
-            <div class="banner-form banner-form-full job-list-form">
-                <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
-                    <!-- category-change -->
-                    <div class="dropdown category-dropdown">                    
-                        <!-- {!! csrf_field() !!}     -->
-                        <a data-toggle="dropdown" href="#">
+@if(session()->has('login_first'))
+<div class="container-fluid" style="background-color: #e91e63">
+    <h5 class="text-center" style="color: #ffffff">Please Login first to see the full job description.</h5>
+</div>
+@endif
+<section class="job-bg page job-list-page">
+    <div class="container">
+        <div class="breadcrumb-section">
+            <!-- breadcrumb -->
+            <ol class="breadcrumb">
+                <li><a href="{{URL::to('/')}}">Home</a></li>
+                <li>Jobs</li>
+            </ol><!-- breadcrumb -->
+            <h2 class="title">Jobs</h2>
+        </div>
+        <div class="banner-form banner-form-full job-list-form">
+            <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
+                <!-- category-change -->
+                <div class="dropdown category-dropdown">
+                <!-- {!! csrf_field() !!} -->
+                    <a data-toggle="dropdown" href="#">
                         <span class="change-text">
                             @if(old('cat_val')!=NULL)
                                 {{old('cat_val')}}

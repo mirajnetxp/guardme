@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Responsive\User;
 
 class SearchController extends Controller {
@@ -172,7 +173,10 @@ class SearchController extends Controller {
 
 	public function personnelprofile($id)
 	{
-
+		if(!Auth::Check()){
+			Session::flash( 'login_first', ' Please login to view the freelancer details.' );
+			return redirect()->back();
+		}
 		$person = User::with(['person_address','sec_work_category'])->find($id);
 		//dd($person->work_category);
 

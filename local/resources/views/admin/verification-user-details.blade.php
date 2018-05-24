@@ -70,11 +70,10 @@
                             <h3 class="pull-right ">
                                 @if(!$user->doc_verified)
                                     <a class="btn btn-success"
-                                       href="{{route('admin.user.doc.approved',['id'=>$user->id])}}">Verification
-                                        Approved</a>
+                                       href="{{route('admin.user.doc.approved',['id'=>$user->id])}}">Approve Documents</a>
                                 @else
                                     <a class="btn btn-danger"
-                                       href="{{route('admin.user.doc.decline',['id'=>$user->id])}}">Unverified</a>
+                                       href="{{route('admin.user.doc.decline',['id'=>$user->id])}}">Unapprove Documents</a>
                                 @endif
                             </h3>
                         </div>

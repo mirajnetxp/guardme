@@ -90,7 +90,13 @@
 							        <tr>
 							            <td>{{$job->id}}</td>
 							            <td><a href="{{url('wallet/invoice/'.$job->id)}}">{{$job->title}}</a></td>
-							            <td>{{$job->amount}}</td>
+							            <td>
+						            	@if(Auth::user()->admin == 2)
+						            		{{$job->amount / $job->number_of_freelancers}}
+						            	@else
+						            		{{$job->amount}}
+						            	@endif
+						            </td>
 							            <td>{{date('d/m/Y',strtotime($job->created_at))}}</td>
 							        </tr>
 							        @endforeach

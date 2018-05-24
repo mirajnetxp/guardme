@@ -138,7 +138,7 @@
                 });
                 // trigger price dropdown when number of days changed so that schedule items get updated.
                 $("select[name='working_days']").on("change", function(){
-                    $("select[name='pay_per_hour']").trigger('change');
+                   $("select[name='pay_per_hour']").trigger('change');
                 });
                // var lockr_nxturl = Lockr.get('nxturl');
                 if(gm_nxturl != null && gm_nxturl!='{{URL::current()}}')

@@ -67,8 +67,6 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 		<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300' rel='stylesheet' type='text/css'>
 		<link href='https://fonts.googleapis.com/css?family=Signika+Negative:400,300,600,700' rel='stylesheet' type='text/css'>
 	<!-- font -->
-	 
-
 	<!-- JS -->
     <script src="<?php echo $url;?>/js/jquery.min.js"></script>
     <script src="<?php echo $url;?>/js/bootstrap.min.js"></script>

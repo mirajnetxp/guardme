@@ -9,34 +9,33 @@ use Illuminate\Support\Facades\Route;
 use Responsive\Url;
 use Responsive\Businesscategory;
 use Responsive\Job;
-class IndexController extends Controller
-{
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function sangvish_index()
-    {
-		$services = DB::table('services')->limit(7)->get();
-		$one = DB::table('services')->orderBy('name', 'asc')->limit(1)->offset(0)->get();
-		$first = DB::select('select * from subservices where service = ?',[$one[0]->id]); 
-		
-		$two = DB::table('services')->orderBy('name', 'asc')->limit(1)->offset(1)->get();
-		$second = DB::select('select * from subservices where service = ?',[$two[0]->id]); 
-		
-		$three = DB::table('services')->orderBy('name', 'asc')->limit(1)->offset(2)->get();
-		$third = DB::select('select * from subservices where service = ?',[$three[0]->id]); 
-		
-		$four = DB::table('services')->orderBy('name', 'asc')->limit(1)->offset(3)->get();
-		$fourth = DB::select('select * from subservices where service = ?',[$four[0]->id]);
+class IndexController extends Controller {
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+
+
+	/**
+	 * Show the application dashboard.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function sangvish_index() {
+		$services = DB::table( 'services' )->limit( 7 )->get();
+		$one      = DB::table( 'services' )->orderBy( 'name', 'asc' )->limit( 1 )->offset( 0 )->get();
+		$first    = DB::select( 'select * from subservices where service = ?', [ $one[0]->id ] );
+
+		$two    = DB::table( 'services' )->orderBy( 'name', 'asc' )->limit( 1 )->offset( 1 )->get();
+		$second = DB::select( 'select * from subservices where service = ?', [ $two[0]->id ] );
+
+		$three = DB::table( 'services' )->orderBy( 'name', 'asc' )->limit( 1 )->offset( 2 )->get();
+		$third = DB::select( 'select * from subservices where service = ?', [ $three[0]->id ] );
+
+		$four   = DB::table( 'services' )->orderBy( 'name', 'asc' )->limit( 1 )->offset( 3 )->get();
+		$fourth = DB::select( 'select * from subservices where service = ?', [ $four[0]->id ] );
 
 
 		

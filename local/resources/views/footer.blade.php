@@ -12,6 +12,29 @@ $setid=1;
 	<!-- footer-top -->
 	<section class="footer-top clearfix">
 		<div class="container">
+		
+						<div class="row text-center">
+		 
+@if ($message = Session::get('success'))
+<div class="alert alert-success alert-block">
+	<button type="button" class="close" data-dismiss="alert">×</button>	
+        <strong>{{ $message }}</strong>
+</div>
+@endif
+
+
+@if ($message = Session::get('error'))
+<div class="alert alert-danger alert-block">
+	<button type="button" class="close" data-dismiss="alert">×</button>	
+        <strong>{{ $message }}</strong>
+</div>
+@endif
+ 
+ 
+ 
+		</div>
+		
+		
 			<div class="row">
 				<!-- footer-widget -->
 				<div class="col-sm-3">
@@ -62,18 +85,19 @@ $setid=1;
 							</ul>
 						</div>
 					</div>
-					<!-- footer-widget -->
+				<!-- footer-widget -->
 					<div class="col-sm-3">
 						<div class="footer-widget news-letter">
 							<h3>Newsletter</h3>
 							<p>Jobs is Worldest leading Portal platform that brings!</p>
 							<!-- form -->
-							<form action="#">
-								<input type="email" class="form-control" placeholder="Your email id">
+							{{ Form::open(array('url' => 'post_newsletters_subscription','method' => 'POST')) }}
+ 		                        <input type="email" class="form-control" name="email" placeholder="Your email id">
 								<button type="submit" class="btn btn-primary">Sign Up</button>
-							</form><!-- form -->			
+                           {{ Form::close() }}		
 						</div>
-					</div><!-- footer-widget -->
+					</div><!-- footer-widget ends-->
+					
 		</div>
 	</section>
 
@@ -181,8 +205,6 @@ $setid=1;
 		load() {
 			$(".error-span").addClass('hide');
 			$.each(this.formErrors, function(i, v) {
-				i = i.replace('[]', '');
-				i = i.split('.')[0];
 				if (typeof $('.'+ i) != 'undefined') {
 					$('.'+ i).siblings('.error-span').html(v);
 					$('.'+ i).siblings('.error-span').removeClass('hide');

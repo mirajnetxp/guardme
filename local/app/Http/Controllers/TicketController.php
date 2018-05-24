@@ -51,6 +51,20 @@ class TicketController extends Controller
             'categories' => $this->categories,
         ]);
     }
+
+    public function reda_support()
+    {
+        $userid = auth()->user()->id;
+        $editprofile = User::where('id',$userid)->get();
+        return view('support',[
+                'tickets'       => $this->getTickets(),
+                'statuses'      => $this->statuses,
+                'stateOf'       => $this->stateOf,
+                'statusClasses' => $this->statusClasses,
+                'editprofile'   => $editprofile
+            ]);
+    }
+    
     public function store(Request $request)
     {
         /*if (!$this->checkRole([config('guardme.acl.Job_Seeker'), config('guardme.acl.Employer')])) {

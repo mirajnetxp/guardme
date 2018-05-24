@@ -86,7 +86,6 @@
       function printPage(){
         window.print();
       }
-
       function invoice(user_id, job_id){
         window.location = "{{url('invoice?user')}}"+"?user_id="+user_id+"&id="+job_id;
       }

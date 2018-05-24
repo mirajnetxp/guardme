@@ -12,6 +12,9 @@ use Image;
 use Responsive\User;
 use Responsive\Address;
 use Responsive\Notifications\Auth\UserVerification as UserVerificationNotification;
+use Responsive\Feedback;
+use Responsive\Job;
+use Responsive\Transaction;
 
 class DashboardController extends Controller
 {
@@ -49,7 +52,17 @@ public function sangvish_delaccount()
     {
         $userid = Auth::user()->id;
         $editprofile = DB::select('select * from users where id = ?',[$userid]);
-        return view('delete-account',compact('editprofile'));
+        $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
+        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
+        {
+            $feedback = 0;
+        }
+        else
+        {
+            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
+        }
+        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
+        return view('delete-account',compact(['editprofile','balance','jobs','feedback']));
     }
 	public function sangvish_deleteaccount()
 	{
@@ -72,7 +85,19 @@ public function sangvish_delaccount()
 
 
 		DB::delete('delete from users where id!=1 and id = ?',[$userid]);
-		return back();
+        $balance = Transaction::where('user_id',Auth::user()->id)->sum('amount');
+        if(Feedback::where('user_id' , Auth::user()->id)->count() ==0)
+        {
+            $feedback = 0;
+        }
+        else
+        {
+            $feedback = (float)Feedback::where('user_id' , Auth::user()->id)->sum('rating') / (float)Feedback::where('user_id' , Auth::user()->id)->count();
+        }
+        $jobs = Job::where('status' , '0')->where('created_by',Auth::user()->id)->count();
+        $data = array('balance' => $balance,'feedback' => $feedback,'jobs' => $jobs);
+
+		return back()->with($data);
 	}
 
 

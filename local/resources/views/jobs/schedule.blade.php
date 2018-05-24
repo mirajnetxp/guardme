@@ -136,10 +136,7 @@
                         }
                     }
                 });
-                // trigger price dropdown when number of days changed so that schedule items get updated.
-                $("select[name='working_days']").on("change", function(){
-                   $("select[name='pay_per_hour']").trigger('change');
-                });
+
                // var lockr_nxturl = Lockr.get('nxturl');
                 if(gm_nxturl != null && gm_nxturl!='{{URL::current()}}')
                 {
@@ -170,11 +167,9 @@
 
             // add schedule items
             var item_htm = $(".schedule_items_clone_code").html();
-            var item_specific_html = item_htm;
             var all_schedule_items_html = '';
             for(i = 0; i < workingDays; i++) {
-                item_specific_html = item_htm.replace("Start/End", 'Day '+ parseInt(i+1));
-                all_schedule_items_html += item_specific_html;
+                all_schedule_items_html += item_htm;
             }
             $(".schedule_items").html(all_schedule_items_html);
             jQuery('.date-time-picker').datetimepicker({

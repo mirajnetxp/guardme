@@ -3,6 +3,7 @@
 <head>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
    @include('style')  
 
@@ -53,12 +54,27 @@
                     </div>
                     <div class="favorites-user">
                         <div class="my-ads">
-                            <a href="applied-job.html">0<small>Total Jobs</small></a>
+                            <a href="{{ url('view/feedback') }}">
+                                <h1 style="margin-bottom:-35px">{{ $feedback }}</h1>
+                                <?php
+                                    for($i=1;$i<=5;$i++)
+                                    {
+                                        if($feedback >= $i)
+                                        {
+                                            echo '<i class="fas fa-star" style="color: #ff0;font-size: 20px"></i>';
+                                        }
+                                        else
+                                        {
+                                            echo '<i class="far fa-star" style="color: #000;font-size: 20px"></i>';
+                                        }
+                                    }
+                                ?>
+                                <small>FeedBack</small></a>
                         </div>
                         <div class="favorites">
-                            <a href="bookmark.html">0<small>Balance</small></a>
+                            <a>{{ $balance }}<small>Balance</small></a>
                         </div>
-                    </div>  
+                    </div> 
                 </div>
 
                 <ul class="user-menu">
@@ -82,6 +98,7 @@
 
                     <li class="@if(Route::current()->uri()=='wallet-dashboard') {{'active'}} @endif"><a href="{{URL::to('wallet-dashboard')}}" >Wallet</a></li>
                     <li class="@if(Route::current()->uri()=='referral' || Route::current()->uri()=='redeem') {{'active'}} @endif"><a href="{{URL::to('referral')}}">Loyalty</a></li>
+                    <li class="@if(Route::current()->uri()=='support') {{'active'}} @endif"><a href="{{URL::to('support')}}">Support</a></li>
                     <li><a href="{{URL::to('delete_account')}}" >Close account</a></li>
                 </ul>
             </div>

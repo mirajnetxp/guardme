@@ -75,6 +75,11 @@
                             <div class="col-md-8"><textarea name="feedback_message" id="feedback" class="form-control" cols="30" rows="10"></textarea></div>
 
                         </div>
+                        <div class="form-group">
+                            <div class="col-md-4 text-right"><label for="feedback">rating from 0 to 5 </label></div>
+                            <div class="col-md-8"><input type="number" name="rating"  step="1" min="0" max="5"></div>
+
+                        </div>
                         <div class="clearfix"></div>
                         <br>
                         <input style="position: relative;right: 128px;" class="btn btn-info text-right" type="submit" value="submit">

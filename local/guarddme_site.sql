@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 23, 2018 at 12:59 AM
--- Server version: 10.1.28-MariaDB
--- PHP Version: 7.1.11
+-- Host: localhost:3306
+-- Generation Time: Apr 07, 2018 at 11:39 AM
+-- Server version: 5.6.38
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,39 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `guarddme_site`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `address`
---
-
-CREATE TABLE `address` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` tinyint(4) NOT NULL,
-  `postcode` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `houseno` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `line1` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `line2` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `line3` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `line4` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `locality` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `citytown` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `latitude` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `longitude` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `address`
---
-
-INSERT INTO `address` (`id`, `user_id`, `postcode`, `houseno`, `line1`, `line2`, `line3`, `line4`, `locality`, `citytown`, `country`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
-(1, 1, '22545', '', 'kdjsfsd', 'kadfjs', 'jssdfksdf', '', '', 'kassjdfl', 'djfjsdlf', '', '', '2018-05-22 02:02:05', '2018-05-22 02:02:05'),
-(2, 31, '65412', '', 'kdskf', 'kadfjs', 'jssdfksdf', '', '', 'sjfhsdfj', 'djfjsdlf', '', '', '2018-05-22 02:37:51', '2018-05-22 02:37:51'),
-(3, 32, 'hj', '', 'hjhgjhghj', 'hj', 'ghj', '', '', 'g', 'hjg', '', '', '2018-05-23 04:11:42', '2018-05-23 04:11:42');
 
 -- --------------------------------------------------------
 
@@ -93,27 +60,6 @@ INSERT INTO `booking` (`book_id`, `token`, `services_id`, `booking_date`, `booki
 -- --------------------------------------------------------
 
 --
--- Table structure for table `businesscategory`
---
-
-CREATE TABLE `businesscategory` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `businesscategory`
---
-
-INSERT INTO `businesscategory` (`id`, `name`) VALUES
-(1, 'Hospital'),
-(2, 'Club'),
-(3, 'Bar'),
-(4, 'Shop');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `contact_vendor`
 --
 
@@ -136,17 +82,6 @@ INSERT INTO `contact_vendor` (`id`, `name`, `phone_no`, `email`, `message`, `ven
 -- --------------------------------------------------------
 
 --
--- Table structure for table `country`
---
-
-CREATE TABLE `country` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `failed_jobs`
 --
 
@@ -162,45 +97,6 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `feedback`
---
-
-CREATE TABLE `feedback` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `application_id` int(11) NOT NULL,
-  `appearance` int(11) NOT NULL DEFAULT '1',
-  `punctuality` int(11) NOT NULL DEFAULT '1',
-  `customer_focused` int(11) NOT NULL DEFAULT '1',
-  `security_conscious` int(11) NOT NULL DEFAULT '1',
-  `user_id` int(11) DEFAULT NULL,
-  `rating` int(11) NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `feedback`
---
-
-INSERT INTO `feedback` (`id`, `application_id`, `appearance`, `punctuality`, `customer_focused`, `security_conscious`, `user_id`, `rating`, `message`, `created_at`) VALUES
-(1, 1, 1, 1, 1, 1, 32, 3, 'czxlkznm,xczxm,cnzxm,c', '2018-05-22 20:14:21');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `items`
---
-
-CREATE TABLE `items` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `price` double(8,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `jobs`
 --
 
@@ -210,25 +106,9 @@ CREATE TABLE `jobs` (
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `attempts` tinyint(3) UNSIGNED NOT NULL,
   `reserved_at` int(10) UNSIGNED DEFAULT NULL,
-  `available_at` datetime NOT NULL,
+  `available_at` int(10) UNSIGNED NOT NULL,
   `created_at` int(10) UNSIGNED NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `job_applications`
---
-
-CREATE TABLE `job_applications` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `job_id` int(11) NOT NULL,
-  `applied_by` int(11) NOT NULL,
-  `is_hired` int(11) NOT NULL DEFAULT '0',
-  `application_description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -261,46 +141,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (12, '2016_06_01_000003_create_oauth_refresh_tokens_table', 4),
 (13, '2016_06_01_000004_create_oauth_clients_table', 4),
 (14, '2016_06_01_000005_create_oauth_personal_access_clients_table', 4),
-(15, '2018_04_06_174212_add_new_email_column_in_user_verify', 5),
-(16, '2018_04_03_182648_updatefreelancerprofile_users_table', 6),
-(17, '2018_04_03_191201_create_address_table', 6),
-(18, '2018_04_03_191941_create_country_table', 6),
-(19, '2018_04_03_210627_create_businesscategory_table', 6),
-(20, '2018_04_08_043042_AddVerifiedPhoneColumnsToUsersTable', 6),
-(21, '2018_04_10_073822_create_referral_table', 6),
-(22, '2018_04_10_074128_create_items_table', 6),
-(23, '2018_04_10_074138_create_user_items_table', 6),
-(24, '2018_04_10_074711_edit_users_spent_added', 6),
-(25, '2018_04_16_190202_addcompanyfieldstoshop', 6),
-(26, '2018_04_18_182740_create_security_categories_table', 6),
-(27, '2018_04_19_120216_add_some_items_to_businesscategory', 6),
-(28, '2018_04_19_163836_add_security_jobs_table', 6),
-(29, '2018_04_25_141450_create_transactions_table', 6),
-(30, '2018_04_30_043829_update_columntype_to_users_table', 6),
-(31, '2018_04_30_150257_create_job_applications_table', 6),
-(32, '2018_05_12_090256_add_number_of_freelancers_field_to_security_jobs_table', 6),
-(33, '2018_05_14_074919_add_column_start_date_time_end_date_time_to_jobs_table', 6),
-(34, '2018_05_16_081210_create_saved_jobs_table', 6),
-(35, '2018_05_17_001730_drop_created_at_column_in_transactions', 6),
-(36, '2018_05_17_001910_add_created_at_column_transactoins_with_default', 6),
-(37, '2018_05_17_025703_create_news_letters', 6),
-(38, '2018_05_17_025703_create_security_jobs_schedule', 6),
-(39, '2018_05_19_120307_create_feedback_table', 6),
-(40, '2018_05_20_051955_drop_start_date_end_date_columns_from_security_jobs_table', 6);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `news_letters`
---
-
-CREATE TABLE `news_letters` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(15, '2018_04_06_174212_add_new_email_column_in_user_verify', 5);
 
 -- --------------------------------------------------------
 
@@ -354,6 +195,14 @@ CREATE TABLE `oauth_clients` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `oauth_clients`
+--
+
+INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `redirect`, `personal_access_client`, `password_client`, `revoked`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'Guarddme Personal Access Client', 'Bxhbr0ydejS50YgJRIRMKHsklqmZxx3N1BQDwdZG', 'http://localhost', 1, 0, 0, '2018-04-06 04:33:33', '2018-04-06 04:33:33'),
+(2, NULL, 'Guarddme Password Grant Client', '0zYyEkwaLLX5aTbMGDxfkWB2ozYZ0x2bZVFYSZUQ', 'http://localhost', 0, 1, 0, '2018-04-06 04:33:33', '2018-04-06 04:33:33');
+
 -- --------------------------------------------------------
 
 --
@@ -366,6 +215,13 @@ CREATE TABLE `oauth_personal_access_clients` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `oauth_personal_access_clients`
+--
+
+INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `updated_at`) VALUES
+(1, 1, '2018-04-06 04:33:33', '2018-04-06 04:33:33');
 
 -- --------------------------------------------------------
 
@@ -450,102 +306,6 @@ INSERT INTO `rating` (`rid`, `rating`, `email`, `rshop_id`, `comment`) VALUES
 (10, '3', 'seller@seller.com', 21, 'sample'),
 (17, '5', 'testinguse@gmail.com', 22, 'rwar dddd'),
 (18, '3', 'testinguse@gmail.com', 25, 'very nice service good...');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `referrals`
---
-
-CREATE TABLE `referrals` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `who` int(10) UNSIGNED NOT NULL,
-  `to` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `saved_jobs`
---
-
-CREATE TABLE `saved_jobs` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `job_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `security_categories`
---
-
-CREATE TABLE `security_categories` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `security_categories`
---
-
-INSERT INTO `security_categories` (`id`, `name`) VALUES
-(1, 'Close Protection'),
-(2, 'Secutiy Guard'),
-(3, 'Door Supervisor');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `security_jobs`
---
-
-CREATE TABLE `security_jobs` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `address_line1` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_line2` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_line3` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `locality` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city_town` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `post_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `daily_working_hours` int(11) DEFAULT NULL,
-  `monthly_working_days` int(11) DEFAULT NULL,
-  `per_hour_rate` double(8,2) DEFAULT NULL,
-  `wallet_debit_frequency` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visible_to_all_security_personal` tinyint(1) DEFAULT NULL,
-  `visible_to_favourite` tinyint(1) DEFAULT NULL,
-  `specific_area_min` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `specific_area_max` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `specific_category_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `security_category_id` int(11) DEFAULT NULL,
-  `business_category_id` int(11) DEFAULT NULL,
-  `created_by` int(11) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `number_of_freelancers` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `security_jobs_schedule`
---
-
-CREATE TABLE `security_jobs_schedule` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `job_id` int(11) NOT NULL,
-  `start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `end` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -726,29 +486,24 @@ CREATE TABLE `shop` (
   `status` varchar(255) NOT NULL,
   `admin_email_status` varchar(200) NOT NULL,
   `booking_opening_days` varchar(255) NOT NULL,
-  `booking_per_hour` varchar(255) NOT NULL,
-  `business_categoryid` tinyint(4) NOT NULL,
-  `company_email` varchar(150) NOT NULL
+  `booking_per_hour` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `shop`
 --
 
-INSERT INTO `shop` (`id`, `shop_name`, `address`, `city`, `pin_code`, `country`, `state`, `shop_phone_no`, `description`, `shop_date`, `start_time`, `end_time`, `cover_photo`, `profile_photo`, `seller_email`, `user_id`, `featured`, `status`, `admin_email_status`, `booking_opening_days`, `booking_per_hour`, `business_categoryid`, `company_email`) VALUES
-(21, 'Wine Shop', '42, Featherstone Street LONDON EC1Y 8SY UNITED KINGDOM', 'london', '655220', 'London', 'London', '987564220', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,2,6', '11', '11', '1501759203.jpeg', '1496146095.jpg', 'wpchecking@gmail.com', 3, 'no', 'approved', '0', '5', '3', 0, ''),
-(23, 'Shopping Mall', '65,Main Road,Cross Street', 'EC2N', '55364', 'United Kingdom', 'Lon', '800255104', 'This is shopping mall', '1,2,3,4,5', '5', '22', '1501759508.jpeg', '1496129839.jpg', 'sample2@gmail.com', 5, 'no', 'approved', '0', '7', '2', 0, ''),
-(24, 'Book Shop', 'No. 9 Sector 16, Panchkula Haryana.', 'Hisar', '134003', 'India', 'Haryana', '666565', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,2,3,5,6', '10', '21', '1501759634.jpeg', '1497270711.jpg', 'demo@demo.com', 12, 'no', 'approved', '0', '4', '2', 0, ''),
-(25, 'Cycle Shop', '18, 29th Street, Thillai Ganga Nagar, Nanganallur, Chennai 600061', 'chennai', '600061', 'India', 'Tamilnadu', '3243232', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,5,6', '4', '18', '1501757735.jpg', '1497271665.jpeg', 'example@example.com', 13, 'no', 'approved', '0', '4', '3', 0, ''),
-(26, 'Mobile Shop', '1. KASARAGOD. Taluk Office Kasaragod,Kerala', 'Kasaragod', '3242', 'India', 'Kerala', '324324332', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '1,2,3,4,5', '4', '13', '1501758403.jpeg', '1497866493.jpg', 'sample@sample.com', 14, 'no', 'approved', '0', '6', '5', 0, ''),
-(27, 'Bike Shop', 'No 9-A/2; Street no 22. Karachi, Pakistan', 'Karachi', '32222', 'Pakistan', 'pk', '9383838', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,2,3,4', '9', '21', '1501758573.jpg', '1497333150.jpeg', 'test@test.com', 15, 'no', 'approved', '0', '17', '5', 0, ''),
-(28, 'Furniture shop', 'No 23, LADY DOAK COLLEGE ROAD,CHOKKIKULAM,MADURAI', 'Madurai', '625002', 'India', 'Tamilnadu', '565656', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,2,3,5,6', '2', '22', '1501758828.jpeg', '1497333617.jpeg', 'checking@checking.com', 16, 'no', 'approved', '0', '6', '5', 0, ''),
-(30, 'welcome shop', '3232,well', 'mdu', '3232', 'india', 'ta', '32423', 'fdsa', '0,1,4', '2', '2', '', '', 'well@gmail.com', 25, 'no', 'unapproved', '0', '3', '3', 0, ''),
-(34, 'Seller Company', '5900 Timber Creek Lane, APT 1208', 'Indian Trail', '27612', 'United States', 'North Carolina', '08102977068', 'fghjkljhgvfhjk', '1,2,3,4', '15', '16', '', '', 'cokwedadi@gmail.com', 30, 'no', 'unapproved', '0', '20', '2', 0, ''),
-(35, 'Yefta Shop', 'Zazazaza', 'Solo', '789797', 'Indonesia', 'Jawa Tengah', '0890790808080', 'Test', '1,2,3,4,5', '9', '19', '', '', 'yevtha.aw@gmail.com', 21, 'no', 'unapproved', '0', '30', '5', 0, ''),
-(36, 'jdfssdjfk', '', '', '', '', '', '21644874', 'jksdflksdjfskdlfj', '', '', '', '', '', 'admin@admin.com', 1, 'no', 'unapproved', '0', '', '', 2, 'sdasd@ef.com'),
-(37, 'jdfssdjfk', '', '', '', '', '', '763487563475', 'ivfoigudfoig', '', '', '', '', '', 'engmohamedahmed00@gmail.com', 31, 'no', 'unapproved', '0', '', '', 3, 'sdasd@ef.com'),
-(38, 'asdhsahjg', '', '', '', '', '', '5454', 'jaskd', '', '', '', '', '', 'ahmed@gmail.com', 32, 'no', 'unapproved', '0', '', '', 3, 'jsdf@;sdklf.com');
+INSERT INTO `shop` (`id`, `shop_name`, `address`, `city`, `pin_code`, `country`, `state`, `shop_phone_no`, `description`, `shop_date`, `start_time`, `end_time`, `cover_photo`, `profile_photo`, `seller_email`, `user_id`, `featured`, `status`, `admin_email_status`, `booking_opening_days`, `booking_per_hour`) VALUES
+(21, 'Wine Shop', '42, Featherstone Street LONDON EC1Y 8SY UNITED KINGDOM', 'london', '655220', 'London', 'London', '987564220', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,2,6', '11', '11', '1501759203.jpeg', '1496146095.jpg', 'wpchecking@gmail.com', 3, 'no', 'approved', '0', '5', '3'),
+(23, 'Shopping Mall', '65,Main Road,Cross Street', 'EC2N', '55364', 'United Kingdom', 'Lon', '800255104', 'This is shopping mall', '1,2,3,4,5', '5', '22', '1501759508.jpeg', '1496129839.jpg', 'sample2@gmail.com', 5, 'no', 'approved', '0', '7', '2'),
+(24, 'Book Shop', 'No. 9 Sector 16, Panchkula Haryana.', 'Hisar', '134003', 'India', 'Haryana', '666565', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,2,3,5,6', '10', '21', '1501759634.jpeg', '1497270711.jpg', 'demo@demo.com', 12, 'no', 'approved', '0', '4', '2'),
+(25, 'Cycle Shop', '18, 29th Street, Thillai Ganga Nagar, Nanganallur, Chennai 600061', 'chennai', '600061', 'India', 'Tamilnadu', '3243232', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,5,6', '4', '18', '1501757735.jpg', '1497271665.jpeg', 'example@example.com', 13, 'no', 'approved', '0', '4', '3'),
+(26, 'Mobile Shop', '1. KASARAGOD. Taluk Office Kasaragod,Kerala', 'Kasaragod', '3242', 'India', 'Kerala', '324324332', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '1,2,3,4,5', '4', '13', '1501758403.jpeg', '1497866493.jpg', 'sample@sample.com', 14, 'no', 'approved', '0', '6', '5'),
+(27, 'Bike Shop', 'No 9-A/2; Street no 22. Karachi, Pakistan', 'Karachi', '32222', 'Pakistan', 'pk', '9383838', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,2,3,4', '9', '21', '1501758573.jpg', '1497333150.jpeg', 'test@test.com', 15, 'no', 'approved', '0', '17', '5'),
+(28, 'Furniture shop', 'No 23, LADY DOAK COLLEGE ROAD,CHOKKIKULAM,MADURAI', 'Madurai', '625002', 'India', 'Tamilnadu', '565656', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', '0,1,2,3,5,6', '2', '22', '1501758828.jpeg', '1497333617.jpeg', 'checking@checking.com', 16, 'no', 'approved', '0', '6', '5'),
+(30, 'welcome shop', '3232,well', 'mdu', '3232', 'india', 'ta', '32423', 'fdsa', '0,1,4', '2', '2', '', '', 'well@gmail.com', 25, 'no', 'unapproved', '0', '3', '3'),
+(34, 'Seller Company', '5900 Timber Creek Lane, APT 1208', 'Indian Trail', '27612', 'United States', 'North Carolina', '08102977068', 'fghjkljhgvfhjk', '1,2,3,4', '15', '16', '', '', 'cokwedadi@gmail.com', 30, 'no', 'unapproved', '0', '20', '2'),
+(35, 'Yefta Shop', 'Zazazaza', 'Solo', '789797', 'Indonesia', 'Jawa Tengah', '0890790808080', 'Test', '1,2,3,4,5', '9', '19', '', '', 'yevtha.aw@gmail.com', 21, 'no', 'unapproved', '0', '30', '5');
 
 -- --------------------------------------------------------
 
@@ -907,36 +662,6 @@ INSERT INTO `ticket_messages` (`id`, `ticket_id`, `user_id`, `message`, `date_ti
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactions`
---
-
-CREATE TABLE `transactions` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `job_id` int(11) NOT NULL DEFAULT '0',
-  `debit_credit_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `amount` double(8,2) DEFAULT NULL,
-  `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT '0',
-  `credit_payment_status` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `paypal_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `paypal_payment_status` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `extra_details` longtext COLLATE utf8mb4_unicode_ci,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `transactions`
---
-
-INSERT INTO `transactions` (`id`, `user_id`, `job_id`, `debit_credit_type`, `amount`, `type`, `title`, `status`, `credit_payment_status`, `paypal_id`, `paypal_payment_status`, `extra_details`, `updated_at`, `created_at`) VALUES
-(1, 32, 1, '1', 55.00, 'jjh', 'ggyg', 0, '5', '5', '5', '5', '2018-05-21 07:00:00', '2018-05-21 22:55:10');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -947,66 +672,32 @@ CREATE TABLE `users` (
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `gender` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `photo` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `admin` int(11) NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `firstname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dob` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_id` int(11) NOT NULL,
-  `sia_licence` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sia_expirydate` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `work_category` tinyint(4) NOT NULL,
-  `nation_id` int(11) NOT NULL,
-  `visa_no` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `niutr_no` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pass_page` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `visa_page` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sia_doc` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address_proof` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `passphoto` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone_verified` tinyint(1) NOT NULL DEFAULT '0',
-  `is_email_verfifed` tinyint(4) NOT NULL DEFAULT '0',
-  `added` double(8,2) NOT NULL,
-  `spent` double(8,2) NOT NULL,
-  `is_phone_verfifed` tinyint(4) NOT NULL DEFAULT '0'
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `verified`, `gender`, `phone`, `photo`, `admin`, `remember_token`, `created_at`, `updated_at`, `firstname`, `lastname`, `dob`, `address_id`, `sia_licence`, `sia_expirydate`, `work_category`, `nation_id`, `visa_no`, `niutr_no`, `pass_page`, `visa_page`, `sia_doc`, `address_proof`, `passphoto`, `phone_verified`, `is_email_verfifed`, `added`, `spent`, `is_phone_verfifed`) VALUES
-(1, 'empolyee', 'admin@admin.com', '$2y$10$EF1mNCqBcGMKx2EIYNVblurv9h7S3jtw.IBQkI10yjiNqdNVp3ZBG', 1, 'male', '132654789', '1497867287.jpg', 0, 'l6izImNhd6S548tvBTkfWJlQpJ4bTCOaBt2ctu1FjJ5U2yltCqiHq0aq3ivJ', '2017-05-25 01:30:45', '2018-05-22 02:06:31', 'jdfsdfkj', 'sdlksdlkfjsdf', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 1, 1, 0.00, 0.00, 1),
-(3, 'wpchecking', 'wpchecking@gmail.com', '$2y$10$xuWJLOqYhkIqJhNUXYAn2uXm4kJlV3oCfLcpOGlb.mTSKXnfN2zyK', 0, 'male', '987645454', '', 2, '6ss7Jc9yWAITXfwAJ5oyF6UqvVwSQomSMk8hR12oi6fvuOwr2DJ4kcwsbo3Z', '2017-05-25 02:15:06', '2017-05-25 02:15:06', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 1, 0, 0.00, 0.00, 0),
-(5, 'sample2', 'sample2@gmail.com', '$2y$10$cEtkCBwBEW33SLMdzVe29um2Ac/e.iwejb2gV5mMcATHsFEDHCl4W', 0, 'male', '965666536', '', 2, 'IVAi7HLw7rJmb4bpmuuck7Olo63VAunEvb4jwPfXvNIunQLmBwMtW7ezOMSy', '2017-05-30 02:00:10', '2017-05-30 02:00:10', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 0, 0.00, 0.00, 0),
-(12, 'demo', 'demo@demo.com', '$2y$10$hW3H/Bn1DwmN1jCAbGdDtea3DAANC7EpXgs596RhBNhpjSiDPUOIy', 0, 'male', '4654546', '', 2, 'grOIxjZsyhPOIpl56sOq8UacCFtBEj6lxwTQAlDsTV52h5tFA9UnhJy8kZ58', '2017-06-12 06:52:17', '2017-06-12 06:52:17', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 0, 0.00, 0.00, 0),
-(13, 'example', 'example@example.com', '$2y$10$GCkim/ZwkXJ5amVWXPQdL.UpVXiGT/OtKk6HiZHwlbrMuU2Di7Xvi', 0, 'male', '2132131', '', 2, 'Q473VsnYY5ODmym8NzPaplzQpFfJgOeA2ihlNomawnYRn3YoAVANQCmNXYN4', '2017-06-12 07:11:47', '2017-06-12 07:11:47', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 0, 0.00, 0.00, 0),
-(14, 'sample', 'sample@sample.com', '$2y$10$HXECgnrteWRTez4AHJkpp.sv2Myk97BJIyQdmn4qAyTJ6b4fSf.jG', 0, 'male', '32432', '1497864972.jpg', 2, 'Te0JPnXNX0Yb6KrePLWXtC0KfuLn0R4muCPLgojLTiXJxne6MtdN6N008nAX', '2017-06-12 07:22:31', '2017-06-12 07:22:31', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 0, 0.00, 0.00, 0),
-(15, 'test', 'test@test.com', '$2y$10$wrMRdtaRD/4FHnMOkpeZC.GbuB9FizGRET6X3uxZoBtWr3ctE7Dye', 0, 'male', '655554', '', 2, 'mFKDYxLRpaddsNxol7wG3HhKdFoa3oraMjvwpUwWxsnKC58Sx7TG5ooqTKcK', '2017-06-13 00:18:47', '2017-06-13 00:18:47', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 0, 0.00, 0.00, 0),
-(16, 'checking', 'checking@checking.com', '$2y$10$F4pp.n0CJTJU6lKAXtVjc.zVGR3Y4VqlUKZPtSVt16fE4QcQmmuAy', 0, 'male', '3243232', '', 2, 'Ribyq1sXB6HRiFqlZfdNMYo2CqIA2k0hnMVCklyItDoVlc0XzvuNW0c4XaQX', '2017-06-13 00:25:28', '2017-06-13 00:25:28', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 0, 0.00, 0.00, 0),
-(21, 'Yefta', 'yevtha.aw@gmail.com', '$2y$10$ge2nQSuHrbKDkY4YrzC2Q.AHsRj6tY4OI/vYKJKd7Onpe3rjMQH92', 1, 'male', '08907907080', '', 0, 'DQDjTFaJPhoJhc6PvHlE9jqiWHqkIYiLwguIuhYTAWQaRrOgD3LMU2kQqWiJ', '2018-04-06 04:39:51', '2018-04-07 11:01:56', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 0, 0.00, 0.00, 0),
-(22, 'Indah', 'indah@gmail.com', '$2y$10$SaqmNkkCkXqe89K0PeqePOcWmIKSqzoFfqaKWst5WyvAtDU9F3XC.', 0, 'male', '08678589696', '', 2, 'yKGPvHiTv0jsPFkjZ0HuWMHzm5W933issa0bIGUmO0eogBn0Ssi5yZ2vIB4x', '2018-04-06 04:41:02', '2018-04-06 04:41:02', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 0, 0.00, 0.00, 0),
-(25, 'yeftaaw', 'susano.store@gmail.com', '$2y$10$2alXVvyZE2aTezOPTAUQ8usMnAfCVUOVkqnDA.eQ0JMk5LHJDCOYO', 0, 'female', '89078907907', '', 2, 'W48HzeGnIFKqwkurhCulkLyrTOI8K28SfAFJGyJkQUDoHVo6yPP7BbqwpKiw', '2018-04-07 06:20:55', '2018-04-07 06:28:19', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 1, 0.00, 0.00, 0),
-(27, 'yeftaaw1', 'susano.sales@gmail.com', '$2y$10$JJwNR4.Lcfxqrfy5x8iy6.d/IK6ZVDu7lcBZi6KUw6eiZavBNWRFu', 0, 'female', '09090790080', '', 2, '3JkBvpz62xsr28xqYcbGkJPhCP4Xrxdcu8OfXO9942cAejDoczq44uuKE3IG', '2018-04-07 06:31:31', '2018-04-07 06:50:39', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 1, 0.00, 0.00, 0),
-(30, 'chukwunye', 'cokwedadi@gmail.com', '$2y$10$bWXNVNnPpFpqy9Vpx1OMwOELB81LbcTo3tsLj.mYAWicE0q4eGe4C', 1, 'male', '78545689456', '', 2, NULL, '2018-04-07 09:49:21', '2018-05-21 09:30:44', '', '', '', 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 1, 0.00, 0.00, 0),
-(31, 'mohamed', 'engmohamedahmed00@gmail.com', '$2y$10$FdTV9ibzV7ZpoZdpdP.DhOowuly/DdGqL8rH28r5.NokI25O0v0OC', 1, 'male', '123654789', '', 0, 'dOIfkWrRbkA5JbtOusgrEBZoC2vDGx0qq5CjIG0PYil2X6g16vJwJis67qnb', '2018-05-22 02:35:17', '2018-05-22 02:35:18', '', '', NULL, 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 1, 0.00, 0.00, 0),
-(32, 'ahmed', 'ahmed@gmail.com', '$2y$10$VeMpeLMYeudpKekWYZ9v8ugrH1GaZyE0vgJRIg1zarzkwyWboI78u', 1, 'male', '123456', '', 0, 'a8JwOwgRW6CSkyUBF5FiziFxtdrCcFo0JSMJXzKUN22yKGLYUSBLcnL0hkoR', '2018-05-22 04:14:57', '2018-05-22 04:14:57', '', '', NULL, 0, '', '', 0, 0, '', '', '', '', '', '', '', 0, 1, 0.00, 0.00, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_items`
---
-
-CREATE TABLE `user_items` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `item_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `verified`, `gender`, `phone`, `photo`, `admin`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'admin@admin.com', '$2y$10$QKmqNVSrMGfkOOXxf9L6mOHS69fmxrlCQu6eSi1JoIOL5cbLHJNQ6', 0, 'male', '9876543211', '1497867287.jpg', 1, 'WpMsJ0UVJ99fz5e7j4PeB9TlH15hgmjdwuUUMYRfjkjVOub8chp6rrIkoM0s', '2017-05-25 01:30:45', '2017-05-25 01:30:45'),
+(3, 'wpchecking', 'wpchecking@gmail.com', '$2y$10$xuWJLOqYhkIqJhNUXYAn2uXm4kJlV3oCfLcpOGlb.mTSKXnfN2zyK', 0, 'male', '987645454', '', 2, '6ss7Jc9yWAITXfwAJ5oyF6UqvVwSQomSMk8hR12oi6fvuOwr2DJ4kcwsbo3Z', '2017-05-25 02:15:06', '2017-05-25 02:15:06'),
+(5, 'sample2', 'sample2@gmail.com', '$2y$10$cEtkCBwBEW33SLMdzVe29um2Ac/e.iwejb2gV5mMcATHsFEDHCl4W', 0, 'male', '965666536', '', 2, 'IVAi7HLw7rJmb4bpmuuck7Olo63VAunEvb4jwPfXvNIunQLmBwMtW7ezOMSy', '2017-05-30 02:00:10', '2017-05-30 02:00:10'),
+(12, 'demo', 'demo@demo.com', '$2y$10$hW3H/Bn1DwmN1jCAbGdDtea3DAANC7EpXgs596RhBNhpjSiDPUOIy', 0, 'male', '4654546', '', 2, 'grOIxjZsyhPOIpl56sOq8UacCFtBEj6lxwTQAlDsTV52h5tFA9UnhJy8kZ58', '2017-06-12 06:52:17', '2017-06-12 06:52:17'),
+(13, 'example', 'example@example.com', '$2y$10$GCkim/ZwkXJ5amVWXPQdL.UpVXiGT/OtKk6HiZHwlbrMuU2Di7Xvi', 0, 'male', '2132131', '', 2, 'Q473VsnYY5ODmym8NzPaplzQpFfJgOeA2ihlNomawnYRn3YoAVANQCmNXYN4', '2017-06-12 07:11:47', '2017-06-12 07:11:47'),
+(14, 'sample', 'sample@sample.com', '$2y$10$HXECgnrteWRTez4AHJkpp.sv2Myk97BJIyQdmn4qAyTJ6b4fSf.jG', 0, 'male', '32432', '1497864972.jpg', 2, 'Te0JPnXNX0Yb6KrePLWXtC0KfuLn0R4muCPLgojLTiXJxne6MtdN6N008nAX', '2017-06-12 07:22:31', '2017-06-12 07:22:31'),
+(15, 'test', 'test@test.com', '$2y$10$wrMRdtaRD/4FHnMOkpeZC.GbuB9FizGRET6X3uxZoBtWr3ctE7Dye', 0, 'male', '655554', '', 2, 'mFKDYxLRpaddsNxol7wG3HhKdFoa3oraMjvwpUwWxsnKC58Sx7TG5ooqTKcK', '2017-06-13 00:18:47', '2017-06-13 00:18:47'),
+(16, 'checking', 'checking@checking.com', '$2y$10$F4pp.n0CJTJU6lKAXtVjc.zVGR3Y4VqlUKZPtSVt16fE4QcQmmuAy', 0, 'male', '3243232', '', 2, 'Ribyq1sXB6HRiFqlZfdNMYo2CqIA2k0hnMVCklyItDoVlc0XzvuNW0c4XaQX', '2017-06-13 00:25:28', '2017-06-13 00:25:28'),
+(21, 'Yefta', 'yevtha.aw@gmail.com', '$2y$10$ge2nQSuHrbKDkY4YrzC2Q.AHsRj6tY4OI/vYKJKd7Onpe3rjMQH92', 1, 'male', '08907907080', '', 0, 'DQDjTFaJPhoJhc6PvHlE9jqiWHqkIYiLwguIuhYTAWQaRrOgD3LMU2kQqWiJ', '2018-04-06 04:39:51', '2018-04-07 11:01:56'),
+(22, 'Indah', 'indah@gmail.com', '$2y$10$SaqmNkkCkXqe89K0PeqePOcWmIKSqzoFfqaKWst5WyvAtDU9F3XC.', 0, 'male', '08678589696', '', 2, 'yKGPvHiTv0jsPFkjZ0HuWMHzm5W933issa0bIGUmO0eogBn0Ssi5yZ2vIB4x', '2018-04-06 04:41:02', '2018-04-06 04:41:02'),
+(25, 'yeftaaw', 'susano.store@gmail.com', '$2y$10$2alXVvyZE2aTezOPTAUQ8usMnAfCVUOVkqnDA.eQ0JMk5LHJDCOYO', 0, 'female', '89078907907', '', 2, 'W48HzeGnIFKqwkurhCulkLyrTOI8K28SfAFJGyJkQUDoHVo6yPP7BbqwpKiw', '2018-04-07 06:20:55', '2018-04-07 06:28:19'),
+(27, 'yeftaaw1', 'susano.sales@gmail.com', '$2y$10$JJwNR4.Lcfxqrfy5x8iy6.d/IK6ZVDu7lcBZi6KUw6eiZavBNWRFu', 0, 'female', '09090790080', '', 2, '3JkBvpz62xsr28xqYcbGkJPhCP4Xrxdcu8OfXO9942cAejDoczq44uuKE3IG', '2018-04-07 06:31:31', '2018-04-07 06:50:39'),
+(30, 'chukwunye', 'cokwedadi@gmail.com', '$2y$10$bWXNVNnPpFpqy9Vpx1OMwOELB81LbcTo3tsLj.mYAWicE0q4eGe4C', 1, 'male', '78545689456', '', 2, NULL, '2018-04-07 09:49:21', '2018-04-07 10:55:50');
 
 -- --------------------------------------------------------
 
@@ -1028,16 +719,14 @@ CREATE TABLE `verify_users` (
 --
 
 INSERT INTO `verify_users` (`id`, `user_id`, `token`, `new_email`, `created_at`, `updated_at`) VALUES
-(37, 1, 'd12d08698db1406e743cadfa80ad864a745e792cc1931eabe0ad8ab2d6296129', '', '2018-05-22 01:53:16', '2018-05-22 01:53:16'),
+(1, 19, 'c1dc806c677cbecaeb8bc1a9df8f304365ec9210ca3596bf1e0f34e795144078', '', '2018-04-05 16:54:58', '2018-04-05 16:54:58'),
 (5, 20, 'c4116b3473f008cd5099f4f1d160645db75115b15cf6bcbb59811c1c16beba71', '', '2018-04-07 05:36:48', '2018-04-07 05:36:48'),
 (4, 22, '52e4fd292e5ea0a2d238c784f19a68fc1bc72428d6fc926570d0807eb3587b14', '', '2018-04-06 04:41:02', '2018-04-06 04:41:02'),
 (10, 23, '435a423d45b0803fd07e9e0e8a6ff30c91eaec06137ae6a795bb4844c363fdbd', '', '2018-04-07 06:19:55', '2018-04-07 06:19:55'),
 (9, 24, '822a74218cdd291304afe5b995bc35922cc0ddeb10ccac03512c1e47565f7481', '', '2018-04-07 06:18:51', '2018-04-07 06:18:51'),
 (13, 25, '7476e7072720ba792e15efe1ff5b42462dfaefce35ae3bfee6204f63fbb043e1', '', '2018-04-07 06:28:19', '2018-04-07 06:28:19'),
 (31, 29, '4b5b01375fdfcc2fa9030a3d2e77776e5d7e4433302bc72c9a99f962fbbfab9a', '', '2018-04-07 08:31:44', '2018-04-07 08:31:44'),
-(19, 27, 'b23bede9573e35235673c1dcb33f8e57b69ae4f3d502b0f38b0cc06f86874e67', '', '2018-04-07 06:50:39', '2018-04-07 06:50:39'),
-(38, 31, '380a29a3b7090fab9b2d14942e01f4075aaea72db84d71269799846664f0e94f', '', '2018-05-22 02:35:18', '2018-05-22 02:35:18'),
-(39, 32, '2237432721088ab80044fc8bc363669ac0da50ca204d7b587a2c3a293134e553', '', '2018-05-22 04:14:57', '2018-05-22 04:14:57');
+(19, 27, 'b23bede9573e35235673c1dcb33f8e57b69ae4f3d502b0f38b0cc06f86874e67', '', '2018-04-07 06:50:39', '2018-04-07 06:50:39');
 
 -- --------------------------------------------------------
 
@@ -1074,22 +763,10 @@ INSERT INTO `withdraw` (`wid`, `shop_balance`, `withdraw_amt`, `total_balance`, 
 --
 
 --
--- Indexes for table `address`
---
-ALTER TABLE `address`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `booking`
 --
 ALTER TABLE `booking`
   ADD PRIMARY KEY (`book_id`);
-
---
--- Indexes for table `businesscategory`
---
-ALTER TABLE `businesscategory`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `contact_vendor`
@@ -1098,27 +775,9 @@ ALTER TABLE `contact_vendor`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `country`
---
-ALTER TABLE `country`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `feedback`
---
-ALTER TABLE `feedback`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `items`
---
-ALTER TABLE `items`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1129,21 +788,9 @@ ALTER TABLE `jobs`
   ADD KEY `jobs_queue_reserved_at_index` (`queue`,`reserved_at`);
 
 --
--- Indexes for table `job_applications`
---
-ALTER TABLE `job_applications`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `news_letters`
---
-ALTER TABLE `news_letters`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1197,39 +844,6 @@ ALTER TABLE `password_resets`
 --
 ALTER TABLE `rating`
   ADD PRIMARY KEY (`rid`);
-
---
--- Indexes for table `referrals`
---
-ALTER TABLE `referrals`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `who_user_id` (`who`),
-  ADD KEY `to_user_id` (`to`);
-
---
--- Indexes for table `saved_jobs`
---
-ALTER TABLE `saved_jobs`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `saved_jobs_user_id_job_id_unique` (`user_id`,`job_id`);
-
---
--- Indexes for table `security_categories`
---
-ALTER TABLE `security_categories`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `security_jobs`
---
-ALTER TABLE `security_jobs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `security_jobs_schedule`
---
-ALTER TABLE `security_jobs_schedule`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `seller_services`
@@ -1292,26 +906,11 @@ ALTER TABLE `ticket_messages`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`),
-  ADD UNIQUE KEY `users_phone_unique` (`phone`);
-
---
--- Indexes for table `user_items`
---
-ALTER TABLE `user_items`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_items_user_id_foreign` (`user_id`),
-  ADD KEY `user_items_item_id_foreign` (`item_id`);
+  ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
 -- Indexes for table `verify_users`
@@ -1330,22 +929,10 @@ ALTER TABLE `withdraw`
 --
 
 --
--- AUTO_INCREMENT for table `address`
---
-ALTER TABLE `address`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
-
---
--- AUTO_INCREMENT for table `businesscategory`
---
-ALTER TABLE `businesscategory`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `contact_vendor`
@@ -1354,28 +941,10 @@ ALTER TABLE `contact_vendor`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `country`
---
-ALTER TABLE `country`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `feedback`
---
-ALTER TABLE `feedback`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `items`
---
-ALTER TABLE `items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -1384,22 +953,10 @@ ALTER TABLE `jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT for table `job_applications`
---
-ALTER TABLE `job_applications`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
-
---
--- AUTO_INCREMENT for table `news_letters`
---
-ALTER TABLE `news_letters`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -1426,40 +983,10 @@ ALTER TABLE `rating`
   MODIFY `rid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `referrals`
---
-ALTER TABLE `referrals`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `saved_jobs`
---
-ALTER TABLE `saved_jobs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `security_categories`
---
-ALTER TABLE `security_categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `security_jobs`
---
-ALTER TABLE `security_jobs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `security_jobs_schedule`
---
-ALTER TABLE `security_jobs_schedule`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `seller_services`
 --
 ALTER TABLE `seller_services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -1477,7 +1004,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `shop`
 --
 ALTER TABLE `shop`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `shop_gallery`
@@ -1516,52 +1043,22 @@ ALTER TABLE `ticket_messages`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `transactions`
---
-ALTER TABLE `transactions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT for table `user_items`
---
-ALTER TABLE `user_items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `verify_users`
 --
 ALTER TABLE `verify_users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `withdraw`
 --
 ALTER TABLE `withdraw`
   MODIFY `wid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `referrals`
---
-ALTER TABLE `referrals`
-  ADD CONSTRAINT `to_user_id` FOREIGN KEY (`to`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `who_user_id` FOREIGN KEY (`who`) REFERENCES `users` (`id`);
-
---
--- Constraints for table `user_items`
---
-ALTER TABLE `user_items`
-  ADD CONSTRAINT `user_items_item_id_foreign` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`),
-  ADD CONSTRAINT `user_items_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

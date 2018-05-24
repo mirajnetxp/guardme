@@ -64,6 +64,7 @@
                         <!-- <div class="x_title">
                           <h2>Users</h2> -->
                         <!-- <ul class="nav navbar-right panel_toolbox">
+
                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                           </li>
                         </ul> -->
@@ -114,13 +115,13 @@
                                     <input type="button" class="btn btn-info" id="date_reset" value="Reset">
                                 </div>
                             </form>
+
                         </div>
 
                         <div class="content table-responsive table-full-width">
                             <table id="datatable-asdsd" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                    <th>Check</th>
                                     <th>Sno</th>
                                     <th class="hidden">gender</th>
                                     <th class="hidden">location</th>
@@ -128,31 +129,16 @@
                                     <th>Photo</th>
                                     <th>Username</th>
                                     <th>Email</th>
-                                    <th>Unverified Email</th>
                                     <th>Phone</th>
-                                    <th>Unverified phone</th>
                                     <th>User Type</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
-            <div class="form-group">
-                <button id="append" class="btn btn-sm btn-primary" onclick="div_show()">Send Mail
-                </button>
-            </div>
                                 <tbody>
-<div style="overflow:hidden;">                
-  <div id="abc" style="width:100%;height:100%;opacity:0.95;top:0;left:0;display:none;position:fixed;background-color:#313131;overflow:auto">
-    <div id="popupContact" style="position:absolute;left:50%;top:17%;margin-left:-202px;font-family:'Raleway',sans-serif">
-      <form method="POST" action="{{ $url }}/sendBulk" id="form">
-        {{ csrf_field() }}
-
-      <input type="hidden" value="" name="ids" id="collect_id">
-        <img id="close" src="{{ $url }}/images/close-256.png" onclick ="div_hide()" width="30">
-        <textarea id="msg" name="message" placeholder="Message"></textarea>
-         <a href="javascript:%20check_empty()" id="submit">Send</a>
 								<?php
 								$i = 1;
 								foreach ($users as $user) {
+
 								$sta = $user->admin;
 								if ( $sta == 1 ) {
 									$viewst = "Admin";
@@ -164,8 +150,7 @@
 								} else if ( $sta == 0 ) {
 									$viewst = "Employer";
 								}?>
-                                <tr class="chek">
-                                    <td><input type="checkbox"  name="mail[]" value="{{ $user->id }}" class="chek1"></td>
+                                <tr>
                                     <td><?php echo $i;?></td>
                                     <td class="hidden"> @if($user->gender=='male')
                                             1
@@ -198,13 +183,7 @@
 									<?php } ?>
                                     <td><?php echo $user->name;?></td>
                                     <td><?php echo $user->email;?></td>
-                                    <td>
-                                        <a href="{{ url('verfied/email/'.$user->id) }}" class="btn btn-success btndisable">Unverififed Email</a>
-                                    </td>
                                     <td><?php echo $user->phone;?></td>
-                                    <td>
-                                        <a href="{{ url('verfied/phone/'.$user->id) }}" class="btn btn-success btndisable">Unverififed Phone</a>
-                                    </td>
                                     <td><?php echo $viewst;?></td>
                                     <td>
 										<?php if(config( 'global.demosite' ) == "yes"){?>
@@ -228,47 +207,12 @@
                                     </td>
                                 </tr>
 								<?php $i ++; } ?>
-                                </form>
-                                  </div>
-            </div>
-        </div>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-<script type="text/javascript">
-function check_empty() {
-if (document.getElementById('msg').value == "") {
-alert("Fill All Fields !");
-} else {
-document.getElementById('form').submit();
-alert("Form Submitted Successfully...");
-}
-}
-//Function To Display Popup
-function div_show() {
-document.getElementById('abc').style.display = "block";
-}
-//Function to Hide Popup
-function div_hide(){
-document.getElementById('abc').style.display = "none";
-}
-$(document).ready(function(){
-    $("#append").click(function(){
-
-  });
-    $(".chek").on('change','input[type=checkbox]',function () {
-        if ($(this).is(':checked')) {
-            var id = $(this).parent().find('.chek1').val();
-            var ids = $("#collect_id").val();
-            ids +=  id + ' ';
-            $("#collect_id").val(ids)
-        }
-    });
-});
-</script> 
 
             </div>
             <!-- /page content -->
@@ -284,6 +228,7 @@ $(document).ready(function(){
     //    User Filtering
     $(document).ready(function () {
         var table = $('#datatable-asdsd').DataTable();
+
         $('#gender').on('change', function () {
             table
                 .columns(1)
@@ -301,11 +246,13 @@ $(document).ready(function(){
             $('#date_filter_min').val('')
             table.draw();
         })
+
         $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
                 var min = moment($('#date_filter_max').val()).format('YYYYMMDD');
                 var max = moment($('#date_filter_min').val()).format('YYYYMMDD');
                 var age = parseFloat(data[3]) || 0; // use data for the age column
+
                 if (( isNaN(min) && isNaN(max) ) ||
                     ( isNaN(min) && age <= max ) ||
                     ( min <= age && isNaN(max) ) ||
@@ -315,11 +262,14 @@ $(document).ready(function(){
                 return false;
             }
         );
+
         $('#date_filter_max,#date_filter_min').on('change', function () {
             table.draw();
         });
         //   End User  Filtering
     });
+
+
 </script>
 </body>
 </html>

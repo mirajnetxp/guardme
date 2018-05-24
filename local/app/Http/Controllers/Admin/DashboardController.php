@@ -48,9 +48,7 @@ class DashboardController extends AdminController {
 		              ->count();
 					  
 					  
-		$total_open_tickets = DB::table('tickets')
-							->where('state', 1)
-							->count();			  
+					  
 					  
 			$curr_date=date("Y-m-d");
 
@@ -124,7 +122,7 @@ $javas.="{ label: '$curr_date', y: $date1 },";
 		
 		$data = array('total_seller' => $total_seller, 'total_user' => $total_user, 'total_customer' => $total_customer, 'total_booking' => $total_booking,
 		'today_booking' => $today_booking, 'total_shop' =>  $total_shop, 'javas' => $javas, 'booking' => $booking, 'setting' => $setting, 'users' => $users,
-		'testimonials' => $testimonials, , 'total_open_tickets' => $total_open_tickets);
+		'testimonials' => $testimonials);
 		
 		return view('admin.index')->with($data);
 		

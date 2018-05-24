@@ -49,31 +49,7 @@
 								{{ Session::get('error') }}
 							</div>
 						@endif
-						<div class="job-profile section">
-							<div class="user-profile">
-								<div class="user-images">
 
-								@if($editprofile[0]->photo!="")
-										<img src="{{asset('images/nophoto.jpg')}}" alt="User Images" class="img-responsive profile-img">
-									@else
-										<img src="{{asset('images/nophoto.jpg')}}" alt="User Images" class="img-responsive profile-img">
-									@endif
-								</div>
-								<div class="user">
-									<h2>Hello, <a href="#">@if($editprofile[0]->firstname!='')
-												{{$editprofile[0]->firstname.' '.$editprofile[0]->lastname}}
-											@else
-												{{$editprofile[0]->name}}
-											@endif</a></h2>
-									<!-- <h5>You last logged in at: 10-01-2017 6:40 AM [ USA time (GMT + 6:00hrs)]</h5> -->
-								</div>
-								<div class="favorites-user">
-									<div class="my-ads">
-										<a href="{{ url('view/openjob') }}">{{ $jobs }}<small>Open Jobs</small></a>
-									</div>
-								</div>
-							</div>
-						</div>
 						<?php if($shopcount==0){?>
 							<form class="form-horizontal" role="form" method="POST" action="{{ route('addshop') }}" id="formID" enctype="multipart/form-data">
 		                        {{ csrf_field() }}

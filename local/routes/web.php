@@ -267,6 +267,14 @@ Route::group(['middleware' => 'admin'], function() {
 
 	/* start settings */
 
+<<<<<<< HEAD
+	/* start user doc Verification */
+	Route::get( '/admin/Verification', 'Admin\VerificationController@showUsers' );
+	Route::get( '/admin/Verification/uder-details/{id}', 'Admin\VerificationController@userDetail' )->name('admin.Verification.details');
+	Route::get( '/admin/user-doc/approved/{id}', 'Admin\VerificationController@userDocApproved' )->name('admin.user.doc.approved');
+	Route::get( '/admin/user-doc/decline/{id}', 'Admin\VerificationController@userDocDecline' )->name('admin.user.doc.decline');
+=======
+>>>>>>> fef6c3bc43b0a9cb5266e5d8eb3b4e45c10bf3ab
 
 	Route::get('/admin/settings','Admin\SettingsController@showform');
 	Route::post('/admin/settings', ['as'=>'admin.settings','uses'=>'Admin\SettingsController@editsettings']);
@@ -334,6 +342,29 @@ Route::group(['prefix' => '/support/tickets', 'middleware' => 'auth'], function 
 
 /*Start Security Jobs Routes*/
 
+<<<<<<< HEAD
+Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
+	Route::get( '/create', 'JobsController@create')->name( 'job.create' );
+	Route::get( '/schedule/{id}', 'JobsController@schedule' )->name( 'job.schedule' );
+	Route::get( '/broadcast/{id}', 'JobsController@broadcast' )->name( 'job.broadcast' );
+	Route::get( '/payment-details/{id}', 'JobsController@paymentDetails' )->name( 'job.payment.details' );
+
+	Route::post( '/create-paypal-payment/{id}', 'PaypalPaymentController@postPayment' )->name( 'create.paypal.payment' );
+	Route::get( '/payment-status', 'PaypalPaymentController@getPaymentStatus' )->name( 'payment.status' );
+
+	Route::get( '/job-confirmation', 'JobsController@confirmation' )->name( 'job.confirmation' );
+	Route::get( '/my', 'JobsController@myJobs' )->name( 'my.jobs' );
+	Route::get( '/saved', 'JobsController@savedJobs' )->name( 'saved.jobs' );
+	Route::get( '/my/applications/{id}', 'JobsController@myJobApplications' )->name( 'my.job.applications' );
+	Route::get( '/application/{id}/{u_id}', 'JobsController@viewApplication' )->name( 'view.application' );
+	Route::get( '/apply/{id}', 'JobsController@applyJob' )->name( 'apply.job' );
+	Route::get( '/proposals', 'JobsController@myProposals' )->name( 'my.proposals' );
+	Route::get( '/view/application/{app_id}/{job_id}', 'JobsController@myApplicationView' )->name( 'my.application.view' );
+	Route::get( '/save/{id}', 'JobsController@saveJobsToProfile' );
+	Route::get( '/remove/{id}', 'JobsController@removeJobsFromProfile' );
+	Route::get( '/leave/feedback/{application_id}', 'JobsController@leaveFeedback' )->name( 'leave.feedback' );
+} );
+=======
 Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/create', 'JobsController@create')->name('job.create');
 	Route::get('/schedule/{id}', 'JobsController@schedule')->name('job.schedule');
@@ -355,6 +386,7 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
     Route::get('/remove/{id}', 'JobsController@removeJobsFromProfile');
 	Route::get('/leave/feedback/{application_id}', 'JobsController@leaveFeedback')->name('leave.feedback');
 });
+>>>>>>> fef6c3bc43b0a9cb5266e5d8eb3b4e45c10bf3ab
 
 // Guest route for find job
 Route::get('/jobs/posted/view', 'JobsController@myJobPostView')->name('posted.jobs.view');

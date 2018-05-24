@@ -29,6 +29,7 @@ class Transaction extends Model
      * extra_details: could be any extra detail
      * created_at: timestamp transaction is created at
      * updated_at: timestamp transaction is updated at
+     * application_id: id of job_applications table. by which we can identify that which hired user is associated with this specific transaction. will be null for the combined credit transaction (done while creating the job)
      *
      */
     /**

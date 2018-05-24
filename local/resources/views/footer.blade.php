@@ -30,8 +30,6 @@ $setid=1;
 </div>
 @endif
  
- 
- 
 		</div>
 		
 		

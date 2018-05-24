@@ -36,6 +36,96 @@ class SearchController extends Controller
 		$data = array('viewservices' => $viewservices,'shopview' => $shopview);
 		return view('search')->with($data);
 	}
+<<<<<<< HEAD
+
+	/**
+	 * @param null $user_id
+	 *
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+	 */
+	function getpersonnelsearch( $user_id = null ) {
+		$data = \request()->all();
+
+//		Users cannot show up on freelancer list unless profile is complete.
+		$query = User::where( 'admin', '=', '2' )
+						->where( 'doc_verified', '=', true)
+
+		;
+
+
+		if ( count( $data ) ) {
+
+			// todo: filter by category
+			$search_category = isset( $data['cat_val'] ) ? trim( $data['cat_val'] ) : null;
+			if ( $search_category && $search_category != 'all' ) {
+				$query = $query->whereHas( 'sec_work_category', function ( $q ) use ( $search_category ) {
+					$q->where( 'name', $search_category );
+				} );
+			}
+
+			// todo: filter by gender
+			$search_gender = isset( $data['gender'] ) ? trim( $data['gender'] ) : null;
+			if ( $search_gender && $search_gender != 'all' ) {
+				$query = $query->where( 'gender', $search_gender );
+			}
+
+			// todo: search filter, location
+			$location_search_filter = isset( $data['location_filter'] ) ? trim( $data['location_filter'] ) : null;
+
+			if ( $location_search_filter ) {
+				$location_search_query_array = explode( ' ', trim( $location_search_filter ) );
+
+				if ( count( $location_search_query_array ) ) {
+					foreach ( $location_search_query_array as $search_location ) {
+						$query = $query
+							->whereHas( 'address', function ( $q ) use ( $search_location ) {
+								$q->where( 'citytown', $search_location );
+							} );
+					}
+				}
+			}
+
+			// todo: filter location
+			/*$search_location = trim($data['loc_val']);
+
+			if($search_location){
+				$query = $query
+					->whereHas('address', function ($q) use ($search_location){
+						$q->where('citytown', $search_location);
+					});
+			}*/
+
+			// todo: filter user
+			$personnel_query = isset( $data['sec_personnel'] ) ? $data['sec_personnel'] : null;
+
+			if ( $personnel_query ) {
+				$search_query_array = explode( ' ', trim( $personnel_query ) );
+
+				if ( count( $search_query_array ) ) {
+					foreach ( $search_query_array as $search_key ) {
+						$query = $query
+							->where( 'name', 'LIKE', "%$search_key%" )
+							->orWhere( 'email', 'LIKE', "%$search_key%" )
+							->orWhere( 'firstname', 'LIKE', "%$search_key%" )
+							->orWhere( 'lastname', 'LIKE', "%$search_key%" );
+					}
+				}
+			}
+		}
+
+		$cats = DB::table( 'security_categories' )->orderBy( 'name', 'asc' )->get();
+
+		$locs = DB::table( 'address' )->distinct()->get();
+
+//		$sec_personnels = $query->with( 'person_address' )->paginate( 10 );
+		$sec_personnels = $query->paginate( 10 );
+
+		if ( \request()->expectsJson() ) {
+			return response()->json( $sec_personnels );
+		}
+
+		return view( 'search', compact( 'cats', 'locs', 'sec_personnels' ) );
+=======
         
 	function getpersonnelsearch($user_id = null)
 	{
@@ -115,6 +205,7 @@ class SearchController extends Controller
             return response()->json($sec_personnels);
 
 		return view('search',compact('cats','locs','sec_personnels'));
+>>>>>>> fef6c3bc43b0a9cb5266e5d8eb3b4e45c10bf3ab
 	}
 	
 	public function postpersonnelsearch(Request $request)

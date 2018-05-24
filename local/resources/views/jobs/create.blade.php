@@ -14,8 +14,6 @@
 @section('script')
         <script>
             $(document).ready(function(){
-
-                
                 if(gm_nxturl != null)
                 {
                     //alert('lll');
@@ -74,7 +72,6 @@
     
      <form id="create_job_form" method="POST" action="{{ route('api.create.job') }}">
 
-       
         <div class="form-group row">
             <label class="col-sm-3" for="job_title">Job Title</label>
             <div class="col-sm-9">
@@ -160,12 +157,10 @@
                 <span class="error-span text-danger"></span>
             </div>
         </div>
-
         <div class="buttons pull-right">
             <button type="submit" class="btn btn-primary pull-right">Next</button>
         </div>
         <div class="clearfix"></div>
-    
     </form>
 
 @endsection

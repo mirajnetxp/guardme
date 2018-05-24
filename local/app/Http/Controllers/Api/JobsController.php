@@ -10,7 +10,9 @@ use Responsive\Transaction;
 use Responsive\User;
 use Responsive\Businesscategory;
 use Responsive\SecurityCategory;
-
+use Responsive\Events\JobHiredApplicationMarkedAsComplete;
+use Responsive\Feedback;
+use Responsive\Events\AwardJob;
 class JobsController extends Controller
 {
     use JobsTrait;
@@ -237,32 +239,17 @@ class JobsController extends Controller
 
     public function markHired($application_id) {
 
-	
-	  // Deepak Gemini -- Code to add notifications to 'notification' table
-	    $details = array();
-		
-		$job_id = @\Responsive\JobApplication::where('id',$application_id)->first(['job_id'])->job_id;
-		$applied_by = @\Responsive\JobApplication::where('id',$application_id)->first(['applied_by'])->applied_by;
-		$job_details = @\Responsive\Job::where('id',$job_id)->get();
-		
-		 
-		
-		$this->create_notification('job_awarded', $applied_by , $job_details);
         // check if user is authorized to mark this application as hired.
         $job_application = new JobApplication();
         $is_eligible_to_hire = $job_application->isEligibleToMarkHired($application_id);
-        if ($is_eligible_to_hire) {
+        if ($is_eligible_to_hire['status_code'] == 200) {
             $ja = JobApplication::find($application_id);
-            $ja->is_hired = 1;
-            if($ja->save()) {
+                event(new AwardJob($ja));
                 $return_data = ['Hired Successfully'];
                 $return_status = 200;
-            } else {
-                $return_data = ['Un know error occureds'];
-                $return_status = 500;
-            }
         } else {
-            $return_data = ['You are not authorized to hire on this application'];
+            $error_message = $is_eligible_to_hire['error_message'];
+            $return_data = [$error_message];
             $return_status = 500;
         }
 
@@ -554,8 +541,69 @@ class JobsController extends Controller
             ->json($businessCategories, 200);
 
     }
-	
-	
+
+    /**
+     * @param $application_id
+     * @return mixed
+     */
+    public function markApplicationAsComplete($application_id)
+    {
+        $application = JobApplication::find($application_id);
+        $user_id = auth()->user()->id;
+        $return_status = 200;
+        $return_data = ["success"];
+        $job = Job::find($application->job_id);
+        if ($job->created_by != $user_id) {
+            $return_status = 500;
+            $return_data = ["You are not authorized to perform this action."];
+        }
+        if ($return_status == 200) {
+            event(new JobHiredApplicationMarkedAsComplete($application));
+        }
+
+        return response()
+            ->json($return_data, $return_status);
+    }
+
+    /**
+     * @param $application_id
+     * @param Request $request
+     * @return mixed
+     */
+    public function leaveFeedback($application_id, Request $request)
+    {
+        $posted_data = $request->all();
+        $application = JobApplication::find($application_id);
+        $job = Job::find($application->job_id);
+        $user_id = auth()->user()->id;
+        if ($job->created_by != $user_id) {
+            $return_data = ['You are not eligible to leave feedback'];
+            $return_status = 500;
+        } else {
+            $return_data = ['Un-know error'];
+            $return_status = 500;
+            $already = Feedback::where('application_id', $application_id)->get();
+            if (count($already)) {
+                $return_status = 500;
+                $return_data = ['You have already left feedback'];
+            } else {
+                $feedback = new Feedback();
+                $feedback->application_id = $application_id;
+                $feedback->appearance = !empty($posted_data['appearance']) ? ($posted_data['appearance']) : 1;
+                $feedback->punctuality = !empty($posted_data['punctuality']) ? ($posted_data['punctuality']) : 1;
+                $feedback->customer_focused = !empty($posted_data['customer_focused']) ? ($posted_data['customer_focused']) : 1;
+                $feedback->security_conscious = !empty($posted_data['security_conscious']) ? ($posted_data['security_conscious']) : 1;
+                $feedback->message = !empty($posted_data['feedback_message']) ? ($posted_data['feedback_message']) : null;
+                $ret = $feedback->save();
+                if ($ret) {
+                    $return_data = ['Feedback Submitted successfully'];
+                    $return_status = 200;
+                }
+            }
+        }
+        return response()
+            ->json($return_data, $return_status);
+    }
 	
 	
 	

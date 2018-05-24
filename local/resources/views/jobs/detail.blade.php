@@ -158,7 +158,6 @@
                                 <span id="saved">Save For Later</span>
                                 @endif
                             </a>
-                            <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
                         <ul class="share-social">
                             <li>Share this ad</li>

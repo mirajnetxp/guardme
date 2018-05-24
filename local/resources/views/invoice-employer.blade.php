@@ -50,7 +50,7 @@
                     <tr>
                       <td class="desc">{{$transaction->title}}</td>
                       <td class="service">
-                        @if($transaction->user_id->count() != 0 && $transaction->user_id[$i] != null) 
+                        @if($transaction->user_id->count() != 0 && $transaction->user_id->count() > $i ) 
                           <a href="{{url('invoice').'?user_id='.$transaction->user_id[$i]->applied_by.'&id='.$id}}">SLOT {{$i + 1}}</a>
                         @else
                           SLOT {{$i + 1}}

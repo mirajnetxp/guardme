@@ -44,7 +44,11 @@
 
 <!-- fixed navigation bar -->
 @include('header')
-
+@if(session()->has('login_first'))
+	<div class="container-fluid" style="background-color: #e91e63">
+		<h5 class="text-center" style="color: #ffffff">{{session()->get('login_first')}}</h5>
+	</div>
+@endif
 <section class="job-bg page job-list-page">
 	<div class="container">
 		<div class="breadcrumb-section">

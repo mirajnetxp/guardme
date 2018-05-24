@@ -50,7 +50,7 @@ class VerificationController extends Controller {
 		$user               = User::find( $id );
 		$user->doc_verified = false;
 		$user->save();
-		Session::flash( 'success', 'Account: "'.$user->name.'" Verification Decline ' );
+		Session::flash( '""'.$user->name.'" has been unverified' );
 
 		return redirect( '/admin/Verification' );
 	}

@@ -1,5 +1,6 @@
 <?php
 namespace Responsive\Http\Controllers\Api;
+use Responsive\Feedback;
 use Responsive\Http\Traits\JobsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,8 +12,6 @@ use Responsive\User;
 use Responsive\Businesscategory;
 use Responsive\SecurityCategory;
 use Responsive\Events\JobHiredApplicationMarkedAsComplete;
-use Responsive\Feedback;
-use Responsive\Events\AwardJob;
 class JobsController extends Controller
 {
     use JobsTrait;
@@ -54,12 +53,8 @@ class JobsController extends Controller
             'working_days' => 'required|integer',
             'pay_per_hour' => 'required|integer',
             'number_of_freelancers' => 'required|integer',
-            'start_date_time.*' => 'required',
-            'end_date_time.*' => 'required',
-        ],
-        [
-            'end_date_time.*.required' => 'Start date/time field is required',
-            'start_date_time.*.required'  => 'End date/time field is required',
+            'start_date_time' => 'required',
+            'end_date_time' => 'required',
         ]);
         $posted_data = $request->all();
         $working_days = !empty($posted_data['working_days']) ? $posted_data['working_days'] : 0;
@@ -242,14 +237,18 @@ class JobsController extends Controller
         // check if user is authorized to mark this application as hired.
         $job_application = new JobApplication();
         $is_eligible_to_hire = $job_application->isEligibleToMarkHired($application_id);
-        if ($is_eligible_to_hire['status_code'] == 200) {
+        if ($is_eligible_to_hire) {
             $ja = JobApplication::find($application_id);
-                event(new AwardJob($ja));
+            $ja->is_hired = 1;
+            if($ja->save()) {
                 $return_data = ['Hired Successfully'];
                 $return_status = 200;
+            } else {
+                $return_data = ['Un know error occureds'];
+                $return_status = 500;
+            }
         } else {
-            $error_message = $is_eligible_to_hire['error_message'];
-            $return_data = [$error_message];
+            $return_data = ['You are not authorized to hire on this application'];
             $return_status = 500;
         }
 
@@ -542,36 +541,15 @@ class JobsController extends Controller
 
     }
 
-    /**
-     * @param $application_id
-     * @return mixed
-     */
-    public function markApplicationAsComplete($application_id)
-    {
+    public function markApplicationAsComplete($application_id) {
+        //@TODO check if user is authorized to mark it as complete, means it should be the user created job. and return suitable errors.
         $application = JobApplication::find($application_id);
-        $user_id = auth()->user()->id;
-        $return_status = 200;
-        $return_data = ["success"];
-        $job = Job::find($application->job_id);
-        if ($job->created_by != $user_id) {
-            $return_status = 500;
-            $return_data = ["You are not authorized to perform this action."];
-        }
-        if ($return_status == 200) {
-            event(new JobHiredApplicationMarkedAsComplete($application));
-        }
-
+        event(new JobHiredApplicationMarkedAsComplete($application));
         return response()
-            ->json($return_data, $return_status);
+            ->json(['success'], 200);
     }
 
-    /**
-     * @param $application_id
-     * @param Request $request
-     * @return mixed
-     */
-    public function leaveFeedback($application_id, Request $request)
-    {
+    public function leaveFeedback($application_id, Request $request) {
         $posted_data = $request->all();
         $application = JobApplication::find($application_id);
         $job = Job::find($application->job_id);
@@ -604,117 +582,4 @@ class JobsController extends Controller
         return response()
             ->json($return_data, $return_status);
     }
-	
-	
-	
-	
-	
-	
-	
-		
-	
-	
-	
-	
-	public function get_notifications_settings(Request $request)
-	{
-		$settings_exist = @\Responsive\NotificationsSettings::where('user_id',$request->user_id)->count();
-		
-		if($settings_exist > 0)
-		{
-			$settings_data = @\Responsive\NotificationsSettings::where('user_id',$request->user_id)->get();
-		}
-		else
-		{
-			$settings = new \Responsive\NotificationsSettings;
-            $settings->user_id = $request->user_id;
-            $settings->save();
-			$settings_data = @\Responsive\NotificationsSettings::where('user_id',$request->user_id)->get();
-		}
-		 return response()
-            ->json($settings_data, 200);
-	}
-	
-	
-	
-	public function update_notifications_settings(Request $request)
-	{
-		$settings_exist = @\Responsive\NotificationsSettings::where('user_id',$request->user_id)->count();
-		
-		if($settings_exist > 0)
-		{
-			Responsive\NotificationsSettings::where('user_id', $request->user_id)->update(['job_created' => $request->job_created , 'job_awarded' => $request->job_awarded ]);
-			$settings_data = @\Responsive\NotificationsSettings::where('user_id',$request->user_id)->get();
-		}
-		else
-		{
-			$settings = new \Responsive\NotificationsSettings;
-            $settings->user_id = $request->user_id;
-			$settings->job_created = $request->job_created;
-			$settings->job_awarded = $request->job_awarded;
-            $settings->save();
-			$settings_data = @\Responsive\NotificationsSettings::where('user_id',$request->user_id)->get();
-		}
-		
-		 return response()
-            ->json($settings_data, 200);
-	}
-	
-	
-	public function get_notifications(Request $request)
-	{
-		$notifications = \Responsive\Notifications::where('user_id',$request->user_id)->orWhere('notification_type','all')->orderBy('id','DESC')->paginate();
-		
-		foreach($notifications as $n)
-		{
-			$n->created_at = \Carbon\Carbon::parse($n->created_at)->diffForHumans()."";
-			$n->notification_by_user_details = @\Responsive\User::where('id',@$n->notification_by_user_id)->get(['id','name','email','photo']);
-			
-			if($n->job_id != '' or $n->job_id != null)
-			{
-				 
-				$n->job_details =  @\Responsive\Job::where('id',@$n->job_id)->get(['id','title','per_hour_rate']);
-			}
-			else{
-				$n->job_details = [];
-			}
-			 
-		}
-		return response()
-            ->json($notifications, 200);
-	}
-	
-	
-	
-	
-	
-	     public function create_notification($notification_type , $applied_by , $details)
-    {               
-	 
-	                // {notification_by_user_id} hired you for the Job {job_title}
- 
-                    if( $notification_type == 'job_awarded')
-					{
-					  $created_by = $details[0]["created_by"];
-					  $created_by_name = @\Responsive\User::where('id',$created_by)->first(['name'])->name;
-				      $message = $created_by_name.' hired you for the Job ('.$details[0]["title"].')';
-						
-					  $input = array();                
-                      $input['notification_type'] = $notification_type;        
-                      $input['notification_message'] = $message;
-                      $input['user_id'] = @$applied_by;
-					  $input['job_id'] = @$details[0]['id'];
-                      $input['notification_by_user_id'] = $created_by;
-                      $input['is_read'] = 0;
-					   
-                      $notification = @\Responsive\Notifications::create($input);
-					}
-                     return 1;
-                    //$badge_count = $for_user_notification['badge_count']+1;
-
-                   
- }
-	
-    
-    
 }

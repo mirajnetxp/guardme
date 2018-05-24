@@ -74,7 +74,8 @@
                                         Approved</a>
                                 @else
                                     <a class="btn btn-danger"
-                                       href="{{route('admin.user.doc.decline',['id'=>$user->id])}}">Unverify</a>
+                                       href="{{route('admin.user.doc.decline',['id'=>$user->id])}}">Verification
+                                        Decline</a>
                                 @endif
                             </h3>
                         </div>

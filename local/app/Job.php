@@ -19,22 +19,8 @@ class Job extends Model
     public function schedules() {
         return $this->hasMany(SecurityJobsSchedule::class);
     }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
     public static function calculateJobAmount($id) {
         $job = Job::find($id);
-        $return_data = self::calculateJobAmountWithJobObject($job);
-        return $return_data;
-    }
-
-    /**
-     * @param Job $job
-     * @return array
-     */
-    public static function calculateJobAmountWithJobObject(Job $job) {
         $number_of_freelancers = $job->number_of_freelancers;
         $working_hours = ($job->daily_working_hours) * $number_of_freelancers;
         $working_days = $job->monthly_working_days;
@@ -53,12 +39,11 @@ class Job extends Model
             'basic_total' => floatval($basic_total),
             'vat_fee' => floatval($vat_fee),
             'admin_fee' => floatval($admin_fee),
-            'grand_total' => floatval($grand_total),
-            'number_of_freelancers' => $number_of_freelancers,
-            'single_freelancer_fee' => floatval($basic_total/$number_of_freelancers)
+            'grand_total' => floatval($grand_total)
         ];
         return $return_data;
     }
+
     /**
      * @return \Illuminate\Support\Collection
      * 
@@ -293,7 +278,7 @@ class Job extends Model
     }
 
     function poster(){
-        return $this->belongsTo(User::class,'created_by');
+        return $this->belongsTo(User::class,'created_by' ,'id');
     }
 
     public function applications()
@@ -302,6 +287,6 @@ class Job extends Model
     }
 
     public function getJobTransactions(){
-        return $this->hasOne(Transaction::class) ;
+        return $this->hasMany(Transaction::class) ;
     }
 }

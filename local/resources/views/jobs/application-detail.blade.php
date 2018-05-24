@@ -77,7 +77,7 @@
                                         @if (!$application->is_hired)
                                         <button class="btn btn-info pull-right mark-as-hired">Award Job</button>
                                             <button class="btn del pull-right right-10">Decline</button>
-                                        @elseif ($application->completion_status == 0)
+                                        @else
                                             <button class="mark-as-complete btn pull-right right-10">Mark as complete</button>
                                             
                                         @endif
@@ -195,9 +195,6 @@
                     $('.mark-as-hired').fadeOut('slow');
                     $('.alert-success').text(data[0]);
                     $('.alert-success').removeClass('hide');
-                    setTimeout(function(){
-                        location.reload();
-                    }, 3000);
                 },
                 error: function(data) {
                     $('.alert-danger').text(data.responseJSON[0]);
@@ -213,9 +210,6 @@
                    var nextUrl = "{{ route('leave.feedback', ['application_id' => $application->id]) }}";
                    window.location.href = nextUrl;
 
-               },
-               error: function (data) {
-                   //@TODO have to add some validation error
                }
            })
         });

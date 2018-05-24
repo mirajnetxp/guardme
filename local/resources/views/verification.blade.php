@@ -24,7 +24,7 @@
             <div class="profile-details section">
                 <h2>Verification</h2>
                 @if(Session::has('success'))
-                    <div class="alert alert-success">
+                    <div class="alert alert-success" style="padding: 10px">
                         {{ Session::get('success') }}
                     </div>
                 @endif
@@ -33,7 +33,6 @@
                         {{ Session::get('error') }}
                     </div>
                 @endif
-
 
                 <form method="POST" action="{{ route('dashboard') }}" id="formID" enctype="multipart/form-data">
                     {{ csrf_field() }}

@@ -362,7 +362,6 @@
                         
                     </div> 
                 </div> -->
-<<<<<<< HEAD
 
                             <div class="ad-info">
 
@@ -391,41 +390,6 @@
 
 					<?php }
 					else{?>
-=======
-                    
-                <div class="ad-info">
-                    <span><a href="{{ route('view.job',$job->id) }}" class="title">{{$job->title}}</a> </span>
-                    <div class="ad-meta">
-                        <ul>
-                            <li><a href="{{ route('view.job',$job->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                @if($job->city_town){{$job->city_town}} @endif </a></li>
-                            <li><a href="{{ route('view.job',$job->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
-                                {{date('d/m/Y',strtotime($job->created_at))}}
-                            </a></li>
-                            <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a></li> 
-                        </ul>
-                    </div><!-- ad-meta -->                                  
-                </div><!-- ad-info -->
-            </div><!-- item-info -->
-        </div>
-    
-            <?php } ?>
-    
-        <?php }
-        else{?>
-
-    
-    
-    <div class="col-md-12 noservice" align="center">No job matching found!</div>
-    
-    <?php } ?>
-
-     <div class="text-center">
-                {{$joblist->links()}}
-            </div>
-    </div>
-</div>
->>>>>>> fef6c3bc43b0a9cb5266e5d8eb3b4e45c10bf3ab
 
 
                     <div class="col-md-12 noservice" align="center">No job matching found!</div>

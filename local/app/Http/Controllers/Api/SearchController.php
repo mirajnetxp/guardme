@@ -15,7 +15,7 @@ class SearchController extends Controller
 {
     
     public function getpersonnelsearch(Request $request)
-    {        
+    {
         $this->validate($request, [
             'page_id' => 'required'
         ]);

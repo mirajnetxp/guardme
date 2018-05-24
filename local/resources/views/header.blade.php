@@ -139,6 +139,7 @@ if(isset(Auth::user()->verification)){
 						<li <?php if(empty($shcount)){?>class="disabled"<?php } ?>><a href="<?php echo $url;?>/gallery" <?php if(empty($shcount)){?>class="disabled"<?php } ?>>Shop Gallery</a></li>
 						-->
 						<li><a href="{{url('/wallet')}}">Wallet</a></li>
+						<li><a href="{{url('/settings')}}">Settings</a></li>
 
 								<?php } ?>
 						<li><a href="<?php echo $url;?>/support/tickets">Support</a></li>

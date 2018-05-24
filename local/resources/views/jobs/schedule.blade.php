@@ -175,7 +175,6 @@
             for(i = 0; i < workingDays; i++) {
                 item_specific_html = item_htm.replace("Start/End", 'Day '+ parseInt(i+1));
                 all_schedule_items_html += item_specific_html;
-                all_schedule_items_html += item_htm;
             }
             $(".schedule_items").html(all_schedule_items_html);
             jQuery('.date-time-picker').datetimepicker({

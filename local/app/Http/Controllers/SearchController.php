@@ -3,17 +3,18 @@
 namespace Responsive\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Responsive\User;
-class SearchController extends Controller
-{
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    
+
+class SearchController extends Controller {
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+
 
     /**
      * Show the application dashboard.
@@ -21,9 +22,7 @@ class SearchController extends Controller
      * @return \Illuminate\Http\Response
      */
 	
-	public function sangvish_view()
-
-	{
+	public function sangvish_view() {
 		$viewservices= DB::table('subservices')->orderBy('subname','asc')->get();
       
 		$shopview=DB::table('shop')
@@ -36,13 +35,19 @@ class SearchController extends Controller
 		$data = array('viewservices' => $viewservices,'shopview' => $shopview);
 		return view('search')->with($data);
 	}
-        
-	function getpersonnelsearch($user_id = null)
-	{
-	    $data = \request()->all();
+
+	/**
+	 * @param null $user_id
+	 *
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+	 */
+	function getpersonnelsearch( $user_id = null ) {
+		$data = \request()->all();
 
 
-		$query = User::where('admin','2');
+		//		Users cannot show up on freelancer list unless profile is complete.
+		$query = User::where( 'admin', '=', '2' )->where( 'doc_verified', '=', true);
+
 
 		if(count($data)){
 

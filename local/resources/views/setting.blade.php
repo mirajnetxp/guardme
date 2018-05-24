@@ -194,9 +194,9 @@
             success: function (d) {
 
                 if (d == '101') {
-                    alert('Your Profile is now Public')
+                    alert('Your profile is now public')
                 } else {
-                    alert('Your Profile is now Private')
+                    alert('Your profile is now private')
                 }
             },
             error: function (xhr, textStatus, errorThrown) {

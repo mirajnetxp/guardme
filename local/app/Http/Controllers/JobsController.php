@@ -38,7 +38,7 @@ class JobsController extends Controller {
 		}
 
 		if($company->status=='unapproved'){
-			Session::flash( 'doc_not_v', 'Your Account is Unverified. Please contact admin about the status of your account.' );
+			Session::flash( 'doc_not_v', 'Your Account is not active. Please contact admin about the status of your account.' );
 			return redirect( "/contact" );
 		}
 		$all_security_categories = SecurityCategory::get();
@@ -240,7 +240,7 @@ class JobsController extends Controller {
 			return abort(404);
 		}
 		if ( ! Auth::Check() ) {
-			Session::flash( 'login_first', ' adcasd' );
+			Session::flash( 'login_first', ' Please login to view the full job description.' );
 			return redirect()->back();
 		}
 		$user_address = [];

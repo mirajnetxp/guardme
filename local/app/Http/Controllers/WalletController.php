@@ -30,9 +30,9 @@ class WalletController extends Controller
 		// return view('wallet', compact('wallet_data'));
 		$user = auth()->user();
 		if($user->admin == 0){
-			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
+			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.created_at, security_jobs.number_of_freelancers from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
 		}else if($user->admin == 2){
-			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, security_jobs.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and transactions.type = "job_fee" group by security_jobs.id');
+			$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, security_jobs.created_at, security_jobs.number_of_freelancers from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and transactions.type = "job_fee" group by security_jobs.id');
 		}else{
             $jobs = array();
         }
@@ -48,12 +48,13 @@ class WalletController extends Controller
 
         $user = auth()->user();
         if($user->admin == 0){
-            $jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
+            $jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.created_at, security_jobs.number_of_freelancers from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' group by job_id');
         }else if($user->admin == 2){
-            $jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, security_jobs.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and transactions.type = "job_fee" group by security_jobs.id');
+            $jobs = DB::select('select distinct security_jobs.id, security_jobs.title, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, security_jobs.created_at, security_jobs.number_of_freelancers from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and transactions.type = "job_fee" group by security_jobs.id');
         }else{
             $jobs = array();
         }
+        // dd($jobs);
 		return view('wallet-dashboard', compact('wallet_data', 'editprofile', 'jobs'));
 	}
 
@@ -68,9 +69,9 @@ class WalletController extends Controller
 
     	if($keyword != ''){
 			if($user->admin == 0){
-				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by job_id');
+				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by job_id');
 			}else if($user->admin == 2){
-				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by security_jobs.id');
+				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and (security_jobs.id like "%'.$keyword.'%" or security_jobs.title like "%'.$keyword.'%") group by security_jobs.id');
 			}
     	}
     	else if($start_date != null && $end_date != null && $start_date < $end_date){
@@ -79,9 +80,9 @@ class WalletController extends Controller
 			$date2  = date("Y-m-d", strtotime($end_date));
 			// dd($date1." ".$date2);
     		if($user->admin == 0){
-				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' and (transactions.created_at between "'.$date1.'" and "'.$date2.'" ) group by security_jobs.id');
+				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.user_id = '.$user->id.' and (transactions.created_at between "'.$date1.'" and "'.$date2.'" ) group by security_jobs.id');
 			}else if($user->admin == 2){
-				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and (transactions.created_at between "'.$date1.'" and "'.$date2.'" ) group by security_jobs.id');
+				$jobs = DB::select('select distinct security_jobs.id, security_jobs.title, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers from security_jobs, job_applications, transactions where job_applications.job_id = security_jobs.id and transactions.job_id = security_jobs.id and is_hired = 1 and applied_by = '.$user->id.' and (transactions.created_at between "'.$date1.'" and "'.$date2.'" ) group by security_jobs.id');
 			}
     	}else{
     		$jobs = array();
@@ -93,7 +94,7 @@ class WalletController extends Controller
 		// return view('invoice-employer');
 		$user = auth()->user();
 		$user_id = auth()->user()->id;
-        $balance = '';
+        $balance = 0;
         
         $from = array();        
         $from = $user;
@@ -102,29 +103,32 @@ class WalletController extends Controller
 
         if(!empty($user_id)) {
             if($user->admin == 2){
-                $all_transactions = DB::select('select security_jobs.title, transactions.id, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = '.$id);
+                $all_transactions = DB::select('select security_jobs.title, transactions.id, sum(transactions.amount) as amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = '.$id.' group by transactions.type');
+                // dd($all_transactions);
             }else if($user->admin == 0){
-                $credit = Transaction::select(DB::raw('SUM(amount) as total'))
-                    ->groupBy('user_id')
-                    // ->where('user_id', $user_id)
-                    ->where('job_id', $id)
-                    ->where('status', 1)
-                    ->where(function($query){
-                        $query->orWhere('credit_payment_status', 'paid')
-                            ->orWhere('credit_payment_status', 'funded');
-                    })
-                    ->where('debit_credit_type', 'credit')
-                    ->get()->first();
-                $total_credit = !empty($credit->total) ? ($credit->total) : 0;
-                $balance = $total_credit;
+                // $credit = Transaction::select(DB::raw('SUM(amount) as total'))
+                //     ->groupBy('user_id')
+                //     // ->where('user_id', $user_id)
+                //     ->where('job_id', $id)
+                //     ->where('status', 1)
+                //     ->where(function($query){
+                //         $query->orWhere('credit_payment_status', 'paid')
+                //             ->orWhere('credit_payment_status', 'funded');
+                //     })
+                //     ->where('debit_credit_type', 'credit')
+                //     ->get()->first();
+                // $total_credit = !empty($credit->total) ? ($credit->total) : 0;
+                // $balance = $total_credit;
 
-                $all_transactions = DB::select('select transactions.title, transactions.id, transactions.created_at, transactions.amount, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and security_jobs.id = '.$id);
+                $all_transactions = DB::select('select transactions.title, transactions.id, transactions.created_at, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, transactions.credit_payment_status as status, transactions.type from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.credit_payment_status in ("paid", "funded") and security_jobs.id = '.$id.' group by transactions.type');
+                    // dd($all_transactions);
                 $applied_by = JobApplication::select('applied_by')->where('job_id', $id)->get();
                 // dd($applied_by);
                 foreach ($all_transactions as $key => $transactions) {
                     if($transactions->title == 'Job Fee'){
                         $transactions->user_id = $applied_by;
                     }
+                    $balance = $transactions->amount + $balance;
                 }
                 // dd($all_transactions);
             }
@@ -152,7 +156,7 @@ class WalletController extends Controller
     public function freelancerInvoice(Request $request){
         $user_id = $request->user_id;
         $id = $request->id;
-        $all_transactions = DB::select('select security_jobs.title, transactions.id, transactions.amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = '.$id);
+        $all_transactions = DB::select('select security_jobs.title, transactions.id, sum(transactions.amount) as amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = '.$id.' group by transactions.type');
 
         $from = User::find($user_id);
         $from->date = Carbon::now();

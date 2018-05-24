@@ -34,7 +34,6 @@
                     </div>
                 @endif
 
-
                 <form method="POST" action="{{ route('dashboard') }}" id="formID" enctype="multipart/form-data">
                     {{ csrf_field() }}
 

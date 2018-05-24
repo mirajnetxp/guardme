@@ -15,18 +15,41 @@ use Responsive\User;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 
-class UsersController extends Controller
-{
-    /**
-     * Show a list of all of the application's users.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        $users = DB::table('users')
-		         ->orderBy('id','desc')
-				 ->get();
+class UsersController extends Controller {
+	/**
+	 * Show a list of all of the application's users.
+	 *
+	 * @return Response
+	 */
+	public function index() {
+		$users = DB::table( 'users' )
+		           ->leftJoin( 'address', 'users.id', '=', 'address.user_id' )
+		           ->orderBy( 'users.id', 'desc' )
+					->select(
+						'users.id',
+						'users.name',
+						'users.email',
+						'users.verified',
+						'users.admin',
+						'users.gender',
+						'users.phone',
+						'users.photo',
+						'users.created_at',
+						'users.firstname',
+						'users.lastname',
+						'users.dob',
+						'users.phone_verified',
+						'address.postcode',
+						'address.houseno',
+						'address.line1',
+						'address.line2',
+						'address.line3',
+						'address.line4',
+						'address.locality',
+						'address.citytown',
+						'address.country'
+					)
+		           ->get();
 
         return view('admin.users', ['users' => $users]);
     }

@@ -638,4 +638,8 @@ class User extends Authenticatable
 	{
 		return $this->hasOne(FreelancerSetting::class,'user_id');
 	}
+
+	public function savedJobs() {
+		return $this->hasMany(SavedJob::class,'user_id');
+	}
 }

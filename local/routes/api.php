@@ -89,17 +89,21 @@ Route::group( [ 'prefix' => 'wallet', 'namespace' => 'Api' ], function () {
 } );
 
 
-Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 
-	Route::get( '/applied/job/list', 'FreelancerJobsController@applyedJobList' );
+// Api's Created By Miraj......
 
-} );
 
 Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 
 	Route::get( '/applied/job/list', 'FreelancerJobsController@applyedJobList' );
 
+
+
+	Route::post( '/save/job/{id}', 'FreelancerJobsController@saveJob' );
+	Route::get( '/saved/job/list', 'FreelancerJobsController@SaveJobList' );
+
 } );
+
 
 Route::group( ['namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 

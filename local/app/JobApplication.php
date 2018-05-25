@@ -141,4 +141,61 @@ class JobApplication extends Model
         ->get();
         return $res;
     }
+
+    /**
+     * @param $application_id
+     * @return array
+     */
+    public function getApplicantWorkHistory($application_id) {
+        $work_history = [];
+        $job_application = JobApplication::find($application_id);
+        $res = DB::table($this->table. ' as ja')
+            ->select(
+                'sj.title',
+                'sj.id as job_id',
+                'fb.message',
+                'fb.appearance',
+                'fb.punctuality',
+                'fb.customer_focused',
+                'fb.security_conscious'
+            )
+            ->join('users as u', 'u.id', '=','ja.applied_by')
+            ->join('security_jobs as sj', 'sj.id', '=', 'ja.job_id')
+            ->join('feedback as fb', 'fb.application_id', '=', 'ja.id')
+            ->where('ja.applied_by', $job_application->applied_by)->get();
+        $sec_res = DB::table('security_jobs_schedule as sjs')
+            ->select('start', 'end', 'sjs.job_id')
+            ->join($this->table . ' as ja', 'ja.job_id', '=', 'sjs.job_id')
+            ->join('security_jobs as sj', 'sj.id', '=', 'sjs.job_id')
+            ->where('ja.applied_by', $job_application->applied_by)
+            ->where('ja.is_hired', 1)->get();
+        $job_schedule = [];
+        if (!empty($sec_res)) {
+            foreach($sec_res as $key => $sec_item)  {
+                $job_schedule[$sec_item->job_id][] = ['start' => $sec_item->start, 'end' => $sec_item->end];
+            }
+        }
+        foreach($res as $k => $item) {
+            $job_date_range = '';
+            $appearance = $item->appearance;
+            $punctuality = $item->punctuality;
+            $customer_focused = $item->customer_focused;
+            $security_conscious = $item->security_conscious;
+            $rating_aggregate = ($appearance + $punctuality + $customer_focused + $security_conscious)/4;
+            if (!empty($job_schedule[$item->job_id])) {
+                $current_job_schedule_array = $job_schedule[$item->job_id];
+                $current_job_schedule_start_date = $current_job_schedule_array[0]['start'];
+                $current_job_schedule_end_date = $current_job_schedule_array[count($current_job_schedule_array) - 1]['end'];
+                $job_date_range = date('d, M Y', strtotime($current_job_schedule_start_date)) . ' to ' . date('d, M Y', strtotime($current_job_schedule_end_date));
+            }
+            $work_history[] = [
+                'job_id' => $item->job_id,
+                'star_rating' => $rating_aggregate,
+                'feedback_message' => $item->message,
+                'job_title' => $item->title,
+                'date_range' => $job_date_range
+            ];
+        }
+        return $work_history;
+    }
 }

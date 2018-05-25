@@ -3214,3 +3214,7 @@ input, select, a, .transition,
 	position: relative;
 	top: 20px;
 }
+.stars i.fa {
+	font-size: 25px;
+	color: #fde16d;
+}

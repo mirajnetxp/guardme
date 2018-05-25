@@ -83,15 +83,12 @@ class AuthController extends Controller
         return $this->apiLoginSuccessResponse();
     }
 
-    public function apiLogin(Request $request)
-    {
-
-
-    	
+    public function apiLogin(Request $request) {
 
         $credentials = $this->credentials($request);
 
         if(Auth::attempt($credentials)){
+
             return $this->apiLoginSuccessResponse();
         }
         else{
@@ -106,12 +103,13 @@ class AuthController extends Controller
         return response()->json([
             'success' => $success
         ]);
+
     }
 
-    public function getAuthUserDetails()
-    {
-        $user = Auth::user();
-        return response()->json(['authUser' => $user]);
+    public function getAuthUserDetails() {
+	    $user = Auth::user();
+
+	    return response()->json(['authUser' => $user]);
     }
 
     public function profile()

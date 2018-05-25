@@ -239,18 +239,21 @@ class JobsController extends Controller {
 		if (!$id) {
 			return abort(404);
 		}
-		if ( ! Auth::Check() ) {
-			Session::flash( 'login_first', ' Please login to view the full job description.' );
-			return redirect()->back();
-		}
+
 		$user_address = [];
 		$saved_job    = '';
 		if ( Auth::check() ) {
 			$user_id      = auth()->user()->id;
+
 			$user_address = User::where( 'id', $user_id )->with( 'address' )->first();
+
+
+
+
 			$saved_job    = SavedJob::where( 'job_id', $id )->where( 'user_id', $user_id )->first();
 		} else {
-			return redirect( '/register' );
+			Session::flash( 'login_first', ' Please login to view the full job description.' );
+			return redirect()->back();
 		}
 		$b_cats = Businesscategory::all();
 		$locs   = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();

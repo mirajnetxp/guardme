@@ -1,7 +1,5 @@
 <?php
-
 namespace Responsive\Events;
-
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -10,14 +8,12 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Responsive\JobApplication;
-
-class JobHiredApplicationMarkedAsComplete
+class AwardJob
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $job_application;
-
     /**
-     * JobHiredApplicationMarkedAsComplete constructor.
+     * AwardJob constructor.
      * @param JobApplication $jobApplication
      */
     public function __construct(JobApplication $jobApplication)
@@ -25,7 +21,6 @@ class JobHiredApplicationMarkedAsComplete
         //
         $this->job_application = $jobApplication;
     }
-
     /**
      * Get the channels the event should broadcast on.
      *

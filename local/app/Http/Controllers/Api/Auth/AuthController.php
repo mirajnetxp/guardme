@@ -47,7 +47,6 @@ class AuthController extends Controller
             'usertype' => 'required|string|max:255',
         ]);
     }
-
     /**
      * Create a new user instance after a valid registration.
      *
@@ -58,7 +57,6 @@ class AuthController extends Controller
     {
         return User::create([
             'name' => $data['name'],
-
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'gender' => $data['gender'],
@@ -85,11 +83,12 @@ class AuthController extends Controller
         return $this->apiLoginSuccessResponse();
     }
 
-    public function apiLogin(Request $request)
-    {
+    public function apiLogin(Request $request) {
+
         $credentials = $this->credentials($request);
 
         if(Auth::attempt($credentials)){
+
             return $this->apiLoginSuccessResponse();
         }
         else{
@@ -104,12 +103,13 @@ class AuthController extends Controller
         return response()->json([
             'success' => $success
         ]);
+
     }
 
-    public function getAuthUserDetails()
-    {
-        $user = Auth::user();
-        return response()->json(['authUser' => $user]);
+    public function getAuthUserDetails() {
+	    $user = Auth::user();
+
+	    return response()->json(['authUser' => $user]);
     }
 
     public function profile()

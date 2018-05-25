@@ -39,17 +39,15 @@ class EmployerJobsController extends Controller {
 							->select('users.name','users.photo','job_applications.created_at','job_applications.is_hired','job_applications.application_description')
 							->get();
 
-
-
-		return response()->json($applications);
-		dd( $user );
-		$jobs  = DB::table( 'job_applications' )
-		           ->where( 'applied_by', '=', $user->id )
-		           ->leftJoin( 'security_jobs', 'job_applications.job_id', '=', 'security_jobs.id' )
-		           ->select( 'security_jobs.title', 'job_applications.created_at' )
-		           ->get()->toArray();
-		$total = count( $jobs );
-
-		return response()->json( $jobs, 200 );
+		return response()->json($applications,200);
+//		dd( $user );
+//		$jobs  = DB::table( 'job_applications' )
+//		           ->where( 'applied_by', '=', $user->id )
+//		           ->leftJoin( 'security_jobs', 'job_applications.job_id', '=', 'security_jobs.id' )
+//		           ->select( 'security_jobs.title', 'job_applications.created_at' )
+//		           ->get()->toArray();
+//		$total = count( $jobs );
+//
+//		return response()->json( $jobs, 200 );
 	}
 }

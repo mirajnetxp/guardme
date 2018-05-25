@@ -41,7 +41,6 @@ class FreelancerJobsController extends Controller {
 		return response()->json( [ "200" => "saved" ], 200 );
 	}
 
-
 	/**
 	 * @return mixed
 	 */

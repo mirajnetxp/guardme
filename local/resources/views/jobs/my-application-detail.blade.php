@@ -23,6 +23,12 @@
             <div class="job-details">
                  <div class="profile section clearfix">
                     <div class="row">
+                        <div class="alert alert-danger error-message hide" role="alert">
+
+                        </div>
+                        <div class="alert alert-success success-message hide" role="alert">
+
+                        </div>
                         <div class="col-md-8">
                             <div class="profile-info">
                                 <h1>
@@ -55,6 +61,17 @@
                                     </p>
                                 </address>
                             </div>
+                            <div class="clearfix"></div>
+                            <label class="pull-right">Completion Status:
+                                @if($application->completion_status == 1)
+                                    <i class="fa fa-check-circle-o ico-30 green"></i>
+                                @elseif ($application->completion_status == 2)
+                                    <i class="fa fa-times-circle-o ico-30 red"></i>
+                                @endif
+                            </label>
+                            @if ($application->completion_status == 0)
+                                <button class="btn del cancel-job-button">Cancel Job</button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -95,6 +112,28 @@
 
   
       @include('footer')
-
+<script>
+    $(document).ready(function(){
+        $(".cancel-job-button").on("click", function(){
+            $.ajax({
+                url: "{{ route('api.cancel.job', ['application_id' => $application->id]) }}",
+                type: 'POST',
+                success: function(data) {
+                    $(this).hide();
+                    $(".success-message").html(data[0]);
+                    $(".success-message").removeClass('hide');
+                    setTimeout(function(){
+                        location.reload();
+                    }, 4000);
+                },
+                error: function (data) {
+                    var errorText = data.responseJSON[0];
+                    $(".error-message").html(errorText);
+                    $(".error-message").removeClass('hide');
+                }
+            })
+        });
+    });
+</script>
 </body>
 </html>

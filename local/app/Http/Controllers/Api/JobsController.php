@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
 use Responsive\JobApplication;
+use Responsive\SecurityJobsSchedule;
 use Responsive\Transaction;
 use Responsive\User;
 use Responsive\Businesscategory;
@@ -734,6 +735,61 @@ class JobsController extends Controller {
 		//$badge_count = $for_user_notification['badge_count']+1;
 
 
+	}
+
+	/**
+	 * @param $application_id
+	 * @return mixed
+	 */
+	public function cancelHiredApplication($application_id) {
+		$application = JobApplication::find($application_id);
+		$job = Job::find($application->job_id);
+		$return_data = ["Un-known error"];
+		$return_status = 500;
+		// if freelancer cancels the job
+		if (isFreelancer()) {
+			if ($application->applied_by != auth()->user()->id) {
+				$return_data = ["You are no authorized to perform this action"];
+				$return_status = 500;
+			} else if($application->completion_status != 0) {
+				$return_data = ["Your job is either complete or already canceled"];
+				$return_status = 500;
+			} else {
+				$schedule_start = $job->schedules()->get()->first();
+				$start = strtotime($schedule_start->start);
+				$current_date_time = time();
+				$difference = $start - $current_date_time;
+				$less_than_24_hours = true;
+				if ($difference > 0) {
+					$diff_hours = $difference / (60*60);
+					if ($diff_hours > 24) {
+						$less_than_24_hours = false;
+					}
+				}
+				if ($less_than_24_hours) {
+					// leave 1 start rating
+					$already       = Feedback::where( 'application_id', $application_id )->get();
+					if (count($already) == 0) {
+						$feedback                     = new Feedback();
+						$feedback->application_id     = $application_id;
+						$feedback->appearance         = 1;
+						$feedback->punctuality        = 1;
+						$feedback->customer_focused   = 1;
+						$feedback->security_conscious = 1;
+						$feedback->message            = null;
+						$feedback->save();
+					}
+				}
+				// mark application as canceled with completion_status = 2
+				$application->completion_status = 2;
+				$application->save();
+				$return_data = ["Canceled Successfully"];
+				$return_status = 200;
+			}
+
+		}
+		return response()
+			->json($return_data, $return_status);
 	}
 
 

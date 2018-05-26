@@ -67,6 +67,8 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::get( 'proposals', 'JobsController@myProposals' )->name( 'api.my.proposals' );
 	Route::post( 'mark-application-as-complete/{id}', 'JobsController@markApplicationAsComplete' )->name( 'api.mark.application.complete' );
 	Route::post( 'leave/feedback/{application_id}', 'JobsController@leaveFeedback' )->name( 'api.leave.feedback' );
+
+	Route::post('cancel/{application_id}', 'JobsController@cancelHiredApplication')->name('api.cancel.job');
 } );
 
 

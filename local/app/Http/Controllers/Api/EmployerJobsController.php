@@ -36,7 +36,7 @@ class EmployerJobsController extends Controller {
 		$applications=DB::table('job_applications')
 							->where('job_id',$id)
 							->leftJoin( 'users', 'job_applications.applied_by', '=', 'users.id' )
-							->select('users.name','users.photo','job_applications.created_at','job_applications.is_hired','job_applications.application_description')
+							->select('job_applications.id','job_applications.applied_by','users.name','users.photo','job_applications.created_at','job_applications.is_hired','job_applications.application_description')
 							->get();
 
 		return response()->json($applications,200);

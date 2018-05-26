@@ -109,4 +109,5 @@ Route::group( ['namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 
 	Route::get( '/job/{id}/applications/list', 'EmployerJobsController@JobApplications' );
 
+	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
 } );

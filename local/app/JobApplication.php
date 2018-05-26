@@ -7,6 +7,16 @@ use DB;
 
 class JobApplication extends Model
 {
+
+    /*Fields definition
+    id -> id of the application
+    job_id -> id of the job against which application has been submitted
+    applied_by -> id of the freelancer who applied on the job
+    is_hired -> checks if user is hired or not. 1 means hired and 0 means not hired.
+    application_description -> description of the submitted application
+    completion_status -> tells us if hired application is complete or not (means done or not) 0 is the default value, 1 means complete and 2 means canceled.
+    */
+
     /**
      * The table associated with the model.
      *
@@ -91,6 +101,7 @@ class JobApplication extends Model
                 'sj.title as job_title',
                 'sj.description as job_description',
                 'ja.is_hired',
+                'ja.completion_status',
                 'ja.created_at as applied_date'
             )
             ->join('security_jobs as sj', 'sj.id', '=', 'ja.job_id')

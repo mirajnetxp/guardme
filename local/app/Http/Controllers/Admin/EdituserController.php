@@ -5,7 +5,8 @@ namespace Responsive\Http\Controllers\Admin;
 
 use Responsive\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-
+use Responsive\Country;
+use Responsive\Address;
 use Responsive\Http\Requests;
 use Illuminate\Http\Request;
 use Responsive\User;
@@ -31,12 +32,24 @@ class EdituserController extends Controller
     }
     
 	
-	public function showform($id) {
-      $users = DB::select('select * from users where id = ?',[$id]);
-	  $userid = $id;
-      return view('admin.edituser',['users'=>$users, 'userid' => $userid]);
-   }
-	
+	// public function showform($id) {
+    //     $users = DB::select('select * from users where id = ?',[$id]);
+    //     $userid = $id;
+    //     return view('admin.edituser',['users'=>$users, 'userid' => $userid]);
+    //  }
+
+     public function showform($id) {
+    	$userid = $id;
+		$editprofile = DB::select('select * from users where id = ?',[$id]);
+		$data = array('editprofile' => $editprofile);
+
+        $countries = Country::all();
+        $address = Address::where('user_id', $id)->get();
+
+        $data = array('rating_count' => 0);
+        return view('admin.edituser', compact( 'userid', 'editprofile', 'countries','address'))->with($data);
+
+     }
     /**
      * Get a validator for an incoming registration request.
      *
@@ -133,8 +146,12 @@ class EdituserController extends Controller
         ]);*/
 		$name=$data['name'];
 		$email=$data['email'];
-		
-		
+		$firstname = $data['firstname'];
+		$lastname = $data['lastname'];
+		$dob = $data['dob'];
+		$phone = $data['phone'];
+        $gender = $data['gender'];
+
 		
 		
 		$phone=$data['phone'];
@@ -175,11 +192,38 @@ class EdituserController extends Controller
 		$admin=$data['usertype'];
 		
 		
+        //Address save                
+        $address = Address::where('user_id', $id)->first();
+        $postcode = isset($data['postcode'])?$data['postcode']:'';
+        $houseno = isset($data['houseno'])?$data['houseno']:'';
+        $line1 = isset($data['line1'])?$data['line1']:'';
+        $line2 = isset($data['line2'])?$data['line2']:'';
+        $line3 = isset($data['line3'])?$data['line3']:'';
+        $line4 = isset($data['line4'])?$data['line4']:'';
+        $locality = isset($data['locality'])?$data['locality']:'';
+        $citytown = isset($data['town'])?$data['town']:'';
+        $country = isset($data['country'])?$data['country']:'';
+        $latitude = isset($data['addresslat'])?$data['addresslat']:'';
+        $longitude = isset($data['addresslong'])?$data['addresslong']:'';
+        if(!isset($address)){
+            $address = new Address();
+            $address->user_id = $id;
+        }
+        $address->postcode = $postcode;
+        $address->houseno = $houseno;
+        $address->line1 = $line1;
+        $address->line2 = $line2;
+        $address->line3 = $line3;
+        $address->line4 = $line4;
+        $address->locality = $locality;
+        $address->longitude = $longitude;
+        $address->latitude = $latitude;
+        $address->citytown = $citytown;
+        $address->country = $country;
+        $address->save();		
 		
 		
-		
-		
-		DB::update('update users set name="'.$name.'",email="'.$email.'",password="'.$passtxt.'",phone="'.$phone.'",photo="'.$savefname.'",admin="'.$admin.'" where id = ?', [$id]);
+		DB::update('update users set name="'.$name.'",email="'.$email.'",firstname="'.$firstname.'",lastname="'.$lastname.'",dob="'.$dob.'",gender="'.$gender.'",password="'.$passtxt.'",phone="'.$phone.'",photo="'.$savefname.'",admin="'.$admin.'" where id = ?', [$id]);
 		
 		
 		

@@ -27,7 +27,6 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 
 
 
-
 	 <!-- css stylesheets -->
 	 <?php if(!empty($setts[0]->site_favicon)){?>
 	 <link rel="icon" type="image/x-icon" href="<?php echo $url.'/local/images/settings/'.$setts[0]->site_favicon;?>" />

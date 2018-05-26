@@ -164,6 +164,7 @@ class JobApplication extends Model
              ->join('users as u', 'u.id', '=', 'ja.applied_by')
              ->join('shop as shp', 'sj.created_by', '=', 'shp.user_id')
             ->where('ja.applied_by', $user_id)
+            ->where('ja.completion_status', '!=', 2)
         ->get();
         return $res;
     }

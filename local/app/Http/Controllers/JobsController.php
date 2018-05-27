@@ -395,4 +395,29 @@ class JobsController extends Controller {
     public function leaveFeedback($application_id) {
         return view('jobs.feedback', ['application_id' => $application_id]);
     }
+
+    /**
+     * @param $application_id
+     * @return mixed
+     */
+    public function giveTip($application_id) {
+        $wallet = new Transaction();
+        $available_balance = $wallet->getWalletAvailableBalance();
+        return view('jobs.tip', ['application_id' => $application_id, 'available_balance' => $available_balance]);
+    }
+    public function tipDetails($transaction_id) {
+        $tip_transaction = Transaction::find($transaction_id);
+        $application_id = $tip_transaction->application_id;
+        $application_with_job = JobApplication::with('job')->where('id', $application_id)->get()->first();
+        $wallet = new Transaction();
+        $freelancer_details = User::find($application_with_job->applied_by);
+        $available_balance = $wallet->getWalletAvailableBalance();
+        return view('jobs.tip-details', [
+            'transaction_details' => $tip_transaction,
+            'transaction_id' => $transaction_id,
+            'available_balance' => $available_balance,
+            'application_with_job' => $application_with_job,
+            'freelancer_details' => $freelancer_details
+        ]);
+    }
 }

@@ -49,7 +49,9 @@
 
                 </div>
                 @include('shared.message')
-
+                <div class="row">
+                    <a href="{{ route('give.tip', ['application_id' => $application_id]) }}"><button class="btn btn-info">Tip freelancer</button></a>
+                </div>
                 <h2>Leave Feedback</h2>
                     <form action="{{ route('api.leave.feedback', ['application_id' => $application_id]) }}" class="feedback-form">
                         <div class="rating-container">

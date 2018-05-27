@@ -792,5 +792,61 @@ class JobsController extends Controller {
 			->json($return_data, $return_status);
 	}
 
+	/**
+	 * @param $application_id
+	 * @param Request $request
+	 * @return mixed
+	 */
+	public function postTip($application_id, Request $request) {
+		$this->validate( $request, [
+			'tip_amount' => 'required|integer'
+		] );
+		$posted_data = $request->all();
+		$tip_amount = $posted_data['tip_amount'];
+		$application = JobApplication::find($application_id);
+		// add inactive transaction for the tip
+		$trans = new Transaction();
+		$trans->application_id = $application_id;
+		$trans->job_id = $application->job_id;
+		$trans->debit_credit_type = 'credit';
+		$trans->amount = $tip_amount;
+		$trans->title = 'Tip';
+		$trans->type = 'tip';
+		$trans->status = 0;
+		$trans->user_id = auth()->user()->id;
+		$res = $trans->save();
+		$return_status = 200;
+		$trans->save();
+		$return_data   = [ 'transaction_id' => $trans->id ];
+
+		return response()
+			->json($return_data, $return_status);
+
+	}
+
+	public function confirmTip($transaction_id) {
+		$transaction = Transaction::find($transaction_id);
+		// check if user is authorized to perform this action means it should be the user who created this transaction
+		if ($transaction->user_id !=  auth()->user()->id) {
+			$return_status = 500;
+			$return_data = ["You are not authorized to perform this action"];
+		} else {
+			// make sure user has enough available balance to mark this tip as confirmed (activated)
+			$trans = new Transaction();
+			$available_balace = $trans->getWalletAvailableBalance();
+			if ($available_balace < $transaction->amount) {
+				$return_status = 500;
+				$return_data = ["You don't have sufficient balance to perform this action. Please load more balance."];
+			} else {
+				$transaction->status = 1;
+				$transaction->credit_payment_status = 'funded';
+				$transaction->save();
+				$return_status = 200;
+				$return_data = ["Your tip has been successfully added."];
+			}
+		}
+		return response()
+			->json($return_data, $return_status);
+	}
 
 }

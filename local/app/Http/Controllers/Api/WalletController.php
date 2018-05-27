@@ -42,11 +42,15 @@ class WalletController extends Controller {
 			->json( $wallet_data, 200 );
 
 	}
-
+	
+//Created by Miraj
 	public function getTransactionsList() {
 		$userId=auth()->user()->id;
 		$tL=DB::table('transactions')
+			->where('job_id','>',0)
 			->where('user_id',$userId)
+			->leftJoin( 'security_jobs', 'transactions.job_id', '=', 'security_jobs.id' )
+			->select('security_jobs.title','transactions.created_at','transactions.amount')
 			->get();
 //		->leftJoin( 'users', 'job_applications.applied_by', '=', 'users.id' )
 		return response()->json($tL);

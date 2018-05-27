@@ -55,7 +55,6 @@ class FreelancerJobsController extends Controller {
 		return response()->json( $favouriteJobs, 200 );
 
 	}
-
 	public function awardedJobs() {
 		$ID            = auth()->user()->id;
 		$awardedJobs = DB::table( 'job_applications' )

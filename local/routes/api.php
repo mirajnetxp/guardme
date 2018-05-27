@@ -101,8 +101,6 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 
 	Route::get( '/applied/job/list', 'FreelancerJobsController@applyedJobList' );
 
-
-
 	Route::post( '/save/job/{id}', 'FreelancerJobsController@saveJob' );
 	Route::get( '/saved/job/list', 'FreelancerJobsController@SaveJobList' );
 
@@ -112,5 +110,10 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 Route::group( ['namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 
 	Route::get( '/job/{id}/applications/list', 'EmployerJobsController@JobApplications' );
+
+	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
+
+
+	Route::get( '/awarded/jobs', 'WalletController@getTransactionsList' );
 
 } );

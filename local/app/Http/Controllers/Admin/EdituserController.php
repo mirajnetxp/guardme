@@ -37,7 +37,7 @@ class EdituserController extends Controller
     //     $userid = $id;
     //     return view('admin.edituser',['users'=>$users, 'userid' => $userid]);
     //  }
-
+	//modify//
      public function showform($id) {
     	$userid = $id;
 		$editprofile = DB::select('select * from users where id = ?',[$id]);
@@ -221,8 +221,7 @@ class EdituserController extends Controller
         $address->citytown = $citytown;
         $address->country = $country;
         $address->save();		
-		
-		
+				
 		DB::update('update users set name="'.$name.'",email="'.$email.'",firstname="'.$firstname.'",lastname="'.$lastname.'",dob="'.$dob.'",gender="'.$gender.'",password="'.$passtxt.'",phone="'.$phone.'",photo="'.$savefname.'",admin="'.$admin.'" where id = ?', [$id]);
 		
 		

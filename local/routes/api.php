@@ -108,6 +108,13 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 
 } );
 
+Route::group( [ 'prefix' => 'employer', 'namespace' => 'Api', 'middleware' => 'auth:api'], function () {
+
+
+	Route::get( '/awarded/jobs', 'EmployerJobsController@awardedJobs' );
+
+
+} );
 
 Route::group( ['namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 

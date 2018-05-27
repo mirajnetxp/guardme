@@ -55,7 +55,11 @@ class FreelancerJobsController extends Controller {
 		return response()->json( $favouriteJobs, 200 );
 
 	}
+	
 	public function awardedJobs() {
+		if(auth()->user()->admin!=2){
+			return response()->json(403);
+		}
 		$ID            = auth()->user()->id;
 		$awardedJobs = DB::table( 'job_applications' )
 		                   ->where( 'applied_by', $ID )

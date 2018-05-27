@@ -39,9 +39,6 @@ $setid=1;
 								<li><a href="<?php echo $url;?>/register">Signup </a></li>
 								<li><a href="<?php echo $url;?>/login">Login </a></li>
 								<li><a href="<?php echo $url;?>/how-it-works">How it works </a></li>
-								<li><a href="<?php echo $url;?>/safety">Safety </a></li>
-								<li><a href="<?php echo $url;?>/service-guide">Service Guide </a></li>
-								<li><a href="<?php echo $url;?>/how-to-pages">How To Pages </a></li>
 								<li><a href="<?php echo $url;?>/success-stories">Success stories </a></li>
 							</ul>
 						</div>
@@ -55,7 +52,6 @@ $setid=1;
 								<li><a href="<?php echo $setts[0]->site_facebook;?>" target="_blank"><i class="fa fa-facebook-official"></i>Facebook</a></li>
 								<li><a href="<?php echo $setts[0]->site_twitter;?>" target="_blank"><i class="fa fa-twitter-square"></i>Twitter</a></li>
 								<li><a href="<?php echo $setts[0]->site_gplus;?>" target="_blank"><i class="fa fa-google-plus-square"></i>Google+</a></li>
-								<li><a  href="<?php echo $setts[0]->site_pinterest;?>" target="_blank"><i class="fa fa-pinterest-square"></i>Pinterest</a></li>
 								<li><a  href="<?php echo $setts[0]->site_pinterest;?>" target="_blank"><i class="fa fa-instagram"></i>Instagram</a></li>
 
 								

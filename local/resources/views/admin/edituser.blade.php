@@ -27,6 +27,7 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 
 
 
+
 	 <!-- css stylesheets -->
 	 <?php if(!empty($setts[0]->site_favicon)){?>
 	 <link rel="icon" type="image/x-icon" href="<?php echo $url.'/local/images/settings/'.$setts[0]->site_favicon;?>" />
@@ -55,7 +56,18 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 		<link href="<?php echo $url;?>/css/custom.css" rel="stylesheet" type="text/css">
 	<!--old required css -->
 	
-
+    <style>
+        #address_id {
+            width: 85% !important;
+        }
+        #getaddress_button {
+            position: relative;
+            left: 125px;
+            top: 30px;
+            float: unset !important;
+            margin-bottom: 30px !important;
+        }
+    </style>
 
 	
   </head>
@@ -361,6 +373,19 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
                                     @endif
                             </div>
                             @endif
+                      <div class="form-group">
+                        <label for="photo">Photo</label>
+
+                          <input type="file" id="photo" name="photo" class="form-control border-input">
+						  @if ($errors->has('photo'))
+                                    <span class="help-block" style="color:red;">
+                                        <strong>{{ $errors->first('photo') }}</strong>
+                                    </span>
+                                @endif
+
+                      </div>
+                <input type="hidden" name="currentphoto" value="<?php echo $editprofile[0]->photo;?>">
+
                             <?php if($editprofile[0]->admin!=1){?>
 					   <div class="form-group">
                         <label for="usertype">User Type</label>
@@ -375,8 +400,6 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 
                       </div>
 					  <?php } ?>
-
-                <input type="hidden" name="currentphoto" value="<?php echo $editprofile[0]->photo;?>">
 					  <?php if($editprofile[0]->admin==1){?>
 
 					  <input type="hidden" name="usertype" value="<?php echo $editprofile[0]->admin;?>">

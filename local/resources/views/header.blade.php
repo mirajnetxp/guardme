@@ -96,6 +96,7 @@ if(isset(Auth::user()->verification)){
             	<li><a href="<?php echo $url;?>/register">Sign Up</a></li>
             	
             	<?php }else{?>
+								
 			
 			<li><a href="{{url('jobs/saved')}}"><i class="fa fa-heart-o"></i></a></li>
 			<li><a href="<?php echo $url;?>/#"><i class="fa fa-envelope-o"></i></a></li>
@@ -138,7 +139,7 @@ if(isset(Auth::user()->verification)){
 						<li <?php if(empty($shcount)){?>class="disabled"<?php } ?>><a href="<?php echo $url;?>/services" <?php if(empty($shcount)){?>class="disabled"<?php } ?>>My Services</a></li>
 						<li <?php if(empty($shcount)){?>class="disabled"<?php } ?>><a href="<?php echo $url;?>/gallery" <?php if(empty($shcount)){?>class="disabled"<?php } ?>>Shop Gallery</a></li>
 						-->
-						
+						<li><a href="{{URL::to('delete_account')}}" >Close account</a></li>
 						<li><a href="{{url('/settings')}}">Settings</a></li>
 
 								<?php } ?>

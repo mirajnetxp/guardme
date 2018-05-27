@@ -119,8 +119,8 @@ class JobApplication extends Model
             ->get()->first();
         $job = $ja_with_job->job;
         $total_number_of_freelancers = $job->number_of_freelancers;
-        $job_hired_applications = JobApplication::where('is_hired', true)
-            ->where('job_id', $job->id);
+        $job_hired_applications = JobApplication::where('is_hired', 1)
+            ->where('job_id', $job->id)->get();
         $number_of_already_hired_freelancers = count($job_hired_applications);
         $vacant_positions = $total_number_of_freelancers - $number_of_already_hired_freelancers;
         $user_id = auth()->user()->id;
@@ -164,6 +164,7 @@ class JobApplication extends Model
              ->join('users as u', 'u.id', '=', 'ja.applied_by')
              ->join('shop as shp', 'sj.created_by', '=', 'shp.user_id')
             ->where('ja.applied_by', $user_id)
+            ->where('ja.completion_status', '!=', 2)
         ->get();
         return $res;
     }

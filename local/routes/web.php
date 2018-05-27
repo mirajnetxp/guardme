@@ -367,7 +367,12 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/save/{id}', 'JobsController@saveJobsToProfile');
     Route::get('/remove/{id}', 'JobsController@removeJobsFromProfile');
 	Route::get('/leave/feedback/{application_id}', 'JobsController@leaveFeedback')->name('leave.feedback');
+	Route::get('/tip/{application_id}', 'JobsController@giveTip')->name('give.tip');
+	Route::get('/tip/details/{transaction_id}', 'JobsController@tipDetails')->name('tip.details');
 });
+
+Route::post('/add-balance-via-paypal', 'PaypalPaymentController@addMoneyPaypal')->name('add.money.paypal')->middleware('auth');
+Route::get('/get-paypal-payment-status', 'PaypalPaymentController@getPaypalPaymentStatus')->name('get.paypal.payment.status')->middleware('auth');
 
 // Guest route for find job
 Route::get('/jobs/posted/view', 'JobsController@myJobPostView')->name('posted.jobs.view');

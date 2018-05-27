@@ -38,8 +38,8 @@ class AwardJobAndAdjustTransactions
             ->where('status', 1)
             ->where('job_id', $job_id)->get()->first();
         $total_number_of_freelancers = $job->number_of_freelancers;
-        $job_hired_applications = JobApplication::where('is_hired', true)
-            ->where('job_id', $job_id);
+        $job_hired_applications = JobApplication::where('is_hired', 1)
+            ->where('job_id', $job_id)->get();
         $number_of_already_hired_freelancers = count($job_hired_applications);
         $vacant_positions = $total_number_of_freelancers - $number_of_already_hired_freelancers;
         if ($vacant_positions > 0) {

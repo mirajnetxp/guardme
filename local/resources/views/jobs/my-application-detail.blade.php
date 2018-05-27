@@ -70,7 +70,7 @@
                                 @endif
                             </label>
                             @if ($application->completion_status == 0)
-                                <button class="btn del cancel-job-button">Cancel Job</button>
+                                <button class="btn del cancel-job-button">Cancel Application</button>
                             @endif
                         </div>
                     </div>

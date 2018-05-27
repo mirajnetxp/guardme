@@ -67,6 +67,8 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::get( 'proposals', 'JobsController@myProposals' )->name( 'api.my.proposals' );
 	Route::post( 'mark-application-as-complete/{id}', 'JobsController@markApplicationAsComplete' )->name( 'api.mark.application.complete' );
 	Route::post( 'leave/feedback/{application_id}', 'JobsController@leaveFeedback' )->name( 'api.leave.feedback' );
+	Route::post( 'post/tip/{application_id}', 'JobsController@postTip' )->name( 'api.post.tip' );
+	Route::post( 'confirm/tip/{transaction_id}', 'JobsController@confirmTip' )->name( 'api.confirm.tip' );
 
 	Route::post('cancel/{application_id}', 'JobsController@cancelHiredApplication')->name('api.cancel.job');
 } );
@@ -98,7 +100,7 @@ Route::group( [ 'prefix' => 'wallet', 'namespace' => 'Api' ], function () {
 Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 
 	Route::get( '/applied/job/list', 'FreelancerJobsController@applyedJobList' );
-
+	Route::get( '/awarded/jobs', 'FreelancerJobsController@awardedJobs' );
 
 
 	Route::post( '/save/job/{id}', 'FreelancerJobsController@saveJob' );
@@ -110,5 +112,10 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 Route::group( ['namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 
 	Route::get( '/job/{id}/applications/list', 'EmployerJobsController@JobApplications' );
+
+	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
+
+
+
 
 } );

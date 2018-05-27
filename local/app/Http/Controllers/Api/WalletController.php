@@ -22,14 +22,12 @@ class WalletController extends Controller
 
 
     public function getTransactionsOfJobs(){
-        $user_id = \Auth::user()->id;
-        //echo $user_id ;
-        $my_jobs = Job::select('id' ,'title')->with('getJobTransactions')->get();
-       // $user_transactions = Transaction::with(['getTransactionJob'])->where('user_id' , $user_id)->get();
 
-        //echo json_encode($user_transactions);
+        // get wallet data job wise
+        $wallet = new Transaction();
+        $job_transactions_data = $wallet->getJobsTransactionData();
         return response()
-            ->json($my_jobs , 200);
+            ->json($job_transactions_data , 200);
 
     }
 

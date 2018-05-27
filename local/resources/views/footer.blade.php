@@ -181,12 +181,15 @@ $setid=1;
 		load() {
 			$(".error-span").addClass('hide');
 			$.each(this.formErrors, function(i, v) {
-				i = i.replace('[]', '');
-				i = i.split('.')[0];
-				if (typeof $('.'+ i) != 'undefined') {
-					$('.'+ i).siblings('.error-span').html(v);
-					$('.'+ i).siblings('.error-span').removeClass('hide');
+				if (typeof i != 'undefined' && i != 0) {
+					i = i.replace('[]', '');
+					i = i.split('.')[0];
+					if (typeof $('.'+ i) != 'undefined') {
+						$('.'+ i).siblings('.error-span').html(v);
+						$('.'+ i).siblings('.error-span').removeClass('hide');
+					}
 				}
+
 			});
 			if (typeof $('.error-span:eq(0)').closest('.form-group') != 'undefined') {
 				if (typeof $('.error-span:visible:eq(0)').closest('.form-group').offset() != 'undefined')

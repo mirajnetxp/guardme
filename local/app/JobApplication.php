@@ -7,6 +7,16 @@ use DB;
 
 class JobApplication extends Model
 {
+
+    /*Fields definition
+    id -> id of the application
+    job_id -> id of the job against which application has been submitted
+    applied_by -> id of the freelancer who applied on the job
+    is_hired -> checks if user is hired or not. 1 means hired and 0 means not hired.
+    application_description -> description of the submitted application
+    completion_status -> tells us if hired application is complete or not (means done or not) 0 is the default value, 1 means complete and 2 means canceled.
+    */
+
     /**
      * The table associated with the model.
      *
@@ -91,6 +101,7 @@ class JobApplication extends Model
                 'sj.title as job_title',
                 'sj.description as job_description',
                 'ja.is_hired',
+                'ja.completion_status',
                 'ja.created_at as applied_date'
             )
             ->join('security_jobs as sj', 'sj.id', '=', 'ja.job_id')
@@ -108,8 +119,8 @@ class JobApplication extends Model
             ->get()->first();
         $job = $ja_with_job->job;
         $total_number_of_freelancers = $job->number_of_freelancers;
-        $job_hired_applications = JobApplication::where('is_hired', true)
-            ->where('job_id', $job->id);
+        $job_hired_applications = JobApplication::where('is_hired', 1)
+            ->where('job_id', $job->id)->get();
         $number_of_already_hired_freelancers = count($job_hired_applications);
         $vacant_positions = $total_number_of_freelancers - $number_of_already_hired_freelancers;
         $user_id = auth()->user()->id;
@@ -153,6 +164,7 @@ class JobApplication extends Model
              ->join('users as u', 'u.id', '=', 'ja.applied_by')
              ->join('shop as shp', 'sj.created_by', '=', 'shp.user_id')
             ->where('ja.applied_by', $user_id)
+            ->where('ja.completion_status', '!=', 2)
         ->get();
         return $res;
     }

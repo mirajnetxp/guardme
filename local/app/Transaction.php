@@ -125,7 +125,11 @@ class Transaction extends Model
         return true;
     }
 
+    /**
+     * @return int
+     */
     public function getWalletAvailableBalance() {
+        $balance = 0;
         $user_id = auth()->user()->id;
         if(!empty($user_id)) {
             // get sum of all active debits for user
@@ -147,8 +151,10 @@ class Transaction extends Model
                 ->get()->first();
             $total_credit = !empty($credit->total) ? ($credit->total) : 0;
             $balance = $total_debit - $total_credit;
-            return floatval($balance);
+
         }
+        $balance =  number_format($balance, 2);
+        return $balance;
     }
 
     public function getWalletEscrowBalance() {

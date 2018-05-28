@@ -20,15 +20,14 @@ class WalletController extends Controller {
 	}
 
 
-	public function getTransactionsOfJobs() {
-		$user_id = \Auth::user()->id;
-		//echo $user_id ;
-		$my_jobs = Job::select( 'id', 'title' )->with( 'getJobTransactions' )->get();
-		// $user_transactions = Transaction::with(['getTransactionJob'])->where('user_id' , $user_id)->get();
 
-		//echo json_encode($user_transactions);
-		return response()
-			->json( $my_jobs, 200 );
+    public function getTransactionsOfJobs(){
+
+        // get wallet data job wise
+        $wallet = new Transaction();
+        $job_transactions_data = $wallet->getJobsTransactionData();
+        return response()
+            ->json($job_transactions_data , 200);
 
 	}
 
@@ -42,11 +41,15 @@ class WalletController extends Controller {
 			->json( $wallet_data, 200 );
 
 	}
-
+	
+//Created by Miraj
 	public function getTransactionsList() {
 		$userId=auth()->user()->id;
 		$tL=DB::table('transactions')
+			->where('job_id','>',0)
 			->where('user_id',$userId)
+			->leftJoin( 'security_jobs', 'transactions.job_id', '=', 'security_jobs.id' )
+			->select('security_jobs.title','transactions.created_at','transactions.amount')
 			->get();
 //		->leftJoin( 'users', 'job_applications.applied_by', '=', 'users.id' )
 		return response()->json($tL);

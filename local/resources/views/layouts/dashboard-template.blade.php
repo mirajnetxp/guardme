@@ -53,7 +53,7 @@
                     </div>
                     <div class="favorites-user">
                         <div class="my-ads">
-                            <a href="applied-job.html">0<small>Total Jobs</small></a>
+                            <a href="applied-job.html">{{$jobs}}<small>Total Jobs</small></a>
                         </div>
                         <div class="favorites">
                             <a href="bookmark.html">£
@@ -62,7 +62,7 @@
                                 @else
                                     {{ $wallet_data['available_balance'] }}
                                 @endif
-                                <small>Balance</small></a>
+                                <small>Credit Balance</small></a>
                         </div>
                     </div>  
                 </div>

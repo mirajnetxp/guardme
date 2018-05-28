@@ -271,7 +271,8 @@ class Transaction extends Model
                     'tr.credit_payment_status',
                     'tr.paypal_id',
                     'tr.type',
-                    'tr.id as transaction_id'
+                    'tr.id as transaction_id',
+                    'tr.created_at as payment_date'
                 )
                 ->join('security_jobs as sj', 'sj.id','=' ,'tr.job_id')
                 ->where('tr.status', 1)
@@ -338,7 +339,8 @@ class Transaction extends Model
                     'status' => $row->transaction_status,
                     'type' => $row->type,
                     'debit_credit_type' => $row->debit_credit_type,
-                    'credit_payment_status' => $row->credit_payment_status
+                    'credit_payment_status' => $row->credit_payment_status,
+                    'payment_date' => $row->payment_date
                 ];
                 $all_transactions[$row->job_id] = [
                     'job_id' => $row->job_id,

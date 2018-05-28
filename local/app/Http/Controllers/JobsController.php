@@ -320,13 +320,14 @@ class JobsController extends Controller {
     }
     public function myProposals() {
         $user_id = auth()->user()->id;
-
+        $wallet      = new Transaction();
+        $wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
          $editprofile = User::where('id',$user_id)->get();
        
         $ja = new JobApplication();
         $proposals = $ja->getMyProposals();
 
-        return view('jobs.proposals', compact('proposals','editprofile'));
+        return view('jobs.proposals', compact('proposals','editprofile', 'wallet_data'));
         
     }
 

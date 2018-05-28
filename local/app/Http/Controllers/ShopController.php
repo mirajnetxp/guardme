@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Responsive\Country;
 use Responsive\Address;
+use Responsive\Transaction;
 use Responsive\User;
 use Responsive\Businesscategory;
 use Responsive\Shop;
@@ -42,6 +43,8 @@ class ShopController extends Controller
     {
     	$userid = Auth::user()->id;
 		$editprofile = DB::select('select * from users where id = ?',[$userid]);
+		$trans = new Transaction();
+		$wallet_data['available_balance'] = $trans->getWalletAvailableBalance();
 		$data = array('editprofile' => $editprofile);
 
       $time = array("12:00 AM"=>"0", "01:00 AM"=>"1", "02:00 AM"=>"2", "03:00 AM"=>"3", "04:00 AM"=>"4", "05:00 AM"=>"5", "06:00 AM"=>"6", "07:00 AM"=>"7", "08:00 AM"=>"8",
@@ -110,13 +113,15 @@ class ShopController extends Controller
                     }
                     else{
                         $data = array('rating_count' => 0);
-                        return view('shop', compact( 'userid', 'editprofile', 'countries','address'))->with($data);
+                        return view('shop', compact( 'userid', 'editprofile', 'countries','address', 'wallet_data'))->with($data);
                     }
     }
 
     public function sangvish_verification()
     {
     	$userid = Auth::user()->id;
+		$wallet      = new Transaction();
+		$wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
 		$editprofile = DB::select('select * from users where id = ?',[$userid]);
 		$data = array('editprofile' => $editprofile);
 
@@ -133,7 +138,7 @@ class ShopController extends Controller
         $address = Address::where('user_id', Auth::user()->id)->get();
 
         $data = array('rating_count' => 0);
-        return view('verification', compact( 'userid', 'editprofile', 'countries','address'));
+        return view('verification', compact( 'userid', 'editprofile', 'countries','address', 'wallet_data'));
     }
 
 public function sangvish_viewshop_old()

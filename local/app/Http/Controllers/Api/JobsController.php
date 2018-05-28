@@ -839,7 +839,7 @@ class JobsController extends Controller {
 				$return_data = ["You don't have sufficient balance to perform this action. Please load more balance."];
 			} else {
 				$transaction->status = 1;
-				$transaction->credit_payment_status = 'funded';
+				$transaction->credit_payment_status = 'paid';
 				$transaction->save();
 				$return_status = 200;
 				$return_data = ["Your tip has been successfully added."];

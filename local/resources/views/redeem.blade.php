@@ -26,7 +26,7 @@
                     <div class="col-md-3">
                         <div class="shop-list-page">
                             <div class="shop_pic">
-                                <img src="{{ $item->image }}"
+                                <img src="{{ URL::to('/') }}/local/images/{{ $item->image }}"
                                      class="img-responsive imgservice">
                             </div>
                             <div class="col-lg-12 shop_content">

@@ -132,25 +132,44 @@ class Transaction extends Model
         $balance = 0;
         $user_id = auth()->user()->id;
         if(!empty($user_id)) {
-            // get sum of all active debits for user
-            $debit = DB::table($this->table)
-                ->select(DB::raw('SUM(amount) as total'))
-                ->groupBy('user_id')
-                ->where('user_id', $user_id)
-                ->where('status', 1)
-                ->where('debit_credit_type', 'debit')
-                ->get()->first();
-            $total_debit = !empty($debit->total) ? ($debit->total) : 0;
-            // get sum of all active credits for user
-            $credit = DB::table($this->table)
-                ->select(DB::raw('SUM(amount) as total'))
-                ->groupBy('user_id')
-                ->where('user_id', $user_id)
-                ->where('status', 1)
-                ->where('debit_credit_type', 'credit')
-                ->get()->first();
-            $total_credit = !empty($credit->total) ? ($credit->total) : 0;
-            $balance = $total_debit - $total_credit;
+            if (isEmployer()) {
+                // get sum of all active debits for user
+                $debit = DB::table($this->table)
+                    ->select(DB::raw('SUM(amount) as total'))
+                    ->groupBy('user_id')
+                    ->where('user_id', $user_id)
+                    ->where('status', 1)
+                    ->where('debit_credit_type', 'debit')
+                    ->get()->first();
+                $total_debit = !empty($debit->total) ? ($debit->total) : 0;
+                // get sum of all active credits for user
+                $credit = DB::table($this->table)
+                    ->select(DB::raw('SUM(amount) as total'))
+                    ->groupBy('user_id')
+                    ->where('user_id', $user_id)
+                    ->where('status', 1)
+                    ->where('debit_credit_type', 'credit')
+                    ->get()->first();
+                $total_credit = !empty($credit->total) ? ($credit->total) : 0;
+                $balance = $total_debit - $total_credit;
+            }
+            if (isFreelancer()) {
+                // note: type credit for freelancer is not actually credited by freelancer these are actually credit by employer and by using flipping it we will get freelancer transactions
+
+                // get sum of all funded transactions for a freelancer where credit payment status is funded
+                $credit = DB::table($this->table . ' as tr')
+                    ->select(DB::raw('SUM(amount) as total'))
+                    ->join('job_applications as ja', 'ja.id', '=', 'tr.application_id')
+                    ->groupBy('tr.application_id')
+                    ->where('ja.applied_by', $user_id)
+                    ->whereNotNull('tr.application_id')
+                    ->where('status', 1)
+                    ->where('debit_credit_type', 'credit')
+                    ->where('credit_payment_status', 'paid')
+                    ->get()->first();
+                $total_balance = !empty($credit->total) ? ($credit->total) : 0;
+                $balance = $total_balance;
+            }
 
         }
         $balance =  number_format($balance, 2);
@@ -159,32 +178,51 @@ class Transaction extends Model
 
     public function getWalletEscrowBalance() {
         $user_id = auth()->user()->id;
-        $balance = '';
+        $balance = 0;
         if(!empty($user_id)) {
-            // get sum of all active debits for user
-            $debit = DB::table($this->table)
-                ->select(DB::raw('SUM(amount) as total'))
-                ->groupBy('user_id')
-                ->where('user_id', $user_id)
-                ->where('status', 1)
-                ->where('debit_credit_type', 'debit')
-                ->get()->first();
-            $total_debit = !empty($debit->total) ? ($debit->total) : 0;
-            // get sum of all active credits for user
-            $credit = DB::table($this->table)
-                ->select(DB::raw('SUM(amount) as total'))
-                ->groupBy('user_id')
-                ->where('user_id', $user_id)
-                ->where('status', 1)
-                ->where(function($query){
-                    $query->orWhere('credit_payment_status', 'paid')
-                        ->orWhere('type', 'vat_fee')
-                        ->orWhere('type', 'admin_fee');
-                })
-                ->where('debit_credit_type', 'credit')
-                ->get()->first();
-            $total_credit = !empty($credit->total) ? ($credit->total) : 0;
-            $balance = $total_debit - $total_credit;
+            if (isEmployer()) {
+                // get sum of all active debits for user
+                $debit = DB::table($this->table)
+                    ->select(DB::raw('SUM(amount) as total'))
+                    ->groupBy('user_id')
+                    ->where('user_id', $user_id)
+                    ->where('status', 1)
+                    ->where('debit_credit_type', 'debit')
+                    ->get()->first();
+                $total_debit = !empty($debit->total) ? ($debit->total) : 0;
+                // get sum of all active credits for user
+                $credit = DB::table($this->table)
+                    ->select(DB::raw('SUM(amount) as total'))
+                    ->groupBy('user_id')
+                    ->where('user_id', $user_id)
+                    ->where('status', 1)
+                    ->where(function($query){
+                        $query->orWhere('credit_payment_status', 'paid')
+                            ->orWhere('type', 'vat_fee')
+                            ->orWhere('type', 'admin_fee');
+                    })
+                    ->where('debit_credit_type', 'credit')
+                    ->get()->first();
+                $total_credit = !empty($credit->total) ? ($credit->total) : 0;
+                $balance = $total_debit - $total_credit;
+            }
+            if (isFreelancer()) {
+                // note: type credit for freelancer is not actually credited by freelancer these are actually credit by employer and by using flipping it we will get freelancer transactions
+
+                // get sum of all funded transactions for a freelancer where credit payment status is funded
+                $credit = DB::table($this->table . ' as tr')
+                    ->select(DB::raw('SUM(amount) as total'))
+                    ->join('job_applications as ja', 'ja.id', '=', 'tr.application_id')
+                    ->groupBy('tr.application_id')
+                    ->where('ja.applied_by', $user_id)
+                    ->whereNotNull('tr.application_id')
+                    ->where('status', 1)
+                    ->where('debit_credit_type', 'credit')
+                    ->where('credit_payment_status', 'funded')
+                    ->get()->first();
+                $total_balance = !empty($credit->total) ? ($credit->total) : 0;
+                $balance = $total_balance;
+            }
         }
         return $balance;
     }
@@ -210,11 +248,99 @@ class Transaction extends Model
         }
         return $return_data;
     }
+    public function getAllTransactions() {
+        $user_id = auth()->user()->id;
+        $all_transactions = [];
+        // employer
+        if (isEmployer()) {
+            $query_rows = DB::table($this->table . ' as tr')
+                ->select(
+                    'sj.id as job_id',
+                    'sj.title',
+                    'tr.amount as transaction_amount',
+                    'tr.status as transaction_status',
+                    'tr.debit_credit_type',
+                    'tr.credit_payment_status',
+                    'tr.paypal_id',
+                    'tr.type',
+                    'tr.id as transaction_id'
+                )
+                ->join('security_jobs as sj', 'sj.id','=' ,'tr.job_id')
+                ->where('tr.status', 1)
+                ->where('sj.created_by', $user_id)
+                ->get();
+            // re arrange
+            $all_transactions = $this->reArrangeJobTransactions($query_rows);
+        }
+        if (isFreelancer()) {
+            $query_rows = DB::table($this->table . ' as tr')
+                ->select(
+                    'sj.id as job_id',
+                    'sj.title',
+                    'tr.amount as transaction_amount',
+                    'tr.status as transaction_status',
+                    'tr.debit_credit_type',
+                    'tr.credit_payment_status',
+                    'tr.paypal_id',
+                    'tr.type',
+                    'tr.id as transaction_id'
+                )
+                ->join('security_jobs as sj', 'sj.id','=' ,'tr.job_id')
+                ->join('job_applications as ja', 'tr.application_id','=' ,'ja.id')
+                ->where('tr.status', 1)
+                ->where('ja.applied_by', $user_id)
+                ->get();
+            // re arrange
+            $all_transactions = $this->reArrangeJobTransactions($query_rows);
 
+        }
+        return $all_transactions;
+    }
 
 
     public function getTransactionJob(){
         return $this->belongsTo( Job::class , 'job_id' , 'id' );
     }
 
+    /**
+     * @return array
+     */
+    public function getJobsTransactionData() {
+        $available_balance = $this->getWalletAvailableBalance();
+        $escrow = $this->getWalletEscrowBalance();
+        $all_job_transactions = $this->getAllTransactions();
+        return [
+            'all_job_transactions' => $all_job_transactions,
+            'escrow_balance' => $escrow,
+            'available_balance' => $available_balance
+        ];
+    }
+
+    /**
+     * @param $query_rows
+     * @return mixed
+     */
+    private function reArrangeJobTransactions($query_rows) {
+        $all_transactions = [];
+        if (!empty($query_rows)) {
+            foreach($query_rows as $key => $row) {
+                $job_transactions[$row->job_id][$row->transaction_id] = [
+                    'transaction_id' => $row->transaction_id,
+                    'amount' => $row->transaction_amount,
+                    'status' => $row->transaction_status,
+                    'type' => $row->type,
+                    'debit_credit_type' => $row->debit_credit_type,
+                    'credit_payment_status' => $row->credit_payment_status
+                ];
+                $all_transactions[$row->job_id] = [
+                    'job_id' => $row->job_id,
+                    'title' => $row->title
+                ];
+            }
+            foreach ($all_transactions as $job_id => $job) {
+                $all_transactions[$job_id]['transactions'] = array_values($job_transactions[$job_id]);
+            }
+        }
+        return array_values($all_transactions);
+    }
 }

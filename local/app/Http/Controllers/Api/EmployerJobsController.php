@@ -44,15 +44,17 @@ class EmployerJobsController extends Controller {
 	}
 
 	public function awardedJobs() {
-		if(auth()->user()->admin!=0){
-			return response()->json(403);
+		if ( auth()->user()->admin != 0 ) {
+			return response()->json( 403 );
 		}
 		$ID          = auth()->user()->id;
 		$awardedJobs = DB::table( 'security_jobs' )
 		                 ->where( 'created_by', $ID )
 		                 ->Join( 'job_applications', 'security_jobs.id', '=', 'job_applications.job_id' )
 		                 ->where( 'is_hired', 1 )
-		                 ->select( 'job_applications.job_id', 'security_jobs.title','job_applications.updated_at')
+		                 ->rightJoin( 'transactions', 'security_jobs.id', '=', 'transactions.job_id' )
+		                 ->where( 'transactions.credit_payment_status', '=', 'funded' )
+		                 ->select( 'job_applications.job_id', 'security_jobs.title','transactions.amount', 'job_applications.updated_at' )
 		                 ->get();
 
 		return response()->json( $awardedJobs, 200 );

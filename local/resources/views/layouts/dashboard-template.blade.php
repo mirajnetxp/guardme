@@ -56,7 +56,13 @@
                             <a href="applied-job.html">0<small>Total Jobs</small></a>
                         </div>
                         <div class="favorites">
-                            <a href="bookmark.html">0<small>Balance</small></a>
+                            <a href="bookmark.html">£
+                                @if(empty($wallet_data['available_balance']))
+                                    0.00
+                                @else
+                                    {{ $wallet_data['available_balance'] }}
+                                @endif
+                                <small>Balance</small></a>
                         </div>
                     </div>  
                 </div>

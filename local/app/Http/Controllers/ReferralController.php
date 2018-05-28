@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Responsive\Item;
+use Responsive\Transaction;
 use Responsive\Url;
 use Responsive\User;
 use Responsive\UserItem;
@@ -29,7 +30,8 @@ class ReferralController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-
+        $wallet      = new Transaction();
+        $wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
         //Get list of ids of items that user bought
         $userItems = UserItem::where('user_id', $user->id)->get();
         $items = [];
@@ -44,7 +46,8 @@ class ReferralController extends Controller
                 'user' => Auth::user(),
                 'editprofile' => [0 => Auth::user()],
                 'referrals' => $user->getReferrals(),
-                'items' => $items
+                'items' => $items,
+                'wallet_data' => $wallet_data
             ]
         );
     }

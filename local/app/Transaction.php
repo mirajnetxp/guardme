@@ -218,7 +218,7 @@ class Transaction extends Model
                     ->whereNotNull('tr.application_id')
                     ->where('status', 1)
                     ->where('debit_credit_type', 'credit')
-                    ->where('credit_payment_status', 'funded')
+                    ->where('credit_payment_status', 'paid')
                     ->get()->first();
                 $total_balance = !empty($credit->total) ? ($credit->total) : 0;
                 $balance = $total_balance;
@@ -232,17 +232,25 @@ class Transaction extends Model
      */
     public function getAllTransactionsAndEscrowBalance() {
         $return_data = [
-            'escrow_balance' => '',
+            'escrow_balance' => 0,
+            'available_balance' => 0,
             'all_transactions' => []
         ];
         $user_id = auth()->user()->id;
-        $escrow_balance = $this->getWalletEscrowBalance();
+        // no need for escrow balance for freelancer, avaiable balance is escrow balance for freelancer.
+        $available_balance = $this->getWalletAvailableBalance();
+        if (!isFreelancer()) {
+            $escrow_balance = $this->getWalletEscrowBalance();
+        } else {
+            $escrow_balance = $available_balance;
+        }
         $all_transactions = Transaction::where('status', 1)
             ->where('user_id', $user_id)
             ->get();
         if (!empty($all_transactions)) {
             $return_data = [
                 'escrow_balance' => $escrow_balance,
+                'available_balance' => $available_balance,
                 'all_transactions' => $all_transactions
             ];
         }
@@ -263,7 +271,8 @@ class Transaction extends Model
                     'tr.credit_payment_status',
                     'tr.paypal_id',
                     'tr.type',
-                    'tr.id as transaction_id'
+                    'tr.id as transaction_id',
+                    'tr.created_at as payment_date'
                 )
                 ->join('security_jobs as sj', 'sj.id','=' ,'tr.job_id')
                 ->where('tr.status', 1)
@@ -330,7 +339,8 @@ class Transaction extends Model
                     'status' => $row->transaction_status,
                     'type' => $row->type,
                     'debit_credit_type' => $row->debit_credit_type,
-                    'credit_payment_status' => $row->credit_payment_status
+                    'credit_payment_status' => $row->credit_payment_status,
+                    'payment_date' => $row->payment_date
                 ];
                 $all_transactions[$row->job_id] = [
                     'job_id' => $row->job_id,

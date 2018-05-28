@@ -24,7 +24,9 @@ class FreelancerJobsController extends Controller {
 		$jobs = DB::table( 'job_applications' )
 		          ->where( 'applied_by', '=', $user->id )
 		          ->leftJoin( 'security_jobs', 'job_applications.job_id', '=', 'security_jobs.id' )
-		          ->select( 'security_jobs.title', 'job_applications.created_at' )
+		          ->leftJoin( 'transactions', 'job_applications.job_id', '=', 'transactions.job_id' )
+		          ->where( 'credit_payment_status', '=', 'funded' )
+		          ->select( 'security_jobs.title', 'job_applications.created_at','transactions.amount' )
 		          ->get()
 		          ->toArray();
 

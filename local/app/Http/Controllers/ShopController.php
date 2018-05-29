@@ -75,7 +75,7 @@ class ShopController extends Controller
         $set_id=1;
         $setting = DB::table('settings')->where('id', $set_id)->get();
 
-        $jobs = DB::table('job_applications')->where('applied_by',$userid)->where('is_hired','1')->count();
+       
         $countries = Country::all();
         $address = Address::where('user_id', Auth::user()->id)->get();
 
@@ -110,11 +110,11 @@ class ShopController extends Controller
                         ->where('rshop_id', '=', $shop_id)->orderBy('rid', 'desc')->get();
                         $data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt, 'shopcount' => $shopcount, 'shop' => $shop, 'stime' => $stime,
                             'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'viewservice' => $viewservice, 'setting' => $setting, 'rating_count' => $rating_count, 'rating' => $rating);
-                        return view('shop', compact('data','jobs', 'userid', 'editprofile', 'countries','address'))->with($data);
+                        return view('shop', compact('data', 'userid', 'editprofile', 'countries','address'))->with($data);
                     }
                     else{
                         $data = array('rating_count' => 0);
-                        return view('shop', compact( 'userid','jobs', 'editprofile', 'countries','address', 'wallet_data'))->with($data);
+                        return view('shop', compact( 'userid', 'editprofile', 'countries','address', 'wallet_data'))->with($data);
                     }
     }
 

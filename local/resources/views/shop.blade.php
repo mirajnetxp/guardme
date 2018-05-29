@@ -204,6 +204,7 @@
                                         </span>
                                     @endif
                             </div>
+                            <input type="hidden" name="currentphoto" value="<?php echo $editprofile[0]->photo;?>">
                             <div class="buttons pull-right">
                                 <?php if(config('global.demosite')=="yes"){?>
                                         <button type="button" class="btn btndisable">Update</button> <span class="disabletxt">( <?php echo config('global.demotxt');?> )</span>

@@ -200,23 +200,22 @@ class JobsController extends Controller {
             }
         }
         
-        // $ja = new JobApplication();
-        // $proposals = $ja->getMyProposals();
-        // $arr_templist = []; 
-        // if (count($proposals) > 0) {
-        //     foreach ($proposals as $proposal) {
-        //         $arr_templist[$proposal->job_id] = $proposal->is_hired;
-        //     }
-        // }
-        // foreach ($joblist as $key => $list) {
-        //     if (isset($arr_templist[$list->id])) {
-        //         $joblist[$key]->is_hired = $arr_templist[$list->id];
-        //     } else {
-        //         $joblist[$key]->is_hired = 0;
-        //     }
+        $ja = new JobApplication();
+        $proposals = $ja->getMyProposals();
+        $arr_templist = []; 
+        if (count($proposals) > 0) {
+            foreach ($proposals as $proposal) {
+                $arr_templist[$proposal->job_id] = $proposal->is_hired;
+            }
+        }
+        foreach ($joblist as $key => $list) {
+            if (isset($arr_templist[$list->id])) {
+                $joblist[$key]->is_hired = $arr_templist[$list->id];
+            } else {
+                $joblist[$key]->is_hired = 0;
+            }
             
-        // }
-
+        }
       return view('jobs.find', compact('joblist','b_cats','locs'));
     }
 

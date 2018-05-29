@@ -3,6 +3,18 @@
   <head>
    @include('style')
     <link rel="stylesheet" href="{{asset('css/style.css')}}" media="all">
+    <style type="text/css">
+		button {
+			background: #00a651;
+			color: white !important;
+			margin: 0;
+			border: none;
+			border-radius: 5px;
+			padding-left: 20px;
+			padding-right: 20px;
+			height: 40px;
+		}
+	</style>
   </head>
   <body>
         <!-- fixed navigation bar -->
@@ -33,7 +45,7 @@
             </div>
           </div>
           <main class="clearfix">
-            <table>
+          <table class="display" id="table">
               <thead>
                 <tr>
                   <th class="desc">DESCRIPTION</th>
@@ -72,7 +84,10 @@
                   @endif
                 @endforeach
                 <tr>
-                  <td colspan="4" class="grand total">GRAND TOTAL</td>
+                  <td class="grand total"></td>
+                  <td class="grand total"></td>
+                  <td class="grand total">GRAND TOTAL</td>
+                  <td class="grand total"></td>
                   <td class="grand total">{{$balance}}</td>
                 </tr>
               </tbody>
@@ -82,7 +97,29 @@
       </div>
     </section>
     @include('footer')
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript">
+      $(document).ready(function() {
+          var table = $('#table').DataTable( {
+              dom: 'Bfrtip',
+              searching: false,
+              sorting: true,
+              buttons: [
+                  'csv', 'excel', 'pdf',
+              ],
+              page_length: 50,
+          });
+          $('#table_paginate').css('display', 'none');
+      } );
+
       function printPage(){
         window.print();
       }

@@ -75,6 +75,7 @@ class ShopController extends Controller
         $set_id=1;
         $setting = DB::table('settings')->where('id', $set_id)->get();
 
+       
         $countries = Country::all();
         $address = Address::where('user_id', Auth::user()->id)->get();
 

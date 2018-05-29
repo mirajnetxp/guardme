@@ -292,7 +292,8 @@ class Transaction extends Model
                     'tr.credit_payment_status',
                     'tr.paypal_id',
                     'tr.type',
-                    'tr.id as transaction_id'
+                    'tr.id as transaction_id',
+	                'tr.created_at as payment_date'
                 )
                 ->join('security_jobs as sj', 'sj.id','=' ,'tr.job_id')
                 ->join('job_applications as ja', 'tr.application_id','=' ,'ja.id')

@@ -164,7 +164,7 @@ class JobApplication extends Model
             ->join('security_jobs as sj', 'sj.id', '=', 'ja.job_id')
              ->join('users as u', 'u.id', '=', 'ja.applied_by')
              ->join('shop as shp', 'sj.created_by', '=', 'shp.user_id')
-	        ->leftJoin( 'transactions', 'ja.job_id', '=', 'transactions.job_id' )
+	        ->Join( 'transactions', 'ja.job_id', '=', 'transactions.job_id' )
 	        ->where( 'credit_payment_status', '=', 'funded' )
             ->where('ja.applied_by', $user_id)
             ->where('ja.completion_status', '!=', 2)

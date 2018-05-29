@@ -21,6 +21,19 @@
 
     $url = URL::to("/"); ?>
 
+      @php
+
+        if(Auth::user()->admin == 0) {
+
+             $job = count(Responsive\Job::getMyJobs());
+        } else {
+
+            $job = DB::table('job_applications')->where('applied_by',Auth::user()->id)->where('is_hired','1')->count();
+        }
+
+        $avarage
+    @endphp
+
     @include('header')
 
 
@@ -51,19 +64,12 @@
                                     @endif</a></h2>
                         <!-- <h5>You last logged in at: 10-01-2017 6:40 AM [ USA time (GMT + 6:00hrs)]</h5> -->
                     </div>
-                     @php
-
-                        if(Auth::user()->admin == 0) {
-
-                         $job = count(Responsive\Job::getMyJobs());
-                        } else {
-
-                           $job = DB::table('job_applications')->where('applied_by',Auth::user()->id)->where('is_hired','1')->count();
-                        }
-                     @endphp
+                   
                     <div class="favorites-user">
-                        <div class="my-ads">
-                            <a href="applied-job.html">{{$job}}<small>Total Jobs</small></a>
+                      <div class="favorites">
+                            <a href="bookmark.html">
+                               {{$job}}
+                                <small>Total Jobs</small></a>
                         </div>
                         <div class="favorites">
                             <a href="bookmark.html">£

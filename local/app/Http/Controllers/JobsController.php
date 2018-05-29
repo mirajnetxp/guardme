@@ -216,7 +216,8 @@ class JobsController extends Controller {
         //     }
             
         // }
-        return view('jobs.find', compact('joblist','b_cats','locs'));
+
+      return view('jobs.find', compact('joblist','b_cats','locs'));
     }
 
     public function postfindJobs(Request $request) 
@@ -273,18 +274,21 @@ class JobsController extends Controller {
 		if (!$id) {
 			return abort(404);
 		}
-		if ( ! Auth::Check() ) {
-			Session::flash( 'login_first', ' Please login to view the full job description.' );
-			return redirect()->back();
-		}
+
 		$user_address = [];
 		$saved_job    = '';
 		if ( Auth::check() ) {
 			$user_id      = auth()->user()->id;
+
 			$user_address = User::where( 'id', $user_id )->with( 'address' )->first();
+
+
+
+
 			$saved_job    = SavedJob::where( 'job_id', $id )->where( 'user_id', $user_id )->first();
 		} else {
-			return redirect( '/register' );
+			Session::flash( 'login_first', ' Please login to view the full job description.' );
+			return redirect()->back();
 		}
 		$b_cats = Businesscategory::all();
 		$locs   = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
@@ -296,11 +300,7 @@ class JobsController extends Controller {
         if (empty($job)) {
             return abort(404);
         }
-        
-        $ja = new JobApplication();
-        $application = $ja->getMyApplicationDetails($id);
-
-        return view('jobs.detail', compact('job','b_cats','locs','user_address', 'saved_job', 'application'));
+        return view('jobs.detail', compact('job','b_cats','locs','user_address', 'saved_job'));
     }
 
 	/**
@@ -355,13 +355,14 @@ class JobsController extends Controller {
     }
     public function myProposals() {
         $user_id = auth()->user()->id;
-
+        $wallet      = new Transaction();
+        $wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
          $editprofile = User::where('id',$user_id)->get();
        
         $ja = new JobApplication();
         $proposals = $ja->getMyProposals();
 
-        return view('jobs.proposals', compact('proposals','editprofile'));
+        return view('jobs.proposals', compact('proposals','editprofile', 'wallet_data'));
         
     }
 

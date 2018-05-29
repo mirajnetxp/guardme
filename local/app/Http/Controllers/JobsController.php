@@ -82,8 +82,25 @@ class JobsController extends Controller {
     public function myJobs() {
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->get();
+        $jobApplications = new JobApplication();
         $my_jobs = Job::getMyJobs();
-        return view('jobs.my', compact('my_jobs','editprofile'));
+        $arr_count = [];
+        if (count($my_jobs) > 0) {
+            foreach ($my_jobs as $job) {
+                $hired_count = 0;
+                $applications = $jobApplications->getJobApplications($job->id);
+                if (count($applications) > 0) {
+                    foreach ($applications as $app) {
+                        if ($app->is_hired == '1') {
+                            $hired_count++;
+                        }
+                    }
+                }
+                $arr_count[$job->id]['hiredcount'] = $hired_count;
+                $arr_count[$job->id]['appcount'] = count($applications);                
+            }
+        }
+        return view('jobs.my', compact('my_jobs','editprofile', 'arr_count'));
     }
 
     public function savedJobs() {
@@ -183,22 +200,22 @@ class JobsController extends Controller {
             }
         }
         
-        $ja = new JobApplication();
-        $proposals = $ja->getMyProposals();
-        $arr_templist = []; 
-        if (count($proposals) > 0) {
-            foreach ($proposals as $proposal) {
-                $arr_templist[$proposal->job_id] = $proposal->is_hired;
-            }
-        }
-        foreach ($joblist as $key => $list) {
-            if (isset($arr_templist[$list->id])) {
-                $joblist[$key]->is_hired = $arr_templist[$list->id];
-            } else {
-                $joblist[$key]->is_hired = 0;
-            }
+        // $ja = new JobApplication();
+        // $proposals = $ja->getMyProposals();
+        // $arr_templist = []; 
+        // if (count($proposals) > 0) {
+        //     foreach ($proposals as $proposal) {
+        //         $arr_templist[$proposal->job_id] = $proposal->is_hired;
+        //     }
+        // }
+        // foreach ($joblist as $key => $list) {
+        //     if (isset($arr_templist[$list->id])) {
+        //         $joblist[$key]->is_hired = $arr_templist[$list->id];
+        //     } else {
+        //         $joblist[$key]->is_hired = 0;
+        //     }
             
-        }
+        // }
         return view('jobs.find', compact('joblist','b_cats','locs'));
     }
 

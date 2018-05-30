@@ -139,7 +139,48 @@
 
                     <div class="ad-info">
                         <span><span><a href="#" class="title">{{$job->title}}</a></span> @ <a
-                                    href="#"> {{$job->poster->company->shop_name}}</a></span>
+                                    href="#">
+
+                                     {{-- $job->poster->company->shop_name --}}
+                                                  @php
+                    if($job->myApplications && count($job->myApplications)>0){
+                    
+                     if($job->myApplications[0]->is_hired == '1'){
+                                            echo $job->poster->company->shop_name;
+                                        }else{
+                                            $arr = explode(' ',$job->poster->company->shop_name);
+                                        foreach($arr as $key=>$row){
+                                            if($key == 0){
+                                                echo $row;
+                                            }else{
+                                                $count = strlen($row);
+                                                echo " ";
+                                                for($c=0;$c< $count;$c++){
+                                                    echo '*';
+                                                }
+                                            }
+                                            }
+                                        }   
+
+                }else{
+
+
+                $arr = explode(' ',$job->poster->company->shop_name);
+                //echo count($arr)
+                foreach($arr as $key=>$row){
+                if($key == 0){
+                echo $row;
+            }else{
+            $count = strlen($row);
+            echo " ";
+            for($c=0;$c< $count;$c++){
+            echo '*';
+        }
+    }
+}
+}
+@endphp
+                                 </a></span>
                         <div class="ad-meta">
                             <ul>
                                 <li><a href="#"><i class="fa fa-map-marker"
@@ -160,15 +201,26 @@
                 </div><!-- item-info -->
                 <div class="social-media">
                     <div class="button">
-                        <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
+
+
+
+ @if($job->myApplications && count($job->myApplications)>0)
+                                <span class="btn alert alert-danger">You already have an overlapping booking</span>                                              
+                                    @else
+                                    <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
                                     class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
-                        <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                                <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>
                             @if($saved_job != null && $saved_job->job_id == $job->id)
                                 <span id="saved">Saved</span>
                             @else
                                 <span id="saved">Save For Later</span>
-                            @endif
-                        </a>
+                                @endif
+                            </a>
+@endif
+
+                       
+
+
                     </div>
                     <ul class="share-social">
                         <li>Share this ad</li>
@@ -226,7 +278,50 @@
                         <div class="section company-info">
                             <h1>Company Info</h1>
                             <ul>
-                                <li>Compnay Name: <a href="#">{{$job->poster->company->shop_name}}</a></li>
+                                <li>Compnay Name: <a href="#">
+                                    {{--$job->poster->company->shop_name--}}
+
+                                         @php
+                    if($job->myApplications && count($job->myApplications)>0){
+                    
+                     if($job->myApplications[0]->is_hired == '1'){
+                                            echo $job->poster->company->shop_name;
+                                        }else{
+                                            $arr = explode(' ',$job->poster->company->shop_name);
+                                        foreach($arr as $key=>$row){
+                                            if($key == 0){
+                                                echo $row;
+                                            }else{
+                                                $count = strlen($row);
+                                                echo " ";
+                                                for($c=0;$c< $count;$c++){
+                                                    echo '*';
+                                                }
+                                            }
+                                            }
+                                        }   
+
+                }else{
+
+
+                $arr = explode(' ',$job->poster->company->shop_name);
+                //echo count($arr)
+                foreach($arr as $key=>$row){
+                if($key == 0){
+                echo $row;
+            }else{
+            $count = strlen($row);
+            echo " ";
+            for($c=0;$c< $count;$c++){
+            echo '*';
+        }
+    }
+}
+}
+@endphp
+
+
+                                </a></li>
                                 <li>Address: @if($job->poster->company->city){{$job->poster->company->city}}@endif
                                     @if($job->poster->company->state){{', '.$job->poster->company->state}}@endif
                                     @if($job->poster->company->country){{', '.$job->poster->company->country}}@endif</li>

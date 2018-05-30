@@ -294,7 +294,7 @@ class JobsController extends Controller {
 		$locs   = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
 		//$job = Job::find($id);
 
-        $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
+        $job = Job::with(['poster','poster.company','industory','myApplications'])->where('id',$id)->first();
         // dd($saved_job);
 
         if (empty($job)) {

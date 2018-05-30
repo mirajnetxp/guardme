@@ -354,10 +354,9 @@
                                 {{date('d/m/Y',strtotime($job->created_at))}}
                             </a></li>
                             <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a></li> 
-                            <li>Is hired: @if($job->is_hired)
+                            <li>@if($job->is_hired)
                                             <i class="fa fa-check-circle-o ico-30 green"></i>
-                                        @else
-                                            <i class="fa fa-times-circle-o ico-30 red"></i> 
+                                             Applied Date: {{date('M d, Y',strtotime($job->applied_date))}}
                                         @endif
                             </li>
                         </ul>

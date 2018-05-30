@@ -14,6 +14,10 @@
 			padding-right: 20px;
 			height: 40px;
 		}
+    .dt-buttons {
+      position: relative;
+      top: -218px;
+    }
 	</style>
   </head>
   <body>
@@ -48,16 +52,52 @@
             </div>
           </div>
           <main class="clearfix">
-            <table class="display" id="table">
+            <table class="display" id="table" data-page-length='25'>
               <thead>
+                <tr class="hidden">
+                  <th></th>
+                  <th>INVOICE</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr class="hidden">
+                  <td>NAME: {{$from->name}}</td>
+                  <td></td>
+                  <td></td>
+                  <td>GuardME</td>
+                </tr>
+                <tr class="hidden">
+                  <td>TRANSACTION NUMBER: @if(count($all_transactions) != 0) {{$all_transactions[0]->id}} @endif</td>
+                  <td></td>
+                  <td></td>
+                  <td>Andrav Technologies UK</td>
+                </tr>
+                <tr class="hidden">
+                  <td>DATE: @if(count($all_transactions) != 0) {{date('d/m/Y',strtotime($all_transactions[0]->created_at))}} @endif</td>
+                  <td></td>
+                  <td></td>
+                  <td>75 Archway Romford</td>
+                </tr>
+                <tr class="hidden">
+                  <td>TOTAL AMOUNT: @if(count($all_transactions) != 0) {{$all_transactions[0]->amount / $all_transactions[0]->number_of_freelancers}} @endif</td>
+                  <td></td>
+                  <td></td>
+                  <td>Essex</td>
+                </tr>
+                <tr class="hidden">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>RM3 7EH</td>
+                </tr>
                 <tr>
                   <th class="service">TITLE</th>
                   <th class="unit">DATE</th>
                   <th class="qty">STATUS</th>
                   <th class="total">TOTAL</th>
                 </tr>
-              </thead>
-              <tbody>
                 @foreach($all_transactions as $transaction)
                 <tr>
                   <td class="service">{{$transaction->title}}</td>
@@ -101,6 +141,7 @@
               page_length: 50,
           });
           $('#table_paginate').css('display', 'none');
+          $('#table_info').css('display', 'none');
       } );
 
       function printPage(){

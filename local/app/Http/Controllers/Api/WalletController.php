@@ -26,6 +26,9 @@ class WalletController extends Controller {
         // get wallet data job wise
         $wallet = new Transaction();
         $job_transactions_data = $wallet->getJobsTransactionData();
+
+
+
         return response()
             ->json($job_transactions_data , 200);
 

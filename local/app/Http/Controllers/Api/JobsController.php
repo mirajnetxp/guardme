@@ -506,16 +506,16 @@ class JobsController extends Controller {
 							if ( $latitude > 0 && $latitude > 0 ) {
 								$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
 							} else {
-								$joblist = Job::where( 'status', '1' )->paginate( 10 );
+								$joblist = Job::where( 'status', '1' );
 							}
 						} else {
-							$joblist = Job::where( 'status', '1' )->paginate( 10 );
+							$joblist = Job::where( 'status', '1' );
 						}
 					} else {
-						$joblist = Job::where( 'status', '1' )->paginate( 10 );
+						$joblist = Job::where( 'status', '1' );
 					}
 				} else {
-					$joblist = Job::where( 'status', '1' )->paginate( 10 );
+					$joblist = Job::where( 'status', '1' );
 				}
 			}
 		} else {
@@ -534,19 +534,21 @@ class JobsController extends Controller {
 						if ( $latitude > 0 && $latitude > 0 ) {
 							$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
 						} else {
-							$joblist = Job::where( 'status', '1' )->paginate( 10 );
+							$joblist = Job::where( 'status', '1' );
 						}
 					} else {
-						$joblist = Job::where( 'status', '1' )->paginate( 10 );
+						$joblist = Job::where( 'status', '1' );
 					}
 				} else {
-					$joblist = Job::where( 'status', '1' )->paginate( 10 );
+					$joblist = Job::where( 'status', '1' );
 				}
 			} else {
-				$joblist = Job::where( 'status', '1' )->paginate( 10 );
+				$joblist = Job::where( 'status', '1' );
 			}
 		}
 
+//		$joblist=$joblist->with('schedules');
+		$joblist=$joblist->with('schedules')->paginate( 10 );
 		return response()->json( [
 			'job_list' => $joblist
 		] );

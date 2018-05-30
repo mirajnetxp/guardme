@@ -223,6 +223,7 @@ class JobApplication extends Model {
 				$job_schedule[ $sec_item->job_id ][] = [ 'start' => $sec_item->start, 'end' => $sec_item->end ];
 			}
 		}
+		$super_aggregate = 0;
 		foreach ( $res as $k => $item ) {
 			$job_date_range     = '';
 			$appearance         = $item->appearance;
@@ -230,13 +231,14 @@ class JobApplication extends Model {
 			$customer_focused   = $item->customer_focused;
 			$security_conscious = $item->security_conscious;
 			$rating_aggregate   = ( $appearance + $punctuality + $customer_focused + $security_conscious ) / 4;
+			$super_aggregate += $rating_aggregate;
 			if ( ! empty( $job_schedule[ $item->job_id ] ) ) {
 				$current_job_schedule_array      = $job_schedule[ $item->job_id ];
 				$current_job_schedule_start_date = $current_job_schedule_array[0]['start'];
 				$current_job_schedule_end_date   = $current_job_schedule_array[ count( $current_job_schedule_array ) - 1 ]['end'];
 				$job_date_range                  = date( 'd, M Y', strtotime( $current_job_schedule_start_date ) ) . ' to ' . date( 'd, M Y', strtotime( $current_job_schedule_end_date ) );
 			}
-			$work_history[] = [
+			$work_history['project_ratings'][] = [
 				'job_id'           => $item->job_id,
 				'star_rating'      => $rating_aggregate,
 				'feedback_message' => $item->message,
@@ -244,7 +246,9 @@ class JobApplication extends Model {
 				'date_range'       => $job_date_range
 			];
 		}
-
+		$total_feedbacks = count($res) > 0 ?  count($res) : 1;
+		$super_aggregate = $super_aggregate/$total_feedbacks;
+		$work_history['aggregate_rating'] = number_format($super_aggregate, 2);
 		return $work_history;
 	}
 }

@@ -38,7 +38,7 @@
         @endif
 
         @include('shared.message')
-        @foreach($my_jobs as $job)
+        @foreach($new_jobs as $job)
             <div class="job-ad-item">
                 <div class="item-info">
                     <div class="item-image-box">
@@ -55,6 +55,8 @@
                               
                                 <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a></li>
                                 <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory->name}}</a></li>
+                                <li><a href="#">Applications: <b style="color:#00a651">{{{$arr_count[$job->id]['appcount']}}}</b></a></li>
+                                <li><a href="#">Hires: <b style="color:#00a651">{{{$arr_count[$job->id]['hiredcount']}}}</b></a></li>
                             </ul>
                         </div><!-- ad-meta -->                                  
                     </div><!-- ad-info -->
@@ -75,7 +77,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($my_jobs as $job)
+                        @foreach($new_jobs as $job)
                             <tr>
                                 <td>{{ $job->title }}</td>
                                 <td>{{ $job->description }}</td>

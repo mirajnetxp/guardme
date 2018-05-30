@@ -118,9 +118,21 @@ class SearchController extends Controller {
         $sec_personnels = $query->with('person_address')->paginate(10);
 
         if(\request()->expectsJson())
-            return response()->json($sec_personnels);
-
-		return view('search',compact('cats','locs','sec_personnels'));
+						return response()->json($sec_personnels);
+		$new_personnels = [];
+        $arr_sort = [];
+        foreach ($sec_personnels as $key => $personnels) {
+            $arr_sort[$key] = $personnels->updated_at;
+        }
+        arsort($arr_sort);
+        foreach ($arr_sort as $idkey => $val) {
+            foreach ($sec_personnels as $key => $personnels) {
+                if ($idkey == $key) {
+                    array_push($new_personnels, $personnels);
+                }
+            }
+        }
+		return view('search',compact('cats','locs','new_personnels'));
 	}
 	
 	public function postpersonnelsearch(Request $request)

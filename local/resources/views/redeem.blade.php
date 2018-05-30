@@ -14,6 +14,9 @@
 @endsection
 
 @section('content')
+    <div class="section job-ad-item">
+        <a class="btn btn-secondary" href="{{ URL::to('referral') }}">&larr; Back to Referrals</a>
+    </div>
     <div class="resume-content">
         <div class="profile-details section clearfix">
             <h2>Redeem</h2>

@@ -15,7 +15,7 @@
             <div class="breadcrumb-section">
                 <ol class="breadcrumb">
                      <li><a href="{{URL::to('/')}}">Home</a></li>
-                    
+                     <li><a href="{{URL::to('/jobs/proposals')}}">Applications</a></li>
                     <li>{{$job->title}}</li>
                 </ol><!-- breadcrumb -->                        
                 <h2 class="title">{{$job->title}}</h2>
@@ -76,6 +76,9 @@
                     </div>
                 </div>
 
+                <div class="section job-ad-item">
+                    <a class="btn btn-secondary" href="{{ URL::to('/jobs/proposals') }}">&larr; Back to Applications</a>
+                </div>
 
                 <div class="section job-ad-item">
                     <div class="item-info">

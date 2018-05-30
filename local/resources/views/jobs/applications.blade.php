@@ -5,17 +5,18 @@
 @section('bread-crumb')
     <div class="breadcrumb-section">
         <ol class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li>Jobs</li>
+            <li><a href="{{URL::to('/')}}">Home</a></li>
+            <li><a href="{{URL::to('/jobs/my')}}">Jobs</a></li>
+            <li>{{$job->title}}</li>
         </ol>                       
         <h2 class="title">
-           My Jobs</h2>
+        {{$job->title}}</h2>
     </div>
 @endsection
 @section('content')
 
         <div class="section job-ad-item">
-            <!-- item-info -->
+            <a class="btn btn-secondary" href="{{ URL::to('/jobs/my') }}">&larr; Back to Jobs</a>
         </div>
 
         <div class="job-details-info">

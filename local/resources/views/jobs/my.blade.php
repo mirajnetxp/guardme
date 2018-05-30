@@ -38,7 +38,7 @@
         @endif
 
         @include('shared.message')
-        @foreach($my_jobs as $job)
+        @foreach($new_jobs as $job)
             <div class="job-ad-item">
                 <div class="item-info">
                     <div class="item-image-box">
@@ -77,7 +77,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($my_jobs as $job)
+                        @foreach($new_jobs as $job)
                             <tr>
                                 <td>{{ $job->title }}</td>
                                 <td>{{ $job->description }}</td>

@@ -330,9 +330,9 @@
         </div>        
     </div>
     @endif
-    <?php if($joblist->count()>0){?>
+    <?php if(count($sort_jobs)>0){?>
     
-            <?php foreach($joblist as $job){ ?>
+            <?php foreach($sort_jobs as $job){ ?>
                 
         <div class="job-ad-item">
             <div class="item-info">
@@ -377,7 +377,6 @@
     <?php } ?>
 
      <div class="text-center">
-                {{$joblist->links()}}
             </div>
     </div>
 </div>

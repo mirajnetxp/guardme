@@ -361,9 +361,9 @@
                                 </div>        
                             </div>
                             @endif          
-                        <?php if($sec_personnels->count()>0){?>
+                        <?php if(count($new_personnels)>0){?>
 
-                        <?php foreach($sec_personnels as $person){ ?>
+                        <?php foreach($new_personnels as $person){ ?>
 
 						<div class="job-ad-item">
 							<div class="item-info">
@@ -415,7 +415,6 @@
 
 					<!-- pagination  -->
 						<div class="text-center">
-							{{$sec_personnels->links()}}
 						</div><!-- pagination  -->
 					</div>
 				</div>

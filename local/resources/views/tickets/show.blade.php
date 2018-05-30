@@ -21,7 +21,14 @@
 		$userId = $user->id;
         $firstMessage = $messages->shift() ?? null;
     @endphp
-
+    <div class="breadcrumb-section">
+            <ol class="breadcrumb">
+                <li><a href="{{URL::to('/')}}">Home</a></li>
+                <li><a href="{{ URL::to('/support/tickets') }}">Tickets</a></li>
+                 <li>{{$ticket->title}}</li>
+            </ol>                       
+            <h2 class="title">{{$ticket->title}}</h2>
+    </div>
     <div class="panel">
         <div class="panel-heading">
             <div class="panel-title">
@@ -46,7 +53,7 @@
                     Responsible user: {{ ($ticket->responsible_id) ? $ticket->userResponsible->name : 'Not assigned' }}
                 </strong>
             </div>
-
+            
             <div class="clearfix">
                 @if ($firstMessage->files)
                     <strong>Attachments: </strong>
@@ -57,7 +64,9 @@
             </div>
         </div>
     </div>
-
+    <div class="section job-ad-item">
+        <a class="btn btn-secondary" href="{{ URL::to('/support/tickets') }}">&larr; Back to Tickets</a>
+    </div>
     <div>
         @if ($userId == $ticket->responsible_id && $ticket->state)
             <form action="{{ route('ticket.update', $ticket->id) }}" method="POST" class="update-ticket-form">

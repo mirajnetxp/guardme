@@ -12,11 +12,13 @@
 			border-radius: 5px;
 			padding-left: 20px;
 			padding-right: 20px;
-			height: 40px;
+			height: 34px;
 		}
     .dt-buttons {
       position: relative;
-      top: -218px;
+      top: -213px;
+      float: right;
+      right: 100px;
     }
 	</style>
   </head>
@@ -28,11 +30,18 @@
     <!-- slider -->
     <section class="job-bg ad-details-page">
       <div class="container" style="width: 85%;">
-          
+      <div class="breadcrumb-section">
+            <ol class="breadcrumb">
+                <li><a href="{{URL::to('/')}}">Home</a></li>
+                <li><a href="{{ URL::to('/wallet-dashboard') }}">Wallet</a></li>
+                 <li>Invoice</li>
+            </ol>                       
+            <h2 class="title">Wallet Invoice</h2>
+        </div>
         <div class="section postdetails" style="border: 1px #cbc9c6 solid;">
           <div class="clearfix" style="margin: 10px;">
             <a href="" onclick="printPage();" class="btn pull-right">Print</a>
-            <!-- <a href="{{url('wallet/invoice/').'/'.$id.'?download=pdf'}}" class="btn pull-right">PDF</a> -->
+            <a class="btn btn-secondary" href="{{ URL::to('/wallet-dashboard') }}">&larr; Back to Wallet</a>
           </div>
           <div class="clearfix">
             <h1>INVOICE</h1>

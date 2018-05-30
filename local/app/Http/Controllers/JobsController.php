@@ -100,7 +100,20 @@ class JobsController extends Controller {
                 $arr_count[$job->id]['appcount'] = count($applications);                
             }
         }
-        return view('jobs.my', compact('my_jobs','editprofile', 'arr_count'));
+        $new_jobs = [];
+        $arr_sort = [];
+        foreach ($my_jobs as $key => $job) {
+            $arr_sort[$key] = $job->updated_at;
+        }
+        arsort($arr_sort);
+        foreach ($arr_sort as $idkey => $val) {
+            foreach ($my_jobs as $key => $job) {
+                if ($idkey == $key) {
+                    array_push($new_jobs, $job);
+                }
+            }
+        }
+        return view('jobs.my', compact('new_jobs','editprofile', 'arr_count'));
     }
 
     public function savedJobs() {
@@ -122,7 +135,7 @@ class JobsController extends Controller {
         $latitude = 0;
         $longitude = 0;
         
-        //dd($locs);
+        // dd($data);
         if (count($data)) {
             if( isset($data['post_code']) ){
                 $post_code = trim($data['post_code']);
@@ -219,12 +232,30 @@ class JobsController extends Controller {
             }
             
         }
-        if (count($arr_del) > 0) {
-            foreach ($arr_del as $del) {
-                unset($joblist[$del]);
+        if ($userid->admin == 2) {
+            if (count($arr_del) > 0) {
+                foreach ($arr_del as $del) {
+                    unset($joblist[$del]);
+                }
+            }    
+        }
+        //sort array
+        $sort_jobs = [];
+        $arr_sort = [];
+        if (count($joblist) > 0) {
+            foreach ($joblist as $key => $job) {
+                $arr_sort[$key] = $job->updated_at;
+            }
+            arsort($arr_sort);
+            foreach ($arr_sort as $idkey => $val) {
+                foreach ($joblist as $key => $job) {
+                    if ($idkey == $key) {
+                        array_push($sort_jobs, $job);
+                    }
+                }
             }
         }
-      return view('jobs.find', compact('joblist','b_cats','locs'));
+      return view('jobs.find', compact('sort_jobs','b_cats','locs'));
     }
 
     public function postfindJobs(Request $request) 

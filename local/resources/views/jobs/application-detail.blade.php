@@ -19,7 +19,7 @@
                 <!-- breadcrumb -->
                 <ol class="breadcrumb">
                     <li><a href="{{URL::to('/')}}">Home</a></li>
-                    
+
                     <li>Profile & Application Details</li>
                 </ol><!-- breadcrumb -->                        
                 <h2 class="title">@if($person->firstname!='')
@@ -62,7 +62,8 @@
                                     <p>{{$application->description}}
                                     </p>
                                 </address>
-                            </div>                  
+                            </div>              
+                            <a class="btn btn-secondary" href="{{ URL::to('/jobs/my') }}">&larr; Back to Jobs</a>    
                         </div>
                         <div class="col-md-4">
                             <div class="career-info profile-info top-22">

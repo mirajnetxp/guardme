@@ -28,14 +28,10 @@
              $job = count(Responsive\Job::getMyJobs());
         } else {
 
-            $userid = auth()->user()->id;
-            $job =  DB::select("select DISTINCT ja.* from job_applications as ja JOIN security_jobs_schedule sj  ON ja.job_id = sj.job_id where ja.is_hired = 1 and applied_by = $userid and sj.end > Now() ");
-            
-            $job = count($job);
+            $job = DB::table('job_applications')->where('applied_by',Auth::user()->id)->where('is_hired','1')->count();
         }
 
-
-
+        $avarage
     @endphp
 
     @include('header')
@@ -73,7 +69,7 @@
                       <div class="favorites">
                             <a href="bookmark.html">
                                {{$job}}
-                                <small>Open Jobs</small></a>
+                                <small>Total Jobs</small></a>
                         </div>
                         <div class="favorites">
                             <a href="bookmark.html">£

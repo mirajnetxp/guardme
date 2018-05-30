@@ -225,10 +225,4 @@ class JobApplication extends Model
         }
         return $work_history;
     }
-
-    public function openJobs()
-    {
-         return DB::raw("select ja.* from $this->table as ja leftjoin security_jobs_schedule sj.job_id ON ja.jobId = sj.job_id where ja.is_hired = 1 and applied_by = Auth::user()->id and sj.end > Now()");
-
-    }
 }

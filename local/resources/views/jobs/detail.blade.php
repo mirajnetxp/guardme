@@ -153,11 +153,6 @@
 
                                 <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Posted on
                                     : {{date('M d, Y',strtotime($job->created_at))}}</li>
-                                <li>@if($job->is_hired)
-                                            <i class="fa fa-check-circle-o ico-30 green"></i>
-                                             Applied Date: {{date('M d, Y',strtotime($job->applied_date))}}
-                                        @endif
-                                </li>
                             </ul>
                         </div><!-- ad-meta -->
 
@@ -165,10 +160,8 @@
                 </div><!-- item-info -->
                 <div class="social-media">
                     <div class="button">
-                        @if(!$job->is_hired)
-                            <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
+                        <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
                                     class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
-                        @endif
                         <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>
                             @if($saved_job != null && $saved_job->job_id == $job->id)
                                 <span id="saved">Saved</span>
@@ -183,6 +176,7 @@
                         <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest-square" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-tumblr-square" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>

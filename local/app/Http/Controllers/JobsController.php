@@ -100,7 +100,20 @@ class JobsController extends Controller {
                 $arr_count[$job->id]['appcount'] = count($applications);                
             }
         }
-        return view('jobs.my', compact('my_jobs','editprofile', 'arr_count'));
+        $new_jobs = [];
+        $arr_sort = [];
+        foreach ($my_jobs as $key => $job) {
+            $arr_sort[$key] = $job->updated_at;
+        }
+        arsort($arr_sort);
+        foreach ($arr_sort as $idkey => $val) {
+            foreach ($my_jobs as $key => $job) {
+                if ($idkey == $key) {
+                    array_push($new_jobs, $job);
+                }
+            }
+        }
+        return view('jobs.my', compact('new_jobs','editprofile', 'arr_count'));
     }
 
     public function savedJobs() {
@@ -122,7 +135,7 @@ class JobsController extends Controller {
         $latitude = 0;
         $longitude = 0;
         
-        //dd($locs);
+        // dd($data);
         if (count($data)) {
             if( isset($data['post_code']) ){
                 $post_code = trim($data['post_code']);
@@ -200,24 +213,49 @@ class JobsController extends Controller {
             }
         }
         
-        // $ja = new JobApplication();
-        // $proposals = $ja->getMyProposals();
-        // $arr_templist = []; 
-        // if (count($proposals) > 0) {
-        //     foreach ($proposals as $proposal) {
-        //         $arr_templist[$proposal->job_id] = $proposal->is_hired;
-        //     }
-        // }
-        // foreach ($joblist as $key => $list) {
-        //     if (isset($arr_templist[$list->id])) {
-        //         $joblist[$key]->is_hired = $arr_templist[$list->id];
-        //     } else {
-        //         $joblist[$key]->is_hired = 0;
-        //     }
+        $ja = new JobApplication();
+        $proposals = $ja->getMyProposals();
+        $arr_templist = []; 
+        $arr_del = [];
+        if (count($proposals) > 0) {
+            foreach ($proposals as $proposal) {
+                $arr_templist[$proposal->job_id]['is_hired'] = $proposal->is_hired;
+                $arr_templist[$proposal->job_id]['applied_date'] = $proposal->applied_date;
+            }
+        }
+        foreach ($joblist as $key => $list) {
+            if (isset($arr_templist[$list->id])) {
+                $joblist[$key]->is_hired = $arr_templist[$list->id]['is_hired'];
+                $joblist[$key]->applied_date = $arr_templist[$list->id]['applied_date'];
+            } else {
+                array_push($arr_del, $key);
+            }
             
-        // }
-
-      return view('jobs.find', compact('joblist','b_cats','locs'));
+        }
+        if ($userid->admin == 2) {
+            if (count($arr_del) > 0) {
+                foreach ($arr_del as $del) {
+                    unset($joblist[$del]);
+                }
+            }    
+        }
+        //sort array
+        $sort_jobs = [];
+        $arr_sort = [];
+        if (count($joblist) > 0) {
+            foreach ($joblist as $key => $job) {
+                $arr_sort[$key] = $job->updated_at;
+            }
+            arsort($arr_sort);
+            foreach ($arr_sort as $idkey => $val) {
+                foreach ($joblist as $key => $job) {
+                    if ($idkey == $key) {
+                        array_push($sort_jobs, $job);
+                    }
+                }
+            }
+        }
+      return view('jobs.find', compact('sort_jobs','b_cats','locs'));
     }
 
     public function postfindJobs(Request $request) 
@@ -299,6 +337,16 @@ class JobsController extends Controller {
 
         if (empty($job)) {
             return abort(404);
+        }
+        $ja = new JobApplication();
+        $proposals = $ja->getMyProposals();
+        if (count($proposals) > 0) {
+            foreach ($proposals as $proposal) {
+                if ($job['id'] == $proposal->job_id) {
+                    $job['is_hired'] = $proposal->is_hired;
+                    $job['applied_date'] = $proposal->applied_date;
+                }
+            }
         }
         return view('jobs.detail', compact('job','b_cats','locs','user_address', 'saved_job'));
     }

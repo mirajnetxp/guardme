@@ -142,7 +142,6 @@ class SearchController extends Controller {
 				}
 			}
 		}
-
 		$cats = DB::table( 'security_categories' )->orderBy( 'name', 'asc' )->get();
 
 		$locs = DB::table( 'address' )->distinct()->get();

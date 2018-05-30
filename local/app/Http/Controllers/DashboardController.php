@@ -114,27 +114,6 @@ public function sangvish_delaccount()
                 $firstname = $data['firstname'];
                 $lastname = $data['lastname'];
 
-                $currentphoto=$data['currentphoto'];
-		
-		
-                $image = Input::file('photo');
-                if($image!="")
-                {	
-                    $userphoto="/userphoto/";
-                    $delpath = base_path('images'.$userphoto.$currentphoto);
-                    File::delete($delpath);	
-                    $filename  = time() . '.' . $image->getClientOriginalExtension();
-                    
-                    $path = base_path('images'.$userphoto.$filename);
-              
-                        Image::make($image->getRealPath())->resize(200, 200)->save($path);
-                        $savefname=$filename;
-                }
-                else
-                {
-                    $savefname=$currentphoto;
-                }
-
                 if($data['password'] != "") 
                 {
                     $passtxt=$password;
@@ -184,11 +163,7 @@ public function sangvish_delaccount()
                 $user->lastname = $lastname;
                 if($data['dob'])
                     $user->dob = $data['dob'];
-                if($data['gender'])
-                    $user->gender = $data['gender'];
-                if($savefname)
-                    $user->photo = $savefname;
-                    
+                                                    
                 // don't save email directly if the user change their email
                 // we will save it to verify_users table with new_email column
                 // user needs to confirm the verification email

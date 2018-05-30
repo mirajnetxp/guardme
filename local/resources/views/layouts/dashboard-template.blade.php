@@ -100,7 +100,7 @@
                    
                     <div class="favorites-user">
                       <div class="favorites">
-                            <a href="bookmark.html">
+                            <a href="{{$url . "/jobs/my"}}">
                                {{$job}}
                                 <small>Open Jobs</small></a>
                         </div>

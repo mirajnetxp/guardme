@@ -7,7 +7,7 @@ Route::middleware( 'auth:api' )->get( '/user', function ( Request $request ) {
 } );
 
 Route::get( '/search', 'SearchController@getpersonnelsearch' );
-Route::get( '/search/{id}', 'SearchController@personnelprofile' );
+Route::get( '/search/{id}', 'Api\SearchController@personnelprofile' );
 
 
 Route::group( [ 'prefix' => 'account', 'namespace' => 'Api\Auth' ], function () {

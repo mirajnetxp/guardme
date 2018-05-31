@@ -54,9 +54,34 @@ class EmployerJobsController extends Controller {
 		                 ->where( 'is_hired', 1 )
 		                 ->rightJoin( 'transactions', 'security_jobs.id', '=', 'transactions.job_id' )
 		                 ->where( 'transactions.credit_payment_status', '=', 'funded' )
-		                 ->select( 'job_applications.job_id', 'security_jobs.title','transactions.amount', 'job_applications.updated_at' )
+		                 ->select( 'job_applications.job_id', 'security_jobs.title', 'transactions.amount', 'job_applications.updated_at' )
 		                 ->get();
 
 		return response()->json( $awardedJobs, 200 );
+	}
+
+	
+	public function JobDecline( $application_id ) {
+
+		if ( auth()->user()->admin != 0 ) {
+			return response()->json( 403 );
+		}
+		$ID         = auth()->user()->id;
+		$aplication = JobApplication::find( $application_id );
+
+
+		$jobauth = auth()
+			->user()
+			->jobs()
+			->where( 'id', $aplication->job_id )
+			->get();
+
+		if ( count( $jobauth ) === 0 ) {
+			return response()->json( 403 );
+		}
+		$aplication->is_hired = false;
+		$aplication->save();
+
+		return response()->json( [ 'cancel' => '200' ], 200 );
 	}
 }

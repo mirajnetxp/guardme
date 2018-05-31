@@ -26,7 +26,7 @@ class FreelancerJobsController extends Controller {
 		          ->leftJoin( 'security_jobs', 'job_applications.job_id', '=', 'security_jobs.id' )
 		          ->leftJoin( 'transactions', 'job_applications.job_id', '=', 'transactions.job_id' )
 		          ->where( 'credit_payment_status', '=', 'funded' )
-		          ->select( 'security_jobs.title', 'job_applications.created_at','transactions.amount' )
+		          ->select( 'security_jobs.title', 'job_applications.created_at', 'transactions.amount' )
 		          ->get()
 		          ->toArray();
 
@@ -74,6 +74,24 @@ class FreelancerJobsController extends Controller {
 		                 ->get();
 
 		return response()->json( $awardedJobs, 200 );
+	}
+
+
+	public function JobDecline( $application_id ) {
+
+		if ( auth()->user()->admin != 2 ) {
+			return response()->json( 403 );
+		}
+		$ID         = auth()->user()->id;
+		$aplication = JobApplication::find( $application_id );
+		if ( $aplication->applied_by !== $ID ) {
+			return response()->json( 403 );
+		}
+		$aplication->is_hired = false;
+		$aplication->save();
+
+		return response()->json( [ 'decline' => '200' ], 200 );
+
 	}
 
 }

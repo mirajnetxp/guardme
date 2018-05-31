@@ -6,7 +6,30 @@
    
 </head>
 <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0';
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
 
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
 <!-- fixed navigation bar -->
 @include('header')
 @if(session()->has('doc_not_v'))
@@ -78,16 +101,18 @@
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
-                        <!-- AddToAny BEGIN -->
-                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style hide">
-                            <span style="float: left;font-weight: 800;font-size: 22px">Share this ad&nbsp;&nbsp;&nbsp;</span>
-                            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-                            <a class="a2a_button_facebook"></a>
-                            <a class="a2a_button_twitter"></a>
-                            <a class="a2a_button_google_plus"></a>
-                            <a class="a2a_button_linkedin"></a>
+                        <!--share-->
+                        <div id="social" class="hide">                        
+                            <div style="top: -5px;" class="fb-share-button" data-href="https://guarddme.com/jobs/apply/{{$job->id}}" data-layout="button_count" data-size="small" data-mobile-iframe="true">
+                                <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+                            </div>
+                            <a class="twitter-share-button"
+                                href="https://twitter.com/intent/tweet?text={{$job->title}}">
+                            Tweet</a>
+                            <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+                            <script type="IN/Share" data-url="https://guarddme.com/jobs/find"></script>
+                            <a href="https://plus.google.com/share?url=guarddme.com" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><img src="https://www.gstatic.com/images/icons/gplus-32.png" alt="Share on Google+"/></a>
                         </div>
-                        <!-- AddToAny END -->
                     </div>                  
                 </div>
 
@@ -170,7 +195,7 @@
                 success: function(data) {
                     $('.alert-success').text("Your application has been received");
                     $('.alert-success').removeClass('hide');
-                    $('.a2a_default_style').removeClass('hide');
+                    $('#social').removeClass('hide');
                     $("html, body").animate({ scrollTop: $('.alert') }, 1000);
                 },
                 error: function(data) {
@@ -195,7 +220,6 @@
         });
     });
 </script>
-<script async src="https://static.addtoany.com/menu/page.js"></script>
 
 </body>
 </html>

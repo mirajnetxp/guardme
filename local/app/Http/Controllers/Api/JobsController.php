@@ -201,7 +201,7 @@ class JobsController extends Controller {
 		$my_jobs = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] )
 		              ->where( 'created_by', $user_id )
 		              ->get();
-		
+
 		foreach ( $my_jobs as $key => $value ) {
 			$app                             = DB::table( 'job_applications' )
 			                                     ->where( 'job_id', $my_jobs[ $key ]->id )

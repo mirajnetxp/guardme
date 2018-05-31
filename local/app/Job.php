@@ -63,7 +63,9 @@ class Job extends Model
     	//  schedules added by miraj
         $user_id = auth()->user()->id;
         $data = Job::with(['poster','poster.company','industory','schedules','applications'])
-                   ->where('created_by', $user_id)->get();
+                   ->where('created_by', $user_id)
+
+                   ->get();
         return $data;
     }
 

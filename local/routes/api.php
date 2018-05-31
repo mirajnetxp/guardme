@@ -126,6 +126,4 @@ Route::group( ['namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
 
 
-
-
 } );

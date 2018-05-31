@@ -149,6 +149,14 @@ class SearchController extends Controller {
 		$sec_personnels = $query
 			->with( 'person_address' )
 			->paginate( 10 );
+//
+//		foreach ( $sec_personnels as $key => $value ) {
+//			$sec_personnels[$key]['rating']=null;
+//
+//			$rat=
+//
+//		}
+
 
 		return response()->json( $sec_personnels );
 

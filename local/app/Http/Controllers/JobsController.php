@@ -379,13 +379,16 @@ class JobsController extends Controller {
 
         $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
 
-        $favourite_freelancers = FavouriteFreelancer::where('employer_id', $user_id)->get()->toArray();
+        
         $editprofile = User::where('id',$user_id)->get();
        
         if ($user_id != $job->created_by) {
             return abort(404);
         }
         $jobApplications = new JobApplication();
+        // Get favourite freelancers array
+        $favourite_freelancers = FavouriteFreelancer::where('employer_id', $user_id)->get()->toArray();
+        $fav_freelancers = [];
         if (!empty($favourite_freelancers)) {
              foreach($favourite_freelancers as $key => $freelancer) {
                  $fav_freelancers[$freelancer['freelancer_id']] = $freelancer;

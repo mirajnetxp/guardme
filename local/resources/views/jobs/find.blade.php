@@ -307,7 +307,7 @@
                             </div>
                         </div>
                     </div>             
-                        <div class="section job-list-item content-data" style="display:none"">
+                        <div class="section job-list-item content-data" style="display:none">
                             <div class="featured-top">
                                 
                                 <div class="dropdown pull-right">
@@ -330,9 +330,9 @@
         </div>        
     </div>
     @endif
-    <?php if($joblist->count()>0){?>
+    <?php if(count($sort_jobs)>0){?>
     
-            <?php foreach($joblist as $job){ ?>
+            <?php foreach($sort_jobs as $job){ ?>
                 
         <div class="job-ad-item">
             <div class="item-info">
@@ -354,6 +354,11 @@
                                 {{date('d/m/Y',strtotime($job->created_at))}}
                             </a></li>
                             <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a></li> 
+                            <li>@if($job->is_hired)
+                                            <i class="fa fa-check-circle-o ico-30 green"></i>
+                                             Applied Date: {{date('M d, Y',strtotime($job->applied_date))}}
+                                        @endif
+                            </li>
                         </ul>
                     </div><!-- ad-meta -->                                  
                 </div><!-- ad-info -->
@@ -372,7 +377,6 @@
     <?php } ?>
 
      <div class="text-center">
-                {{$joblist->links()}}
             </div>
     </div>
 </div>

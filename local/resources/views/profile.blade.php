@@ -25,11 +25,31 @@
 					<li><a href="{{URL::to('personnel-search')}}">Security Personnel</a></li>
 					<li>Profile</li>
 				</ol><!-- breadcrumb -->						
-				<h2 class="title">@if($person->firstname!='')
-					    		{{$person->firstname.' '.$person->lastname}}
+				<h2 class="title">@php $flag = false; @endphp
+					    	@if($person->firstname!='')
+					
+						@php  $flag = false;  @endphp
+
+						@foreach($person->applications as $row)
+							@if(auth()->user()->id == $row->apply_to &&  $row->is_hired == '1')
+								@php 
+									$flag = true; 
+									break;
+								@endphp
+								
+							@endif
+						@endforeach
+
+						@if($flag)
+							{{$person->firstname.' '.$person->lastname.auth()->user()->id.' a' }}
+						@else
+							{{$person->firstname.' ********'}}
+						@endif
+					   
 					    	@else
-					    		{{$person->name}}
-					    	@endif Profile</h2>
+					    		<span class="text text-danger">Incomplete </span>
+					    	@endif
+					    Profile</h2>
 			</div>
 			<div class="resume-content">
 				<div class="profile section clearfix">
@@ -42,13 +62,31 @@
 					    @endif
 					</div>
 					<div class="profile-info">
-					    <h1>
+					   <h1 class="title">@php $flag = false; @endphp
 					    	@if($person->firstname!='')
-					    		{{$person->firstname.' '.$person->lastname}}
+					
+						@php  $flag = false;  @endphp
+
+						@foreach($person->applications as $row)
+							@if(auth()->user()->id == $row->apply_to &&  $row->is_hired == '1')
+								@php 
+									$flag = true; 
+									break;
+								@endphp
+								
+							@endif
+						@endforeach
+
+						@if($flag)
+							{{$person->firstname.' '.$person->lastname.auth()->user()->id.' a' }}
+						@else
+							{{$person->firstname.' ********'}}
+						@endif
+					   
 					    	@else
-					    		{{$person->name}}
+					    		<span class="text text-danger">Incomplete </span>
 					    	@endif
-					    </h1>
+					    Profile</h1>
 					    <address>
 					        <p>@if($person->person_address)
 					        		City: {{$person->person_address->citytown}} <br>

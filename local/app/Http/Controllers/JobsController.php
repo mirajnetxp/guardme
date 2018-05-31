@@ -511,4 +511,201 @@ class JobsController extends Controller {
             'freelancer_details' => $freelancer_details
         ]);
     }
+
+
+
+    ////////////////////////
+
+    // public function savedJobs() {
+    //     $userid = Auth::user()->id;
+    //     $editprofile = User::where('id',$userid)->get();
+    //     $my_jobs =  DB::select('select security_jobs.* from security_jobs, saved_jobs where saved_jobs.job_id = security_jobs.id and saved_jobs.user_id = '.$userid);
+    //     return view('jobs.saved', compact('my_jobs','editprofile'));
+    // }
+
+    function editJob($id){
+        //User::findOrFail(1);
+        $job = Job::find($id);
+        if(empty($job)){
+             \Session::flash('message', 'Please select job');
+               return \Redirect::to('/jobs/my/'); 
+        }
+        $all_security_categories = SecurityCategory::get();
+        $all_business_categories = Businesscategory::get();
+        return view('jobs.editJobs', compact('job', 'all_security_categories', 'all_business_categories'));
+      
+    }
+    function editJobPost(Request $request){
+       $data = $request->all();
+
+       $job_id = $data['job_id'];
+
+            if($job_id == ''){
+                 \Session::flash('message', 'Invalid Jobs!!');
+                           return \Redirect::to('/jobs/editJob/'.$job_id); 
+            }
+
+
+
+            $datavalue = array(
+               'title'                 =>$data['title'],
+               'description'           =>$data['description'],
+               'address_line1'         =>$data['line1'],
+               'address_line2'         =>$data['line2'],
+               'address_line3'         =>$data['line3'],
+               'city_town'             =>$data['town'],
+               'post_code'             =>$data['postcode'],
+               'country'              =>$data['country'],
+               'security_category_id'   =>$data['security_category'],
+               'business_category_id'  =>$data['business_category'],
+               'updated_at'            =>Auth::user()
+            );
+
+         $check = Job::where('id',$job_id)->update($datavalue);
+            if($check>0)
+            {
+              \Session::flash('message', 'Job Successfully Updated...');
+               return \Redirect::to('/jobs/editJob/'.$job_id); 
+            }
+            else
+            {
+              
+              //return \Redirect::back()->with('message', 'Action Failed...Please Try Again!!!');
+              \Session::flash('message', 'Action Failed...Please Try Again!!!');
+               return \Redirect::to('/jobs/editJob/'.$job_id); 
+            }
+
+        // \Session::flash('message', 'Account Information Successfully Updated...');
+        //        return \Redirect::to('/jobs/editJob/'.$job_id);  
+       //      echo '<pre>';
+       // print_r($datavalue);
+    }
+
+    function deleteJob($id){
+         $id = Job::find( $id );
+         $flag = $id->delete();
+         if($flag){
+                     return redirect()->to('/jobs/my')->with('success', 'Job Deleted Successfully!');
+            }else{
+                    return Redirect()->to('/jobs/my')->with('error', 'Delete Failed');
+            }
+    }
+
+    function pauseJob($id){
+         $job = Job::find( $id );
+         $check = Job::where('id',$id)->update(array('status'=>'0'));
+         if($check){
+                     return redirect()->to('/jobs/my')->with('success', 'Job Pause Successfully!');
+            }else{
+                    return Redirect()->to('/jobs/my')->with('error', 'Pause Operation Failed');
+            }
+    }
+
+     function activeJob($id){
+         $job = Job::find( $id );
+         $check = Job::where('id',$id)->update(array('status'=>'1'));
+         if($check){
+                     return redirect()->to('/jobs/my')->with('success', 'Job Pause Successfully!');
+            }else{
+                    return Redirect()->to('/jobs/my')->with('error', 'Pause Operation Failed');
+            }
+    }
+
+
+public function applyJobPost(Request $request){
+            $data = $request->all();
+            
+            $jobId = $data['id'];
+            $application_description = $data['application_description'];
+            $job = Job::find($jobId);
+        $application = array(
+        'job_id'=>$jobId,
+        'is_hired'=>'0',
+        'applied_by'=>Auth::User()->id,
+        'application_description'=>$application_description,
+        'created_at'=> date('Y-m-d'),
+        'applied_to'=>$job->created_by,
+        );
+
+            //JobApplication::create($application);
+        $flag = DB::table('job_applications')->insert(
+            $application
+        );
+        if($flag){
+             return redirect( "/job/".$jobId );
+        }else{
+             return redirect( "/job/".$jobId );
+        }
+    
+
+}
+
+
+
+
+public function completeJob(Request $request){
+$data = $request->all();
+
+    $application =jobApplication::find($data['id']);
+    //print_r($application);
+    
+    JobApplication::where('id',$application->id)->update(array('completion_status'=>'1'));
+
+    Job::where('id',$application->job_id)->update(array('status'=>'3'));
+
+     return redirect('jobs/my')->with('message','job Completed');
+}
+
+public function awardJob(Request $request){
+$data = $request->all();
+
+    $application_id = $data['id'];
+    JobApplication::where('id',$application_id)->update(array('is_hired'=>'1'));
+     return redirect('jobs/my')->with('message','job Award');
+}
+
+
+public function proposalList($jid){
+  //  echo "string".$jid;
+
+     $userid = Auth::user()->id;
+        $editprofile = User::where('id',$userid)->get();
+        $jobApplications = new JobApplication();
+        //$my_jobs = Job::getMyJobs();
+        //$applyLists = jobApplications::where('joib_id',$jid)->get();
+        $applications = $jobApplications->getJobApplications($jid);
+        //return view('jobs.my', compact('my_jobs','editprofile'));
+        
+        return response()->json( $applications );
+       // return view('jobs.my', compact('my_jobs','editprofile', 'arr_count'));
+    return view('jobs.ApplyList',compact('applications', 'my_jobs','editprofile', 'arr_count'));
+    
+}
+
+    public function archiveList(){
+        date_default_timezone_set("Asia/Kolkata");
+        $now =  date('Y-m-d H:m:s');
+        //echo $now;
+        $jobs = Job::where('end_date_time','>',$now)->where('status','1')->get();
+        $jobIdList = array();
+        foreach ($jobs as $key => $job) {
+            $jobIdList[] = $job->id;
+        }
+        
+
+        if(!empty($jobIdList)){
+            $flag = Job::whereIn('id',$jobIdList)->update(array('status'=>'2'));
+            if($flag){
+                echo "Success";
+            }else{
+                echo "Failed";
+            }
+        }else{
+            echo "no Item";
+        }
+        //echo json_encode($jobIdList);
+
+    }
+///////////////////////////
+
 }

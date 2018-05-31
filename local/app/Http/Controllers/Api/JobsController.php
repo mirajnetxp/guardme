@@ -2,6 +2,7 @@
 
 namespace Responsive\Http\Controllers\Api;
 
+use Responsive\FavouriteFreelancer;
 use Responsive\Feedback;
 use Responsive\Http\Traits\JobsTrait;
 use Illuminate\Http\Request;
@@ -845,6 +846,35 @@ class JobsController extends Controller {
 				$transaction->save();
 				$return_status = 200;
 				$return_data = ["Your tip has been successfully added."];
+			}
+		}
+		return response()
+			->json($return_data, $return_status);
+	}
+
+	/**
+	 * @param $freelancer_id
+	 * @return mixed
+	 * @throws \Exception
+	 */
+	public function toggleFavouriteFreelancer($freelancer_id) {
+		$return_data = [];
+		$return_status = 500;
+		if (!empty($freelancer_id)) {
+			$employer_id = auth()->user()->id;
+			$already_favourite = FavouriteFreelancer::where('freelancer_id', $freelancer_id)
+				->where('employer_id', $employer_id);
+			if (count($already_favourite->get()) > 0) {
+				$already_favourite->delete();
+				$return_data = ['Freelancer removed from favourite list'];
+				$return_status = 200;
+			} else {
+				$fav = new FavouriteFreelancer();
+				$fav->freelancer_id = $freelancer_id;
+				$fav->employer_id = $employer_id;
+				$fav->save();
+				$return_data = ['Freelancer added to favourite list'];
+				$return_status = 200;
 			}
 		}
 		return response()

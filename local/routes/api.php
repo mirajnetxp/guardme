@@ -82,6 +82,8 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/find-jobs', 'JobsController@findJobs' )->name( 'api.find.jobs' );
 	Route::post( '/job-details', 'JobsController@jobDetailsLocation' )->name( 'api.job.details' );
 	Route::post( '/search', 'SearchController@getpersonnelsearch' );
+
+	Route::post('/toggle/favourite/{freelancer_id}', 'JobsController@toggleFavouriteFreelancer')->name('api.toggle.favourite.freelancer');
 } );
 
 

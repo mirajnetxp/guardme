@@ -5,6 +5,7 @@ namespace Responsive\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Responsive\Businesscategory;
+use Responsive\FavouriteFreelancer;
 use Responsive\JobApplication;
 use Responsive\SecurityCategory;
 use Responsive\Job;
@@ -375,19 +376,25 @@ class JobsController extends Controller {
          $user_id = auth()->user()->id;
 
         $job = Job::with(['poster','poster.company','industory'])->where('id',$id)->first();
+
+        $favourite_freelancers = FavouriteFreelancer::where('employer_id', $user_id)->get()->toArray();
         $editprofile = User::where('id',$user_id)->get();
        
         if ($user_id != $job->created_by) {
             return abort(404);
         }
         $jobApplications = new JobApplication();
-
+        if (!empty($favourite_freelancers)) {
+             foreach($favourite_freelancers as $key => $freelancer) {
+                 $fav_freelancers[$freelancer['freelancer_id']] = $freelancer;
+             }
+        }
 
 
         $applications = $jobApplications->getJobApplications($id);
 
         //dd($applications);
-        return view('jobs.applications', compact('applications','job','editprofile'));
+        return view('jobs.applications', compact('applications','job','editprofile', 'fav_freelancers'));
     }
 
     /**

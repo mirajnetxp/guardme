@@ -358,6 +358,16 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 
 	Route::get('/job-confirmation', 'JobsController@confirmation')->name('job.confirmation');
 	Route::get('/my', 'JobsController@myJobs')->name('my.jobs');
+
+//***//
+	Route::get('/editJob/{id}', 'JobsController@editJob')->name('editJob.jobs');
+	Route::post( 'edit', 'JobsController@editJobPost' )->name( 'edit.jobs' );
+	Route::get('/delete/{id}', 'JobsController@deleteJob')->name('delete.jobs');
+	Route::get('/pause/{id}', 'JobsController@pauseJob')->name('pause.jobs');
+	Route::get('/active/{id}', 'JobsController@activeJob')->name('active.jobs');
+//****//
+
+
 	Route::get('/saved', 'JobsController@savedJobs')->name('saved.jobs');
 	Route::get('/my/applications/{id}', 'JobsController@myJobApplications')->name('my.job.applications');
 	Route::get('/application/{id}/{u_id}', 'JobsController@viewApplication')->name('view.application');

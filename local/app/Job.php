@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Responsive\SecurityJobsSchedule;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class Job extends Model
 {
@@ -17,11 +15,7 @@ class Job extends Model
      *
      * @var string
      */
-    use SoftDeletes;
-
     protected $table = 'security_jobs';
-    protected $dates = ['deleted_at'];
-    
     public function schedules() {
         return $this->hasMany(SecurityJobsSchedule::class);
     }

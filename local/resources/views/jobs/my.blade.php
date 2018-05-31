@@ -60,46 +60,9 @@
                             </ul>
                         </div><!-- ad-meta -->                                  
                     </div><!-- ad-info -->
-
-                     <div id="actionSection">
-                   
-
-                        <div class="close-icon_new">
-                             <a  href="{{ URL('/jobs/editJob/').'/'.$job->id }}" title="Edit Job"> 
-                                <i class="fa fa-edit" aria-hidden="true"></i>&nbsp;&nbsp;Edit Job 
-                            </a>
-                        </div>
-
-                        
-                        @if($job->status == '0')
-
-                        <div class="close-icon_new">
-                            
-                             <a  href="{{ URL('/jobs/active/').'/'.$job->id }}" title="Inactive Job"> 
-                                <i class="fa fa-pause" aria-hidden="true"></i>&nbsp;&nbsp;Active
-                            </a>
-                        </div>
-                        @else
-                            <div class="close-icon_new">
-                                
-                             <a  href="{{ URL('/jobs/pause/').'/'.$job->id }}" title="Active Job"> 
-                                <i class="fa fa-play" aria-hidden="true"></i>&nbsp;&nbsp;Pause Job
-                            </a>
-                        </div>
-                        @endif
-@php
-   
-    if(strtotime($job->start_date_time) <= strtotime(date('Y-m-d')) ){ @endphp
-           <div class="close-icon_new">
-                            <a  href="{{ URL('/jobs/delete/').'/'.$job->id }}" title="Delete Job"><i class="fa fa-window-close" aria-hidden="true" jid="{{$job->id}}"></i>&nbsp;&nbsp;Delete Job
-                            </a>
-            </div> 
-   @php } @endphp
-                        
-                </div>
-
-                   
-
+                    <div class="close-icon">
+                        <i class="fa fa-window-close" aria-hidden="true"></i>
+                    </div>
                 </div><!-- item-info -->
             </div>
             @endforeach
@@ -130,42 +93,6 @@
 
 
 
-@section('script')
-
-<style type="text/css">
-    #actionSection{
-            text-align: left;
-    /* border: 1px solid red; */
-    position: relative;
-        padding-left: 90%;
-    }
-.close-icon_new{
-        line-height: 1px;
-    padding: 5px;
-    border-bottom-style: inset;
-}
-</style>
-<script type="text/javascript">
-    
-
-$(document).ready(function(){
-
-$('.delete').click(function(){
-    var job_id = $(this).attr('jid');
-    var r = confirm('Are you sure to delete?');
-    if(r == true){
-            alert(job_id);
-    }else{
-
-    }
-    
-});
-
-})
-
-
-</script>
-@endsection
 
 
 

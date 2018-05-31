@@ -217,7 +217,6 @@ class JobsController extends Controller {
         $ja = new JobApplication();
         $proposals = $ja->getMyProposals();
         $arr_templist = []; 
-        $arr_del = [];
         if (count($proposals) > 0) {
             foreach ($proposals as $proposal) {
                 $arr_templist[$proposal->job_id]['is_hired'] = $proposal->is_hired;
@@ -229,16 +228,10 @@ class JobsController extends Controller {
                 $joblist[$key]->is_hired = $arr_templist[$list->id]['is_hired'];
                 $joblist[$key]->applied_date = $arr_templist[$list->id]['applied_date'];
             } else {
-                array_push($arr_del, $key);
+                $joblist[$key]->is_hired = 0;
+                $joblist[$key]->applied_date = "";
             }
             
-        }
-        if ($userid->admin == 2) {
-            if (count($arr_del) > 0) {
-                foreach ($arr_del as $del) {
-                    unset($joblist[$del]);
-                }
-            }    
         }
         //sort array
         $sort_jobs = [];

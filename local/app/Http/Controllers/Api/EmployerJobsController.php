@@ -54,7 +54,7 @@ class EmployerJobsController extends Controller {
 		                 ->where( 'is_hired', 1 )
 		                 ->rightJoin( 'transactions', 'security_jobs.id', '=', 'transactions.job_id' )
 		                 ->where( 'transactions.credit_payment_status', '=', 'funded' )
-		                 ->select( 'job_applications.id as application_id ','job_applications.job_id', 'security_jobs.title', 'transactions.amount', 'job_applications.updated_at' )
+		                 ->select( 'job_applications.id as application_id','job_applications.job_id', 'security_jobs.title', 'transactions.amount', 'job_applications.updated_at' )
 		                 ->get();
 
 		return response()->json( $awardedJobs, 200 );

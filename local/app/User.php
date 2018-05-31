@@ -630,6 +630,11 @@ class User extends Authenticatable
         ];
     }
 
+	public function myApplications() {
+           
+           return $this->hasMany(JobApplication::class,'applied_by');
+    }
+	
     public function applications()
     {
         return $this->hasMany(JobApplication::class,'applied_by');

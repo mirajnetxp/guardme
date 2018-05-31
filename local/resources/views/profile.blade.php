@@ -47,9 +47,9 @@
 						@endif
 					   
 					    	@else
-					    		<span class="text text-danger">Incomplete </span>
+					    		{{'********'}}
 					    	@endif
-					    Profile</h2>
+					    </h2>
 			</div>
 			<div class="resume-content">
 				<div class="profile section clearfix">
@@ -62,7 +62,7 @@
 					    @endif
 					</div>
 					<div class="profile-info">
-					   <h1 class="title">@php $flag = false; @endphp
+					   <h1>@php $flag = false; @endphp
 					    	@if($person->firstname!='')
 					
 						@php  $flag = false;  @endphp
@@ -84,9 +84,9 @@
 						@endif
 					   
 					    	@else
-					    		<span class="text text-danger">Incomplete </span>
+					    		{{'********'}}
 					    	@endif
-					    Profile</h1>
+					    </h1>
 					    <address>
 					        <p>@if($person->person_address)
 					        		City: {{$person->person_address->citytown}} <br>

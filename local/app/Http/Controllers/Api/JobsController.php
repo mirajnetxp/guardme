@@ -197,11 +197,21 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function myJobs() {
-		$my_jobs = Job::getMyJobs();
 
-		return response()
-			->json( $my_jobs );
+		$user_id = auth()->user()->id;
+		$my_jobs = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] )
+		              ->where( 'created_by', $user_id )
+		              ->get();
 
+		foreach ( $my_jobs as $key => $value ) {
+			$app                             = DB::table( 'job_applications' )
+			                                     ->where( 'job_id', $my_jobs[ $key ]->id )
+			                                     ->where( 'is_hired', 1 )
+			                                     ->get();
+			$my_jobs[ $key ]['applications'] = $app;
+		}
+
+		return response()->json( $my_jobs );
 	}
 
 	/**
@@ -210,7 +220,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function applyJob( $id, Request $request ) {
+	public
+	function applyJob(
+		$id, Request $request
+	) {
 		$this->validate( $request, [
 			'application_description' => 'required'
 		] );
@@ -253,7 +266,10 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function markHired( $application_id ) {
+	public
+	function markHired(
+		$application_id
+	) {
 
 		// check if user is authorized to mark this application as hired.
 		$job_application     = new JobApplication();
@@ -278,7 +294,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function addMoney( Request $request ) {
+	public
+	function addMoney(
+		Request $request
+	) {
 		$return_data   = [ 'Unknown Error' ];
 		$return_status = 500;
 		$posted_data   = $request->all();
@@ -335,7 +354,10 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function fundJobFee( Request $request ) {
+	public
+	function fundJobFee(
+		Request $request
+	) {
 		$return_data   = [ 'Unknown Error' ];
 		$return_status = 500;
 		$posted_data   = $request->all();
@@ -368,7 +390,8 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function totalUserAwardedJobs() {
+	public
+	function totalUserAwardedJobs() {
 		/** @var User $user */
 		$user = auth()->user();
 
@@ -383,7 +406,8 @@ class JobsController extends Controller {
 		] );
 	}
 
-	public function totalAppliedJobsForUser() {
+	public
+	function totalAppliedJobsForUser() {
 		/** @var User $user */
 		$user = auth()->user();
 
@@ -396,7 +420,8 @@ class JobsController extends Controller {
 		] );
 	}
 
-	public function totalCreatedJobsForEmployer() {
+	public
+	function totalCreatedJobsForEmployer() {
 		/** @var User $user */
 		$user = auth()->user();
 
@@ -412,7 +437,8 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public function myProposals() {
+	public
+	function myProposals() {
 		$ja        = new JobApplication();
 		$proposals = $ja->getMyProposals();
 
@@ -428,7 +454,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function jobDetailsLocation( Request $request ) {
+	public
+	function jobDetailsLocation(
+		Request $request
+	) {
 		$this->validate( $request, [
 			'job_id'  => 'required',
 			'user_id' => 'required'
@@ -450,7 +479,10 @@ class JobsController extends Controller {
 		] );
 	}
 
-	public function findJobs( Request $request ) {
+	public
+	function findJobs(
+		Request $request
+	) {
 		$this->validate( $request, [
 			'page_id' => 'required'
 		] );
@@ -560,7 +592,8 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public function getSecurityCategories() {
+	public
+	function getSecurityCategories() {
 		$ja                 = new JobApplication();
 		$securityCategories = SecurityCategory::all();
 
@@ -572,7 +605,8 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public function getBusinessCategories() {
+	public
+	function getBusinessCategories() {
 		$ja                 = new JobApplication();
 		$businessCategories = Businesscategory::all();
 
@@ -586,7 +620,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function markApplicationAsComplete( $application_id ) {
+	public
+	function markApplicationAsComplete(
+		$application_id
+	) {
 		$application   = JobApplication::find( $application_id );
 		$user_id       = auth()->user()->id;
 		$return_status = 200;
@@ -610,7 +647,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function leaveFeedback( $application_id, Request $request ) {
+	public
+	function leaveFeedback(
+		$application_id, Request $request
+	) {
 		$posted_data = $request->all();
 		$application = JobApplication::find( $application_id );
 		$job         = Job::find( $application->job_id );
@@ -646,7 +686,10 @@ class JobsController extends Controller {
 	}
 
 
-	public function get_notifications_settings( Request $request ) {
+	public
+	function get_notifications_settings(
+		Request $request
+	) {
 		$settings_exist = @\Responsive\NotificationsSettings::where( 'user_id', $request->user_id )->count();
 
 		if ( $settings_exist > 0 ) {
@@ -663,7 +706,10 @@ class JobsController extends Controller {
 	}
 
 
-	public function update_notifications_settings( Request $request ) {
+	public
+	function update_notifications_settings(
+		Request $request
+	) {
 		$settings_exist = @\Responsive\NotificationsSettings::where( 'user_id', $request->user_id )->count();
 
 		if ( $settings_exist > 0 ) {
@@ -686,7 +732,10 @@ class JobsController extends Controller {
 	}
 
 
-	public function get_notifications( Request $request ) {
+	public
+	function get_notifications(
+		Request $request
+	) {
 		$notifications = \Responsive\Notifications::where( 'user_id', $request->user_id )->orWhere( 'notification_type', 'all' )->orderBy( 'id', 'DESC' )->paginate();
 
 		foreach ( $notifications as $n ) {
@@ -716,7 +765,10 @@ class JobsController extends Controller {
 	}
 
 
-	public function create_notification( $notification_type, $applied_by, $details ) {
+	public
+	function create_notification(
+		$notification_type, $applied_by, $details
+	) {
 
 		// {notification_by_user_id} hired you for the Job {job_title}
 
@@ -747,7 +799,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function cancelHiredApplication( $application_id ) {
+	public
+	function cancelHiredApplication(
+		$application_id
+	) {
 		$application   = JobApplication::find( $application_id );
 		$job           = Job::find( $application->job_id );
 		$return_data   = [ "Un-known error" ];
@@ -805,7 +860,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function postTip( $application_id, Request $request ) {
+	public
+	function postTip(
+		$application_id, Request $request
+	) {
 		$this->validate( $request, [
 			'tip_amount' => 'required|integer'
 		] );
@@ -832,7 +890,10 @@ class JobsController extends Controller {
 
 	}
 
-	public function confirmTip( $transaction_id ) {
+	public
+	function confirmTip(
+		$transaction_id
+	) {
 		$transaction = Transaction::find( $transaction_id );
 		// check if user is authorized to perform this action means it should be the user who created this transaction
 		if ( $transaction->user_id != auth()->user()->id ) {

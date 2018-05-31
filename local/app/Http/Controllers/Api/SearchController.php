@@ -157,7 +157,6 @@ class SearchController extends Controller {
 //
 //		}
 
-
 		return response()->json( $sec_personnels );
 
 	}

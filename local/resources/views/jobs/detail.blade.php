@@ -206,10 +206,12 @@
                 <div class="social-media">
                     <div class="button">
 
+
  @if($job->myApplications && count($job->myApplications)>0)
      <span class="btn alert alert-danger">You already have an overlapping booking</span>                                              
  @else
                 @if(!$job->is_hired)
+
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
                                     class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                         @endif

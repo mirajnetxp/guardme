@@ -438,7 +438,9 @@ class JobsController extends Controller {
 		$job_details  = Job::with( [
 			'poster',
 			'poster.company',
-			'industory'
+			'industory',
+			'schedules'
+
 		] )->where( 'id', $posted_data['job_id'] )->first();
 
 		return response()->json( [
@@ -506,16 +508,16 @@ class JobsController extends Controller {
 							if ( $latitude > 0 && $latitude > 0 ) {
 								$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
 							} else {
-								$joblist = Job::where( 'status', '1' )->paginate( 10 );
+								$joblist = Job::where( 'status', '1' );
 							}
 						} else {
-							$joblist = Job::where( 'status', '1' )->paginate( 10 );
+							$joblist = Job::where( 'status', '1' );
 						}
 					} else {
-						$joblist = Job::where( 'status', '1' )->paginate( 10 );
+						$joblist = Job::where( 'status', '1' );
 					}
 				} else {
-					$joblist = Job::where( 'status', '1' )->paginate( 10 );
+					$joblist = Job::where( 'status', '1' );
 				}
 			}
 		} else {
@@ -534,18 +536,20 @@ class JobsController extends Controller {
 						if ( $latitude > 0 && $latitude > 0 ) {
 							$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
 						} else {
-							$joblist = Job::where( 'status', '1' )->paginate( 10 );
+							$joblist = Job::where( 'status', '1' );
 						}
 					} else {
-						$joblist = Job::where( 'status', '1' )->paginate( 10 );
+						$joblist = Job::where( 'status', '1' );
 					}
 				} else {
-					$joblist = Job::where( 'status', '1' )->paginate( 10 );
+					$joblist = Job::where( 'status', '1' );
 				}
 			} else {
-				$joblist = Job::where( 'status', '1' )->paginate( 10 );
+				$joblist = Job::where( 'status', '1' );
 			}
 		}
+
+		$joblist = $joblist->with( 'schedules' )->paginate( 10 );
 
 		return response()->json( [
 			'job_list' => $joblist
@@ -739,37 +743,38 @@ class JobsController extends Controller {
 
 	/**
 	 * @param $application_id
+	 *
 	 * @return mixed
 	 */
-	public function cancelHiredApplication($application_id) {
-		$application = JobApplication::find($application_id);
-		$job = Job::find($application->job_id);
-		$return_data = ["Un-known error"];
+	public function cancelHiredApplication( $application_id ) {
+		$application   = JobApplication::find( $application_id );
+		$job           = Job::find( $application->job_id );
+		$return_data   = [ "Un-known error" ];
 		$return_status = 500;
 		// if freelancer cancels the job
-		if (isFreelancer()) {
-			if ($application->applied_by != auth()->user()->id) {
-				$return_data = ["You are no authorized to perform this action"];
+		if ( isFreelancer() ) {
+			if ( $application->applied_by != auth()->user()->id ) {
+				$return_data   = [ "You are no authorized to perform this action" ];
 				$return_status = 500;
-			} else if($application->completion_status != 0) {
-				$return_data = ["Your job is either complete or already canceled"];
+			} else if ( $application->completion_status != 0 ) {
+				$return_data   = [ "Your job is either complete or already canceled" ];
 				$return_status = 500;
 			} else {
-				$schedule_start = $job->schedules()->get()->first();
-				$start = strtotime($schedule_start->start);
-				$current_date_time = time();
-				$difference = $start - $current_date_time;
+				$schedule_start     = $job->schedules()->get()->first();
+				$start              = strtotime( $schedule_start->start );
+				$current_date_time  = time();
+				$difference         = $start - $current_date_time;
 				$less_than_24_hours = true;
-				if ($difference > 0) {
-					$diff_hours = $difference / (60*60);
-					if ($diff_hours > 24) {
+				if ( $difference > 0 ) {
+					$diff_hours = $difference / ( 60 * 60 );
+					if ( $diff_hours > 24 ) {
 						$less_than_24_hours = false;
 					}
 				}
-				if ($less_than_24_hours) {
+				if ( $less_than_24_hours ) {
 					// leave 1 start rating
-					$already       = Feedback::where( 'application_id', $application_id )->get();
-					if (count($already) == 0) {
+					$already = Feedback::where( 'application_id', $application_id )->get();
+					if ( count( $already ) == 0 ) {
 						$feedback                     = new Feedback();
 						$feedback->application_id     = $application_id;
 						$feedback->appearance         = 1;
@@ -783,70 +788,73 @@ class JobsController extends Controller {
 				// mark application as canceled with completion_status = 2
 				$application->completion_status = 2;
 				$application->save();
-				$return_data = ["Canceled Successfully"];
+				$return_data   = [ "Canceled Successfully" ];
 				$return_status = 200;
 			}
 
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 
 	/**
 	 * @param $application_id
 	 * @param Request $request
+	 *
 	 * @return mixed
 	 */
-	public function postTip($application_id, Request $request) {
+	public function postTip( $application_id, Request $request ) {
 		$this->validate( $request, [
 			'tip_amount' => 'required|integer'
 		] );
 		$posted_data = $request->all();
-		$tip_amount = $posted_data['tip_amount'];
-		$application = JobApplication::find($application_id);
+		$tip_amount  = $posted_data['tip_amount'];
+		$application = JobApplication::find( $application_id );
 		// add inactive transaction for the tip
-		$trans = new Transaction();
-		$trans->application_id = $application_id;
-		$trans->job_id = $application->job_id;
+		$trans                    = new Transaction();
+		$trans->application_id    = $application_id;
+		$trans->job_id            = $application->job_id;
 		$trans->debit_credit_type = 'credit';
-		$trans->amount = $tip_amount;
-		$trans->title = 'Tip';
-		$trans->type = 'tip';
-		$trans->status = 0;
-		$trans->user_id = auth()->user()->id;
-		$res = $trans->save();
-		$return_status = 200;
+		$trans->amount            = $tip_amount;
+		$trans->title             = 'Tip';
+		$trans->type              = 'tip';
+		$trans->status            = 0;
+		$trans->user_id           = auth()->user()->id;
+		$res                      = $trans->save();
+		$return_status            = 200;
 		$trans->save();
-		$return_data   = [ 'transaction_id' => $trans->id ];
+		$return_data = [ 'transaction_id' => $trans->id ];
 
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 
 	}
 
-	public function confirmTip($transaction_id) {
-		$transaction = Transaction::find($transaction_id);
+	public function confirmTip( $transaction_id ) {
+		$transaction = Transaction::find( $transaction_id );
 		// check if user is authorized to perform this action means it should be the user who created this transaction
-		if ($transaction->user_id !=  auth()->user()->id) {
+		if ( $transaction->user_id != auth()->user()->id ) {
 			$return_status = 500;
-			$return_data = ["You are not authorized to perform this action"];
+			$return_data   = [ "You are not authorized to perform this action" ];
 		} else {
 			// make sure user has enough available balance to mark this tip as confirmed (activated)
-			$trans = new Transaction();
+			$trans            = new Transaction();
 			$available_balace = $trans->getWalletAvailableBalance();
-			if ($available_balace < $transaction->amount) {
+			if ( $available_balace < $transaction->amount ) {
 				$return_status = 500;
-				$return_data = ["You don't have sufficient balance to perform this action. Please load more balance."];
+				$return_data   = [ "You don't have sufficient balance to perform this action. Please load more balance." ];
 			} else {
-				$transaction->status = 1;
+				$transaction->status                = 1;
 				$transaction->credit_payment_status = 'paid';
 				$transaction->save();
 				$return_status = 200;
-				$return_data = ["Your tip has been successfully added."];
+				$return_data   = [ "Your tip has been successfully added." ];
 			}
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 
 

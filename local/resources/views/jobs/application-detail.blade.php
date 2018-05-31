@@ -19,7 +19,7 @@
                 <!-- breadcrumb -->
                 <ol class="breadcrumb">
                     <li><a href="{{URL::to('/')}}">Home</a></li>
-                    
+
                     <li>Profile & Application Details</li>
                 </ol><!-- breadcrumb -->                        
                 <h2 class="title">@if($person->firstname!='')
@@ -62,7 +62,8 @@
                                     <p>{{$application->description}}
                                     </p>
                                 </address>
-                            </div>                  
+                            </div>              
+                            <a class="btn btn-secondary" href="{{ URL::to('/jobs/my') }}">&larr; Back to Jobs</a>    
                         </div>
                         <div class="col-md-4">
                             <div class="career-info profile-info top-22">
@@ -120,6 +121,9 @@
                                         @endif
                                 </address>
                             </div>
+                            @if(!empty($work_history['aggregate_rating']))
+                                <p><span class="stars" data-rating="{{ $work_history['aggregate_rating'] }}" data-num-stars="5" ></span> <strong>{{  $work_history['aggregate_rating'] }}</strong></p>
+                            @endif
                         </div>
                         <div class="col-md-4 top-25">
                             <div class="icons">
@@ -155,13 +159,15 @@
                     <div class="work-info">
                         <h3>Work History</h3>
                         <ul>
-                            @foreach($work_history as $item)
-                                <li>
-                                    <h4>{{ $item['job_title'] }} <span>{{ $item['date_range'] }}</span></h4>
-                                    <p><span class="stars" data-rating="{{ $item['star_rating'] }}" data-num-stars="5" ></span> <strong>{{ $item['star_rating'] }}</strong></p>
-                                    <p>{{ $item['feedback_message'] }}</p>
-                                </li>
-                            @endforeach
+                            @if(!empty($work_history['project_ratings']))
+                                @foreach($work_history['project_ratings'] as $item)
+                                    <li>
+                                        <h4>{{ $item['job_title'] }} <span>{{ $item['date_range'] }}</span></h4>
+                                        <p><span class="stars" data-rating="{{ $item['star_rating'] }}" data-num-stars="5" ></span> <strong>{{ $item['star_rating'] }}</strong></p>
+                                        <p>{{ $item['feedback_message'] }}</p>
+                                    </li>
+                                @endforeach
+                            @endif
                         </ul>
                     </div>                                 
                 </div><!-- work-history -->

@@ -78,15 +78,16 @@
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
-                        <ul class="share-social">
-                            <li>Share this ad</li>
-                            <li><a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-pinterest-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tumblr-square" aria-hidden="true"></i></a></li>
-                        </ul>
+                        <!-- AddToAny BEGIN -->
+                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style hide">
+                            <span style="float: left;font-weight: 800;font-size: 22px">Share this ad&nbsp;&nbsp;&nbsp;</span>
+                            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                            <a class="a2a_button_facebook"></a>
+                            <a class="a2a_button_twitter"></a>
+                            <a class="a2a_button_google_plus"></a>
+                            <a class="a2a_button_linkedin"></a>
+                        </div>
+                        <!-- AddToAny END -->
                     </div>                  
                 </div>
 
@@ -167,8 +168,9 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(data) {
-                    $('.alert-success').text(data[0]);
+                    $('.alert-success').text("Your application has been received");
                     $('.alert-success').removeClass('hide');
+                    $('.a2a_default_style').removeClass('hide');
                     $("html, body").animate({ scrollTop: $('.alert') }, 1000);
                 },
                 error: function(data) {
@@ -193,7 +195,7 @@
         });
     });
 </script>
-
+<script async src="https://static.addtoany.com/menu/page.js"></script>
 
 </body>
 </html>

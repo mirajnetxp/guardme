@@ -213,32 +213,34 @@ class JobsController extends Controller {
                 $joblist = Job::where('status','1')->paginate(10);
             }
         }
-        
-        $ja = new JobApplication();
-        $proposals = $ja->getMyProposals();
-        $arr_templist = []; 
-        $arr_del = [];
-        if (count($proposals) > 0) {
-            foreach ($proposals as $proposal) {
-                $arr_templist[$proposal->job_id]['is_hired'] = $proposal->is_hired;
-                $arr_templist[$proposal->job_id]['applied_date'] = $proposal->applied_date;
-            }
-        }
-        foreach ($joblist as $key => $list) {
-            if (isset($arr_templist[$list->id])) {
-                $joblist[$key]->is_hired = $arr_templist[$list->id]['is_hired'];
-                $joblist[$key]->applied_date = $arr_templist[$list->id]['applied_date'];
-            } else {
-                array_push($arr_del, $key);
-            }
-            
-        }
-        if ($userid->admin == 2) {
-            if (count($arr_del) > 0) {
-                foreach ($arr_del as $del) {
-                    unset($joblist[$del]);
+        if(Auth::check()) {
+            $ja = new JobApplication();
+            $proposals = $ja->getMyProposals();
+            $arr_templist = []; 
+            if (count($proposals) > 0) {
+                foreach ($proposals as $proposal) {
+                    $arr_templist[$proposal->job_id]['is_hired'] = $proposal->is_hired;
+                    $arr_templist[$proposal->job_id]['applied_date'] = $proposal->applied_date;
                 }
-            }    
+            }
+            if (count($joblist) > 0) {
+                foreach ($joblist as $key => $list) {
+                    if (isset($arr_templist[$list->id])) {
+                        $joblist[$key]->is_hired = $arr_templist[$list->id]['is_hired'];
+                        $joblist[$key]->applied_date = $arr_templist[$list->id]['applied_date'];
+                    } else {
+                        $joblist[$key]->is_hired = 0;
+                        $joblist[$key]->applied_date = "";
+                    }
+                }    
+            }
+        } else {
+            if (count($joblist) > 0) {
+                foreach ($joblist as $key => $list) {
+                    $joblist[$key]->is_hired = 0;
+                    $joblist[$key]->applied_date = "";
+                }    
+            }
         }
         //sort array
         $sort_jobs = [];

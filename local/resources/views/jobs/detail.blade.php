@@ -13,7 +13,7 @@
     <script type="text/javascript">
 
 
-			<?php if( $user_address ) { ?>
+            <?php if( $user_address ) { ?>
         var markers = [
                 {
                     "title": '{{ $job->title }}',
@@ -29,7 +29,7 @@
                     "description": '{{ @$user_address->name }}, {{ @$user_address->address->line1 }}, {{ @$user_address->address->line2 }}, {{ @$user_address->address->line3 }}'
                 }
             ];
-			<?php } else { ?>
+            <?php } else { ?>
         var markers = [
                 {
                     "title": '{{ $job->title }}',
@@ -38,7 +38,7 @@
                     "description": '{{ $job->title }}, {{ $job->address_line1 }}, {{ $job->address_line2 }}, {{ $job->city_town }}, {{ $job->country }}'
                 }
             ];
-		<?php } ?>
+        <?php } ?>
 
             window.onload = function () {
             var mapOptions = {
@@ -140,8 +140,7 @@
                     <div class="ad-info">
                         <span><span><a href="#" class="title">{{$job->title}}</a></span> @ <a
                                     href="#">
-
-                                     {{-- $job->poster->company->shop_name --}}
+ {{-- $job->poster->company->shop_name --}}
                                                   @php
                     if($job->myApplications && count($job->myApplications)>0){
                     
@@ -180,7 +179,7 @@
 }
 }
 @endphp
-                                 </a></span>
+                                </a></span>
                         <div class="ad-meta">
                             <ul>
                                 <li><a href="#"><i class="fa fa-map-marker"
@@ -194,6 +193,11 @@
 
                                 <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Posted on
                                     : {{date('M d, Y',strtotime($job->created_at))}}</li>
+                                <li>@if($job->is_hired)
+                                            <i class="fa fa-check-circle-o ico-30 green"></i>
+                                             Applied Date: {{date('M d, Y',strtotime($job->applied_date))}}
+                                        @endif
+                                </li>
                             </ul>
                         </div><!-- ad-meta -->
 
@@ -202,23 +206,24 @@
                 <div class="social-media">
                     <div class="button">
 
-
-
  @if($job->myApplications && count($job->myApplications)>0)
-                                <span class="btn alert alert-danger">You already have an overlapping booking</span>                                              
-                                    @else
-                                    <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
+     <span class="btn alert alert-danger">You already have an overlapping booking</span>                                              
+ @else
+                @if(!$job->is_hired)
+                            <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
                                     class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
-                                <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                        @endif
+                        <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>
                             @if($saved_job != null && $saved_job->job_id == $job->id)
                                 <span id="saved">Saved</span>
                             @else
                                 <span id="saved">Save For Later</span>
-                                @endif
-                            </a>
+                            @endif
+                        </a>
 @endif
 
-                       
+
+
 
 
                     </div>
@@ -228,7 +233,6 @@
                         <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-pinterest-square" aria-hidden="true"></i></a></li>
                         <li><a href="#"><i class="fa fa-tumblr-square" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
@@ -278,50 +282,7 @@
                         <div class="section company-info">
                             <h1>Company Info</h1>
                             <ul>
-                                <li>Compnay Name: <a href="#">
-                                    {{--$job->poster->company->shop_name--}}
-
-                                         @php
-                    if($job->myApplications && count($job->myApplications)>0){
-                    
-                     if($job->myApplications[0]->is_hired == '1'){
-                                            echo $job->poster->company->shop_name;
-                                        }else{
-                                            $arr = explode(' ',$job->poster->company->shop_name);
-                                        foreach($arr as $key=>$row){
-                                            if($key == 0){
-                                                echo $row;
-                                            }else{
-                                                $count = strlen($row);
-                                                echo " ";
-                                                for($c=0;$c< $count;$c++){
-                                                    echo '*';
-                                                }
-                                            }
-                                            }
-                                        }   
-
-                }else{
-
-
-                $arr = explode(' ',$job->poster->company->shop_name);
-                //echo count($arr)
-                foreach($arr as $key=>$row){
-                if($key == 0){
-                echo $row;
-            }else{
-            $count = strlen($row);
-            echo " ";
-            for($c=0;$c< $count;$c++){
-            echo '*';
-        }
-    }
-}
-}
-@endphp
-
-
-                                </a></li>
+                                <li>Compnay Name: <a href="#">{{$job->poster->company->shop_name}}</a></li>
                                 <li>Address: @if($job->poster->company->city){{$job->poster->company->city}}@endif
                                     @if($job->poster->company->state){{', '.$job->poster->company->state}}@endif
                                     @if($job->poster->company->country){{', '.$job->poster->company->country}}@endif</li>

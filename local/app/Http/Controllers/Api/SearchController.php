@@ -160,8 +160,7 @@ class SearchController extends Controller {
 //			          ->select( 'feedback.appearance', 'feedback.punctuality', 'feedback.customer_focused', 'feedback.security_conscious' )
                       ->select( DB::raw( '(feedback.appearance + feedback.punctuality + feedback.customer_focused + feedback.security_conscious)/4 as average_rating_per' ) )
 			          ->get();
-
-
+			
 			if ( count( $cats ) > 0 ) {
 				$rating = $cats->sum( 'average_rating_per' ) / count( $cats );
 			} else {

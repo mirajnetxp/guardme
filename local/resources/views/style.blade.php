@@ -17,6 +17,8 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 		$setts = DB::table('settings')
 		->where('id', '=', $setid)
 		->get();
+		$settingphotos="/settings/";
+		$paths ='../../../local/images'.$settingphotos.$setts[0]->site_dashboard;
 		$name = Route::currentRouteName();
  if($currentPaths=="/")
  {
@@ -78,7 +80,13 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 	
 	
 	
-	
+	<script>
+			$(document).ready(function(){
+					var path = "<?php echo $paths;?>";
+					path = "url(" + path + ")";
+					$('.job-bg').css('background-image', path);
+			});
+	</script>	
 	
 	<script src="<?php echo $url;?>/js/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<?php echo $url;?>/js/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>

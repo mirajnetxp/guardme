@@ -5,7 +5,10 @@ $url = URL::to("/");
 $setid=1;
 		$setts = DB::table('settings')
 		->where('id', '=', $setid)
-		->get();
+        ->get();
+        $settingphotos="/settings/";
+        $paths ='../local/images'.$settingphotos.$setts[0]->site_dashboard;
+        
 if($currentPaths=="/")
  {
 	 $pagetitle="Home";
@@ -94,6 +97,12 @@ if($currentPaths=="/")
     </div>
 
     <!-- Scripts -->
-
+    <script>
+        $(document).ready(function(){
+            var path = "<?php echo $paths;?>";
+            path = "url(" + path + ")";
+            $('.job-bg').css('background-image', path);
+        });
+    </script>
 </body>
 </html>

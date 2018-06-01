@@ -189,7 +189,7 @@ class SearchController extends Controller {
 			Session::flash( 'login_first', ' Please login to view the freelancer details.' );
 			return redirect()->back();
 		}
-		$person = User::with(['person_address','sec_work_category'])->find($id);
+		$person = User::with(['person_address','sec_work_category','applications','myApplications'])->find($id);
 		//dd($person->work_category);
 
         if(\request()->expectsJson())

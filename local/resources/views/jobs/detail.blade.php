@@ -13,7 +13,7 @@
     <script type="text/javascript">
 
 
-			<?php if( $user_address ) { ?>
+            <?php if( $user_address ) { ?>
         var markers = [
                 {
                     "title": '{{ $job->title }}',
@@ -29,7 +29,7 @@
                     "description": '{{ @$user_address->name }}, {{ @$user_address->address->line1 }}, {{ @$user_address->address->line2 }}, {{ @$user_address->address->line3 }}'
                 }
             ];
-			<?php } else { ?>
+            <?php } else { ?>
         var markers = [
                 {
                     "title": '{{ $job->title }}',
@@ -38,7 +38,7 @@
                     "description": '{{ $job->title }}, {{ $job->address_line1 }}, {{ $job->address_line2 }}, {{ $job->city_town }}, {{ $job->country }}'
                 }
             ];
-		<?php } ?>
+        <?php } ?>
 
             window.onload = function () {
             var mapOptions = {
@@ -139,7 +139,47 @@
 
                     <div class="ad-info">
                         <span><span><a href="#" class="title">{{$job->title}}</a></span> @ <a
-                                    href="#"> {{$job->poster->company->shop_name}}</a></span>
+                                    href="#">
+ {{-- $job->poster->company->shop_name --}}
+                                                  @php
+                    if($job->myApplications && count($job->myApplications)>0){
+                    
+                     if($job->myApplications[0]->is_hired == '1'){
+                                            echo $job->poster->company->shop_name;
+                                        }else{
+                                            $arr = explode(' ',$job->poster->company->shop_name);
+                                        foreach($arr as $key=>$row){
+                                            if($key == 0){
+                                                echo $row;
+                                            }else{
+                                                $count = strlen($row);
+                                                echo " ";
+                                                for($c=0;$c< $count;$c++){
+                                                    echo '*';
+                                                }
+                                            }
+                                            }
+                                        }   
+
+                }else{
+
+
+                $arr = explode(' ',$job->poster->company->shop_name);
+                //echo count($arr)
+                foreach($arr as $key=>$row){
+                if($key == 0){
+                echo $row;
+            }else{
+            $count = strlen($row);
+            echo " ";
+            for($c=0;$c< $count;$c++){
+            echo '*';
+        }
+    }
+}
+}
+@endphp
+                                </a></span>
                         <div class="ad-meta">
                             <ul>
                                 <li><a href="#"><i class="fa fa-map-marker"
@@ -165,7 +205,13 @@
                 </div><!-- item-info -->
                 <div class="social-media">
                     <div class="button">
-                        @if(!$job->is_hired)
+
+
+ @if($job->myApplications && count($job->myApplications)>0)
+     <span class="btn alert alert-danger">You already have an overlapping booking</span>                                              
+ @else
+                @if(!$job->is_hired)
+
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
                                     class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                         @endif
@@ -176,6 +222,12 @@
                                 <span id="saved">Save For Later</span>
                             @endif
                         </a>
+@endif
+
+
+
+
+
                     </div>
                     <ul class="share-social">
                         <li>Share this ad</li>

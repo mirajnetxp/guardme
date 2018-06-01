@@ -12,7 +12,6 @@
     </script>
 </head>
 <body>
-
 <!-- fixed navigation bar -->
 @include('header')
 

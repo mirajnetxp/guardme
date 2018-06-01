@@ -6,7 +6,6 @@
    
 </head>
 <body>
-
 <!-- fixed navigation bar -->
 @include('header')
 @if(session()->has('doc_not_v'))
@@ -78,15 +77,6 @@
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
-                        <ul class="share-social">
-                            <li>Share this ad</li>
-                            <li><a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-pinterest-square" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tumblr-square" aria-hidden="true"></i></a></li>
-                        </ul>
                     </div>                  
                 </div>
 
@@ -167,7 +157,7 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(data) {
-                    $('.alert-success').text(data[0]);
+                    $('.alert-success').text("Your application has been received");
                     $('.alert-success').removeClass('hide');
                     $("html, body").animate({ scrollTop: $('.alert') }, 1000);
                 },
@@ -193,7 +183,6 @@
         });
     });
 </script>
-
 
 </body>
 </html>

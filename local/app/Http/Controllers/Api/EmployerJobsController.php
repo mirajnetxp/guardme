@@ -106,7 +106,10 @@ class EmployerJobsController extends Controller {
 
 				$all_transactions = DB::select( 'select transactions.title, transactions.id, transactions.created_at, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, transactions.credit_payment_status as status, transactions.type from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.credit_payment_status in ("paid", "funded") and security_jobs.id = ' . $id . ' group by transactions.type' );
 
-				$applied_by = JobApplication::select( 'applied_by' )->where( 'job_id', $id )->get();
+				$applied_by = JobApplication::select( 'applied_by', 'users.name' )
+				                            ->where( 'job_id', $id )
+				                            ->join( 'users', 'applied_by', '=', 'users.id' )
+				                            ->get();
 
 				foreach ( $all_transactions as $key => $transactions ) {
 					if ( $transactions->title == 'Job Fee' ) {
@@ -131,7 +134,13 @@ class EmployerJobsController extends Controller {
 
 					return $pdf->download( 'invoice.pdf' );
 				}
-				return response()->json( [ 'all_transactions'=>$all_transactions, 'balance'=>$balance, 'from'=>$from, 'job_id'=>$id ] );
+
+				return response()->json( [
+					'all_transactions' => $all_transactions,
+					'balance'          => $balance,
+					'from'             => $from,
+					'job_id'           => $id
+				] );
 			}
 		}
 

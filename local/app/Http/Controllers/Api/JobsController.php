@@ -201,7 +201,7 @@ class JobsController extends Controller {
 		$user_id = auth()->user()->id;
 		$my_jobs = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] )
 		              ->where( 'created_by', $user_id )
-		              ->get();
+		              ->paginate(10);
 
 		foreach ( $my_jobs as $key => $value ) {
 			$app                             = DB::table( 'job_applications' )
@@ -921,31 +921,33 @@ class JobsController extends Controller {
 
 	/**
 	 * @param $freelancer_id
+	 *
 	 * @return mixed
 	 * @throws \Exception
 	 */
-	public function toggleFavouriteFreelancer($freelancer_id) {
-		$return_data = [];
+	public function toggleFavouriteFreelancer( $freelancer_id ) {
+		$return_data   = [];
 		$return_status = 500;
-		if (!empty($freelancer_id)) {
-			$employer_id = auth()->user()->id;
-			$already_favourite = FavouriteFreelancer::where('freelancer_id', $freelancer_id)
-				->where('employer_id', $employer_id);
-			if (count($already_favourite->get()) > 0) {
+		if ( ! empty( $freelancer_id ) ) {
+			$employer_id       = auth()->user()->id;
+			$already_favourite = FavouriteFreelancer::where( 'freelancer_id', $freelancer_id )
+			                                        ->where( 'employer_id', $employer_id );
+			if ( count( $already_favourite->get() ) > 0 ) {
 				$already_favourite->delete();
-				$return_data = ['Freelancer removed from favourite list'];
+				$return_data   = [ 'Freelancer removed from favourite list' ];
 				$return_status = 200;
 			} else {
-				$fav = new FavouriteFreelancer();
+				$fav                = new FavouriteFreelancer();
 				$fav->freelancer_id = $freelancer_id;
-				$fav->employer_id = $employer_id;
+				$fav->employer_id   = $employer_id;
 				$fav->save();
-				$return_data = ['Freelancer added to favourite list'];
+				$return_data   = [ 'Freelancer added to favourite list' ];
 				$return_status = 200;
 			}
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 
 

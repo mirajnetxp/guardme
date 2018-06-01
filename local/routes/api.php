@@ -115,8 +115,8 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 Route::group( [ 'prefix' => 'employer', 'namespace' => 'Api', 'middleware' => 'auth:api'], function () {
 
 	Route::get( '/job/decline/{application_id} ', 'EmployerJobsController@JobDecline' );
-
 	Route::get( '/awarded/jobs', 'EmployerJobsController@awardedJobs' );
+	Route::get( '/wallet/invoice/{job_id}', 'EmployerJobsController@invoice' );
 
 
 } );

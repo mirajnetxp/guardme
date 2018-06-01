@@ -57,7 +57,6 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
-        dd('hi');
 
         $request->session()->flash('need_email_confirmation', true);
         $request->session()->flash('confirmation_title', 'You have successfully registered!');

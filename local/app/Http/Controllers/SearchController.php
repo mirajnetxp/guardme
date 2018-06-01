@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Responsive\User;
+use Responsive\JobApplication;
 
 class SearchController extends Controller {
 	/**
@@ -190,12 +191,12 @@ class SearchController extends Controller {
 			return redirect()->back();
 		}
 		$person = User::with(['person_address','sec_work_category','applications','myApplications'])->find($id);
-		//dd($person->work_category);
-
+		$ja = new JobApplication();
+		$work_history = $ja->getApplicantWorkHistory_appliedby($id);
         if(\request()->expectsJson())
             return response()->json($person);
 
-		return view('profile',compact('person'));
+		return view('profile',compact('person', 'work_history'));
 
 	}
 	

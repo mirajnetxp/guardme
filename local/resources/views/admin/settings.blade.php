@@ -310,7 +310,7 @@
 
               <!--dashboard-->
               <div class="form-group">
-                          <label for="logo">Home Page Dashboard
+                          <label for="logo">Background Image
                           </label>
 
                             <input type="file" id="site_dashboard" name="site_dashboard" class="form-control border-input">

@@ -1,11 +1,24 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+$settings = DB::select('select * from settings where id = ?',[1]);
+if (count($settings) > 0) {
+if (!array_key_exists('site_dashboard', $settings[0])) {
+    Schema::table('settings', function($table) {
+        $table->string('site_dashboard');
+    });
+}
+}
 $currentPaths= Route::getFacadeRoot()->current()->uri();
 $url = URL::to("/");
 $setid=1;
 		$setts = DB::table('settings')
 		->where('id', '=', $setid)
-		->get();
+        ->get();
+        $settingphotos="/settings/";
+        $paths ='../local/images'.$settingphotos.$setts[0]->site_dashboard;
+        
 if($currentPaths=="/")
  {
 	 $pagetitle="Home";
@@ -94,6 +107,12 @@ if($currentPaths=="/")
     </div>
 
     <!-- Scripts -->
-
+    <script>
+        $(document).ready(function(){
+            var path = "<?php echo $paths;?>";
+            path = "url(" + path + ")";
+            $('.job-bg').css('background-image', path);
+        });
+    </script>
 </body>
 </html>

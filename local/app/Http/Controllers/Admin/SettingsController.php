@@ -5,7 +5,7 @@ namespace Responsive\Http\Controllers\Admin;
 
 use Responsive\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Schema;
+
 use Responsive\Http\Requests;
 use Illuminate\Http\Request;
 use Responsive\User;
@@ -32,15 +32,7 @@ class SettingsController extends Controller
     
 	
 	public function showform() {
-	  $settings = DB::select('select * from settings where id = ?',[1]);
-	  if (count($settings) > 0) {
-		if (!array_key_exists('site_dashboard', $settings[0])) {
-			Schema::table('settings', function($table) {
-				$table->string('site_dashboard');
-			});
-		}
-	  }
-	  $settings = DB::select('select * from settings where id = ?',[1]);
+      $settings = DB::select('select * from settings where id = ?',[1]);
 	  $currency=array("USD","CZK","DKK","HKD","HUF","ILS","JPY","MXN","NZD","NOK","PHP","PLN","SGD","SEK","CHF","THB","AUD","CAD","EUR","GBP","AFN","DZD",
 							"AOA","XCD","ARS","AMD","AWG","SHP","AZN","BSD","BHD","BDT","INR");
 		
@@ -200,30 +192,7 @@ class SettingsController extends Controller
 			$savefavs=$currentban;
 		}
 		
-		$currentdash = $data['currentdash'];
 		
-		
-		$dashimages = Input::file('site_dashboard');
-        if($dashimages!="")
-		{	
-            $settingdashphotos="/settings/";
-			$delpathes = base_path('images'.$settingdashphotos.$currentdash);
-			File::delete($delpathes);	
-			$dashfilenames  = time() . '.' . $dashimages->getClientOriginalExtension();
-            
-            $dashpaths = base_path('images'.$settingdashphotos.$dashfilenames);
-			$destinationbanPaths=base_path('images'.$settingdashphotos);
-      
-                Image::make($dashimages->getRealPath())->resize(1920, 500)->save($dashpaths);
-				
-				/* Input::file('site_logo')->move($destinationPath, $filename);*/
-				$savedash=$dashfilenames;
-		}
-        else
-		{
-			$savedash=$currentdash;
-		}
-				
 		
 		
 		
@@ -357,7 +326,7 @@ class SettingsController extends Controller
 		
 		DB::update('update settings set site_name="'.$site_name.'",site_desc="'.$desctxt.'",site_keyword="'.$keytxt.'",
 		site_facebook="'.$facebook.'",site_twitter="'.$twitter.'",site_gplus="'.$gplus.'",site_pinterest="'.$pinterest.'",site_instagram="'.$instagram.'",site_currency="'.$currency.'",
-		site_logo="'.$savefname.'",site_favicon="'.$savefav.'",site_banner="'.$savefavs.'",site_dashboard="'.$savedash.'",site_copyright="'.$copyrights.'",commission_mode="'.$commission_mode.'",commission_amt="'.$commission_amt.'", paypal_id="'.$paypal_id.'",
+		site_logo="'.$savefname.'",site_favicon="'.$savefav.'",site_banner="'.$savefavs.'",site_copyright="'.$copyrights.'",commission_mode="'.$commission_mode.'",commission_amt="'.$commission_amt.'", paypal_id="'.$paypal_id.'",
 		paypal_url="'.$paypal_url.'",withdraw_amt="'.$withdraw_amt.'",withdraw_option="'.$withdraw.'" where id = ?', [1]);
 		
 			return back()->with('success', 'Settings has been updated');

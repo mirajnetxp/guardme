@@ -308,39 +308,8 @@
   					  </div>
   						<?php } ?>
 
-              <!--dashboard-->
-              <div class="form-group">
-                          <label for="logo">Home Page Dashboard
-                          </label>
-
-                            <input type="file" id="site_dashboard" name="site_dashboard" class="form-control border-input">
-  						   @if ($errors->has('site_dashboard'))
-                                      <span class="help-block" style="color:red;">
-                                          <strong>{{ $errors->first('site_dashboard') }}</strong>
-                                      </span>
-                                  @endif
 
 
-                        </div>
-
-
-  					   <?php
-  					   $dashboardphotos="/settings/";
-  						$pathes ='/local/images'.$dashboardphotos.$settings[0]->site_dashboard;
-  						if($settings[0]->site_dashboard!=""){
-  						?>
-  					  <div class="form-group" align="center">
-
-  					  <img src="<?php echo $url.$pathes;?>" class="thumb" width="200" style="border:1px solid #CCCCCC;">
-
-  					  </div>
-  						<?php } else { ?>
-  					  <div class="form-group" align="center">
-
-  					  <img src="<?php echo $url.'/local/images/noimage.jpg';?>" class="logo" width="100" style="border:1px solid #CCCCCC;">
-
-  					  </div>
-  						<?php } ?>
 
 
 
@@ -439,7 +408,6 @@
 
   					  <input type="hidden" name="currentban" value="<?php echo $settings[0]->site_banner;?>">
 
-  					  <input type="hidden" name="currentdash" value="<?php echo $settings[0]->site_dashboard;?>">
 
 
 

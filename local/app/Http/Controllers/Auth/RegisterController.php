@@ -57,6 +57,7 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
+        dd('hi');
 
         $request->session()->flash('need_email_confirmation', true);
         $request->session()->flash('confirmation_title', 'You have successfully registered!');
@@ -112,7 +113,16 @@ class RegisterController extends Controller
 			$freelancerSetting->save();
 		}
 
-		//		Creating Address Collum
+
+        if($user->admin == '0') {
+
+            $user->verified = '1';
+            $user->save();
+        }
+
+
+
+		//Creating Address Collum
 		$address          = new Address();
 		$address->user_id = $user->id;
 		$address->save();
@@ -128,7 +138,6 @@ class RegisterController extends Controller
                 ]);
             }
         }
-
         return $user;
     }
 }

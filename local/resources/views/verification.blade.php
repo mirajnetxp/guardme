@@ -211,3 +211,24 @@
         </div>
     </div>
 @endsection
+
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $("#nationality").change(function(){
+                if ($('#nationality option:selected').text() == "United Kingdom") {
+                    $("#niutr_no_field").css("display", "block");
+                    $("#niutr_no").val("<?php echo $editprofile[0]->niutr_no;?>");
+                }
+                else {
+                    $("#niutr_no_field").css("display", "none");
+                    $("#niutr_no").val("");
+                }
+            });
+            if ($('#nationality option:selected').text() == "United Kingdom") {
+                $("#niutr_no_field").css("display", "block");
+                $("#niutr_no").val("<?php echo $editprofile[0]->niutr_no;?>");
+            }
+        });
+    </script>
+@endsection

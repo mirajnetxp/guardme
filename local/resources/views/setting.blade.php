@@ -115,13 +115,14 @@
                                         <h3>
                                             <label class="switch">
                                                 <input id="visibality" name="visibality"
-                                                       {{auth()->user()->freelancerSettings->visible==1?'checked':''}} type="checkbox">
+                                                        type="checkbox">
                                                 <div class="slider round"></div>
                                             </label>
                                         </h3>
                                     </td>
                                 </tr>
                             </table>
+                            <div><a href="{{URL::to('delete_account')}}" >Close account</a></div>
                         </div>
                     </div>
                 </div>

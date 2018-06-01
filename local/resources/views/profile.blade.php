@@ -111,10 +111,8 @@
 
 			        	<address>
 					        <p>Licence Type: SIA <br> 
-					        	Valid: @if($person->sia_licence !='')
+					        	@if($person->sia_licence !='')Valid: 
 								        	<i class="fa fa-check-circle-o ico-30 green"></i>
-								        @else
-					        				<i class="fa fa-times-circle-o ico-30 red"></i> 
 										@endif
 					        				<br> 
 					        	Expiry Date:@if($person->sia_expirydate !='')
@@ -128,10 +126,10 @@
 			    </div>
 				<div class="work-history section">
 			        <div class="icons">
-			            <i class="fa fa-briefcase" aria-hidden="true"></i>
+			            <i class="fa fa-comments-o" aria-hidden="true"></i>
 			        </div>   
 			        <div class="work-info">
-			        	<h3>Work History</h3>
+			        	<h3>Feedback</h3>
 			        	<ul>
 									@if(!empty($work_history['project_ratings']))
 											@foreach($work_history['project_ratings'] as $item)
@@ -143,16 +141,6 @@
 											@endforeach
 									@endif
 			        	</ul>
-			        </div>                                 
-				</div><!-- work-history -->
-				<div class="declaration section">
-			        <div class="icons">
-			            <i class="fa fa-comments-o" aria-hidden="true"></i>
-			        </div>   
-			        <div class="declaration-info">
-			        	<h3>Feedback</h3>
-			        	<p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></p>
-			        	<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni। dolores eos qui ratione voluptatem sequi nesciunt.</p>
 			        </div>                                 
 				</div><!-- career-objective -->	
 			</div>

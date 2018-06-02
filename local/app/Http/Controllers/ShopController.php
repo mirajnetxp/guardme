@@ -248,6 +248,7 @@ function updatecompany(Request $request)
     $company->shop_phone_no = $request->phone;
     $company->company_email = $request->company_email;
     $company->address = $request->address;
+    $company->status   = "approved";
     $company->description = $request->description;
     $company->save();
 

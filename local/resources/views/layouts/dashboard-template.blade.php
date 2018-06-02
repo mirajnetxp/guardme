@@ -28,10 +28,39 @@
              $job = count(Responsive\Job::getMyJobs());
         } else {
 
-            $job = DB::table('job_applications')->where('applied_by',Auth::user()->id)->where('is_hired','1')->count();
+            $userid = auth()->user()->id;
+            $job =  DB::select("select DISTINCT ja.* from job_applications as ja JOIN security_jobs_schedule sj  ON ja.job_id = sj.job_id where ja.is_hired = 1 and applied_by = $userid and sj.end > Now() ");
+
+            $totalfeedback = DB::table('job_applications')
+                                    ->select('id')
+                                    ->where('is_hired','1')
+                                    ->where('applied_by',$userid)
+                                    ->pluck('id')
+                                    ->toArray();
+            $feedback =  DB::table('feedback')->whereIn('application_id',$totalfeedback)->get();  
+
+            $avg = 0.0;
+            $totalfeedback = 0;
+            foreach($feedback as $fb) {
+
+                $appearance         = $fb->appearance;
+                $punctuality        = $fb->punctuality;
+                $customer_focused   = $fb->customer_focused;
+                $security_conscious = $fb->security_conscious;
+                $rating_aggregate   = ( $appearance + $punctuality + $customer_focused + $security_conscious ) / 4;
+
+                $avg += $rating_aggregate;
+                $totalfeedback++;
+
+            }                     
+
+            $rating = $avg / $totalfeedback;
+
+            $job = count($job);
         }
 
-        $avarage
+
+
     @endphp
 
     @include('header')
@@ -62,14 +91,18 @@
                                     @else
                                         {{$editprofile[0]->name}}
                                     @endif</a></h2>
+
+                                   @if(auth()->user()->admin != 0) 
+                                     <p><span class="stars" data-rating="{{  $rating }}" data-num-stars="5" ></span> <strong>{{   $rating }}</strong></p>
+                                   @endif  
                         <!-- <h5>You last logged in at: 10-01-2017 6:40 AM [ USA time (GMT + 6:00hrs)]</h5> -->
                     </div>
                    
                     <div class="favorites-user">
                       <div class="favorites">
-                            <a href="bookmark.html">
+                            <a href="{{$url . "/jobs/my"}}">
                                {{$job}}
-                                <small>Total Jobs</small></a>
+                                <small>Open Jobs</small></a>
                         </div>
                         <div class="favorites">
                             <a href="bookmark.html">£
@@ -113,6 +146,28 @@
         </div>
     </section>
    @include('footer')
+
+   <script type="text/javascript">
+        /*read only star rating to display only*/
+    $.fn.stars = function() {
+        return $(this).each(function() {
+
+            var rating = $(this).data("rating");
+
+            var numStars = $(this).data("numStars");
+
+            var fullStar = new Array(Math.floor(rating + 1)).join('<i class="fa fa-star"></i>');
+
+            var halfStar = ((rating%1) !== 0) ? '<i class="fa fa-star-half-empty"></i>': '';
+
+            var noStar = new Array(Math.floor(numStars + 1 - rating)).join('<i class="fa fa-star-o"></i>');
+
+            $(this).html(fullStar + halfStar + noStar);
+
+        });
+    };
+    $('.stars').stars();
+   </script>
 
        @yield('script')
 </body>

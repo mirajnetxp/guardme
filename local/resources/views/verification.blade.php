@@ -58,21 +58,21 @@
                             @endif
                         </select>                               
                     </div>
-                    <div id="visa_no_field" class="form-group{{ $errors->has('visa_no') ? ' has-error' : '' }}">
-                        <label for="visa_no">Visa Number</label>
-                        <input id="visa_no" type="text" class="trackprogress form-control text-input" name="visa_no" value="<?php echo $editprofile[0]->visa_no;?>">
-                        @if ($errors->has('visa_no'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('visa_no') }}</strong>
-                            </span>
-                        @endif
-                    </div>
                     <div id="niutr_no_field" class="form-group{{ $errors->has('niutr_no') ? ' has-error' : '' }}">
                         <label for="niutr_no" >NI or UTR Number</label>
                         <input id="niutr_no" type="text" class="form-control text-input" name="niutr_no" value="<?php echo $editprofile[0]->niutr_no;?>">
                         @if ($errors->has('niutr_no'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('niutr_no') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div id="visa_no_field" class="form-group{{ $errors->has('visa_no') ? ' has-error' : '' }}">
+                        <label for="visa_no">Visa Number</label>
+                        <input id="visa_no" type="text" class="trackprogress form-control text-input" name="visa_no" value="<?php echo $editprofile[0]->visa_no;?>">
+                        @if ($errors->has('visa_no'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('visa_no') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -210,4 +210,25 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $("#nationality").change(function(){
+                if ($('#nationality option:selected').text() == "United Kingdom") {
+                    $("#niutr_no_field").css("display", "block");
+                    $("#niutr_no").val("<?php echo $editprofile[0]->niutr_no;?>");
+                }
+                else {
+                    $("#niutr_no_field").css("display", "none");
+                    $("#niutr_no").val("");
+                }
+            });
+            if ($('#nationality option:selected').text() == "United Kingdom") {
+                $("#niutr_no_field").css("display", "block");
+                $("#niutr_no").val("<?php echo $editprofile[0]->niutr_no;?>");
+            }
+        });
+    </script>
 @endsection

@@ -196,22 +196,108 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public function myJobs() {
+	public function myJobs( Request $request ) {
 
-		$user_id = auth()->user()->id;
-		$my_jobs = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] )
-		              ->where( 'created_by', $user_id )
-		              ->get();
+		$user_Id = auth()->user()->id;
 
-		foreach ( $my_jobs as $key => $value ) {
-			$app                             = DB::table( 'job_applications' )
-			                                     ->where( 'job_id', $my_jobs[ $key ]->id )
-			                                     ->where( 'is_hired', 1 )
-			                                     ->get();
-			$my_jobs[ $key ]['applications'] = $app;
+		$this->validate( $request, [
+			'page_id' => 'required'
+		] );
+
+		$joblist     = [];
+		$posted_data = $request->all();
+		$page_id     = ! empty( $posted_data['page_id'] ) ? $posted_data['page_id'] : '';
+		$user_id     = ! empty( $posted_data['user_id'] ) ? $posted_data['user_id'] : '';
+		$post_code   = ! empty( $posted_data['post_code'] ) ? $posted_data['post_code'] : '';
+		$cat_id      = ! empty( $posted_data['cat_id'] ) ? $posted_data['cat_id'] : '';
+		$loc_val     = ! empty( $posted_data['loc_val'] ) ? $posted_data['loc_val'] : '';
+		$keyword     = ! empty( $posted_data['keyword'] ) ? $posted_data['keyword'] : '';
+		$distance    = ! empty( $posted_data['distance'] ) ? $posted_data['distance'] : '';
+
+		if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
+			if ( $post_code != '' ) {
+				$post_code = trim( $post_code );
+				if ( ! empty( $post_code ) ) {
+					$postcode_url = "https://api.getaddress.io/find/" . $post_code . "?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
+					$postcode_url = str_replace( ' ', '%20', $postcode_url );
+					$ch           = curl_init();
+					curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+					curl_setopt( $ch, CURLOPT_HEADER, false );
+					curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+					curl_setopt( $ch, CURLOPT_URL, $postcode_url );
+					curl_setopt( $ch, CURLOPT_REFERER, $postcode_url );
+					curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+					$getBas = curl_exec( $ch );
+					curl_close( $ch );
+					$post_code_array = json_decode( $getBas, true );
+
+					if ( isset( $post_code_array['Message'] ) || empty( $post_code_array ) ) {
+						$return_data   = [ 'Post code not valid!' ];
+						$return_status = 403;
+
+						return response()
+							->json( $return_data, $return_status );
+					}
+					$latitude  = $post_code_array['latitude'];
+					$longitude = $post_code_array['longitude'];
+				}
+				$joblist = Job::getSearchedJobNearByPostCode( $posted_data, $latitude, $longitude, 20, 'kilometers', $page_id );
+			} else {
+
+				if ( auth()->user()->person_address ) {
+					$userAddressObj = auth()->user()->person_address;
+					if ( ! empty( $userAddressObj->latitude ) ) {
+						$latitude = $userAddressObj->latitude;
+					}
+					if ( ! empty( $userAddressObj->latitude ) ) {
+						$longitude = $userAddressObj->longitude;
+					}
+					if ( $latitude > 0 && $latitude > 0 ) {
+						$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
+					} else {
+						$joblist = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] );
+					}
+				} else {
+//					$joblist = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] );
+					$joblist = Job::with( [ 'industory', 'schedules', ] );
+				}
+
+			}
+		} else {
+			$joblist = Job::with( [ 'industory', 'schedules', ] );
 		}
 
-		return response()->json( $my_jobs );
+//   status filtering .......
+
+		if ( $request->status === 'close' ) {
+			$joblist = $joblist
+				->where( 'created_by', '=', $user_Id )
+				->where( 'status', '=', 0 );
+		} elseif ( $request->status === 'open' ) {
+			$joblist = $joblist
+				->where( 'created_by', '=', $user_Id )
+				->where( 'status', '=', 1 );
+		} else {
+			$joblist = $joblist
+				->where( 'created_by', '=', $user_Id );
+		}
+
+
+		if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
+		} else {
+			foreach ( $joblist as $key => $value ) {
+				$app                             = DB::table( 'job_applications' )
+				                                     ->where( 'job_id', $joblist[ $key ]->id )
+				                                     ->where( 'is_hired', 1 )
+				                                     ->get();
+				$joblist[ $key ]['applications'] = $app;
+			}
+			$joblist = $joblist->paginate( 10 );
+		}
+
+		return response()->json( [ 'job_list' => $joblist ] );
+
+
 	}
 
 	/**
@@ -220,10 +306,8 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public
-	function applyJob(
-		$id, Request $request
-	) {
+
+	public function applyJob( $id, Request $request ) {
 		$this->validate( $request, [
 			'application_description' => 'required'
 		] );
@@ -479,10 +563,7 @@ class JobsController extends Controller {
 		] );
 	}
 
-	public
-	function findJobs(
-		Request $request
-	) {
+	public function findJobs( Request $request ) {
 		$this->validate( $request, [
 			'page_id' => 'required'
 		] );
@@ -921,31 +1002,33 @@ class JobsController extends Controller {
 
 	/**
 	 * @param $freelancer_id
+	 *
 	 * @return mixed
 	 * @throws \Exception
 	 */
-	public function toggleFavouriteFreelancer($freelancer_id) {
-		$return_data = [];
+	public function toggleFavouriteFreelancer( $freelancer_id ) {
+		$return_data   = [];
 		$return_status = 500;
-		if (!empty($freelancer_id)) {
-			$employer_id = auth()->user()->id;
-			$already_favourite = FavouriteFreelancer::where('freelancer_id', $freelancer_id)
-				->where('employer_id', $employer_id);
-			if (count($already_favourite->get()) > 0) {
+		if ( ! empty( $freelancer_id ) ) {
+			$employer_id       = auth()->user()->id;
+			$already_favourite = FavouriteFreelancer::where( 'freelancer_id', $freelancer_id )
+			                                        ->where( 'employer_id', $employer_id );
+			if ( count( $already_favourite->get() ) > 0 ) {
 				$already_favourite->delete();
-				$return_data = ['Freelancer removed from favourite list'];
+				$return_data   = [ 'Freelancer removed from favourite list' ];
 				$return_status = 200;
 			} else {
-				$fav = new FavouriteFreelancer();
+				$fav                = new FavouriteFreelancer();
 				$fav->freelancer_id = $freelancer_id;
-				$fav->employer_id = $employer_id;
+				$fav->employer_id   = $employer_id;
 				$fav->save();
-				$return_data = ['Freelancer added to favourite list'];
+				$return_data   = [ 'Freelancer added to favourite list' ];
 				$return_status = 200;
 			}
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 
 

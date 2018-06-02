@@ -89,9 +89,9 @@ class User extends Authenticatable
         }
 
         // Update current verified to false first
-        // $this->update([
-        //     'verified' => false
-        // ]);
+        $this->update([
+            'verified' => false
+        ]);
 
         // delete token first if exists
         $this->verification()->delete();

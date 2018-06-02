@@ -56,6 +56,8 @@
 
             $rating = $avg / $totalfeedback;
 
+            $rating =  number_format((float)$rating, 2, '.', ''); 
+
             $job = count($job);
         }
 

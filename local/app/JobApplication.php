@@ -158,7 +158,7 @@ class JobApplication extends Model {
 			             'sj.created_by',
 			             'ja.application_description as description',
 			             'ja.is_hired',
-			             'ja.id',
+			             'ja.id as application_id',
 			             'u.photo as photo',
 			             'sj.title as job_title',
 			             'sj.description as job_description',

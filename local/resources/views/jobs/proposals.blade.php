@@ -39,31 +39,7 @@
         @endif
 
         @include('shared.message')
-        <div class="row">
-            <form method="get" action="{{ url('/jobs/proposal') }}" id="filters">
-                <div class="col-sm-12">
-                    <label class="col-sm-1">Transaction Date:</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="start_date date-picker form-control" name="start_date" placeholder="Start Date"  value="{{old('start_date')}}">
-                        <span class="text-danger error-span"></span>
-                    </div>
-                    <div class="col-sm-2">
-                        <input type="text" class="end_date date-picker form-control" name="end_date" placeholder="End Date" value="{{old('end_date')}}">
-                        <span class="text-danger error-span"></span>
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <select name="kind" id="kind" class="trackprogress form-control text-input">
-                            <option value="1">All</option>
-                            <option value="2">Open</option>       
-                            <option value="3">Closed</option>
-                        </select>                               
-                    </div>
-                    <div class="col-sm-1">
-                        <button type="submit" value="GO" class="btn btn-primary">GO</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+    
     @foreach($proposals as $application)
                                    
         <div class="job-ad-item">

@@ -201,7 +201,7 @@ class JobsController extends Controller {
 		$user_id = auth()->user()->id;
 		$my_jobs = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] )
 		              ->where( 'created_by', $user_id )
-		              ->paginate(10);
+		              ->paginate( 10 );
 
 		foreach ( $my_jobs as $key => $value ) {
 			$app                             = DB::table( 'job_applications' )
@@ -220,10 +220,8 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public
-	function applyJob(
-		$id, Request $request
-	) {
+
+	public function applyJob( $id, Request $request ) {
 		$this->validate( $request, [
 			'application_description' => 'required'
 		] );

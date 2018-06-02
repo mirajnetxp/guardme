@@ -285,19 +285,18 @@ class JobsController extends Controller {
 
 		if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
 		} else {
-			foreach ( $joblist as $key => $value ) {
-				$app                             = DB::table( 'job_applications' )
-				                                     ->where( 'job_id', $joblist[ $key ]->id )
-				                                     ->where( 'is_hired', 1 )
-				                                     ->get();
-				$joblist[ $key ]['applications'] = $app;
-			}
 			$joblist = $joblist->paginate( 10 );
+			foreach ( $joblist as $key => $value ) {
+				$app = DB::table( 'job_applications' )
+				         ->where( 'job_id', $joblist[ $key ]->id )
+				         ->where( 'is_hired', 1 )
+				         ->get();
+
+				$joblist[ $key ]->applications = $app;
+			}
 		}
 
 		return response()->json( [ 'job_list' => $joblist ] );
-
-
 	}
 
 	/**

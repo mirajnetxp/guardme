@@ -44,7 +44,7 @@
                 <div class="col-sm-12">
                     <label class="col-sm-1">Transaction Date:</label>
                     <div class="col-sm-2">
-                        <input type="text" class="start_date date-picker form-control" name="start_date" placeholder="Start Date"  value="{{old('start_date')}}">
+                        <input type="text" class="start_date date-picker form-control" name="start_date" placeholder="Start Date" value="{{old('start_date')}}">
                         <span class="text-danger error-span"></span>
                     </div>
                     <div class="col-sm-2">
@@ -64,8 +64,8 @@
                 </div>
             </form>
         </div>
-    @if(count($proposals) > 0)
-    @foreach($proposals as $application)
+    @if(count($newproposals) > 0)
+    @foreach($newproposals as $application)
                                    
         <div class="job-ad-item">
             <div class="item-info">

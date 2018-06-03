@@ -196,6 +196,7 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
               </div>
           </div>
       </div>
+      @if(count($company))
       <div class="card company-detail-card">
         <div class="card-header text-center">
           Company Information
@@ -207,6 +208,7 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
           <span> {{$company->company_email}}</span>
         </div>
       </div>
+      @endif
 
   </div>
 

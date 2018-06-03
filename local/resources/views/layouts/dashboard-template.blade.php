@@ -52,9 +52,14 @@
                 $avg += $rating_aggregate;
                 $totalfeedback++;
 
-            }                     
+            }  
 
-            $rating = $avg / $totalfeedback;
+            $rating = 0.0;                   
+
+            if($totalfeedback != 0) {
+
+                $rating = $avg / $totalfeedback;
+            }
 
             $rating =  number_format((float)$rating, 2, '.', ''); 
 

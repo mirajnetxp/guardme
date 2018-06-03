@@ -70,6 +70,24 @@ class ShopController extends Controller {
 		$editshop = Shop::where( 'id', $id )->get()->first();
 		$b_cats   = Businesscategory::all();
 
+		$user =  User::find($editshop->user_id);
+
+
+		$address = '';
+
+        $useraddress = $user->address;
+
+        $address .= ! empty($useraddress->line1) ? $useraddress->line1 .", ": null;
+        $address .= ! empty($useraddress->line2) ?  $useraddress->line2.", " : null;
+        $address .= ! empty($useraddress->line3) ?  $useraddress->line3.", " : null;
+        $address .= ! empty($useraddress->citytown) ? $useraddress->citytown ." - " . $useraddress->postcode .", " : null;
+        $address .= $useraddress->country ? "\n" . $useraddress->country : null;
+
+
+
+        $editshop->address = $address;
+        $editshop->save();
+
 		return view( 'admin.edit-shop' )
 			->with( 'editshop', $editshop )
 			->with( 'b_cats', $b_cats );

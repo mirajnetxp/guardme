@@ -460,7 +460,7 @@ class JobsController extends Controller {
         $ja = new JobApplication();
         $application = $ja->getMyApplicationDetails($application_id);
         $job = Job::with(['poster'])->where('id',$job_id)->first();
-       //dd($application);
+//       dd($application);
         return view('jobs.my-application-detail', compact('application','job'));
     }
 

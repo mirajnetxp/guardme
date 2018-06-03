@@ -69,7 +69,7 @@
 
                         <div class="form-group">
                             <label for="address">Address</label>
-                            <input id="address" type="text" class=" form-control  text-input" name="address" value="<?php echo $editprofile[0]->company->address;?>">
+                            <input id="address" type="text" class=" form-control  text-input" name="address" value="{{ $editprofile[0]->company->address or $address }}">
                             
                         </div>
 

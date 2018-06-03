@@ -50,47 +50,50 @@ class DashboardController extends AdminController {
 					  
 					  
 					  
-			$curr_date=date("Y-m-d");
+			          $curr_date=date("Y-m-d");
 
-$last_date1=date('Y-m-d',strtotime("-1 days"));
-$last_date2=date('Y-m-d',strtotime("-2 days"));
-$last_date3=date("Y-m-d", strtotime("-3 days"));
-$last_date4=date("Y-m-d", strtotime("-4 days"));
-$last_date5=date("Y-m-d", strtotime("-5 days"));
-$last_date6=date("Y-m-d", strtotime("-6 days"));
-
-
-                      $date1 = DB::table('booking')
-			           ->where('curr_date','=', $curr_date)
-					   ->count();
-					   $date2 = DB::table('booking')
-			           ->where('curr_date','=', $last_date1)
-					   ->count();
-					   $date3 = DB::table('booking')
-			           ->where('curr_date','=', $last_date2)
-					   ->count();
-					   $date4 = DB::table('booking')
-			           ->where('curr_date','=', $last_date3)
-					   ->count();
-					   $date5 = DB::table('booking')
-			           ->where('curr_date','=', $last_date4)
-					   ->count();
-					   $date6 = DB::table('booking')
-			           ->where('curr_date','=', $last_date5)
-					   ->count();
-					   $date7 = DB::table('booking')
-			           ->where('curr_date','=', $last_date6)
-					   ->count();
+					$last_date1=date('Y-m-d',strtotime("-1 days"));
+					$last_date2=date('Y-m-d',strtotime("-2 days"));
+					$last_date3=date("Y-m-d", strtotime("-3 days"));
+					$last_date4=date("Y-m-d", strtotime("-4 days"));
+					$last_date5=date("Y-m-d", strtotime("-5 days"));
+					$last_date6=date("Y-m-d", strtotime("-6 days"));
 
 
 
-$javas="{ label: '$last_date6', y: $date7 },";
-$javas.="{ label: '$last_date5', y: $date6 },";
-$javas.="{ label: '$last_date4', y: $date5 },";
-$javas.="{ label: '$last_date3', y: $date4 },";
-$javas.="{ label: '$last_date2', y: $date3 },";
-$javas.="{ label: '$last_date1', y: $date2 },";
-$javas.="{ label: '$curr_date', y: $date1 },";
+                      $date1 = DB::table('security_jobs')
+			           ->where('created_at','LIKE',"%" . $curr_date . "%")
+					   ->count();
+					   $date2 = DB::table('security_jobs')
+			           ->where('created_at','LIKE',"%" . $last_date1 . "%")
+					   ->count();
+					   $date3 = DB::table('security_jobs')
+			           ->where('created_at','LIKE',"%" . $last_date2 . "%")
+					   ->count();
+					   $date4 = DB::table('security_jobs')
+			           ->where('created_at','LIKE',"%" . $last_date3 . "%")
+					   ->count();
+					   $date5 = DB::table('security_jobs')
+			           ->where('created_at','LIKE',"%" . $last_date4 . "%")
+					   ->count();
+					   $date6 = DB::table('security_jobs')
+			           ->where('created_at','LIKE',"%" . $last_date5 . "%")
+					   ->count();
+					   $date7 = DB::table('security_jobs')
+			           ->where('created_at','LIKE',"%" . $last_date6 . "%")
+					   ->count();
+
+
+
+				$javas="{ label: '$last_date6', y: $date7 },";
+				$javas.="{ label: '$last_date5', y: $date6 },";
+				$javas.="{ label: '$last_date4', y: $date5 },";
+				$javas.="{ label: '$last_date3', y: $date4 },";
+				$javas.="{ label: '$last_date2', y: $date3 },";
+				$javas.="{ label: '$last_date1', y: $date2 },";
+				$javas.="{ label: '$curr_date', y: $date1 },";
+
+
 		  
 					  
 					  

@@ -233,6 +233,8 @@ public function sangvish_viewshop_old()
         $editprofile = User::where('id',$userid)->with(['address','company','company.bcategory'])->get();
 
         $useraddress = $editprofile[0]->address;
+
+
         $address = '';
 
         $address .= ! empty($useraddress->line1) ? $useraddress->line1 .", ": null;
@@ -243,7 +245,9 @@ public function sangvish_viewshop_old()
 
 
 
-       
+        $editprofile[0]->company->address = $address;
+        $editprofile[0]->save();
+
 
         $b_cats = Businesscategory::all();
         //$data = array('editprofile' => $editprofile);

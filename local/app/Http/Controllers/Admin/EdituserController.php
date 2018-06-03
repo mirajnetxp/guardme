@@ -43,11 +43,18 @@ class EdituserController extends Controller
 		$editprofile = DB::select('select * from users where id = ?',[$id]);
 		$data = array('editprofile' => $editprofile);
 
+		$company = array();
+
+		if($editprofile[0]->admin == 0) {
+
+			$company = DB::table('shop')->where('user_id',$editprofile[0]->id)->first();
+		}
+
         $countries = Country::all();
         $address = Address::where('user_id', $id)->get();
 
         $data = array('rating_count' => 0);
-        return view('admin.edituser', compact( 'userid', 'editprofile', 'countries','address'))->with($data);
+        return view('admin.edituser', compact( 'userid', 'editprofile', 'countries','address','company'))->with($data);
 
      }
     /**

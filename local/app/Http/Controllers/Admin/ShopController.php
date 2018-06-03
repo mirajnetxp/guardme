@@ -52,6 +52,8 @@ class ShopController extends Controller {
 			          'shop.business_categoryid',
 			          'shop.company_email',
 			          'shop.user_id',
+			          'users.name',
+			          'users.id as user_id',
 			          'users.created_at'
 		          )
 		          ->get();

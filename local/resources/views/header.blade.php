@@ -139,10 +139,10 @@ if(isset(Auth::user()->verification)){
 						<li <?php if(empty($shcount)){?>class="disabled"<?php } ?>><a href="<?php echo $url;?>/services" <?php if(empty($shcount)){?>class="disabled"<?php } ?>>My Services</a></li>
 						<li <?php if(empty($shcount)){?>class="disabled"<?php } ?>><a href="<?php echo $url;?>/gallery" <?php if(empty($shcount)){?>class="disabled"<?php } ?>>Shop Gallery</a></li>
 						-->
-						<li><a href="{{URL::to('delete_account')}}" >Close account</a></li>
-						<li><a href="{{url('/settings')}}">Settings</a></li>
+						
 
 								<?php } ?>
+						<li><a href="{{url('/settings')}}">Settings</a></li>
 						<li><a href="<?php echo $url;?>/support/tickets">Support</a></li>
 							<?php } ?>
 		                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> Logout</a></li>

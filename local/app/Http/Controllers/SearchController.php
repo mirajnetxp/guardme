@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Responsive\User;
+use Responsive\JobApplication;
 
 class SearchController extends Controller {
 	/**
@@ -189,13 +190,13 @@ class SearchController extends Controller {
 			Session::flash( 'login_first', ' Please login to view the freelancer details.' );
 			return redirect()->back();
 		}
-		$person = User::with(['person_address','sec_work_category'])->find($id);
-		//dd($person->work_category);
-
+		$person = User::with(['person_address','sec_work_category','applications','myApplications'])->find($id);
+		$ja = new JobApplication();
+		$work_history = $ja->getApplicantWorkHistory_appliedby($id);
         if(\request()->expectsJson())
             return response()->json($person);
 
-		return view('profile',compact('person'));
+		return view('profile',compact('person', 'work_history'));
 
 	}
 	

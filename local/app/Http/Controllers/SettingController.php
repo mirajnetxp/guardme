@@ -18,7 +18,7 @@ class SettingController extends Controller {
 
 
 	public function show() {
-		if ( ! Auth::Check() || auth()->user()->admin != '2' ) {
+		if ( ! Auth::Check() ) {
 			return redirect( '/' );
 		}
 
@@ -28,7 +28,7 @@ class SettingController extends Controller {
 	public function visibality() {
 
 
-		if ( ! Auth::Check() || auth()->user()->admin != '2' ) {
+		if ( ! Auth::Check() ) {
 			return redirect( '/' );
 		}
 		if ( auth()->user()->freelancerSettings->visible == true ) {

@@ -2,6 +2,7 @@
 
 namespace Responsive\Http\Controllers\Api;
 
+use Responsive\FavouriteFreelancer;
 use Responsive\Feedback;
 use Responsive\Http\Traits\JobsTrait;
 use Illuminate\Http\Request;
@@ -195,12 +196,107 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public function myJobs() {
-		$my_jobs = Job::getMyJobs();
+	public function myJobs( Request $request ) {
 
-		return response()
-			->json( $my_jobs );
+		$user_Id = auth()->user()->id;
 
+		$this->validate( $request, [
+			'page_id' => 'required'
+		] );
+
+		$joblist     = [];
+		$posted_data = $request->all();
+		$page_id     = ! empty( $posted_data['page_id'] ) ? $posted_data['page_id'] : '';
+		$user_id     = ! empty( $posted_data['user_id'] ) ? $posted_data['user_id'] : '';
+		$post_code   = ! empty( $posted_data['post_code'] ) ? $posted_data['post_code'] : '';
+		$cat_id      = ! empty( $posted_data['cat_id'] ) ? $posted_data['cat_id'] : '';
+		$loc_val     = ! empty( $posted_data['loc_val'] ) ? $posted_data['loc_val'] : '';
+		$keyword     = ! empty( $posted_data['keyword'] ) ? $posted_data['keyword'] : '';
+		$distance    = ! empty( $posted_data['distance'] ) ? $posted_data['distance'] : '';
+
+		if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
+			if ( $post_code != '' ) {
+				$post_code = trim( $post_code );
+				if ( ! empty( $post_code ) ) {
+					$postcode_url = "https://api.getaddress.io/find/" . $post_code . "?api-key=ZTIFqMuvyUy017Bek8SvsA12209&sort=true";
+					$postcode_url = str_replace( ' ', '%20', $postcode_url );
+					$ch           = curl_init();
+					curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+					curl_setopt( $ch, CURLOPT_HEADER, false );
+					curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+					curl_setopt( $ch, CURLOPT_URL, $postcode_url );
+					curl_setopt( $ch, CURLOPT_REFERER, $postcode_url );
+					curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+					$getBas = curl_exec( $ch );
+					curl_close( $ch );
+					$post_code_array = json_decode( $getBas, true );
+
+					if ( isset( $post_code_array['Message'] ) || empty( $post_code_array ) ) {
+						$return_data   = [ 'Post code not valid!' ];
+						$return_status = 403;
+
+						return response()
+							->json( $return_data, $return_status );
+					}
+					$latitude  = $post_code_array['latitude'];
+					$longitude = $post_code_array['longitude'];
+				}
+				$joblist = Job::getSearchedJobNearByPostCode( $posted_data, $latitude, $longitude, 20, 'kilometers', $page_id );
+			} else {
+
+				if ( auth()->user()->person_address ) {
+					$userAddressObj = auth()->user()->person_address;
+					if ( ! empty( $userAddressObj->latitude ) ) {
+						$latitude = $userAddressObj->latitude;
+					}
+					if ( ! empty( $userAddressObj->latitude ) ) {
+						$longitude = $userAddressObj->longitude;
+					}
+					if ( $latitude > 0 && $latitude > 0 ) {
+						$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
+					} else {
+						$joblist = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] );
+					}
+				} else {
+//					$joblist = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', ] );
+					$joblist = Job::with( [ 'industory', 'schedules', ] );
+				}
+
+			}
+		} else {
+			$joblist = Job::with( [ 'industory', 'schedules', ] );
+		}
+
+//   status filtering .......
+
+		if ( $request->status === 'close' ) {
+			$joblist = $joblist
+				->where( 'created_by', '=', $user_Id )
+				->where( 'status', '=', 0 );
+		} elseif ( $request->status === 'open' ) {
+			$joblist = $joblist
+				->where( 'created_by', '=', $user_Id )
+				->where( 'status', '=', 1 );
+		} else {
+			$joblist = $joblist
+				->where( 'created_by', '=', $user_Id );
+		}
+
+
+		if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
+		} else {
+			$joblist = $joblist->paginate( 10 );
+			foreach ( $joblist as $key => $value ) {
+				$app = DB::table( 'job_applications' )
+				         ->where( 'job_id', $joblist[ $key ]->id )
+				         ->where( 'is_hired', 1 )
+				         ->get();
+
+				$joblist[ $key ]->applications = $app;
+			}
+		}
+
+		return response()->json( [ 'job_list' => $joblist ] );
 	}
 
 	/**
@@ -209,6 +305,7 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
+
 	public function applyJob( $id, Request $request ) {
 		$this->validate( $request, [
 			'application_description' => 'required'
@@ -252,7 +349,10 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function markHired( $application_id ) {
+	public
+	function markHired(
+		$application_id
+	) {
 
 		// check if user is authorized to mark this application as hired.
 		$job_application     = new JobApplication();
@@ -277,7 +377,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function addMoney( Request $request ) {
+	public
+	function addMoney(
+		Request $request
+	) {
 		$return_data   = [ 'Unknown Error' ];
 		$return_status = 500;
 		$posted_data   = $request->all();
@@ -334,7 +437,10 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function fundJobFee( Request $request ) {
+	public
+	function fundJobFee(
+		Request $request
+	) {
 		$return_data   = [ 'Unknown Error' ];
 		$return_status = 500;
 		$posted_data   = $request->all();
@@ -367,7 +473,8 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function totalUserAwardedJobs() {
+	public
+	function totalUserAwardedJobs() {
 		/** @var User $user */
 		$user = auth()->user();
 
@@ -382,7 +489,8 @@ class JobsController extends Controller {
 		] );
 	}
 
-	public function totalAppliedJobsForUser() {
+	public
+	function totalAppliedJobsForUser() {
 		/** @var User $user */
 		$user = auth()->user();
 
@@ -395,7 +503,8 @@ class JobsController extends Controller {
 		] );
 	}
 
-	public function totalCreatedJobsForEmployer() {
+	public
+	function totalCreatedJobsForEmployer() {
 		/** @var User $user */
 		$user = auth()->user();
 
@@ -411,7 +520,8 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public function myProposals() {
+	public
+	function myProposals() {
 		$ja        = new JobApplication();
 		$proposals = $ja->getMyProposals();
 
@@ -427,7 +537,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function jobDetailsLocation( Request $request ) {
+	public
+	function jobDetailsLocation(
+		Request $request
+	) {
 		$this->validate( $request, [
 			'job_id'  => 'required',
 			'user_id' => 'required'
@@ -438,7 +551,9 @@ class JobsController extends Controller {
 		$job_details  = Job::with( [
 			'poster',
 			'poster.company',
-			'industory'
+			'industory',
+			'schedules'
+
 		] )->where( 'id', $posted_data['job_id'] )->first();
 
 		return response()->json( [
@@ -506,16 +621,16 @@ class JobsController extends Controller {
 							if ( $latitude > 0 && $latitude > 0 ) {
 								$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
 							} else {
-								$joblist = Job::where( 'status', '1' )->paginate( 10 );
+								$joblist = Job::where( 'status', '1' );
 							}
 						} else {
-							$joblist = Job::where( 'status', '1' )->paginate( 10 );
+							$joblist = Job::where( 'status', '1' );
 						}
 					} else {
-						$joblist = Job::where( 'status', '1' )->paginate( 10 );
+						$joblist = Job::where( 'status', '1' );
 					}
 				} else {
-					$joblist = Job::where( 'status', '1' )->paginate( 10 );
+					$joblist = Job::where( 'status', '1' );
 				}
 			}
 		} else {
@@ -534,18 +649,20 @@ class JobsController extends Controller {
 						if ( $latitude > 0 && $latitude > 0 ) {
 							$joblist = Job::getJobNearByUser( $latitude, $longitude, 20, 'kilometers', $page_id );
 						} else {
-							$joblist = Job::where( 'status', '1' )->paginate( 10 );
+							$joblist = Job::where( 'status', '1' );
 						}
 					} else {
-						$joblist = Job::where( 'status', '1' )->paginate( 10 );
+						$joblist = Job::where( 'status', '1' );
 					}
 				} else {
-					$joblist = Job::where( 'status', '1' )->paginate( 10 );
+					$joblist = Job::where( 'status', '1' );
 				}
 			} else {
-				$joblist = Job::where( 'status', '1' )->paginate( 10 );
+				$joblist = Job::where( 'status', '1' );
 			}
 		}
+
+		$joblist = $joblist->with( 'schedules' )->paginate( 10 );
 
 		return response()->json( [
 			'job_list' => $joblist
@@ -555,7 +672,8 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public function getSecurityCategories() {
+	public
+	function getSecurityCategories() {
 		$ja                 = new JobApplication();
 		$securityCategories = SecurityCategory::all();
 
@@ -567,7 +685,8 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public function getBusinessCategories() {
+	public
+	function getBusinessCategories() {
 		$ja                 = new JobApplication();
 		$businessCategories = Businesscategory::all();
 
@@ -581,7 +700,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function markApplicationAsComplete( $application_id ) {
+	public
+	function markApplicationAsComplete(
+		$application_id
+	) {
 		$application   = JobApplication::find( $application_id );
 		$user_id       = auth()->user()->id;
 		$return_status = 200;
@@ -605,7 +727,10 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public function leaveFeedback( $application_id, Request $request ) {
+	public
+	function leaveFeedback(
+		$application_id, Request $request
+	) {
 		$posted_data = $request->all();
 		$application = JobApplication::find( $application_id );
 		$job         = Job::find( $application->job_id );
@@ -641,7 +766,10 @@ class JobsController extends Controller {
 	}
 
 
-	public function get_notifications_settings( Request $request ) {
+	public
+	function get_notifications_settings(
+		Request $request
+	) {
 		$settings_exist = @\Responsive\NotificationsSettings::where( 'user_id', $request->user_id )->count();
 
 		if ( $settings_exist > 0 ) {
@@ -658,7 +786,10 @@ class JobsController extends Controller {
 	}
 
 
-	public function update_notifications_settings( Request $request ) {
+	public
+	function update_notifications_settings(
+		Request $request
+	) {
 		$settings_exist = @\Responsive\NotificationsSettings::where( 'user_id', $request->user_id )->count();
 
 		if ( $settings_exist > 0 ) {
@@ -681,7 +812,10 @@ class JobsController extends Controller {
 	}
 
 
-	public function get_notifications( Request $request ) {
+	public
+	function get_notifications(
+		Request $request
+	) {
 		$notifications = \Responsive\Notifications::where( 'user_id', $request->user_id )->orWhere( 'notification_type', 'all' )->orderBy( 'id', 'DESC' )->paginate();
 
 		foreach ( $notifications as $n ) {
@@ -711,7 +845,10 @@ class JobsController extends Controller {
 	}
 
 
-	public function create_notification( $notification_type, $applied_by, $details ) {
+	public
+	function create_notification(
+		$notification_type, $applied_by, $details
+	) {
 
 		// {notification_by_user_id} hired you for the Job {job_title}
 
@@ -739,37 +876,41 @@ class JobsController extends Controller {
 
 	/**
 	 * @param $application_id
+	 *
 	 * @return mixed
 	 */
-	public function cancelHiredApplication($application_id) {
-		$application = JobApplication::find($application_id);
-		$job = Job::find($application->job_id);
-		$return_data = ["Un-known error"];
+	public
+	function cancelHiredApplication(
+		$application_id
+	) {
+		$application   = JobApplication::find( $application_id );
+		$job           = Job::find( $application->job_id );
+		$return_data   = [ "Un-known error" ];
 		$return_status = 500;
 		// if freelancer cancels the job
-		if (isFreelancer()) {
-			if ($application->applied_by != auth()->user()->id) {
-				$return_data = ["You are no authorized to perform this action"];
+		if ( isFreelancer() ) {
+			if ( $application->applied_by != auth()->user()->id ) {
+				$return_data   = [ "You are no authorized to perform this action" ];
 				$return_status = 500;
-			} else if($application->completion_status != 0) {
-				$return_data = ["Your job is either complete or already canceled"];
+			} else if ( $application->completion_status != 0 ) {
+				$return_data   = [ "Your job is either complete or already canceled" ];
 				$return_status = 500;
 			} else {
-				$schedule_start = $job->schedules()->get()->first();
-				$start = strtotime($schedule_start->start);
-				$current_date_time = time();
-				$difference = $start - $current_date_time;
+				$schedule_start     = $job->schedules()->get()->first();
+				$start              = strtotime( $schedule_start->start );
+				$current_date_time  = time();
+				$difference         = $start - $current_date_time;
 				$less_than_24_hours = true;
-				if ($difference > 0) {
-					$diff_hours = $difference / (60*60);
-					if ($diff_hours > 24) {
+				if ( $difference > 0 ) {
+					$diff_hours = $difference / ( 60 * 60 );
+					if ( $diff_hours > 24 ) {
 						$less_than_24_hours = false;
 					}
 				}
-				if ($less_than_24_hours) {
+				if ( $less_than_24_hours ) {
 					// leave 1 start rating
-					$already       = Feedback::where( 'application_id', $application_id )->get();
-					if (count($already) == 0) {
+					$already = Feedback::where( 'application_id', $application_id )->get();
+					if ( count( $already ) == 0 ) {
 						$feedback                     = new Feedback();
 						$feedback->application_id     = $application_id;
 						$feedback->appearance         = 1;
@@ -783,70 +924,110 @@ class JobsController extends Controller {
 				// mark application as canceled with completion_status = 2
 				$application->completion_status = 2;
 				$application->save();
-				$return_data = ["Canceled Successfully"];
+				$return_data   = [ "Canceled Successfully" ];
 				$return_status = 200;
 			}
 
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 
 	/**
 	 * @param $application_id
 	 * @param Request $request
+	 *
 	 * @return mixed
 	 */
-	public function postTip($application_id, Request $request) {
+	public
+	function postTip(
+		$application_id, Request $request
+	) {
 		$this->validate( $request, [
 			'tip_amount' => 'required|integer'
 		] );
 		$posted_data = $request->all();
-		$tip_amount = $posted_data['tip_amount'];
-		$application = JobApplication::find($application_id);
+		$tip_amount  = $posted_data['tip_amount'];
+		$application = JobApplication::find( $application_id );
 		// add inactive transaction for the tip
-		$trans = new Transaction();
-		$trans->application_id = $application_id;
-		$trans->job_id = $application->job_id;
+		$trans                    = new Transaction();
+		$trans->application_id    = $application_id;
+		$trans->job_id            = $application->job_id;
 		$trans->debit_credit_type = 'credit';
-		$trans->amount = $tip_amount;
-		$trans->title = 'Tip';
-		$trans->type = 'tip';
-		$trans->status = 0;
-		$trans->user_id = auth()->user()->id;
-		$res = $trans->save();
-		$return_status = 200;
+		$trans->amount            = $tip_amount;
+		$trans->title             = 'Tip';
+		$trans->type              = 'tip';
+		$trans->status            = 0;
+		$trans->user_id           = auth()->user()->id;
+		$res                      = $trans->save();
+		$return_status            = 200;
 		$trans->save();
-		$return_data   = [ 'transaction_id' => $trans->id ];
+		$return_data = [ 'transaction_id' => $trans->id ];
 
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 
 	}
 
-	public function confirmTip($transaction_id) {
-		$transaction = Transaction::find($transaction_id);
+	public
+	function confirmTip(
+		$transaction_id
+	) {
+		$transaction = Transaction::find( $transaction_id );
 		// check if user is authorized to perform this action means it should be the user who created this transaction
-		if ($transaction->user_id !=  auth()->user()->id) {
+		if ( $transaction->user_id != auth()->user()->id ) {
 			$return_status = 500;
-			$return_data = ["You are not authorized to perform this action"];
+			$return_data   = [ "You are not authorized to perform this action" ];
 		} else {
 			// make sure user has enough available balance to mark this tip as confirmed (activated)
-			$trans = new Transaction();
+			$trans            = new Transaction();
 			$available_balace = $trans->getWalletAvailableBalance();
-			if ($available_balace < $transaction->amount) {
+			if ( $available_balace < $transaction->amount ) {
 				$return_status = 500;
-				$return_data = ["You don't have sufficient balance to perform this action. Please load more balance."];
+				$return_data   = [ "You don't have sufficient balance to perform this action. Please load more balance." ];
 			} else {
-				$transaction->status = 1;
+				$transaction->status                = 1;
 				$transaction->credit_payment_status = 'paid';
 				$transaction->save();
 				$return_status = 200;
-				$return_data = ["Your tip has been successfully added."];
+				$return_data   = [ "Your tip has been successfully added." ];
 			}
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
+	}
+
+	/**
+	 * @param $freelancer_id
+	 *
+	 * @return mixed
+	 * @throws \Exception
+	 */
+	public function toggleFavouriteFreelancer( $freelancer_id ) {
+		$return_data   = [];
+		$return_status = 500;
+		if ( ! empty( $freelancer_id ) ) {
+			$employer_id       = auth()->user()->id;
+			$already_favourite = FavouriteFreelancer::where( 'freelancer_id', $freelancer_id )
+			                                        ->where( 'employer_id', $employer_id );
+			if ( count( $already_favourite->get() ) > 0 ) {
+				$already_favourite->delete();
+				$return_data   = [ 'Freelancer removed from favourite list' ];
+				$return_status = 200;
+			} else {
+				$fav                = new FavouriteFreelancer();
+				$fav->freelancer_id = $freelancer_id;
+				$fav->employer_id   = $employer_id;
+				$fav->save();
+				$return_data   = [ 'Freelancer added to favourite list' ];
+				$return_status = 200;
+			}
+		}
+
+		return response()
+			->json( $return_data, $return_status );
 	}
 
 

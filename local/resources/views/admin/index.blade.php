@@ -146,7 +146,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="header">
-              <h4 class="title">Last 7 Days Booking Report</h4>
+              <h4 class="title">Last 7 Days Job Report</h4>
             </div>
 
 
@@ -192,7 +192,7 @@
 				type: "line",
 				showInLegend: true,
 				lineThickness: 2,
-				name: "Orders",
+				name: "Jobs",
 				markerType: "square",
 				color: "#F08080",
 				dataPoints: dps

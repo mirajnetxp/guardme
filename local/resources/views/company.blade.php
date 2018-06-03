@@ -69,7 +69,7 @@
 
                         <div class="form-group">
                             <label for="address">Address</label>
-                            <input id="address" readonly="true" type="text" class=" form-control  text-input" name="address" value="{{$address }}">
+                            <input id="address" readonly="true" type="text" class=" form-control  text-input" name="address" value="{{$editprofile[0]->company->address}}">
                             
                         </div>
 

@@ -148,4 +148,8 @@ class EmployerJobsController extends Controller {
 
 //		return view( 'invoice-freelancer', compact( 'all_transactions', 'balance', 'from', 'id' ) );
 	}
+
+	public function awardTo( $application_id ) {
+
+	}
 }

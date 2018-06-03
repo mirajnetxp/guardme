@@ -185,8 +185,7 @@ class JobApplication extends Model {
 			             }
 
 			             return $item;
-		             } )
-		;
+		             } );
 
 		return $res;
 	}

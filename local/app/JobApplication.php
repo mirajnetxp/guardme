@@ -168,25 +168,24 @@ class JobApplication extends Model {
 			             'u.name as user_name',
 			             'shp.shop_name',
 			             'shp.profile_photo',
-//			             'transactions.amount',
+			             'transactions.amount',
 			             'sj.number_of_freelancers'
 		             )
 		             ->join( 'security_jobs as sj', 'sj.id', '=', 'ja.job_id' )
 		             ->join( 'users as u', 'u.id', '=', 'ja.applied_by' )
 		             ->join( 'shop as shp', 'sj.created_by', '=', 'shp.user_id' )
-//		             ->leftJoin( 'transactions', 'ja.job_id', '=', 'transactions.job_id' )
-//		             ->where( 'transactions.credit_payment_status', '=', 'funded' )
-		             ->where( 'ja.applied_by', $user_id )
+		             ->leftJoin( 'transactions', 'ja.job_id', '=', 'transactions.job_id' )
+		             ->where( 'transactions.credit_payment_status', '=', 'funded' )
+//		             ->where( 'ja.applied_by', $user_id )
 		             ->where( 'ja.completion_status', '!=', 2 )
 		             ->get()
-//		             ->map( function ( $item, $key ) {
-//			             if ( $item->amount ) {
-//				             $item->amount = $item->amount / $item->number_of_freelancers;
-//			             }
-//
-//			             return $item;
-//		             } )
-		;
+		             ->map( function ( $item, $key ) {
+			             if ( $item->amount ) {
+				             $item->amount = $item->amount / $item->number_of_freelancers;
+			             }
+
+			             return $item;
+		             } );
 
 		return $res;
 	}

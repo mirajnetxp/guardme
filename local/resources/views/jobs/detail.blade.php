@@ -112,7 +112,7 @@
 @include('header')
 @if(session()->has('doc_not_v'))
     <div class="container-fluid" style="background-color: #e91e63">
-        <h5 class="text-center" style="color: #ffffff">{{session()->has('doc_not_v')}}</h5>
+        <h5 class="text-center" style="color: #ffffff">{{session('doc_not_v')}}</h5>
     </div>
 @endif
 <section class="job-bg page job-details-page">

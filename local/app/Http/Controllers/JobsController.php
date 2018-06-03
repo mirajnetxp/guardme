@@ -361,6 +361,14 @@ class JobsController extends Controller {
 			Session::flash( 'doc_not_v', 'Your Account is Unverified. Please contact admin about the status of your account.' );
 			return redirect( "/contact" );
 		}
+
+        $appliedAlready = DB::table('job_applications')->where('applied_by',auth()->user()->id)->count();
+
+        if($appliedAlready) {
+
+           Session::flash( 'doc_not_v', 'You Applied Already on this Job.' );
+            return redirect()->back();     
+        }
 		$job = Job::find( $id );
 
 		return view( 'jobs.apply', [ 'job' => $job ] );

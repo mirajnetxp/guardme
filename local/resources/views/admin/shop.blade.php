@@ -125,6 +125,7 @@
                                     <th class="hidden">address</th>
                                     <th class="hidden">created at</th>
                                     <th>Featured</th>
+                                    <th>Owner</th>
                                     <th>Status</th>
                                     <th>Total Balance</th>
                                     <th>Action</th>
@@ -144,6 +145,8 @@
                                     <td class="hidden">{{date("Ymd",strtotime($viewshop->created_at) )}}</td>
 
                                     <td><?php echo $viewshop->featured;?></td>
+                                    <td><a href="{{ URL::to('admin/edituser/' . $viewshop->user_id)}}"><?php echo $viewshop->name;?></a></td>
+
 
                                     <td><?php echo $viewshop->status;?></td>
 

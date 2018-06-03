@@ -112,8 +112,8 @@ class JobApplication extends Model {
 		             ->join( 'security_jobs as sj', 'sj.id', '=', 'ja.job_id' )
 		             ->join( 'users as u', 'u.id', '=', 'ja.applied_by' )
 		             ->where( 'ja.id', $application_id )
-		             ->where( 'ja.applied_by', $user_id )->get()->first();
-
+//		             ->where( 'ja.applied_by', $user_id )
+		             ->first();
 		return $res;
 	}
 
@@ -155,6 +155,7 @@ class JobApplication extends Model {
 		$res     = DB::table( $this->table . ' as ja' )
 		             ->select(
 			             'sj.title',
+			             'ja.id',
 			             'sj.created_by',
 			             'ja.application_description as description',
 			             'ja.is_hired',
@@ -176,7 +177,7 @@ class JobApplication extends Model {
 		             ->join( 'shop as shp', 'sj.created_by', '=', 'shp.user_id' )
 		             ->leftJoin( 'transactions', 'ja.job_id', '=', 'transactions.job_id' )
 		             ->where( 'transactions.credit_payment_status', '=', 'funded' )
-		             ->where( 'ja.applied_by', $user_id )
+//		             ->where( 'ja.applied_by', $user_id )
 		             ->where( 'ja.completion_status', '!=', 2 )
 		             ->get()
 		             ->map( function ( $item, $key ) {

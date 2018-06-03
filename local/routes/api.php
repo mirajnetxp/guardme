@@ -115,7 +115,14 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 Route::group( [ 'prefix' => 'employer', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
 
 	Route::get( '/job/decline/{application_id} ', 'EmployerJobsController@JobDecline' );
+
+
+
+	Route::post( '/award/job/to/{application_id}', 'EmployerJobsController@awardTo' );
+
+
 	Route::get( '/awarded/jobs', 'EmployerJobsController@awardedJobs' );
+
 	Route::get( '/wallet/invoice/{job_id}', 'EmployerJobsController@invoice' );
 
 

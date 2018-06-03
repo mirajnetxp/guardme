@@ -232,7 +232,14 @@ public function sangvish_viewshop_old()
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->with(['address','company','company.bcategory'])->get();
 
-       
+        $useraddress = $editprofile[0]->address;
+        $address = '';
+
+        $address .= ! empty($useraddress->line1) ? $useraddress->line1 .", ": null;
+        $address .= ! empty($useraddress->line2) ?  $useraddress->line2.", " : null;
+        $address .= ! empty($useraddress->line3) ?  $useraddress->line3.", " : null;
+        $address .= ! empty($useraddress->citytown) ?$useraddress->citytown ." - " . $useraddress->postcode .", " : null;
+        $address .= $useraddress->country ? "\n" . $useraddress->country : null;
 
 
 

@@ -203,14 +203,9 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
         </div>
         <div class="card-body">
           <h5>Company Name</h5>
-          @if(isset($company->shop_name))
-            <span> {{$company->shop_name}}</span>
-          @endif
-          <br>
-          <h5>Company Email</h5>
-          @if(isset($company->company_email))
-            <span> {{$company->company_email}}</span>
-          @endif
+          <span> {{$company->shop_name}}</span><br>
+           <h5>Company Email</h5>
+          <span> {{$company->company_email}}</span>
         </div>
       </div>
       @endif

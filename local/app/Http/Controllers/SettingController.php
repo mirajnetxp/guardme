@@ -18,35 +18,29 @@ class SettingController extends Controller {
 
 
 	public function show() {
-		$userids =  DB::select('select id from users');
-		$visibles = FreelancerSetting::all();
-		if (count($visibles) == 0) {
-			$query = "";
-			foreach ($userids as $userid) {
-				DB::insert('insert into freelancer_settings(user_id, visible) values ('.$userid->id.', 0);');
-			}
-		}
 		if ( ! Auth::Check() ) {
 			return redirect( '/' );
 		}
-		$visible = auth()->user()->freelancerSettings->visible;
-		return view( 'setting', compact('visible'));
+
+		return view( 'setting' );
 	}
 
 	public function visibality() {
+
+
 		if ( ! Auth::Check() ) {
 			return redirect( '/' );
 		}
-		if ( auth()->user()->freelancerSettings->visible == 1 ) {
+		if ( auth()->user()->freelancerSettings->visible == true ) {
 			DB::table( 'freelancer_settings' )
 			  ->where( 'user_id', auth()->user()->id )
-			  ->update( [ 'visible' => 0 ] );
+			  ->update( [ 'visible' => false ] );
 
 			return response()->json( '102', 200 );
 		} else {
 			DB::table( 'freelancer_settings' )
 			  ->where( 'user_id', auth()->user()->id )
-			  ->update( [ 'visible' => 1 ] );
+			  ->update( [ 'visible' => true ] );
 
 			return response()->json( '101', 200 );
 		}

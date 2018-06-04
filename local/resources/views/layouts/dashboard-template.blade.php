@@ -64,6 +64,11 @@
             $rating =  number_format((float)$rating, 2, '.', ''); 
 
             $job = count($job);
+
+            if(Auth::user()->admin == 1) {
+
+               $openTocket = DB::table('tickets')->where('state','1')->count();
+            }
         }
 
 
@@ -111,6 +116,13 @@
                                {{$job}}
                                 <small>Open Jobs</small></a>
                         </div>
+                        @if(Auth::user()->admin == 1)
+                        <div class="favorites">
+                            <a href="{{$url . "/support"}}">
+                               {{$openTocket}}
+                                <small>Open Tickets</small></a>
+                        </div>
+                        @endif
                         <div class="favorites">
                             <a href="bookmark.html">£
                                 @if(empty($wallet_data['available_balance']))
@@ -144,6 +156,12 @@
 
                     <li class="@if(Route::current()->uri()=='wallet-dashboard') {{'active'}} @endif"><a href="{{URL::to('wallet-dashboard')}}" >Wallet</a></li>
                     <li class="@if(Route::current()->uri()=='referral' || Route::current()->uri()=='redeem') {{'active'}} @endif"><a href="{{URL::to('referral')}}">Loyalty</a></li>
+                     @if($editprofile[0]->admin == 0)  
+                    <li class="@if(Route::current()->getName()=='my.jobs') {{'active'}} @endif"><a href="{{URL::route('my.jobs')}}">My Jobs</a></li>
+                    @endif
+                    @if($editprofile[0]->admin == 1)  
+                    <li class="@if(Route::is('support')) {{'active'}} @endif"><a href="{{URL::to('support')}}">Support</a></li>
+                    @endif
                 </ul>
             </div>
 

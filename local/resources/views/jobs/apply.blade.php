@@ -6,6 +6,7 @@
    
 </head>
 <body>
+
 <!-- fixed navigation bar -->
 @include('header')
 @if(session()->has('doc_not_v'))
@@ -77,9 +78,17 @@
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
+                        <div class="button hide" id="social">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=http://guarddme.com/jobs/apply/{{$job->id}}" class="social-button " id=""><span class="fa fa-facebook-official"></span></a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="https://twitter.com/intent/tweet?text=my share text&amp;url=http://guarddme.com/jobs/apply/{{$job->id}}" class="social-button " id=""><span class="fa fa-twitter"></span></a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="https://plus.google.com/share?url=http://guarddme.com/jobs/apply/{{$job->id}}" class="social-button " id=""><span class="fa fa-google-plus"></span></a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://guarddme.com/jobs/apply/{{$job->id}}&amp;title=my share text&amp;summary=dit is de linkedin summary" class="social-button " id=""><span class="fa fa-linkedin"></span></a>
+                        </div>
                     </div>                  
                 </div>
-
                 <div class="job-details-info">
                     <div class="row">
                         <div class="col-sm-8">
@@ -143,10 +152,11 @@
 
         </div>
     </section>
+    
 
 @include('footer')
-
-     
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="{{ asset('js/share.js') }}"></script>
 <script>
     $(document).ready(function(){
         $("form#apply_on_job").on("submit", function(e){
@@ -159,6 +169,7 @@
                 success: function(data) {
                     $('.alert-success').text("Your application has been received");
                     $('.alert-success').removeClass('hide');
+                    $('#social').removeClass('hide');
                     $("html, body").animate({ scrollTop: $('.alert') }, 1000);
                 },
                 error: function(data) {

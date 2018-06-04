@@ -169,7 +169,6 @@ class Transaction extends Model {
 				$credit        = DB::table( $this->table . ' as tr' )
 				                   ->select( DB::raw( 'SUM(amount) as total' ) )
 				                   ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
-				                   ->groupBy( 'tr.application_id' )
 				                   ->where( 'ja.applied_by', $user_id )
 				                   ->whereNotNull( 'tr.application_id' )
 				                   ->where( 'status', 1 )

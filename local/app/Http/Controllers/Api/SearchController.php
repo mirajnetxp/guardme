@@ -149,14 +149,25 @@ class SearchController extends Controller {
 		$sec_personnels = $query
 			->with( 'person_address' )
 			->paginate( 10 );
-//
-//		foreach ( $sec_personnels as $key => $value ) {
-//			$sec_personnels[$key]['rating']=null;
-//
-//			$rat=
-//
-//		}
 
+		foreach ( $sec_personnels as $key => $value ) {
+			$sec_personnels[ $key ]['rating'] = null;
+			$user_id                          = $sec_personnels[ $key ]->id;
+
+			$cats = DB::table( 'job_applications' )
+			          ->where( 'applied_by', $user_id )
+			          ->join( 'feedback', 'job_applications.id', '=', 'feedback.application_id' )
+//			          ->select( 'feedback.appearance', 'feedback.punctuality', 'feedback.customer_focused', 'feedback.security_conscious' )
+                      ->select( DB::raw( '(feedback.appearance + feedback.punctuality + feedback.customer_focused + feedback.security_conscious)/4 as average_rating_per' ) )
+			          ->get();
+
+			if ( count( $cats ) > 0 ) {
+				$rating = $cats->sum( 'average_rating_per' ) / count( $cats );
+			} else {
+				$rating = 'N/A';
+			}
+			$sec_personnels[ $key ]['rating'] = $rating;
+		}
 
 		return response()->json( $sec_personnels );
 

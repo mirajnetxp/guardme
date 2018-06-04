@@ -11,12 +11,24 @@ Text Domain: sangvish-tn
 ?>
  <?php 
  use Illuminate\Support\Facades\Route;
+ use Illuminate\Support\Facades\Schema;
+ use Illuminate\Support\Facades\DB;
+ $settings = DB::select('select * from settings where id = ?',[1]);
+ if (count($settings) > 0) {
+ if (!array_key_exists('site_dashboard', $settings[0])) {
+	 Schema::table('settings', function($table) {
+		 $table->string('site_dashboard');
+	 });
+ }
+ }
 $currentPaths= Route::getFacadeRoot()->current()->uri();
  $url = URL::to("/"); 
  $setid=1;
 		$setts = DB::table('settings')
 		->where('id', '=', $setid)
 		->get();
+		$settingphotos="/settings/";
+		$paths ='../../../local/images'.$settingphotos.$setts[0]->site_dashboard;
 		$name = Route::currentRouteName();
  if($currentPaths=="/")
  {
@@ -78,7 +90,13 @@ $currentPaths= Route::getFacadeRoot()->current()->uri();
 	
 	
 	
-	
+	<script>
+			$(document).ready(function(){
+					var path = "<?php echo $paths;?>";
+					path = "url(" + path + ")";
+					$('.job-bg').css('background-image', path);
+			});
+	</script>	
 	
 	<script src="<?php echo $url;?>/js/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<?php echo $url;?>/js/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>

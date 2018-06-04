@@ -358,11 +358,13 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 
 	Route::get('/job-confirmation', 'JobsController@confirmation')->name('job.confirmation');
 	Route::get('/my', 'JobsController@myJobs')->name('my.jobs');
+	Route::get('/myfilter', 'JobsController@myJob')->name('my.job');
 	Route::get('/saved', 'JobsController@savedJobs')->name('saved.jobs');
 	Route::get('/my/applications/{id}', 'JobsController@myJobApplications')->name('my.job.applications');
 	Route::get('/application/{id}/{u_id}', 'JobsController@viewApplication')->name('view.application');
 	Route::get('/apply/{id}', 'JobsController@applyJob')->name('apply.job');
 	Route::get('/proposals', 'JobsController@myProposals')->name('my.proposals');
+	Route::get('/proposal', 'JobsController@myProposal')->name('my.proposal');
 	Route::get('/view/application/{app_id}/{job_id}', 'JobsController@myApplicationView')->name('my.application.view');
 	Route::get('/save/{id}', 'JobsController@saveJobsToProfile');
     Route::get('/remove/{id}', 'JobsController@removeJobsFromProfile');

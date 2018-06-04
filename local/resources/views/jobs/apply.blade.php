@@ -6,7 +6,6 @@
    
 </head>
 <body>
-
 <!-- fixed navigation bar -->
 @include('header')
 @if(session()->has('doc_not_v'))
@@ -78,16 +77,6 @@
                             <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                             <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
                         </div>
-                        <!-- AddToAny BEGIN -->
-                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style hide">
-                            <span style="float: left;font-weight: 800;font-size: 22px">Share this ad&nbsp;&nbsp;&nbsp;</span>
-                            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-                            <a class="a2a_button_facebook"></a>
-                            <a class="a2a_button_twitter"></a>
-                            <a class="a2a_button_google_plus"></a>
-                            <a class="a2a_button_linkedin"></a>
-                        </div>
-                        <!-- AddToAny END -->
                     </div>                  
                 </div>
 
@@ -170,7 +159,6 @@
                 success: function(data) {
                     $('.alert-success').text("Your application has been received");
                     $('.alert-success').removeClass('hide');
-                    $('.a2a_default_style').removeClass('hide');
                     $("html, body").animate({ scrollTop: $('.alert') }, 1000);
                 },
                 error: function(data) {
@@ -195,7 +183,6 @@
         });
     });
 </script>
-<script async src="https://static.addtoany.com/menu/page.js"></script>
 
 </body>
 </html>

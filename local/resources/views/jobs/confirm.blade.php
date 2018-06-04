@@ -12,7 +12,6 @@
     </script>
 </head>
 <body>
-
 <!-- fixed navigation bar -->
 @include('header')
 
@@ -51,22 +50,12 @@
                     <a href="{{URL::to('account')}}" class="btn cancle">Profile</a>
                 </div>          
             </div>
-            <!-- AddToAny BEGIN -->
-            <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
-                <span style="float: left;font-weight: 800;font-size: 22px">Share this ad&nbsp;&nbsp;&nbsp;</span>
-                <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-                <a class="a2a_button_facebook"></a>
-                <a class="a2a_button_twitter"></a>
-                <a class="a2a_button_google_plus"></a>
-                <a class="a2a_button_linkedin"></a>
-            </div>
-            <!-- AddToAny END -->
         </div>
 </section>
 
 
 
 @include('footer')
-<script async src="https://static.addtoany.com/menu/page.js"></script>
+
 </body>
 </html>

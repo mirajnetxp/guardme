@@ -104,6 +104,11 @@
 
                     <li class="@if(Route::current()->uri()=='wallet-dashboard') {{'active'}} @endif"><a href="{{URL::to('wallet-dashboard')}}" >Wallet</a></li>
                     <li class="@if(Route::current()->uri()=='referral' || Route::current()->uri()=='redeem') {{'active'}} @endif"><a href="{{URL::to('referral')}}">Loyalty</a></li>
+
+                    @if(isEmployer())
+                        <li class="@if(Route::current()->getName()=='my.favourite.freelancers') {{'active'}} @endif"><a href="{{URL::route('my.favourite.freelancers')}}">Favourite</a></li>
+                        <li class="@if(Route::current()->getName()=='my.teams') {{'active'}} @endif"><a href="{{URL::route('my.teams')}}">Teams</a></li>
+                    @endif
                 </ul>
             </div>
 

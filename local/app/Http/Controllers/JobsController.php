@@ -10,6 +10,7 @@ use Responsive\JobApplication;
 use Responsive\SecurityCategory;
 use Responsive\Job;
 use Responsive\SavedJob;
+use Responsive\Team;
 use Responsive\User;
 use Responsive\Address;
 use Auth;
@@ -515,5 +516,17 @@ class JobsController extends Controller {
             'application_with_job' => $application_with_job,
             'freelancer_details' => $freelancer_details
         ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function favouriteFreelancers() {
+        $user_id = auth()->user()->id;
+        $editprofile = User::where('id', $user_id)->get();
+        $favFreelancers = new FavouriteFreelancer();
+        $favourite_freelancers = $favFreelancers->getFavourieFreelacers();
+        $teams = Team::where('created_by', $user_id)->get();
+        return view('jobs.favourite-freelancers', ['freelancers' => $favourite_freelancers, 'teams'=> $teams, 'editprofile' => $editprofile]);
     }
 }

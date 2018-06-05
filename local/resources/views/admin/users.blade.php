@@ -202,6 +202,21 @@
                                         @if($sta!=1)<a href="<?php echo $url;?>/admin/users/{{ $user->id }}"
                                                        class="btn btn-danger"
                                                        onclick="return confirm('Are you sure you want to delete this?')">Delete</a> @endif
+                                        @php 
+                                          $color = $user->phone_verified == 0 ? "danger" : "success";
+
+                                          $text = $user->phone_verified != 0 ? "Verified" : "Un-verified";
+                                        @endphp               
+                                        <a href="<?php echo $url;?>/admin/phone-status/{{ $user->id }}"
+                                                       class="btn btn-{{$color}}"
+                                                       onclick="return confirm('Are you sure you want to change status ?')"><i class="fa fa-phone-square"></i>{{$text}}</a>
+                                          @php 
+                                          $color = $user->verified == 0 ? "danger" : "success";
+                                          $text = $user->verified != 0 ? "Verified" : "Un-verified";
+                                        @endphp               
+                                        <a href="<?php echo $url;?>/admin/email-status/{{ $user->id }}"
+                                                       class="btn btn-{{$color}}"
+                                                       onclick="return confirm('Are you sure you want to change status ?')"><i class="fa fa-envelope"></i>{{$text}}</a>                                
 
 										<?php } ?>
                                     </td>

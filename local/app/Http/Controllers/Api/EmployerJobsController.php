@@ -150,6 +150,17 @@ class EmployerJobsController extends Controller {
 	}
 
 	public function awardTo( $application_id ) {
+		$application = JobApplication::find( $application_id );
 
+		$job = Job::where( 'id', $application->job_id )
+		          ->where( 'created_by', auth()->user()->id )
+		          ->get();
+		if ( count( $job ) !== 1 ) {
+			return response()->json( 403 );
+		}
+		$application->is_hired = true;
+		$application->save();
+
+		return response()->json( [ 'application_id' => $application_id, 'user_id' => $application->applied_by ], 200 );
 	}
 }

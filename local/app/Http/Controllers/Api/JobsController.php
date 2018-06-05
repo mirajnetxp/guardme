@@ -700,20 +700,18 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public
-	function markApplicationAsComplete(
-		$application_id
-	) {
+	public function markApplicationAsComplete( $application_id ) {
 		$application   = JobApplication::find( $application_id );
 		$user_id       = auth()->user()->id;
 		$return_status = 200;
 		$return_data   = [ "success" ];
 		$job           = Job::find( $application->job_id );
 		if ( $job->created_by != $user_id ) {
-			$return_status = 500;
+			$return_status = 430;
 			$return_data   = [ "You are not authorized to perform this action." ];
 		}
 		if ( $return_status == 200 ) {
+
 			event( new JobHiredApplicationMarkedAsComplete( $application ) );
 		}
 
@@ -727,10 +725,7 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public
-	function leaveFeedback(
-		$application_id, Request $request
-	) {
+	public function leaveFeedback( $application_id, Request $request ) {
 		$posted_data = $request->all();
 		$application = JobApplication::find( $application_id );
 		$job         = Job::find( $application->job_id );
@@ -766,10 +761,7 @@ class JobsController extends Controller {
 	}
 
 
-	public
-	function get_notifications_settings(
-		Request $request
-	) {
+	public function get_notifications_settings( Request $request ) {
 		$settings_exist = @\Responsive\NotificationsSettings::where( 'user_id', $request->user_id )->count();
 
 		if ( $settings_exist > 0 ) {

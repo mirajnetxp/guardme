@@ -372,6 +372,15 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/tip/{application_id}', 'JobsController@giveTip')->name('give.tip');
 	Route::get('/tip/details/{transaction_id}', 'JobsController@tipDetails')->name('tip.details');
 });
+//
+Route::group(['middleware' => 'auth'], function () {
+	// favourite freelancers related route.
+	Route::get('/my/favourite/freelancers', 'JobsController@favouriteFreelancers')->name('my.favourite.freelancers');
+	// Teams related route
+	Route::get('/my/teams', 'TeamsController@myTeams')->name('my.teams');
+	Route::get('/teams/create', 'TeamsController@createTeam')->name('create.team');
+	Route::get('/team/detail/{team_id}', 'TeamsController@showTeam')->name('team.detail');
+});
 
 Route::post('/add-balance-via-paypal', 'PaypalPaymentController@addMoneyPaypal')->name('add.money.paypal')->middleware('auth');
 Route::get('/get-paypal-payment-status', 'PaypalPaymentController@getPaypalPaymentStatus')->name('get.paypal.payment.status')->middleware('auth');

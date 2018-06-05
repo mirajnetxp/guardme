@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 
 	@include('style')
@@ -420,6 +420,21 @@
 										</ul>
 									</div><!-- ad-meta -->
 								</div><!-- ad-info -->
+								@if ($show_favourite_buttons)
+									<div class="pull-right top-30">
+										@php@
+										$btn_class = "btn-info";
+										$btn_text = "Favourite it";
+										@endphp
+										@if(!empty($fav_freelancers) && !empty($fav_freelancers[$person->id]))
+											@php@
+											$btn_class = "btn-danger";
+											$btn_text = "Un-favourite it";
+											@endphp
+										@endif
+										<button class="btn toggle-favourite {{ $btn_class }}" data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $person->id]) }}">{{ $btn_text }}</button>
+									</div>
+								@endif
 							</div><!-- item-info -->
 						</div>
 

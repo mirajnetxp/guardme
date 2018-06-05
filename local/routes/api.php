@@ -83,7 +83,10 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/job-details', 'JobsController@jobDetailsLocation' )->name( 'api.job.details' );
 	Route::post( '/search', 'SearchController@getpersonnelsearch' );
 
-	Route::post( '/toggle/favourite/{freelancer_id}', 'JobsController@toggleFavouriteFreelancer' )->name( 'api.toggle.favourite.freelancer' );
+	Route::post('/toggle/favourite/{freelancer_id}', 'JobsController@toggleFavouriteFreelancer')->name('api.toggle.favourite.freelancer');
+	// Teams specific routes
+	Route::post('/team/create', 'TeamsController@create')->name('api.team.create');
+	Route::post('/team/add/member', 'TeamsController@addMember')->name('api.add.member.to.team');
 } );
 
 

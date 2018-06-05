@@ -18,7 +18,7 @@
       position: relative;
       top: -213px;
       float: right;
-      right: 100px;
+      right: 190px;
     }
 	</style>
   </head>
@@ -41,6 +41,7 @@
         <div class="section postdetails" style="border: 1px #cbc9c6 solid;">
           <div class="clearfix" style="margin: 10px;">
             <a href="" onclick="printPage();" class="btn pull-right">Print</a>
+            <a href="{{ URL::to('/invoicepdf/'.$id) }}" id="btnpdf" class="btn pull-right" style="width: 74px; background-color: #00a651;">PDF</a>
             <a class="btn btn-secondary" href="{{ URL::to('/wallet-dashboard') }}">&larr; Back to Wallet</a>
           </div>
           <div class="clearfix">
@@ -168,7 +169,7 @@
               searching: false,
               sorting: true,
               buttons: [
-                  'csv', 'excel', 'pdf',
+                  'csv', 'excel',
               ],
               page_length: 50,
           });

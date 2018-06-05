@@ -215,6 +215,8 @@ Route::group(['middleware' => 'admin'], function() {
 	Route::get('/admin/users/{id}','Admin\UsersController@destroy');
 	Route::get('/admin/edituser/{id}','Admin\EdituserController@showform');
 	Route::post('/admin/edituser', ['as'=>'admin.edituser','uses'=>'Admin\EdituserController@edituserdata']);
+	Route::get('admin/phone-status/{id}','Admin\EdituserController@phone_status');
+	Route::get('admin/email-status/{id}','Admin\EdituserController@email_status');
 	/* end user */
 
 

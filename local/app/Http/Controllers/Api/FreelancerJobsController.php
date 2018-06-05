@@ -108,4 +108,21 @@ class FreelancerJobsController extends Controller {
 		return response()->json( [ 'withdraw' => '200' ], 200 );
 	}
 
+	public function averageFeedback( $id ) {
+
+		$cats = DB::table( 'job_applications' )
+		          ->where( 'applied_by', $id )
+		          ->join( 'feedback', 'job_applications.id', '=', 'feedback.application_id' )
+		          ->select( DB::raw( '(feedback.appearance + feedback.punctuality + feedback.customer_focused + feedback.security_conscious)/4 as average_rating_per' ) )
+		          ->get();
+
+		if ( count( $cats ) > 0 ) {
+			$rating = $cats->sum( 'average_rating_per' ) / count( $cats );
+		} else {
+			$rating = 'Not Available';
+		}
+
+		return response()->json($rating);
+	}
+
 }

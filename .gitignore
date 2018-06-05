@@ -1,2 +1,10 @@
 .idea/
 **/vendor/
+local/images/
+blog/
+Kosal.zip
+error_log
+local/app/Http/Controllers/Api/Auth/error_log
+local/app/Http/Controllers/Api/error_log
+local/config/error_log
+samp/

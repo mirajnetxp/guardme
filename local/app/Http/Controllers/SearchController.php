@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Responsive\User;
+use Responsive\FavouriteFreelancer;
 use Responsive\JobApplication;
 
 class SearchController extends Controller {
@@ -133,7 +134,23 @@ class SearchController extends Controller {
                 }
             }
         }
-		return view('search',compact('cats','locs','new_personnels'));
+		// Get favourite freelancers array
+		$fav_freelancers = [];
+		$show_favourite_buttons = false;
+		if (!empty(auth()->user()->id)) {
+			if (isEmployer()) {
+				$show_favourite_buttons = true;
+				$user_id = auth()->user()->id;
+				$favourite_freelancers = FavouriteFreelancer::where('employer_id', $user_id)->get()->toArray();
+				$fav_freelancers = [];
+				if (!empty($favourite_freelancers)) {
+					foreach($favourite_freelancers as $key => $freelancer) {
+						$fav_freelancers[$freelancer['freelancer_id']] = $freelancer;
+					}
+				}
+			}
+		}
+		return view('search',compact('cats','locs','new_personnels', 'fav_freelancers', 'show_favourite_buttons'));
 	}
 	
 	public function postpersonnelsearch(Request $request)

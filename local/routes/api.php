@@ -83,7 +83,10 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/job-details', 'JobsController@jobDetailsLocation' )->name( 'api.job.details' );
 	Route::post( '/search', 'SearchController@getpersonnelsearch' );
 
-	Route::post( '/toggle/favourite/{freelancer_id}', 'JobsController@toggleFavouriteFreelancer' )->name( 'api.toggle.favourite.freelancer' );
+	Route::post('/toggle/favourite/{freelancer_id}', 'JobsController@toggleFavouriteFreelancer')->name('api.toggle.favourite.freelancer');
+	// Teams specific routes
+	Route::post('/team/create', 'TeamsController@create')->name('api.team.create');
+	Route::post('/team/add/member', 'TeamsController@addMember')->name('api.add.member.to.team');
 } );
 
 
@@ -110,13 +113,23 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 	Route::post( '/save/job/{id}', 'FreelancerJobsController@saveJob' );
 	Route::get( '/saved/job/list', 'FreelancerJobsController@SaveJobList' );
 
+	Route::get( '/average/feedback/{id}', 'FreelancerJobsController@averageFeedback' );
+
 } );
 
 Route::group( [ 'prefix' => 'employer', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
 
 	Route::get( '/job/decline/{application_id} ', 'EmployerJobsController@JobDecline' );
+
+
+
+	Route::post( '/award/job/to/{application_id}', 'EmployerJobsController@awardTo' );
+
+
 	Route::get( '/awarded/jobs', 'EmployerJobsController@awardedJobs' );
+
 	Route::get( '/wallet/invoice/{job_id}', 'EmployerJobsController@invoice' );
+
 
 
 } );
@@ -126,6 +139,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::get( '/job/{id}/applications/list', 'EmployerJobsController@JobApplications' );
 
 	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
+
 
 
 } );

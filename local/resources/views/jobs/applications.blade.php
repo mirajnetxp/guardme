@@ -111,17 +111,17 @@
                                     </div>
 
                                 </div><!-- ad-info -->
-                                @php@
-                                $btn_class = "btn-info";
-                                $btn_text = "Favourite it";
-                                @endphp
-                                @if(!empty($fav_freelancers) && !empty($fav_freelancers[$application->applied_by]))
-                                    @php@
-                                    $btn_class = "btn-danger";
-                                    $btn_text = "Un-favourite it";
-                                    @endphp
-                                @endif
                                 <div class="pull-right top-30">
+                                    @php@
+                                    $btn_class = "btn-info";
+                                    $btn_text = "Favourite it";
+                                    @endphp
+                                    @if(!empty($fav_freelancers) && !empty($fav_freelancers[$application->applied_by]))
+                                        @php@
+                                        $btn_class = "btn-danger";
+                                        $btn_text = "Un-favourite it";
+                                        @endphp
+                                    @endif
                                     <button class="btn toggle-favourite {{ $btn_class }}" data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $application->applied_by]) }}">{{ $btn_text }}</button>
                                     <a href="{{ route('view.application',['id'=>$application->id,'u_id'=>$application->u_id]) }}"><button class="btn btn-success">View</button></a>
                                 </div>
@@ -137,33 +137,5 @@
 
 @endsection
 @section('script')
-<script>
-    $(document).ready(function () {
-        $(".toggle-favourite").on("click", function () {
-            var self = $(this);
-            if ($(this).hasClass('btn-info')) {
-                var btnText = 'Un-favourite it';
-                var oldClass = 'btn-info';
-                var newClass = 'btn-danger';
-            } else {
-                 oldClass = 'btn-danger';
-                 newClass = 'btn-info';
-                 btnText = 'Favourite it';
-            }
-            $.ajax({
-                url: $(this).attr('data-action'),
-                type: "POST",
-                success: function (data) {
-                    self.removeClass(oldClass);
-                    self.addClass(newClass);
-                    self.addClass('btn');
-                    self.text(btnText);
-                },
-                error: function (data) {
-                    //console.log(data);
-                }
-            });
-        });
-    });
-</script>
+
 @endsection

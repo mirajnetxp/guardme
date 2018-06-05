@@ -177,7 +177,7 @@ class JobApplication extends Model {
 		             ->join( 'shop as shp', 'sj.created_by', '=', 'shp.user_id' )
 		             ->leftJoin( 'transactions', 'ja.job_id', '=', 'transactions.job_id' )
 		             ->where( 'transactions.credit_payment_status', '=', 'funded' )
-//		             ->where( 'ja.applied_by', $user_id )
+		             ->where( 'ja.applied_by', $user_id )
 		             ->where( 'ja.completion_status', '!=', 2 )
 		             ->get()
 		             ->map( function ( $item, $key ) {

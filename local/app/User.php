@@ -245,6 +245,9 @@ class User extends Authenticatable {
     public function nationality() {
         return $this->belongsTo( Country::class, 'nation_id' );
     }
+    public function teams() {
+        return $this->belongsToMany(Team::class, 'team_members', 'freelancer_id', 'team_id');
+    }
 
     /*
      *  find the n closest locations

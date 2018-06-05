@@ -182,12 +182,29 @@ public function sangvish_delaccount()
                 $user->admin = $admin;
                 $user->firstname = $firstname;
                 $user->lastname = $lastname;
-                if($data['dob'])
+                if(isset($data['dob']))
                     $user->dob = $data['dob'];
-                if($data['gender'])
+                if(isset($data['gender']))
                     $user->gender = $data['gender'];
                 if($savefname)
                     $user->photo = $savefname;
+
+
+                if($admin == 0) {
+
+
+                    $useraddress = $address;
+                    $companyAddress = '';
+
+                    $companyAddress .= ! empty($useraddress->line1) ? $useraddress->line1 .", ": null;
+                    $companyAddress .= ! empty($useraddress->line2) ?  $useraddress->line2.", " : null;
+                    $companyAddress .= ! empty($useraddress->line3) ?  $useraddress->line3.", " : null;
+                    $companyAddress .= ! empty($useraddress->citytown) ?$useraddress->citytown ." - " . $useraddress->postcode .", " : null;
+                    $companyAddress .= $useraddress->country ? "\n" . $useraddress->country : null;
+
+
+                    DB::table('shop')->where('user_id',$user->id)->update(['address'=>$companyAddress]);
+                }
                     
                 // don't save email directly if the user change their email
                 // we will save it to verify_users table with new_email column

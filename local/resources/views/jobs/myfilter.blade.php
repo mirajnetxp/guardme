@@ -91,8 +91,8 @@
                     </div>
                 </div><!-- item-info -->
             </div>
-            @endforeach
-            @endif
+        @endforeach
+        @endif
     </div>
 
                 <?php /*<table class="table table-bordered table-responsive">

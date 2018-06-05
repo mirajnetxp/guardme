@@ -117,6 +117,98 @@ class JobsController extends Controller {
         return view('jobs.my', compact('new_jobs','editprofile', 'arr_count'));
     }
 
+    /**
+     * @return mixed
+     */
+    public function myJob(Request $request) {
+        $userid = Auth::user()->id;
+        $start_date  = $request->start_date;
+        $end_date    = $request->end_date;
+        $kind        = $request->kind;
+        $editprofile = User::where('id',$userid)->get();
+        $jobApplications = new JobApplication();
+        $my_jobs = Job::getMyJobs();
+        $arr_count = [];
+        if (count($my_jobs) > 0) {
+            foreach ($my_jobs as $job) {
+                $hired_count = 0;
+                $applications = $jobApplications->getJobApplications($job->id);
+                if (count($applications) > 0) {
+                    foreach ($applications as $app) {
+                        if ($app->is_hired == '1') {
+                            $hired_count++;
+                        }
+                    }
+                }
+                $arr_count[$job->id]['hiredcount'] = $hired_count;
+                $arr_count[$job->id]['appcount'] = count($applications);                
+            }
+        }
+        $date1 = '';
+        $date2 = '';
+        $newjobs = array();
+        if ($start_date != null && $end_date != null && $start_date < $end_date) {
+            $date1  = date( "Y-m-d", strtotime( $start_date ) );
+            $date2  = date( "Y-m-d", strtotime( $end_date ) );
+        }
+        if (count($my_jobs) > 0) {
+            foreach ($my_jobs as $key => $myjob) {
+                switch ($kind) {
+                    case '1':
+                        if ($date1 != '' && $date2 != '') {
+                            if ($date1 < $myjob->updated_at && $date2 > $myjob->updated_at) {
+                                array_push($newjobs, $myjob);
+                            }            
+                        } else {
+                            array_push($newjobs, $myjob);
+                        }
+                        break;                
+                    case '2':
+                        if ($date1 != '' && $date2 != '') {
+                            if ($date1 < $myjob->updated_at && $date2 > $myjob->updated_at && $myjob->status == '1') {
+                                array_push($newjobs, $myjob);
+                            }            
+                        } else {
+                            if ($myjob->status == '1') {
+                                array_push($newjobs, $myjob);
+                            }
+                        }
+                        break;                
+                    case '3':
+                        if ($date1 != '' && $date2 != '') {
+                            if ($date1 < $myjob->updated_at && $date2 > $myjob->updated_at && $myjob->status == '0') {
+                                array_push($newjobs, $myjob);
+                            }            
+                        } else {
+                            if ($myjob->status == '0') {
+                                array_push($newjobs, $myjob);
+                            }
+                        }
+                        break;                
+                    default:
+                        array_push($newjobs, $myjob);
+                        break;
+                }
+            }
+        }
+        $new_jobs = [];
+        $arr_sort = [];
+        if (count($newjobs) > 0) {
+            foreach ($newjobs as $key => $job) {
+                $arr_sort[$key] = $job->updated_at;
+            }
+            arsort($arr_sort);
+            foreach ($arr_sort as $idkey => $val) {
+                foreach ($newjobs as $key => $job) {
+                    if ($idkey == $key) {
+                        array_push($new_jobs, $job);
+                    }
+                }
+            }
+        }
+        return view('jobs.myfilter', compact('new_jobs','editprofile', 'arr_count'));
+    }
+
     public function savedJobs() {
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->get();
@@ -364,6 +456,14 @@ class JobsController extends Controller {
 			Session::flash( 'doc_not_v', 'Your Account is Unverified. Please contact admin about the status of your account.' );
 			return redirect( "/contact" );
 		}
+
+        $appliedAlready = DB::table('job_applications')->where('applied_by',auth()->user()->id)->count();
+
+        if($appliedAlready) {
+
+           Session::flash( 'doc_not_v', 'You Applied Already on this Job.' );
+            return redirect()->back();     
+        }
 		$job = Job::find( $id );
 
 		return view( 'jobs.apply', [ 'job' => $job ] );
@@ -418,8 +518,69 @@ class JobsController extends Controller {
        
         $ja = new JobApplication();
         $proposals = $ja->getMyProposals();
-
         return view('jobs.proposals', compact('proposals','editprofile', 'wallet_data'));
+        
+    }
+    public function myProposal(Request $request) {
+        $user_id = auth()->user()->id;
+        $start_date  = $request->start_date;
+		$end_date    = $request->end_date;
+		$kind        = $request->kind;
+
+        $wallet      = new Transaction();
+        $wallet_data = $wallet->getAllTransactionsAndEscrowBalance();
+         $editprofile = User::where('id',$user_id)->get();
+       
+        $ja = new JobApplication();
+        $proposals = $ja->getMyProposals();
+        $date1 = '';
+        $date2 = '';
+        $newproposals = array();
+        if ($start_date != null && $end_date != null && $start_date < $end_date) {
+            $date1  = date( "Y-m-d", strtotime( $start_date ) );
+            $date2  = date( "Y-m-d", strtotime( $end_date ) );
+        }
+        if (count($proposals) > 0) {
+            foreach ($proposals as $key => $proposal) {
+                switch ($kind) {
+                    case '1':
+                        if ($date1 != '' && $date2 != '') {
+                            if ($date1 < $proposal->applied_date && $date2 > $proposal->applied_date) {
+                                array_push($newproposals, $proposal);
+                            }            
+                        } else {
+                            array_push($newproposals, $proposal);
+                        }
+                        break;                
+                    case '2':
+                        if ($date1 != '' && $date2 != '') {
+                            if ($date1 < $proposal->applied_date && $date2 > $proposal->applied_date && $proposal->is_hired == '0') {
+                                array_push($newproposals, $proposal);
+                            }            
+                        } else {
+                            if ($proposal->is_hired == '0') {
+                                array_push($newproposals, $proposal);
+                            }
+                        }
+                        break;                
+                    case '3':
+                        if ($date1 != '' && $date2 != '') {
+                            if ($date1 < $proposal->applied_date && $date2 > $proposal->applied_date && $proposal->is_hired == '1') {
+                                array_push($newproposals, $proposal);
+                            }            
+                        } else {
+                            if ($proposal->is_hired == '1') {
+                                array_push($newproposals, $proposal);
+                            }
+                        }
+                        break;                
+                    default:
+                        array_push($newproposals, $proposal);
+                        break;
+                }
+            }
+        }
+        return view('jobs.proposal', compact('newproposals','editprofile', 'wallet_data'));
         
     }
 

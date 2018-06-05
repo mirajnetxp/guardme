@@ -232,10 +232,27 @@ public function sangvish_viewshop_old()
         $userid = Auth::user()->id;
         $editprofile = User::where('id',$userid)->with(['address','company','company.bcategory'])->get();
 
+        $useraddress = $editprofile[0]->address;
+
+
+        $address = '';
+
+        $address .= ! empty($useraddress->line1) ? $useraddress->line1 .", ": null;
+        $address .= ! empty($useraddress->line2) ?  $useraddress->line2.", " : null;
+        $address .= ! empty($useraddress->line3) ?  $useraddress->line3.", " : null;
+        $address .= ! empty($useraddress->citytown) ?$useraddress->citytown ." - " . $useraddress->postcode .", " : null;
+        $address .= $useraddress->country ? "\n" . $useraddress->country : null;
+
+
+
+        $editprofile[0]->company->address = $address;
+        $editprofile[0]->save();
+
+
         $b_cats = Businesscategory::all();
         //$data = array('editprofile' => $editprofile);
         //dd($editprofile);
-        return view('company', compact( 'b_cats','userid', 'editprofile'));
+        return view('company', compact( 'b_cats','userid', 'editprofile','address'));
     }
 
 function updatecompany(Request $request)
@@ -248,6 +265,7 @@ function updatecompany(Request $request)
     $company->shop_phone_no = $request->phone;
     $company->company_email = $request->company_email;
     $company->address = $request->address;
+    $company->status   = "approved";
     $company->description = $request->description;
     $company->save();
 

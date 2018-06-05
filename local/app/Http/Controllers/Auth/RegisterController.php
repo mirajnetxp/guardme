@@ -112,7 +112,16 @@ class RegisterController extends Controller
 			$freelancerSetting->save();
 		}
 
-		//		Creating Address Collum
+
+        if($user->admin == '0') {
+
+            $user->verified = '1';
+            $user->save();
+        }
+
+
+
+		//Creating Address Collum
 		$address          = new Address();
 		$address->user_id = $user->id;
 		$address->save();
@@ -128,7 +137,6 @@ class RegisterController extends Controller
                 ]);
             }
         }
-
         return $user;
     }
 }

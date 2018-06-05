@@ -146,8 +146,6 @@
     
 
 @include('footer')
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="{{ asset('js/share.js') }}"></script>
 <script>
     $(document).ready(function(){
         $("form#apply_on_job").on("submit", function(e){

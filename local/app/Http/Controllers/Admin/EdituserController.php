@@ -245,4 +245,32 @@ class EdituserController extends Controller
 		
 		
     }
+
+  // change phone number verify status of user
+  public function phone_status($id){
+   
+     $user = User::find($id);
+
+     if(! empty($user)) {
+
+     	 $user->phone_verified = ! $user->phone_verified ;
+     	 $user->save();
+     	 return back()->with('success', 'Phone number status has been changed.');
+     }
+
+  }  
+
+   // change email verify status of user
+  public function email_status($id){
+   
+     $user = User::find($id);
+
+     if(! empty($user)) {
+
+     	 $user->verified = ! $user->verified ;
+     	 $user->save();
+     	 return back()->with('success', 'Email status has been changed.');
+     }
+     
+  }      
 }

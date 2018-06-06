@@ -402,12 +402,18 @@
 						@if($flag)
 							{{$person->firstname.' '.$person->lastname }}
 						@else
-							{{$person->firstname.' ********'}}
+							{{$person->firstname}}
+							@if(isset($rating_array[$person->id]))
+							<strong style="float: right; font-size: 14px;">{{  $rating_array[$person->id] }}</strong><span class="stars" data-rating="{{ $rating_array[$person->id] }}" style="float: right; margin: 0 5px" data-num-stars="5" ></span> 
+							@endif
 						@endif
 													
 						
 					@else
-						{{$person->firstname.' ********' }}	
+						{{$person->firstname}}
+						@if(isset($rating_array[$person->id]))
+						<strong style="float: right; font-size: 14px;">{{  $rating_array[$person->id] }}</strong>	<span class="stars" data-rating="{{ $rating_array[$person->id] }}" style="float: right; margin: 0 5px" data-num-stars="5" ></span> 
+						@endif
 					@endif
 						</a> </span>
 									<div class="ad-meta">
@@ -416,9 +422,6 @@
 											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
                                                     <?php //echo $stime; ?> - <?php /*echo $etime; */?>
 												</a></li>
-												@if(isset($rating_array[$person->id]))
-												<li><span class="stars" data-rating="{{ $rating_array[$person->id] }}" style="float: left;" data-num-stars="5" ></span> <strong>{{  $rating_array[$person->id] }}</strong></li>
-												@endif
 											<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
 										</ul>
 									</div><!-- ad-meta -->
@@ -494,7 +497,9 @@
         return $(this).each(function() {
 
             var rating = $(this).data("rating");
-
+						if (rating == '5.00') {
+							rating = 5;
+						}
             var numStars = $(this).data("numStars");
 
             var fullStar = new Array(Math.floor(rating + 1)).join('<i class="fa fa-star"></i>');

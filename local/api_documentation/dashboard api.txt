@@ -1,0 +1,155 @@
+12. Mark job as complete
+-----------------------------------------------------------			
+
+		Api:  api/jobs/mark-application-as-complete/{application_id 
+		Type: POST
+		Requirements : Authorization , user must be an employer,  
+		Respose:  
+						[
+							"success"
+						]
+						
+						
+						|
+						OR
+						|
+						
+						
+						[
+							"You are not authorized to perform this action."
+						]						
+						
+		
+13. Leave feedback
+-----------------------------------------------------------			
+
+		Api:  api/jobs/leave/feedback/{application_id}
+		Type: POST
+		Requirements : Authorization , user must be an employer, 
+		Paramitter Accept: 
+							"appearance"=numaric value(0-5) , 
+							"punctuality"=numaric value(0-5), 		 
+							"customer_focused"==numaric value(0-5) , 
+							"security_conscious"=numaric value(0-5) , 
+							"feedback_message"= feedback massage in text
+		
+		Respose:  
+						[
+							"success"
+						]
+						
+						
+						|
+						OR
+						|
+						
+						
+						[
+							"You are not authorized to perform this action."
+						]						
+
+
+14. Average feedback
+-----------------------------------------------------------			
+
+		Api:  api/freelancer/average/feedback/{id}
+		Type: GET
+		Requirements : Authorization , id=freelancer id (user_id)
+	
+		
+		Respose:  
+						[
+							"rating": 4.5
+						]
+						
+						
+						|
+						OR
+						|
+						
+						
+						{
+							"rating": "Not Available"
+						}						
+																			
+
+15. All Open tickets
+-----------------------------------------------------------			
+
+		Api:  api/support/tickets/open
+		Type: GET
+		Requirements : Authorization , Retrive the authenticate user all open tickets. 
+	
+		
+		Respose:  
+						[
+							{
+								"id": 1,
+								"user_id": 21,
+								"responsible_id": 0,
+								"category_id": 0,
+								"title": "jhvv uh o uioh",
+								"status": 0,
+								"state": 1
+							}
+						]
+												
+
+16. All Open Jobs
+-----------------------------------------------------------			
+
+		Api:  api/jobs/open
+		Type: GET
+		Requirements : Authorization , Retrive the authenticate user open jobs;
+	
+		
+		Respose:  
+						[
+							{
+								"job_id": 4,
+								"job_title": "Saturday test job"
+							},
+							{
+								"job_id": 5,
+								"job_title": "awerfg WEF4235"
+							},
+							{
+								"job_id": 6,
+								"job_title": "asdrfg wsfg"
+							}
+						]
+						
+17. All open job applications of freelancer
+-----------------------------------------------------------			
+
+		Api:  api/freelancer/open/job/applications
+		Type: GET
+		Requirements : Authorization , Retrive the authenticate user open jobs;
+	
+		
+		Respose:  
+						[
+							{
+								"job_id": 4,
+								"job_title": "Saturday test job",
+								"completion_status": 0
+							}
+	
+					]		
+
+18. All freelancers awarded open jobs of an employer
+-----------------------------------------------------------			
+
+		Api:  api/employer/open/awarded/jobs
+		Type: GET
+		Requirements : Authorization , Retrive all awarded open jobs of an employer
+	
+		
+		Respose:  
+						[
+							{
+								"application_id": 6,
+								"job_id": 4,
+								"job_title": "Saturday test job"
+							}
+						]										

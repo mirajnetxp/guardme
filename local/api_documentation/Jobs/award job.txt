@@ -1,0 +1,128 @@
+					
+1. Employer can award a job to the applicant
+-----------------------------------------------------------			
+
+		Api:  api/employer/award/job/to/{application_id}
+		Type: POST
+		Requirements : Authorization , user must be an employer,  application_id=which application he like to haire. 
+		Respose:  
+						{
+							"application_id": "6",
+							"user_id": 19
+						}	
+						
+		Explaination of Respose:		user_id = freelancer id , as well as the freelancer user id(in USERS table) ;
+		
+		
+2. Mark job as complete
+-----------------------------------------------------------			
+
+		Api:  api/jobs/mark-application-as-complete/{application_id 
+		Type: POST
+		Requirements : Authorization , user must be an employer,  
+		Respose:  
+						[
+							"success"
+						]
+						
+						
+						|
+						OR
+						|
+						
+						
+						[
+							"You are not authorized to perform this action."
+						]						
+						
+		
+	
+3.Jobs awarded
+Cancel award API endpoint for employer
+---------------------------------------------------------------------	
+				
+					
+		Api:  api/employer/job/decline/{application_id}
+		Type: GET
+		Requirements : Authorization , user must be an employer
+		Respose:  
+				{
+					"cancel": "200"
+				}						
+						
+4.Jobs awarded
+Decline award API endpoint needed for freelancer
+---------------------------------------------------------------------	
+				
+					
+		Api:  api/freelancer/job/decline/{application_id}
+		Type: GET
+		Requirements : Authorization , user must be an freelancer
+		Respose:  
+				{
+					"decline": "200"
+				}		
+	
+
+
+5.List of award job for employer
+---------------------------------------------------------------------	
+				
+					
+		Api:  api/employer/awarded/jobs 
+		Type: GET
+		Requirements : Authorization , user must be an employer
+		Respose:  
+				[
+					{
+						"job_id": 1,
+						"title": "Caja Security",
+						"updated_at": "2018-05-25 23:31:55"
+					}
+				]	
+
+				
+6.List of award job for freelancer
+	a.List of jobs with id, title, date awarded, amount of job
+---------------------------------------------------------------------	
+				
+					
+		Api:  api/freelancer/awarded/jobs 
+		Type: GET
+		Requirements : Authorization ,user must be an freelancer
+		Respose:  
+				[
+					{
+						"job_id": 1,
+						"title": "Caja Security",
+						"updated_at": "2018-05-25 23:31:55"
+					}
+				]	
+				
+				
+1. All applications for a particular job
+---------------------------------------------------------
+		Api:  api/job/{id}/applications/list   
+		Type: GET
+		Requirements : Authorization , {id}= Job id
+		Respose:  
+			        [
+						{
+							"id":"1"
+							"name": "chukwunye",
+							"photo": "1527266852.jpg",
+							"created_at": "2018-05-25 17:19:21",
+							"is_hired": 1,
+							"application_description": "I want the job"
+						},
+						{
+							"id":"2"
+							"name": "seller",
+							"photo": "1497510195.jpg",
+							"created_at": "2018-05-25 17:20:14",
+							"is_hired": 0,
+							"application_description": "want job too"
+						}
+					]
+					
+				

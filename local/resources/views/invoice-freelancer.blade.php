@@ -18,7 +18,7 @@
       position: relative;
       top: -213px;
       float: right;
-      right: 100px;
+      right: 190px;
     }
 	</style>
   </head>
@@ -44,6 +44,11 @@
         <div class="section postdetails" style="border: 1px #cbc9c6 solid;">
           <div class="clearfix" style="margin: 10px;">
             <a href="" onclick="printPage();" class="btn pull-right">Print</a>
+            @if(isset($user_id))
+              <a href="{{ URL::to('/invoicepdf-child/'.$id.'/'.$user_id) }}" id="btnpdf" class="btn pull-right" style="width: 74px; background-color: #00a651;">PDF</a>
+            @else
+              <a href="{{ URL::to('/invoicepdf/'.$id) }}" id="btnpdf" class="btn pull-right" style="width: 74px; background-color: #00a651;">PDF</a>
+            @endif
             <a class="btn btn-secondary" href="{{ URL::to('/wallet-dashboard') }}">&larr; Back to Wallet</a>
           </div>
           <div class="clearfix">
@@ -138,14 +143,13 @@
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript">
-
       $(document).ready(function() {
           var table = $('#table').DataTable( {
               dom: 'Bfrtip',
               searching: false,
               sorting: true,
               buttons: [
-                  'csv', 'excel', 'pdf',
+                  'csv', 'excel',
               ],
               page_length: 50,
           });

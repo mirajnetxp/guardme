@@ -107,6 +107,8 @@ Route::get('/wallet/jobs/find', 'WalletController@searchJobs');
 Route::get('/wallet/invoice/{id}', 'WalletController@invoice');
 Route::get('/wallet-dashboard', 'WalletController@view');
 Route::get('/invoice', 'WalletController@freelancerInvoice');
+Route::get('/invoicepdf/{id}', 'WalletController@InvoicePDF');
+Route::get('/invoicepdf-child/{id}/{user_id}', 'WalletController@InvoiceChildPDF');
 
 Route::post('/wallet', ['as'=>'wallet','uses'=>'WalletController@sangvish_savedata']);
 
@@ -215,6 +217,8 @@ Route::group(['middleware' => 'admin'], function() {
 	Route::get('/admin/users/{id}','Admin\UsersController@destroy');
 	Route::get('/admin/edituser/{id}','Admin\EdituserController@showform');
 	Route::post('/admin/edituser', ['as'=>'admin.edituser','uses'=>'Admin\EdituserController@edituserdata']);
+	Route::get('admin/phone-status/{id}','Admin\EdituserController@phone_status');
+	Route::get('admin/email-status/{id}','Admin\EdituserController@email_status');
 	/* end user */
 
 
@@ -371,6 +375,15 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/leave/feedback/{application_id}', 'JobsController@leaveFeedback')->name('leave.feedback');
 	Route::get('/tip/{application_id}', 'JobsController@giveTip')->name('give.tip');
 	Route::get('/tip/details/{transaction_id}', 'JobsController@tipDetails')->name('tip.details');
+});
+//
+Route::group(['middleware' => 'auth'], function () {
+	// favourite freelancers related route.
+	Route::get('/my/favourite/freelancers', 'JobsController@favouriteFreelancers')->name('my.favourite.freelancers');
+	// Teams related route
+	Route::get('/my/teams', 'TeamsController@myTeams')->name('my.teams');
+	Route::get('/teams/create', 'TeamsController@createTeam')->name('create.team');
+	Route::get('/team/detail/{team_id}', 'TeamsController@showTeam')->name('team.detail');
 });
 
 Route::post('/add-balance-via-paypal', 'PaypalPaymentController@addMoneyPaypal')->name('add.money.paypal')->middleware('auth');

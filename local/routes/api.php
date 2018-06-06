@@ -25,6 +25,8 @@ Route::group( [ 'prefix' => '/support/tickets', 'namespace' => 'Api', 'middlewar
 	Route::post( '/', 'TicketController@store' );
 	Route::get( '/{id}', 'TicketController@show' )->where( 'id', '[0-9]+' );
 	Route::put( '/{id}', 'TicketController@update' )->where( 'id', '[0-9]+' );
+	Route::get( '/open', 'TicketController@openTickets' );
+
 	Route::post( '/{id}/messages', 'MessageController@store' )->where( 'id', '[0-9]+' );
 } );
 
@@ -48,6 +50,8 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::get( 'awarded', 'JobsController@totalUserAwardedJobs' );
 	Route::get( 'applied', 'JobsController@totalAppliedJobsForUser' );
 	Route::get( 'published', 'JobsController@totalCreatedJobsForEmployer' );
+
+	Route::get( 'open', 'JobsController@allOpenJobs' );
 
 
 	Route::post( 'create', 'JobsController@create' )->name( 'api.create.job' );
@@ -84,6 +88,9 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/search', 'SearchController@getpersonnelsearch' );
 
 	Route::post( '/toggle/favourite/{freelancer_id}', 'JobsController@toggleFavouriteFreelancer' )->name( 'api.toggle.favourite.freelancer' );
+	// Teams specific routes
+	Route::post( '/team/create', 'TeamsController@create' )->name( 'api.team.create' );
+	Route::post( '/team/add/member', 'TeamsController@addMember' )->name( 'api.add.member.to.team' );
 } );
 
 
@@ -112,6 +119,8 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 
 	Route::get( '/average/feedback/{id}', 'FreelancerJobsController@averageFeedback' );
 
+	Route::get( '/open/job/applications', 'FreelancerJobsController@openJobApplications' );
+
 } );
 
 Route::group( [ 'prefix' => 'employer', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
@@ -119,14 +128,14 @@ Route::group( [ 'prefix' => 'employer', 'namespace' => 'Api', 'middleware' => 'a
 	Route::get( '/job/decline/{application_id} ', 'EmployerJobsController@JobDecline' );
 
 
-
 	Route::post( '/award/job/to/{application_id}', 'EmployerJobsController@awardTo' );
 
 
 	Route::get( '/awarded/jobs', 'EmployerJobsController@awardedJobs' );
 
-	Route::get( '/wallet/invoice/{job_id}', 'EmployerJobsController@invoice' );
+	Route::get( '/open/awarded/jobs', 'EmployerJobsController@awardedOpenJobs' );
 
+	Route::get( '/wallet/invoice/{job_id}', 'EmployerJobsController@invoice' );
 
 
 } );
@@ -137,6 +146,8 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 
 	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
 
+
+	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
 
 
 } );

@@ -119,10 +119,23 @@ class FreelancerJobsController extends Controller {
 		if ( count( $cats ) > 0 ) {
 			$rating = $cats->sum( 'average_rating_per' ) / count( $cats );
 		} else {
-			$rating = 'Not Available';
+			$rating = "Not Available";
 		}
 
-		return response()->json($rating);
+		return response()->json( [ 'rating' => $rating ], 200 );
 	}
 
+	public function openJobApplications() {
+		$uID = auth()->user()->id;
+
+		$cats = DB::table( 'job_applications' )
+		          ->where( 'applied_by', $uID )
+		          ->join( 'security_jobs', 'job_applications.job_id', '=', 'security_jobs.id' )
+		          ->where( 'security_jobs.status', 1 )
+		          ->where( 'job_applications.completion_status', 0 )
+		          ->select( 'security_jobs.id as job_id', 'security_jobs.title as job_title', 'job_applications.completion_status' )
+		          ->get();
+
+		return response()->json( $cats );
+	}
 }

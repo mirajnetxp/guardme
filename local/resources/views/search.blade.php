@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 
 	@include('style')
@@ -416,10 +416,28 @@
 											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
                                                     <?php //echo $stime; ?> - <?php /*echo $etime; */?>
 												</a></li>
+												@if(isset($rating_array[$person->id]))
+												<li><span class="stars" data-rating="{{ $rating_array[$person->id] }}" style="float: left;" data-num-stars="5" ></span> <strong>{{  $rating_array[$person->id] }}</strong></li>
+												@endif
 											<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
 										</ul>
 									</div><!-- ad-meta -->
 								</div><!-- ad-info -->
+								@if ($show_favourite_buttons)
+									<div class="pull-right top-30">
+										@php@
+										$btn_class = "btn-info";
+										$btn_text = "Favourite it";
+										@endphp
+										@if(!empty($fav_freelancers) && !empty($fav_freelancers[$person->id]))
+											@php@
+											$btn_class = "btn-danger";
+											$btn_text = "Un-favourite it";
+											@endphp
+										@endif
+										<button class="btn toggle-favourite {{ $btn_class }}" data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $person->id]) }}">{{ $btn_text }}</button>
+									</div>
+								@endif
 							</div><!-- item-info -->
 						</div>
 
@@ -470,5 +488,26 @@
 </script>
 
 @include('footer')
+<script>
+		    /*read only star rating to display only*/
+				$.fn.stars = function() {
+        return $(this).each(function() {
+
+            var rating = $(this).data("rating");
+
+            var numStars = $(this).data("numStars");
+
+            var fullStar = new Array(Math.floor(rating + 1)).join('<i class="fa fa-star"></i>');
+
+            var halfStar = ((rating%1) !== 0) ? '<i class="fa fa-star-half-empty"></i>': '';
+
+            var noStar = new Array(Math.floor(numStars + 1 - rating)).join('<i class="fa fa-star-o"></i>');
+
+            $(this).html(fullStar + halfStar + noStar);
+
+        });
+    };
+    $('.stars').stars();
+	</script>
 </body>
 </html>

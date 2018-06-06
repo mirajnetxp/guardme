@@ -144,6 +144,31 @@ $setid=1;
     <!-- Only used for Script Tutorial's Demo site. Please ignore and remove. -->
   <script type="text/javascript">
 	$(document).ready(function() {
+		$(".toggle-favourite").on("click", function () {
+			var self = $(this);
+			if ($(this).hasClass('btn-info')) {
+				var btnText = 'Un-favourite it';
+				var oldClass = 'btn-info';
+				var newClass = 'btn-danger';
+			} else {
+				oldClass = 'btn-danger';
+				newClass = 'btn-info';
+				btnText = 'Favourite it';
+			}
+			$.ajax({
+				url: $(this).attr('data-action'),
+				type: "POST",
+				success: function (data) {
+					self.removeClass(oldClass);
+					self.addClass(newClass);
+					self.addClass('btn');
+					self.text(btnText);
+				},
+				error: function (data) {
+					//console.log(data);
+				}
+			});
+		});
   $('#media').carousel({
     pause: true,
     interval: false,

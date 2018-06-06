@@ -145,8 +145,6 @@
     </section>
 
 @include('footer')
-
-     
 <script>
     $(document).ready(function(){
         $("form#apply_on_job").on("submit", function(e){

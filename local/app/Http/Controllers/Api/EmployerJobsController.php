@@ -163,4 +163,24 @@ class EmployerJobsController extends Controller {
 
 		return response()->json( [ 'application_id' => $application_id, 'user_id' => $application->applied_by ], 200 );
 	}
+
+	public function awardedOpenJobs() {
+
+		if ( auth()->user()->admin != 0 ) {
+			return response()->json( 403 );
+		}
+
+		$ID          = auth()->user()->id;
+		$awardedJobs = DB::table( 'security_jobs' )
+		                 ->where( 'created_by', $ID )
+		                 ->Join( 'job_applications', 'security_jobs.id', '=', 'job_applications.job_id' )
+		                 ->where( 'is_hired', 1 )
+		                 ->where( 'security_jobs.status', 1 )
+//		                 ->rightJoin( 'transactions', 'security_jobs.id', '=', 'transactions.job_id' )
+//		                 ->where( 'transactions.credit_payment_status', '=', 'funded' )
+		                 ->select( 'job_applications.id as application_id', 'job_applications.job_id', 'security_jobs.title as job_title')
+		                 ->get();
+
+		return response()->json( $awardedJobs, 200 );
+	}
 }

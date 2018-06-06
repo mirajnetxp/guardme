@@ -1022,5 +1022,26 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
+	public function allOpenJobs() {
+		$uID = auth()->user()->id;
+		switch ( auth()->user()->admin ) {
+			case 0:
+				$openJobs = Job::where( 'created_by', $uID )
+				               ->where( 'status', 1 )
+				               ->select( 'id as job_id', 'title as job_title' )
+				               ->get();
+				break;
+			case 2:
+				$openJobs = DB::table( 'job_applications' )
+				              ->where( 'applied_by', $uID )
+				              ->join( 'security_jobs', 'job_applications.job_id', '=', 'security_jobs.id' )
+				              ->where( 'security_jobs.status', 1 )
+				              ->select( 'security_jobs.id as job_id', 'security_jobs.title as job_title' )
+				              ->get();
+				break;
+		}
+
+		return response()->json( $openJobs );
+	}
 
 }

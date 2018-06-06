@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
 use Responsive\JobApplication;
+use Responsive\PaymentRequest;
 use Responsive\SecurityJobsSchedule;
 use Responsive\Transaction;
 use Responsive\User;
@@ -1042,6 +1043,43 @@ class JobsController extends Controller {
 		}
 
 		return response()->json( $openJobs );
+	}
+
+	/**
+	 * @param Request $request
+	 * @return mixed
+	 */
+	public function createPaymentRequest(Request $request) {
+		$this->validate($request, [
+			'application_id' => 'required|integer|min:1',
+			'number_of_hours' => 'required|integer|min:1'
+		]);
+		$return_data = ['Un-known error'];
+		$return_status = 500;
+		$user_id = auth()->user()->id;
+		$posted_data = $request->all();
+		$application = JobApplication::find($posted_data['application_id']);
+		if ($application->applied_by != $user_id) {
+			$return_data = ['You are not authorized to perform this action'];
+			$return_status = 500;
+		} else {
+			// save payment request
+			$job = $application->job;
+			$payment_request = new PaymentRequest();
+			$payment_request->application_id = $posted_data['application_id'];
+			$payment_request->number_of_hours = $posted_data['number_of_hours'];
+			if (!empty($posted_data['description'])) {
+				$payment_request->description = $posted_data['description'];
+			}
+			if (!empty($posted_data['type'])) {
+				$payment_request->type = $posted_data['type'];
+			}
+			$payment_request->save();
+			$return_status = 200;
+			$return_data = ['Your request has been received successfully'];
+		}
+		return response()
+			->json($return_data, $return_status);
 	}
 
 }

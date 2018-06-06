@@ -75,6 +75,11 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::post( 'confirm/tip/{transaction_id}', 'JobsController@confirmTip' )->name( 'api.confirm.tip' );
 
 	Route::post( 'cancel/{application_id}', 'JobsController@cancelHiredApplication' )->name( 'api.cancel.job' );
+
+	// payment request from freelancer
+
+	Route::post('create/payment/request', 'JobsController@createPaymentRequest')->name('api.create.payment.request');
+	
 } );
 
 

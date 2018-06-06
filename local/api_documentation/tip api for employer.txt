@@ -1,0 +1,165 @@
+Tip Complete with multiple steps. Steps are discribe below.
+
+
+Step 1.
+--------
+	Retriving The available amount
+	===============================
+		Api:api/jobs/tip/{application_id}
+		Type :GET
+		Requirements : Authorization 
+		Respose:  
+				{
+					"application_id": "5",
+					"available_balance": "0.00"
+				
+				}
+Step 2.
+--------
+	Retriving The transaction id.
+	===============================	
+		Api:api/jobs/post/tip/{application_id}
+		Type :POST
+		Requirements : Authorization 
+		Paramiter : "tip_amount" = tip amount
+		Respose:  
+				{
+					"transaction_id": 15
+				}
+
+Step 3.
+--------
+	Retriving The tip details(transaction details)
+	===============================	
+		Api:api/jobs/tip/details/{transaction_id}
+		Type :GET
+		Requirements : Authorization ,  transaction_id = transaction id from step2
+		Respose:  
+				{
+					"transaction_details": {
+						"id": 15,
+						"user_id": 21,
+						"job_id": 3,
+						"debit_credit_type": "credit",
+						"amount": 12,
+						"type": "tip",
+						"title": "Tip",
+						"status": 0,
+						"credit_payment_status": null,
+						"paypal_id": null,
+						"paypal_payment_status": null,
+						"extra_details": null,
+						"updated_at": "2018-06-06 09:26:41",
+						"created_at": "2018-06-06 09:26:41",
+						"application_id": 5
+					},
+					"transaction_id": "15",
+					"available_balance": "0.00",
+					"application_with_job": {
+						"id": 5,
+						"job_id": 3,
+						"applied_by": 19,
+						"is_hired": 1,
+						"application_description": "Janine application",
+						"created_at": "2018-05-27 11:43:45",
+						"updated_at": "2018-05-27 11:46:03",
+						"completion_status": 0,
+						"job": {
+							"id": 3,
+							"title": "Saturday test job",
+							"description": "Sat job",
+							"address_line1": "Unit C5",
+							"address_line2": "Wellington Road Industrial Estate",
+							"address_line3": "Wellington Bridge",
+							"locality": null,
+							"city_town": "Leeds",
+							"post_code": "LS12 2UA",
+							"country": "UK",
+							"latitude": "53.796119",
+							"longitude": "-1.565777",
+							"daily_working_hours": null,
+							"monthly_working_days": null,
+							"per_hour_rate": null,
+							"wallet_debit_frequency": null,
+							"visible_to_all_security_personal": null,
+							"visible_to_favourite": null,
+							"specific_area_min": null,
+							"specific_area_max": null,
+							"specific_category_id": null,
+							"security_category_id": 1,
+							"business_category_id": 1,
+							"created_by": 21,
+							"status": 0,
+							"created_at": "2018-05-26 15:58:14",
+							"updated_at": "2018-05-26 15:58:14",
+							"number_of_freelancers": 1,
+							"start_date_time": null,
+							"end_date_time": null
+						}
+					},
+					"freelancer_details": {
+						"id": 19,
+						"name": "chukwunye",
+						"email": "cokwedadi@gmail.com",
+						"verified": 0,
+						"gender": "",
+						"phone": "560054",
+						"photo": "1527266852.jpg",
+						"admin": 2,
+						"created_at": null,
+						"updated_at": "2018-05-25 22:52:34",
+						"firstname": "Cassy",
+						"lastname": "Andrews",
+						"dob": "1955-05-06",
+						"address_id": 0,
+						"sia_licence": "",
+						"sia_expirydate": "",
+						"work_category": 0,
+						"nation_id": 0,
+						"visa_no": "",
+						"niutr_no": "",
+						"pass_page": "",
+						"visa_page": "",
+						"sia_doc": "",
+						"address_proof": "",
+						"passphoto": "",
+						"phone_verified": 0,
+						"added": 0,
+						"spent": 0,
+						"doc_verified": 1
+					}
+				}			
+				
+Step 4.
+--------
+	Confirming the tip
+	===============================	
+		Api:api/jobs/confirm/tip/{transaction_id}
+		Type :POST
+		Requirements : Authorization 
+		Paramiter : "tip_amount" = tip amount
+		Respose:				
+		
+				[
+					"You don't have sufficient balance to perform this action. Please load more balance."
+				]
+				
+				|
+				|
+				OR
+				|
+				|
+				
+				[
+					"You are not authorized to perform this action"
+				]
+		
+		|
+				|
+				OR
+				|
+				|
+				
+				[
+					"Your tip has been successfully added."
+				]

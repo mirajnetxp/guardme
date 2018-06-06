@@ -1,0 +1,22 @@
+1.Save job ( or favourite job)  List.
+--------------------------------------------------------------		
+		Api:  api/freelancer/saved/job/list   
+		Type: GET
+		Requirements : Authorization , id= job id
+		Respose:  
+					[
+						{
+						"id": 1,
+						"title": "Asf asdce edceecd"
+						}
+					]
+
+2.Save job ( or favourite job)  Button/ Mark a job as favourite. 
+----------------------------------------------
+		Api:  api/freelancer/save/job/{id}   
+		Type: POST
+		Requirements : Authorization ,
+		Respose:  
+				{
+					"200": "saved"
+				}

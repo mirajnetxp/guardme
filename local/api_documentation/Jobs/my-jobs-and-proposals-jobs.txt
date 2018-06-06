@@ -26,3 +26,17 @@ Type: get
 Response:
 
 Array of objects for proposals.
+
+
+
+
+1. freelancer withdraw application 
+-----------------------------------------------------------			
+
+		Api:  api/freelancer/withdraw/{application_id}
+		Type: GET
+		Requirements : Authorization , user must be an freelancer
+		Respose:  
+					{
+						"withdraw": "200"
+					}	

@@ -1,0 +1,51 @@
+1. Leave feedback
+-----------------------------------------------------------
+		Api:  api/jobs/leave/feedback/{application_id}
+		Type: POST
+		Requirements : Authorization , user must be an employer, 
+		Paramitter Accept: 
+							"appearance"=numaric value(0-5) , 
+							"punctuality"=numaric value(0-5), 		 
+							"customer_focused"==numaric value(0-5) , 
+							"security_conscious"=numaric value(0-5) , 
+							"feedback_message"= feedback massage in text
+		
+		Respose:  
+						[
+							"success"
+						]
+						
+						
+						|
+						OR
+						|
+						
+						
+						[
+							"You are not authorized to perform this action."
+						]						
+
+
+2. Average feedback
+-----------------------------------------------------------			
+
+		Api:  api/freelancer/average/feedback/{id}
+		Type: GET
+		Requirements : Authorization , id=freelancer id (user_id)
+	
+		
+		Respose:  
+						[
+							"rating": 4.5
+						]
+						
+						
+						|
+						OR
+						|
+						
+						
+						{
+							"rating": "Not Available"
+						}						
+						

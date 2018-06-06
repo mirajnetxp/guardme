@@ -710,6 +710,7 @@ class JobsController extends Controller {
 			$return_status = 430;
 			$return_data   = [ "You are not authorized to perform this action." ];
 		}
+
 		if ( $return_status == 200 ) {
 
 			event( new JobHiredApplicationMarkedAsComplete( $application ) );
@@ -933,9 +934,7 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public
-	function postTip(
-		$application_id, Request $request
-	) {
+	function postTip($application_id, Request $request ) {
 		$this->validate( $request, [
 			'tip_amount' => 'required|integer'
 		] );
@@ -962,10 +961,7 @@ class JobsController extends Controller {
 
 	}
 
-	public
-	function confirmTip(
-		$transaction_id
-	) {
+	public function confirmTip( $transaction_id ) {
 		$transaction = Transaction::find( $transaction_id );
 		// check if user is authorized to perform this action means it should be the user who created this transaction
 		if ( $transaction->user_id != auth()->user()->id ) {
@@ -1044,4 +1040,29 @@ class JobsController extends Controller {
 		return response()->json( $openJobs );
 	}
 
+
+	public function giveTip( $application_id ) {
+		$wallet            = new Transaction();
+		$available_balance = $wallet->getWalletAvailableBalance();
+
+		return response()->json( [ 'application_id' => $application_id, 'available_balance' => $available_balance ] );
+
+	}
+
+	public function tipDetails( $transaction_id ) {
+		$tip_transaction      = Transaction::find( $transaction_id );
+		$application_id       = $tip_transaction->application_id;
+		$application_with_job = JobApplication::with( 'job' )->where( 'id', $application_id )->get()->first();
+		$wallet               = new Transaction();
+		$freelancer_details   = User::find( $application_with_job->applied_by );
+		$available_balance    = $wallet->getWalletAvailableBalance();
+
+		return response()->json( [
+			'transaction_details'  => $tip_transaction,
+			'transaction_id'       => $transaction_id,
+			'available_balance'    => $available_balance,
+			'application_with_job' => $application_with_job,
+			'freelancer_details'   => $freelancer_details
+		] );
+	}
 }

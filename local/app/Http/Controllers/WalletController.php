@@ -204,11 +204,13 @@ class WalletController extends Controller {
 			if ( $user->admin == 2 ) {
 					$pdf = PDF::loadView( 'invoice-freelancer', compact( 'all_transactions', 'balance', 'from', 'id' ) );
 					ini_set('memory_limit', '-1');
+					ini_set('max_execution_time', 300);
 					return $pdf->download( 'invoice.pdf' );
 
 			} else if ( $user->admin == 0 ) {
 					$pdf = PDF::loadView( 'invoice-employer', compact( 'all_transactions', 'balance', 'from', 'id' ) );
 					ini_set('memory_limit', '-1');
+					ini_set('max_execution_time', 300);
 					return $pdf->download( 'invoice.pdf' );
 			}
 		}
@@ -225,6 +227,7 @@ class WalletController extends Controller {
 		}
 			$pdf = PDF::loadView( 'invoice-freelancer', compact( 'all_transactions', 'balance', 'from', 'id' ) );
 			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);
 			return $pdf->download( 'invoice.pdf' );
 	}
 }

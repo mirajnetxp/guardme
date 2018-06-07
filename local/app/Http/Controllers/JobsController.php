@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use Responsive\Businesscategory;
 use Responsive\FavouriteFreelancer;
 use Responsive\JobApplication;
+use Responsive\PaymentRequest;
 use Responsive\SecurityCategory;
 use Responsive\Job;
 use Responsive\SavedJob;
@@ -700,9 +701,27 @@ class JobsController extends Controller {
 
         return view('jobs.add-extra-time', compact('application_id'));
     }
+
+    /**
+     * @return mixed
+     */
     public function paymentRequests() {
         $user_id = auth()->user()->id;
         $editprofile = User::where('id', $user_id)->get();
-        return view('jobs.payment-requests', compact('editprofile'));
+        $pr = new PaymentRequest();
+        $payment_requests = $pr->getPaymentRequestsByEmployer();
+        return view('jobs.payment-requests', compact('editprofile', 'payment_requests'));
+    }
+
+    /**
+     * @param $payment_request_id
+     * @return mixed
+     */
+    public function paymentRequestDetails($payment_request_id) {
+        $user_id = auth()->user()->id;
+        $editprofile = User::where('id', $user_id)->get();
+        $pr = new PaymentRequest();
+        $payment_request = $pr->getPaymentRequestsByEmployer($payment_request_id)->first();
+        return view('jobs.payment-request-details', compact('editprofile', 'payment_request'));
     }
 }

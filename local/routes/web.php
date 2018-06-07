@@ -368,6 +368,7 @@ Route::group(['prefix' => '/jobs', 'middleware' => 'auth'], function () {
 	Route::get('/application/{id}/{u_id}', 'JobsController@viewApplication')->name('view.application');
 
 	Route::get('/payment/requests', 'JobsController@paymentRequests')->name('payment.requests');
+	Route::get('/payment/request/details/{id}', 'JobsController@paymentRequestDetails')->name('payment.request.details');
 	Route::get('/application/payment/request/{application_id}', 'JobsController@applicationPaymentRequest')->name('application.payment.request');
 
 	Route::get('/apply/{id}', 'JobsController@applyJob')->name('apply.job');

@@ -79,7 +79,8 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	// payment request from freelancer
 
 	Route::post('create/payment/request', 'JobsController@createPaymentRequest')->name('api.create.payment.request');
-	
+	Route::post('approve/payment/request/{payment_request_id}', 'JobsController@approvePaymentRequest')->name('api.approve.payment.request');
+
 } );
 
 

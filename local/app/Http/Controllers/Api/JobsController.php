@@ -1082,4 +1082,57 @@ class JobsController extends Controller {
 			->json($return_data, $return_status);
 	}
 
+	/**
+	 * @param $payment_request_id
+	 * @return mixed
+	 */
+	public function approvePaymentRequest($payment_request_id) {
+
+		$return_data = ['Un-known error'];
+		$return_status = 500;
+		$user_id = auth()->user()->id;
+		$pr = new PaymentRequest();
+		$payment_request_details = $pr->getPaymentRequestsByEmployer($payment_request_id)->first();
+
+		$wallet = new Transaction();
+		$available_balance = $wallet->getWalletAvailableBalance();
+		if ($available_balance < $payment_request_details->request_amount && $payment_request_details->type == 'extra_type') {
+			$return_data = ['Your don\'t have enough balance to perform this action. Please load more balance from paypal.'];
+			$return_status = 500;
+		}
+		else if (empty($payment_request_details)) {
+			$return_data = ['You are not authorized to perform this action'];
+			$return_status = 500;
+		} else {
+			// approve payment request
+			DB::transaction(function () use ($payment_request_id, $payment_request_details, $user_id) {
+				$payment_request = PaymentRequest::find($payment_request_id);
+				$payment_request->status = 'approved';
+				$payment_request->save();
+				if ($payment_request->type == 'job_fee') { 
+					// mark this application as complete
+					$application = JobApplication::find($payment_request_details->application_id);
+					event( new JobHiredApplicationMarkedAsComplete($application));
+				} else if($payment_request->type == 'extra_time') {
+					$transaction = new Transaction();
+					$transaction->application_id = $payment_request->application_id;
+					$transaction->status = 1;
+					$transaction->job_id = $payment_request_details->job_id;
+					$transaction->amount = $payment_request_details->request_amount;
+					$transaction->debit_credit_type = 'credit';
+					$transaction->credit_payment_status = 'paid';
+					$transaction->user_id = $user_id;
+					$transaction->type = 'extra_work';
+					$transaction->title = 'Extra work';
+					$transaction->save();
+				}
+			});
+			$return_status = 200;
+			$return_data = ['Request has been approved successfully'];
+
+		}
+		return response()
+			->json($return_data, $return_status);
+	}
+
 }

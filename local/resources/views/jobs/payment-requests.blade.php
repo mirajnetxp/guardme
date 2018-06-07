@@ -9,13 +9,13 @@
             <li>Jobs</li>
         </ol>
         <h2 class="title">
-            My Teams</h2>
+            Payment Requests</h2>
     </div>
 @endsection
 @section('content')
 
     <div class="section trending-ads latest-jobs-ads">
-        <h4>My Teams</h4>
+        <h4>Payment Requests</h4>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -38,21 +38,26 @@
         @endif
 
         @include('shared.message')
-        <a href="{{ route('create.team') }}"><button class="btn btn-success pull-right">Create Team</button></a>
-        <br>
-        <br>
-        <br>
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Team name</th>
-                <th>Team Description</th>
+                <th>Job Title</th>
+                <th>Freelancer Name</th>
+                <th>Type</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
-
+                @foreach($payment_requests as $k => $payment_request)
+                    <tr>
+                        <td>{{ $k + 1 }}</td>
+                        <td>{{ $payment_request->title }}</td>
+                        <td>{{ $payment_request->freelancer_name }}</td>
+                        <td>{{ snakeToString($payment_request->type) }}</td>
+                        <td><a href="{{ route('payment.request.details', ['id' => $payment_request->id]) }}"><button class="btn btn-success">View Details</button></a></td>
+                    </tr>
+                @endforeach
             </tbody>
 
         </table>

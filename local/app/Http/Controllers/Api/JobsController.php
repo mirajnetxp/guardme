@@ -1162,4 +1162,67 @@ class JobsController extends Controller {
 			'freelancer_details'   => $freelancer_details
 		] );
 	}
+
+	/**
+	 * @param $job_id
+	 * @return mixed
+	 */
+	public function pauseJob($job_id) {
+		// check if created by this user
+		$user_id = auth()->user()->id;
+		$job = Job::find($job_id);
+		//@TODO move to some comman place
+		$job_hired_applications = JobApplication::where('job_id', $job_id)->where('is_hired', 1)->get();
+		if ($job->created_by != $user_id) {
+			$return_data = ["Sorry, You are not authorized to perform this action"];
+			$return_status = 500;
+		} else if (count($job_hired_applications) > 0) {
+			$return_data = ["Sorry, Please withdraw all hired applications before you can pause this job"];
+			$return_status = 500;
+		} else {
+			// set status of the job to 0 to mark it as inactive or pause
+			$job->status = 0;
+			$job->save();
+			$return_data = ["Job successfully paused"];
+			$return_status = 200;
+		}
+		return response()
+			->json($return_data, $return_status);
+	}
+
+	/**
+	 * @param $job_id
+	 * @return mixed
+	 */
+	public function restartJob($job_id) {
+		// check if created by this user
+		$user_id = auth()->user()->id;
+		$job = Job::find($job_id)->with('schedules')->first();
+		//@TODO revisit the expiration part later on when having more info in the next mile stones
+		$schedules = $job->schedules;
+		$diff = 0;
+		if (!empty($schedules)) {
+			$first_day = $schedules[count($schedules) - 1];
+			$end_time = $first_day->end;
+			$current_date_time = date('Y-m-d h:i:s');
+			$diff = strtotime($end_time) - strtotime($current_date_time);
+		}
+
+		if ($job->created_by != $user_id) {
+			$return_data = ["Sorry, You are not authorized to perform this action"];
+			$return_status = 500;
+		} else if($diff < 0) {
+			$return_data = ["Sorry, Job has already been expired"];
+			$return_status = 500;
+		} else {
+			// set status of the job to 1 to mark it as active or start
+			$job_start = Job::find($job_id);
+			$job_start->status = 1;
+			$job_start->save();
+			$return_data = ["Job successfully restarted"];
+			$return_status = 200;
+		}
+		return response()
+			->json($return_data, $return_status);
+	}
 }

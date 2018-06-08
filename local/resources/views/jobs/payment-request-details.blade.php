@@ -63,7 +63,7 @@
                 </div><!-- ad-info -->
                 @if ($payment_request->status != 'approved')
                     <div class="actions pull-right">
-                        @if($payment_request->request_amount <= $available_balance)
+                        @if($payment_request->request_amount <= $available_balance || $payment_request->type == 'job_fee')
                             <button class="btn btn-success approve-payment-request">Approve</button>
                         @else
                             <form action="{{ route('add.money.paypal') }}" method="post">

@@ -5,38 +5,38 @@ Job creation process is done in steps
 =============================================
 Step 1: Create Job
 =============================================
-URL: api/jobs/create
-Type: post
+  Api: api/jobs/create
+  Type: post
 
-Params with sample data:
+  Params with sample data:
 
-title: Test Job
-security_category: 1
-business_category: 15
-line1: Comedy Knights
-line2: Leicester Square
-line3:
-town: London
-country: UK
-postcode: SW1A 1AA
-addresslat: 51.500571
-addresslong: -0.142881
-description: Test Description
+		title: Test Job
+		security_category: 1
+		business_category: 15
+		line1: Comedy Knights
+		line2: Leicester Square
+		line3:
+		town: London
+		country: UK
+		postcode: SW1A 1AA
+		addresslat: 51.500571
+		addresslong: -0.142881
+		description: Test Description
 
 
-Response samples:
+	Response samples:
 
-1) with status 422 (means validation errors)
+				1) with status 422 (means validation errors)
 
-{"title":["The title field is required."],"description":["The description field is required."]}
+				{"title":["The title field is required."],"description":["The description field is required."]}
 
-2) status 500
+				2) status 500
 
-means an unexpected error occured/ internal server error.
+				means an unexpected error occured/ internal server error.
 
-3) 200 success.
+				3) 200 success.
 
-{"message":"Data Saved Successfully","id":10}
+				{"message":"Data Saved Successfully","id":10}
 
 ===============================================
 Step 2 Schedule

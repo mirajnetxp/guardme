@@ -10,6 +10,11 @@
 	<style type="text/css">
 		.noborder ul,li { margin:0; padding:0; list-style:none;}
 		.noborder .label { color:#000; font-size:16px;}
+		.stars i.fa {
+			font-size: 15px;
+			position: relative;
+			top: 5px;
+		}
 	</style>
 
 	<script >
@@ -402,23 +407,29 @@
 						@if($flag)
 							{{$person->firstname.' '.$person->lastname }}
 						@else
-							{{$person->firstname.' ********'}}
+							{{$person->firstname}}
+							@if(isset($rating_array[$person->id]))
+							<strong style="float: right; font-size: 14px;">{{  $rating_array[$person->id] }}</strong><span class="stars" data-rating="{{ $rating_array[$person->id] }}" style="float: right; margin: 0 5px" data-num-stars="5" ></span> 
+							@endif
 						@endif
 													
 						
 					@else
-						{{$person->firstname.' ********' }}	
+						{{$person->firstname}}
+						@if(isset($rating_array[$person->id]))
+						<strong style="float: right; font-size: 14px;">{{  $rating_array[$person->id] }}</strong>	<span class="stars" data-rating="{{ $rating_array[$person->id] }}" style="float: right; margin: 0 5px" data-num-stars="5" ></span> 
+						@endif
 					@endif
 						</a> </span>
 									<div class="ad-meta">
 										<ul>
-											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($person->citytown){{$person->citytown}} @endif </a></li>
-											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
-                                                    <?php //echo $stime; ?> - <?php /*echo $etime; */?>
+											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>
+											@foreach($locs as $loc)
+												@if($loc->user_id == $person->id){{$loc->citytown}} {{$loc->country}} @endif 
+											@endforeach
+											</a></li>
+                                                    <?php //echo $stime; ?>  <?php /*echo $etime; */?>
 												</a></li>
-												@if(isset($rating_array[$person->id]))
-												<li><span class="stars" data-rating="{{ $rating_array[$person->id] }}" style="float: left;" data-num-stars="5" ></span> <strong>{{  $rating_array[$person->id] }}</strong></li>
-												@endif
 											<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
 										</ul>
 									</div><!-- ad-meta -->
@@ -494,7 +505,9 @@
         return $(this).each(function() {
 
             var rating = $(this).data("rating");
-
+						if (rating == '5.00') {
+							rating = 5;
+						}
             var numStars = $(this).data("numStars");
 
             var fullStar = new Array(Math.floor(rating + 1)).join('<i class="fa fa-star"></i>');

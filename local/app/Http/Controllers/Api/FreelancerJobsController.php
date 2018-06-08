@@ -68,18 +68,32 @@ class FreelancerJobsController extends Controller {
 		                 ->where( 'applied_by', $ID )
 		                 ->where( 'is_hired', 1 )
 		                 ->Join( 'security_jobs', 'job_applications.job_id', '=', 'security_jobs.id' )
-		                 ->Join( 'transactions', 'job_applications.job_id', '=', 'transactions.job_id' )
-		                 ->where( 'transactions.credit_payment_status', '=', 'funded' )
-		                 ->select( 'job_applications.id as application_id', 'job_applications.job_id', 'security_jobs.title', 'transactions.amount', 'job_applications.updated_at' )
+//		                 ->Join( 'transactions', 'job_applications.job_id', '=', 'transactions.job_id' )
+//		                 ->where( 'transactions.credit_payment_status', '=', 'funded' )
+                         ->select( 'job_applications.id as application_id', 'job_applications.job_id', 'security_jobs.title', 'security_jobs.number_of_freelancers', 'job_applications.updated_at' )
 		                 ->get();
 
 		foreach ( $awardedJobs as $key => $value ) {
+			$Samount = Transaction::
+			where( 'job_id', $awardedJobs[ $key ]->job_id )
+			                      ->where( 'transactions.credit_payment_status', '=', 'funded' )
+			                      ->first();
+
+
+			$Iamount = $Samount['amount']/ $awardedJobs[ $key ]->number_of_freelancers;
+
+
+			$awardedJobs[ $key ]->amount = $Iamount;
 			
+
 			$sech                          = DB::table( 'security_jobs_schedule' )
 			                                   ->where( 'job_id', $awardedJobs[ $key ]->job_id )
 			                                   ->select( 'start as start_time', 'end as end_time' )
 			                                   ->get();
-			$awardedJobs[ $key ]->schedule = $sech;
+			$awardedJobs[ $key ]->schedules = $sech;
+
+
+
 		}
 
 		return response()->json( $awardedJobs, 200 );

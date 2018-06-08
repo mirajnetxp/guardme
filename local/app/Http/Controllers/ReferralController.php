@@ -60,7 +60,9 @@ class ReferralController extends Controller
      */
     public function redeem(Request $request)
     {
-        
+        if (!Auth::Check()){
+            return redirect('/');
+        }
         return view(
             'redeem',
             [

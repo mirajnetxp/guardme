@@ -29,7 +29,7 @@
                         <div class="alert alert-success success-message hide" role="alert">
 
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div class="profile-info">
                                 <h1>
                                     Application Summary
@@ -40,7 +40,7 @@
                                 </address>
                             </div>                  
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="career-info profile-info top-22">
                                
                                 <address>
@@ -69,9 +69,14 @@
                                     <i class="fa fa-times-circle-o ico-30 red"></i>
                                 @endif
                             </label>
-                            @if ($application->completion_status == 0)
-                                <button class="btn del cancel-job-button">Cancel Application</button>
-                            @endif
+                            <div class="clearfix"></div>
+                            <div class="pull-right">
+                                @if ($application->completion_status == 0)
+                                    <button class="btn del cancel-job-button">Cancel Application</button>
+                                    <button class="btn btn-success create-payment-request-button">Create Payment Request</button>
+                                @endif
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -128,6 +133,29 @@
                     setTimeout(function(){
                         location.reload();
                     }, 4000);
+                },
+                error: function (data) {
+                    var errorText = data.responseJSON[0];
+                    $(".error-message").html(errorText);
+                    $(".error-message").removeClass('hide');
+                }
+            })
+        });
+
+        //
+        $(".create-payment-request-button").on("click", function(){
+            $.ajax({
+                url: "{{ route('api.create.payment.request') }}",
+                type: 'POST',
+                data: { application_id: '{{ $application->id }}', number_of_hours: '{{ $working_hours }}' },
+                success: function(data) {
+                    $(this).hide();
+                    $(".success-message").html(data[0]);
+                    $(".success-message").removeClass('hide');
+                    var nextUrl =  "{{ route('application.payment.request', ['application_id' => $application->id]) }}";
+                    setTimeout(function(){
+                        window.location.href = nextUrl;
+                    }, 2000);
                 },
                 error: function (data) {
                     var errorText = data.responseJSON[0];

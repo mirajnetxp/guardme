@@ -73,6 +73,15 @@ class FreelancerJobsController extends Controller {
 		                 ->select( 'job_applications.id as application_id', 'job_applications.job_id', 'security_jobs.title', 'transactions.amount', 'job_applications.updated_at' )
 		                 ->get();
 
+		foreach ( $awardedJobs as $key => $value ) {
+			
+			$sech                          = DB::table( 'security_jobs_schedule' )
+			                                   ->where( 'job_id', $awardedJobs[ $key ]->job_id )
+			                                   ->select( 'start as start_time', 'end as end_time' )
+			                                   ->get();
+			$awardedJobs[ $key ]->schedule = $sech;
+		}
+
 		return response()->json( $awardedJobs, 200 );
 	}
 

@@ -22,7 +22,7 @@ Route::group( [ 'prefix' => 'account', 'namespace' => 'Api\Auth' ], function () 
 
 Route::group( [ 'prefix' => '/support/tickets', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
 	Route::get( '/', 'TicketController@index' );
-	Route::post( '/', 'TicketController@store' );
+	Route::post( '/', 'TicketController@store' )->name('api.store.ticket');
 	Route::get( '/{id}', 'TicketController@show' )->where( 'id', '[0-9]+' );
 	Route::put( '/{id}', 'TicketController@update' )->where( 'id', '[0-9]+' );
 	Route::get( '/open', 'TicketController@openTickets' );

@@ -63,8 +63,20 @@
                 </div><!-- ad-info -->
                 @if ($payment_request->status != 'approved')
                     <div class="actions pull-right">
-                        <button class="btn btn-success approve-payment-request">Approve</button>
-                        <button class="btn btn-danger">Raise Dispute</button>
+                        @if($payment_request->request_amount <= $available_balance)
+                            <button class="btn btn-success approve-payment-request">Approve</button>
+                        @else
+                            <form action="{{ route('add.money.paypal') }}" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="success_url" value="{{ route('payment.request.details', ['id' => $payment_request->id]) }}">
+                                <input type="hidden" name="success_message" value="Congratulations, payment has been added successfully. Please approve payment request now.">
+                                <input type="hidden" name="payment_name" value="Adding balance for extra time">
+                                <input type="hidden" name="amount" value="{{ $payment_request->request_amount }}">
+                                <input type="submit" value="Pay with Paypal" class="btn pay-with-paypal btn-success">
+                            </form>
+                        @endif
+
+                        <button class="btn btn-danger raise-dispute-button">Raise Dispute</button>
                     </div>
                     <div class="clearfix"></div>
                 @endif
@@ -85,9 +97,9 @@
                 success: function(data) {
                     $(".success-message").text(data[0]);
                     $(".success-message").removeClass("hide");
-                   /* var transaction_id = data.transaction_id;
-                    var redirectUrl = "{{ route('tip.details', ['transaction_id' => '']) }}/"+ transaction_id;
-                    window.location.href = redirectUrl;*/
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
                 },
                 error: function(data) {
                     $(".error-message").text(data.responseJSON[0]);
@@ -97,6 +109,24 @@
                     formErrors.load();*/
                 }
             });
+        });
+
+        // Raise Dispute
+        $(".raise-dispute-button").on("click", function(){
+            var message = "I do not agree to pay &#163;{{ $payment_request->request_amount }} to {{ $payment_request->freelancer_name }} for the {{ snakeToString($payment_request->type) }}.";
+            $.ajax({
+                url: "{{ route('api.store.ticket') }}",
+                data: {title: message, message: message, category: 3},
+                type: 'POST',
+                success: function(data){
+                    $(".success-message").text("Support ticket has been generated successfully");
+                    $(".success-message").removeClass("hide");
+                },
+                error: function(data){
+                    console.log("error");
+                    console.log(data);
+                }
+            })
         });
     });
 </script>

@@ -1096,7 +1096,8 @@ class JobsController extends Controller {
 
 		$wallet = new Transaction();
 		$available_balance = $wallet->getWalletAvailableBalance();
-		if ($available_balance < $payment_request_details->request_amount && $payment_request_details->type == 'extra_type') {
+		
+		if ($available_balance < $payment_request_details->request_amount && $payment_request_details->type == 'extra_time') {
 			$return_data = ['Your don\'t have enough balance to perform this action. Please load more balance from paypal.'];
 			$return_status = 500;
 		}

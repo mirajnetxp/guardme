@@ -722,6 +722,8 @@ class JobsController extends Controller {
         $editprofile = User::where('id', $user_id)->get();
         $pr = new PaymentRequest();
         $payment_request = $pr->getPaymentRequestsByEmployer($payment_request_id)->first();
-        return view('jobs.payment-request-details', compact('editprofile', 'payment_request'));
+        $wallet = new Transaction();
+        $available_balance = $wallet->getWalletAvailableBalance();
+        return view('jobs.payment-request-details', compact('editprofile', 'payment_request', 'available_balance'));
     }
 }

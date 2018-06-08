@@ -25,6 +25,11 @@ class JobsController extends Controller {
 		$this->validate( $request, [
 			'title'       => 'required|max:255',
 			'description' => 'required',
+			'security_category' => 'required',
+			'business_category' => 'required',
+			'town' => 'required',
+			'country' => 'required',
+			'postcode' => 'required',
 		] );
 		$job                       = new Job();
 		$postedData                = $request->all();

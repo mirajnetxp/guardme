@@ -10,6 +10,11 @@
 	<style type="text/css">
 		.noborder ul,li { margin:0; padding:0; list-style:none;}
 		.noborder .label { color:#000; font-size:16px;}
+		.stars i.fa {
+			font-size: 15px;
+			position: relative;
+			top: 5px;
+		}
 	</style>
 
 	<script >
@@ -418,9 +423,12 @@
 						</a> </span>
 									<div class="ad-meta">
 										<ul>
-											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($person->citytown){{$person->citytown}} @endif </a></li>
-											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-clock-o" aria-hidden="true"></i>
-                                                    <?php //echo $stime; ?> - <?php /*echo $etime; */?>
+											<li><a href="{{ route('person-profile',$person->id) }}"><i class="fa fa-map-marker" aria-hidden="true"></i>
+											@foreach($locs as $loc)
+												@if($loc->user_id == $person->id){{$loc->citytown}} {{$loc->country}} @endif 
+											@endforeach
+											</a></li>
+                                                    <?php //echo $stime; ?>  <?php /*echo $etime; */?>
 												</a></li>
 											<!-- <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>$25,000 - $35,000</a></li> -->
 										</ul>

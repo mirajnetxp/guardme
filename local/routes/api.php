@@ -22,7 +22,7 @@ Route::group( [ 'prefix' => 'account', 'namespace' => 'Api\Auth' ], function () 
 
 Route::group( [ 'prefix' => '/support/tickets', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
 	Route::get( '/', 'TicketController@index' );
-	Route::post( '/', 'TicketController@store' );
+	Route::post( '/', 'TicketController@store' )->name('api.store.ticket');
 	Route::get( '/{id}', 'TicketController@show' )->where( 'id', '[0-9]+' );
 	Route::put( '/{id}', 'TicketController@update' )->where( 'id', '[0-9]+' );
 	Route::get( '/open', 'TicketController@openTickets' );
@@ -79,6 +79,12 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::post( 'confirm/tip/{transaction_id}', 'JobsController@confirmTip' )->name( 'api.confirm.tip' );// Step -4
 
 	Route::post( 'cancel/{application_id}', 'JobsController@cancelHiredApplication' )->name( 'api.cancel.job' );
+
+	// payment request from freelancer
+
+	Route::post('create/payment/request', 'JobsController@createPaymentRequest')->name('api.create.payment.request');
+	Route::post('approve/payment/request/{payment_request_id}', 'JobsController@approvePaymentRequest')->name('api.approve.payment.request');
+
 
 } );
 

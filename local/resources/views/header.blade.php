@@ -174,3 +174,4 @@ if(isset(Auth::user()->verification)){
 	</style>
 @endif
 </header>
+<div class="loading hide">Loading&#8230;</div>

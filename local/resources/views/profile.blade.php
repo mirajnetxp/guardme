@@ -156,7 +156,9 @@
         return $(this).each(function() {
 
             var rating = $(this).data("rating");
-
+						if (rating == '5.00') {
+							rating = 5;
+						}
             var numStars = $(this).data("numStars");
 
             var fullStar = new Array(Math.floor(rating + 1)).join('<i class="fa fa-star"></i>');

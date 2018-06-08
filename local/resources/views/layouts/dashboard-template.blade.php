@@ -161,10 +161,9 @@
                     @if(isEmployer())
                         <li class="@if(Route::current()->getName()=='my.favourite.freelancers') {{'active'}} @endif"><a href="{{URL::route('my.favourite.freelancers')}}">Favourite</a></li>
                         <li class="@if(Route::current()->getName()=='my.teams') {{'active'}} @endif"><a href="{{URL::route('my.teams')}}">Teams</a></li>
+                        <li class="@if(Route::current()->getName()=='payment.requests') {{'active'}} @endif"><a href="{{URL::route('payment.requests')}}">Payment Requests</a></li>
                      @endif
-                     @if($editprofile[0]->admin == 0)  
-                    <li class="@if(Route::current()->getName()=='my.jobs') {{'active'}} @endif"><a href="{{URL::route('my.jobs')}}">My Jobs</a></li>
-                    @endif
+                   
                     @if($editprofile[0]->admin == 1)  
                     <li class="@if(Route::is('support')) {{'active'}} @endif"><a href="{{URL::to('support')}}">Support</a></li>
 

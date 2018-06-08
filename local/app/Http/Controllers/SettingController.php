@@ -34,7 +34,7 @@ class SettingController extends Controller {
 					DB::insert('insert into freelancer_settings(user_id, visible, created_at, updated_at) values ('.$userid->id.', 0, "'.date("Y-m-d H:i:s").'", "'.date("Y-m-d H:i:s").'");');
 				}
 			}	else {
-				DB::insert('insert into freelancer_settings(user_id, visible created_at, updated_at) values ('.$userid->id.', 0, "'.date("Y-m-d H:i:s").'", "'.date("Y-m-d H:i:s").'");');
+				DB::insert('insert into freelancer_settings(user_id, visible, created_at, updated_at) values ('.$userid->id.', 0, "'.date("Y-m-d H:i:s").'", "'.date("Y-m-d H:i:s").'");');
 			}
 		}
 		if ( ! Auth::Check() ) {

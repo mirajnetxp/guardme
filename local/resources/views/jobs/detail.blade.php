@@ -229,20 +229,7 @@
 
 
                     </div>
-                    <ul class="share-social">
-                    <script language="javascript">
-    function fbshareCurrentPage()
-    {window.open("https://www.facebook.com/sharer/sharer.php?u="+escape(window.location.href)+"&t="+document.title, '', 
-    'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
-    return false; }
-</script>
-                        <li>Share this ad</li>
-                        <li><a href="javascript:fbshareCurrentPage()"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                       
-                    </ul>
+                    
                 </div>
             </div>
 
@@ -278,8 +265,7 @@
                                 <li><span class="icon"><i class="fa fa-bolt"
                                                           aria-hidden="true"></i></span>Posted: {{date('M d, Y',strtotime($job->created_at))}}
                                 </li>
-                                <li><span class="icon"><i class="fa fa-user-plus" aria-hidden="true"></i></span> Job
-                                    poster: <a href="#">{{$job->poster->name}}</a></li>
+                                
                                 <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry:
                                     <a href="#">{{$job->industory->name}}</a></li>
                                 <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience:

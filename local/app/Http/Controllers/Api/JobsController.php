@@ -24,13 +24,13 @@ class JobsController extends Controller {
 
 	public function create( Request $request ) {
 		$this->validate( $request, [
-			'title'       => 'required|max:255',
-			'description' => 'required',
+			'title'             => 'required|max:255',
+			'description'       => 'required',
 			'security_category' => 'required',
 			'business_category' => 'required',
-			'town' => 'required',
-			'country' => 'required',
-			'postcode' => 'required',
+			'town'              => 'required',
+			'country'           => 'required',
+			'postcode'          => 'required',
 		] );
 		$job                       = new Job();
 		$postedData                = $request->all();
@@ -84,8 +84,8 @@ class JobsController extends Controller {
 		foreach ( $start_date_time as $k => $sch ) {
 			$schedule_item['start'] = $sch;
 			// becase date and time format from pick is Y-m-d h:i:s therfore no need of conversion
-			$schedule_item['end']   = $end_date_time[ $k ];
-			$schedules[]            = $schedule_item;
+			$schedule_item['end'] = $end_date_time[ $k ];
+			$schedules[]          = $schedule_item;
 		}
 		$job           = Job::find( $id );
 		$logged_in_id  = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
@@ -941,7 +941,9 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public
-	function postTip($application_id, Request $request ) {
+	function postTip(
+		$application_id, Request $request
+	) {
 		$this->validate( $request, [
 			'tip_amount' => 'required|integer'
 		] );
@@ -1025,6 +1027,26 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
+
+	/**
+	 * @return mixed
+	 */
+	public function favouriteFreelancers() {
+		$user_id = auth()->user()->id;
+		$fav = DB::table('favourite_freelancers as ff')
+		         ->select('u.id','u.name','u.email','u.gender','u.phone','u.photo',
+			         'u.firstname','u.lastname')
+		         ->join('users as u', 'u.id', '=', 'ff.freelancer_id')
+		         ->where('employer_id', $user_id)
+		         ->get();
+
+		return response()->json( $fav  );
+	}
+
+
+	/**
+	 * @return mixed
+	 */
 	public function allOpenJobs() {
 		$uID = auth()->user()->id;
 		switch ( auth()->user()->admin ) {
@@ -1049,93 +1071,96 @@ class JobsController extends Controller {
 
 	/**
 	 * @param Request $request
+	 *
 	 * @return mixed
 	 */
-	public function createPaymentRequest(Request $request) {
-		$this->validate($request, [
-			'application_id' => 'required|integer|min:1',
+	public function createPaymentRequest( Request $request ) {
+		$this->validate( $request, [
+			'application_id'  => 'required|integer|min:1',
 			'number_of_hours' => 'required|integer|min:1'
-		]);
-		$return_data = ['Un-known error'];
+		] );
+		$return_data   = [ 'Un-known error' ];
 		$return_status = 500;
-		$user_id = auth()->user()->id;
-		$posted_data = $request->all();
-		$application = JobApplication::find($posted_data['application_id']);
-		if ($application->applied_by != $user_id) {
-			$return_data = ['You are not authorized to perform this action'];
+		$user_id       = auth()->user()->id;
+		$posted_data   = $request->all();
+		$application   = JobApplication::find( $posted_data['application_id'] );
+		if ( $application->applied_by != $user_id ) {
+			$return_data   = [ 'You are not authorized to perform this action' ];
 			$return_status = 500;
 		} else {
 			// save payment request
-			$job = $application->job;
-			$payment_request = new PaymentRequest();
-			$payment_request->application_id = $posted_data['application_id'];
+			$job                              = $application->job;
+			$payment_request                  = new PaymentRequest();
+			$payment_request->application_id  = $posted_data['application_id'];
 			$payment_request->number_of_hours = $posted_data['number_of_hours'];
-			if (!empty($posted_data['description'])) {
+			if ( ! empty( $posted_data['description'] ) ) {
 				$payment_request->description = $posted_data['description'];
 			}
-			if (!empty($posted_data['type'])) {
+			if ( ! empty( $posted_data['type'] ) ) {
 				$payment_request->type = $posted_data['type'];
 			}
 			$payment_request->save();
 			$return_status = 200;
-			$return_data = ['Your request has been received successfully'];
+			$return_data   = [ 'Your request has been received successfully' ];
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 
 	/**
 	 * @param $payment_request_id
+	 *
 	 * @return mixed
 	 */
-	public function approvePaymentRequest($payment_request_id) {
+	public function approvePaymentRequest( $payment_request_id ) {
 
-		$return_data = ['Un-known error'];
-		$return_status = 500;
-		$user_id = auth()->user()->id;
-		$pr = new PaymentRequest();
-		$payment_request_details = $pr->getPaymentRequestsByEmployer($payment_request_id)->first();
+		$return_data             = [ 'Un-known error' ];
+		$return_status           = 500;
+		$user_id                 = auth()->user()->id;
+		$pr                      = new PaymentRequest();
+		$payment_request_details = $pr->getPaymentRequestsByEmployer( $payment_request_id )->first();
 
-		$wallet = new Transaction();
+		$wallet            = new Transaction();
 		$available_balance = $wallet->getWalletAvailableBalance();
-		
-		if ($available_balance < $payment_request_details->request_amount && $payment_request_details->type == 'extra_time') {
-			$return_data = ['Your don\'t have enough balance to perform this action. Please load more balance from paypal.'];
+
+		if ( $available_balance < $payment_request_details->request_amount && $payment_request_details->type == 'extra_time' ) {
+			$return_data   = [ 'Your don\'t have enough balance to perform this action. Please load more balance from paypal.' ];
 			$return_status = 500;
-		}
-		else if (empty($payment_request_details)) {
-			$return_data = ['You are not authorized to perform this action'];
+		} else if ( empty( $payment_request_details ) ) {
+			$return_data   = [ 'You are not authorized to perform this action' ];
 			$return_status = 500;
 		} else {
 			// approve payment request
-			DB::transaction(function () use ($payment_request_id, $payment_request_details, $user_id) {
-				$payment_request = PaymentRequest::find($payment_request_id);
+			DB::transaction( function () use ( $payment_request_id, $payment_request_details, $user_id ) {
+				$payment_request         = PaymentRequest::find( $payment_request_id );
 				$payment_request->status = 'approved';
 				$payment_request->save();
-				if ($payment_request->type == 'job_fee') { 
+				if ( $payment_request->type == 'job_fee' ) {
 					// mark this application as complete
-					$application = JobApplication::find($payment_request_details->application_id);
-					event( new JobHiredApplicationMarkedAsComplete($application));
-				} else if($payment_request->type == 'extra_time') {
-					$transaction = new Transaction();
-					$transaction->application_id = $payment_request->application_id;
-					$transaction->status = 1;
-					$transaction->job_id = $payment_request_details->job_id;
-					$transaction->amount = $payment_request_details->request_amount;
-					$transaction->debit_credit_type = 'credit';
+					$application = JobApplication::find( $payment_request_details->application_id );
+					event( new JobHiredApplicationMarkedAsComplete( $application ) );
+				} else if ( $payment_request->type == 'extra_time' ) {
+					$transaction                        = new Transaction();
+					$transaction->application_id        = $payment_request->application_id;
+					$transaction->status                = 1;
+					$transaction->job_id                = $payment_request_details->job_id;
+					$transaction->amount                = $payment_request_details->request_amount;
+					$transaction->debit_credit_type     = 'credit';
 					$transaction->credit_payment_status = 'paid';
-					$transaction->user_id = $user_id;
-					$transaction->type = 'extra_work';
-					$transaction->title = 'Extra work';
+					$transaction->user_id               = $user_id;
+					$transaction->type                  = 'extra_work';
+					$transaction->title                 = 'Extra work';
 					$transaction->save();
 				}
-			});
+			} );
 			$return_status = 200;
-			$return_data = ['Request has been approved successfully'];
+			$return_data   = [ 'Request has been approved successfully' ];
 
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 
 
@@ -1166,64 +1191,68 @@ class JobsController extends Controller {
 
 	/**
 	 * @param $job_id
+	 *
 	 * @return mixed
 	 */
-	public function pauseJob($job_id) {
+	public function pauseJob( $job_id ) {
 		// check if created by this user
 		$user_id = auth()->user()->id;
-		$job = Job::find($job_id);
+		$job     = Job::find( $job_id );
 		//@TODO move to some comman place
-		$job_hired_applications = JobApplication::where('job_id', $job_id)->where('is_hired', 1)->get();
-		if ($job->created_by != $user_id) {
-			$return_data = ["Sorry, You are not authorized to perform this action"];
+		$job_hired_applications = JobApplication::where( 'job_id', $job_id )->where( 'is_hired', 1 )->get();
+		if ( $job->created_by != $user_id ) {
+			$return_data   = [ "Sorry, You are not authorized to perform this action" ];
 			$return_status = 500;
-		} else if (count($job_hired_applications) > 0) {
-			$return_data = ["Sorry, Please withdraw all hired applications before you can pause this job"];
+		} else if ( count( $job_hired_applications ) > 0 ) {
+			$return_data   = [ "Sorry, Please withdraw all hired applications before you can pause this job" ];
 			$return_status = 500;
 		} else {
 			// set status of the job to 0 to mark it as inactive or pause
 			$job->status = 0;
 			$job->save();
-			$return_data = ["Job successfully paused"];
+			$return_data   = [ "Job successfully paused" ];
 			$return_status = 200;
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 
 	/**
 	 * @param $job_id
+	 *
 	 * @return mixed
 	 */
-	public function restartJob($job_id) {
+	public function restartJob( $job_id ) {
 		// check if created by this user
 		$user_id = auth()->user()->id;
-		$job = Job::find($job_id)->with('schedules')->first();
+		$job     = Job::find( $job_id )->with( 'schedules' )->first();
 		//@TODO revisit the expiration part later on when having more info in the next mile stones
 		$schedules = $job->schedules;
-		$diff = 0;
-		if (!empty($schedules)) {
-			$first_day = $schedules[count($schedules) - 1];
-			$end_time = $first_day->end;
-			$current_date_time = date('Y-m-d h:i:s');
-			$diff = strtotime($end_time) - strtotime($current_date_time);
+		$diff      = 0;
+		if ( ! empty( $schedules ) ) {
+			$first_day         = $schedules[ count( $schedules ) - 1 ];
+			$end_time          = $first_day->end;
+			$current_date_time = date( 'Y-m-d h:i:s' );
+			$diff              = strtotime( $end_time ) - strtotime( $current_date_time );
 		}
 
-		if ($job->created_by != $user_id) {
-			$return_data = ["Sorry, You are not authorized to perform this action"];
+		if ( $job->created_by != $user_id ) {
+			$return_data   = [ "Sorry, You are not authorized to perform this action" ];
 			$return_status = 500;
-		} else if($diff < 0) {
-			$return_data = ["Sorry, Job has already been expired"];
+		} else if ( $diff < 0 ) {
+			$return_data   = [ "Sorry, Job has already been expired" ];
 			$return_status = 500;
 		} else {
 			// set status of the job to 1 to mark it as active or start
-			$job_start = Job::find($job_id);
+			$job_start         = Job::find( $job_id );
 			$job_start->status = 1;
 			$job_start->save();
-			$return_data = ["Job successfully restarted"];
+			$return_data   = [ "Job successfully restarted" ];
 			$return_status = 200;
 		}
+
 		return response()
-			->json($return_data, $return_status);
+			->json( $return_data, $return_status );
 	}
 }

@@ -82,8 +82,9 @@ class JobsController extends Controller {
 		$end_date_time         = ! empty( $posted_data['end_date_time'] ) ? $posted_data['end_date_time'] : [];
 		$schedules             = [];
 		foreach ( $start_date_time as $k => $sch ) {
-			$schedule_item['start'] = date( 'Y-m-d h:i', strtotime( $sch ) );
-			$schedule_item['end']   = date( 'Y-m-d h:i', strtotime( $end_date_time[ $k ] ) );
+			$schedule_item['start'] = $sch;
+			// becase date and time format from pick is Y-m-d h:i:s therfore no need of conversion
+			$schedule_item['end']   = $end_date_time[ $k ];
 			$schedules[]            = $schedule_item;
 		}
 		$job           = Job::find( $id );

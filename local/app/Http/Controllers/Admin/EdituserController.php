@@ -229,7 +229,7 @@ class EdituserController extends Controller
         $address->country = $country;
         $address->save();		
 				
-		DB::update('update users set name="'.$name.'",email="'.$email.'",firstname="'.$firstname.'",lastname="'.$lastname.'",dob="'.$dob.'",gender="'.$gender.'",password="'.$passtxt.'",phone="'.$phone.'",photo="'.$savefname.'",admin="'.$admin.'" where id = ?', [$id]);
+		DB::update('update users set name="'.$name.'",email="'.$email.'",firstname="'.$firstname.'",lastname="'.$lastname.'",password="'.$passtxt.'",phone="'.$phone.'",photo="'.$savefname.'",admin="'.$admin.'" where id = ?', [$id]);
 		
 		
 		

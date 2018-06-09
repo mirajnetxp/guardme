@@ -1,5 +1,3 @@
-
-
 1. Retriving the Profile Visibility status
 =============================================
 		Api:  api/freelancer/settings/visibility   
@@ -17,18 +15,18 @@
 				}
 
 				
-2. Retriving the Profile Visibility status
+2. Change Profile Visibility status
 =============================================
-		Api:  api/freelancer/settings/visibility   
-		Type: GET
+		Api:  api/freelancer/settings/visibility/toggle   
+		Type: POST
 		Requirements : Authorization ,
 		Respose:  
 				{
-					"visibility": "public"
+					"visibility_set_to": "public"
 				}
 				
 				--- OR ---
 				
 				{
-					"visibility": "private"
+					"visibility_set_to": "private"
 				}				

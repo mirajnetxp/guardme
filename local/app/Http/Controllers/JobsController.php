@@ -352,6 +352,7 @@ class JobsController extends Controller {
                 }
             }
         }
+
       return view('jobs.find', compact('sort_jobs','b_cats','locs'));
     }
 

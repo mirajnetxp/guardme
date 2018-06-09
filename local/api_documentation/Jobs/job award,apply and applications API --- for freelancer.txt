@@ -1,0 +1,159 @@
+1.Decline award(for freelancer)
+---------------------------------------------------------------------	
+				
+					
+		Api:  api/freelancer/job/decline/{application_id}
+		Type: GET
+		Requirements : Authorization , user must be an freelancer
+		Respose:  
+				{
+					"decline": "200"
+				}		
+		
+
+				
+2.List of award job for freelancer
+	a.List of jobs with id, title, date awarded, amount of job
+---------------------------------------------------------------------	
+				
+					
+		Api:  api/freelancer/awarded/jobs 
+		Type: GET
+		Requirements : Authorization ,user must be an freelancer
+		Respose:  
+				[
+					{
+						"application_id": 6,
+						"job_id": 4,
+						"title": "Saturday test job",
+						"number_of_freelancers": 5,
+						"updated_at": "2018-06-03 18:10:34",
+						"amount": 129.6,
+						"schedules": [
+							{
+								"start_time": "2018-05-31 09:30:00",
+								"end_time": "2018-05-31 12:30:00"
+							},
+							{
+								"start_time": "2018-06-01 09:30:00",
+								"end_time": "2018-06-01 12:30:00"
+							},
+							{
+								"start_time": "2018-06-02 09:30:00",
+								"end_time": "2018-06-02 12:30:00"
+							},
+							{
+								"start_time": "2018-06-03 09:30:00",
+								"end_time": "2018-06-03 12:30:00"
+							},
+							{
+								"start_time": "2018-06-04 08:30:00",
+								"end_time": "2018-06-04 11:30:00"
+							},
+							{
+								"start_time": "2018-06-05 09:30:00",
+								"end_time": "2018-06-05 12:30:00"
+							}
+						]
+					},
+					{
+						"application_id": 5,
+						"job_id": 3,
+						"title": "Saturday test job",
+						"number_of_freelancers": 1,
+						"updated_at": "2018-05-27 11:46:03",
+						"amount": 0,
+						"schedules": []
+					}
+				]
+				
+				
+
+3.Get submitted proposals(applications) as freelancer
+-------------------------------------------------------
+
+		Api:api/jobs/proposals
+		Type: GET
+		Response:
+					[
+						{
+							"title": "Caja Security",
+							"id": 4,
+							"created_by": 21,
+							"description": "test",
+							"is_hired": 0,
+							"application_id": 4,
+							"photo": "1527266852.jpg",
+							"job_title": "Caja Security",
+							"job_description": "Friday sample job",
+							"job_id": 1,
+							"applied_date": "2018-05-27 05:39:12",
+							"u_id": 19,
+							"user_name": "chukwunye",
+							"shop_name": "Koglee LLC",
+							"profile_photo": "",
+							"amount": 270,
+							"number_of_freelancers": 4
+						},
+						{
+							"title": "Saturday test job",
+							"id": 6,
+							"created_by": 21,
+							"description": "Janine application",
+							"is_hired": 1,
+							"application_id": 6,
+							"photo": "1527266852.jpg",
+							"job_title": "Saturday test job",
+							"job_description": "Sat job",
+							"job_id": 4,
+							"applied_date": "2018-05-27 11:43:45",
+							"u_id": 19,
+							"user_name": "chukwunye",
+							"shop_name": "Koglee LLC",
+							"profile_photo": "",
+							"amount": 129.6,
+							"number_of_freelancers": 5
+						}
+					]
+
+
+
+
+4. Freelancer withdraw application 
+-----------------------------------------------------------			
+
+		Api:  api/freelancer/withdraw/{application_id}
+		Type: GET
+		Requirements : Authorization , user must be an freelancer
+		Respose:  
+					{
+						"withdraw": "200"
+					}		
+					
+					
+
+1.Apply on a Job
+--------------------------------------------------
+		Api : api/jobs/apply/{job_id}
+		Type: post
+		Request params: 
+						application_description
+
+		Response: 
+		1) 422 
+
+		validation erros 
+		eg
+
+		application description is a requried field.
+
+		eg 
+		i) You have already applied on the job.
+		ii) You can not apply on your own job.
+		iii) You have already been hired on this job
+		iv) Only freelancers can apply on jobs
+		etc etc.
+
+		2) 200
+
+		Application has been submitted successfully					

@@ -40,7 +40,7 @@ Route::get('/redeem', 'ReferralController@redeem');
 Route::get('/redeem/{id}', 'ReferralController@checkout');
 Route::get('/index', 'IndexController@sangvish_index');
 
-Route::get('searchajax',array('as'=>'searchajax','uses'=>'IndexController@sangvish_autoComplete'));
+Route::get('searchajax', array('as'=>'searchajax','uses'=>'IndexController@sangvish_autoComplete'));
 
 
 Route::get('dateavailable/{val}',array('as'=>'dateavailable','uses'=>'BookingController@dateavailable'));

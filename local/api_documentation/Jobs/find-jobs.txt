@@ -1,64 +1,278 @@
 =========================================
-Get Jobs List
+1.Get Jobs List
 =========================================
 
-URL:
+		Api: api/find-jobs
+		Type: post
 
-api/find-jobs
+		Sample Request:
+						page_id: 1,2,3 ....                    --->  This payload is mendatory
+						user_id:                                               ---|
+						post_code: LS12 2UA                                       |
+						cat_id: 1                                                 |_________   This are not mendatory,     
+						loc_val: Leeds                                            |            User this for filter.
+						keyword: aaa ( text )                                     |
+						distance: 0-10=>1, 11-20=>2, 21-50=>3, 50+=>4          ---| 
 
-Type: post
+		Response:
+						{
+							"job_list": {
+								"current_page": 1,
+								"data": [
+									{
+										"id": 4,
+										"title": "Saturday test job",
+										"description": "Sat job",
+										"address_line1": "Unit C5",
+										"address_line2": "Wellington Road Industrial Estate",
+										"address_line3": "Wellington Bridge",
+										"locality": null,
+										"city_town": "Leeds",
+										"post_code": "LS12 2UA",
+										"country": "UK",
+										"latitude": "53.796119",
+										"longitude": "-1.565777",
+										"daily_working_hours": 3,
+										"monthly_working_days": 6,
+										"per_hour_rate": 12,
+										"wallet_debit_frequency": null,
+										"visible_to_all_security_personal": 1,
+										"visible_to_favourite": 0,
+										"specific_area_min": null,
+										"specific_area_max": null,
+										"specific_category_id": "0",
+										"security_category_id": 1,
+										"business_category_id": 1,
+										"created_by": 21,
+										"status": 1,
+										"created_at": "2018-05-26 15:58:14",
+										"updated_at": "2018-05-26 16:11:16",
+										"number_of_freelancers": 5,
+										"start_date_time": null,
+										"end_date_time": null,
+										"schedules": [
+											{
+												"id": 10,
+												"job_id": 4,
+												"start": "2018-05-31 09:30:00",
+												"end": "2018-05-31 12:30:00"
+											},
+											{
+												"id": 11,
+												"job_id": 4,
+												"start": "2018-06-01 09:30:00",
+												"end": "2018-06-01 12:30:00"
+											}
+											
+										]
+									},
+									{
+										"id": 6,
+										"title": "asdrfg wsfg",
+										"description": "srfgasf",
+										"address_line1": "asdfg",
+										"address_line2": "aSfrg",
+										"address_line3": "natore",
+										"locality": null,
+										"city_town": "natore",
+										"post_code": "998/",
+										"country": "Bangladesh",
+										"latitude": null,
+										"longitude": null,
+										"daily_working_hours": 2,
+										"monthly_working_days": 3,
+										"per_hour_rate": 10,
+										"wallet_debit_frequency": null,
+										"visible_to_all_security_personal": 0,
+										"visible_to_favourite": 0,
+										"specific_area_min": null,
+										"specific_area_max": null,
+										"specific_category_id": "1",
+										"security_category_id": 2,
+										"business_category_id": 2,
+										"created_by": 21,
+										"status": 1,
+										"created_at": "2018-05-29 18:25:12",
+										"updated_at": "2018-05-29 18:25:55",
+										"number_of_freelancers": 4,
+										"start_date_time": null,
+										"end_date_time": null,
+										"schedules": [
+											{
+												"id": 19,
+												"job_id": 6,
+												"start": "2018-05-11 04:30:00",
+												"end": "2018-05-11 06:30:00"
+											}
+										]
+									}
+								],
+								"from": 1,
+								"last_page": 1,
+								"next_page_url": null,
+								"path": "http://guarddme.fork/api/find-jobs",
+								"per_page": 10,
+								"prev_page_url": null,
+								"to": 2,
+								"total": 2
+							}
+						}
 
-sample Request:
-
-page_id: 1,2,3 ....
-user_id: 
-post_code: LS12 2UA
-cat_id: 1
-loc_val: Leeds
-keyword: aaa ( text )
-distance: 0-10=>1, 11-20=>2, 21-50=>3, 50+=>4 
-
-Response:
-
-1) 200
-
-array of objects of job
+		
 
 =========================================
-Get Job Location Details
+2.Get Job Details
 =========================================
 
-URL:
-api/job-details
+		Api: api/job-details
+		Type: POST
+		Request PayLoad :  
+							job_id,
+							user_id,
+							[Note: you can grabe them from (1.Get Jobs List) Api,  user_id= created_by ]
+							
+		Response:
+								{
+									"user_address": {
+										"id": 21,
+										"name": "employer",
+										"email": "support@cajastudios.com",
+										"verified": 1,
+										"gender": "male",
+										"phone": "9199250413",
+										"photo": "",
+										"admin": 0,
+										"created_at": "2018-05-25 22:54:54",
+										"updated_at": "2018-05-25 22:54:54",
+										"firstname": "",
+										"lastname": "",
+										"dob": "",
+										"address_id": 0,
+										"sia_licence": "",
+										"sia_expirydate": "",
+										"work_category": 0,
+										"nation_id": 0,
+										"visa_no": "",
+										"niutr_no": "",
+										"pass_page": "",
+										"visa_page": "",
+										"sia_doc": "",
+										"address_proof": "",
+										"passphoto": "",
+										"phone_verified": 0,
+										"added": 0,
+										"spent": 0,
+										"doc_verified": 0,
+										"address": {
+											"id": 2,
+											"user_id": 21,
+											"postcode": "",
+											"houseno": "",
+											"line1": "",
+											"line2": "",
+											"line3": "",
+											"line4": "",
+											"locality": "",
+											"citytown": "",
+											"country": "",
+											"latitude": "53.796119",
+											"longitude": "-1.565777",
+											"created_at": "2018-05-25 22:54:54",
+											"updated_at": "2018-05-25 22:55:38"
+										}
+									},
+									"job_details": {
+										"id": 2,
+										"title": "Friday sample job",
+										"description": "Nice job",
+										"address_line1": "Cex",
+										"address_line2": "14 Lyceum Place",
+										"address_line3": "Ranelagh Street",
+										"locality": null,
+										"city_town": "Liverpool",
+										"post_code": "L1 1qe",
+										"country": "UK",
+										"latitude": null,
+										"longitude": null,
+										"daily_working_hours": null,
+										"monthly_working_days": null,
+										"per_hour_rate": null,
+										"wallet_debit_frequency": null,
+										"visible_to_all_security_personal": null,
+										"visible_to_favourite": null,
+										"specific_area_min": null,
+										"specific_area_max": null,
+										"specific_category_id": null,
+										"security_category_id": 2,
+										"business_category_id": 3,
+										"created_by": 21,
+										"status": 0,
+										"created_at": "2018-05-25 23:17:30",
+										"updated_at": "2018-05-25 23:17:30",
+										"number_of_freelancers": 1,
+										"start_date_time": null,
+										"end_date_time": null,
+										"poster": {
+											"id": 21,
+											"name": "employer",
+											"email": "support@cajastudios.com",
+											"verified": 1,
+											"gender": "male",
+											"phone": "9199250413",
+											"photo": "",
+											"admin": 0,
+											"created_at": "2018-05-25 22:54:54",
+											"updated_at": "2018-05-25 22:54:54",
+											"firstname": "",
+											"lastname": "",
+											"dob": "",
+											"address_id": 0,
+											"sia_licence": "",
+											"sia_expirydate": "",
+											"work_category": 0,
+											"nation_id": 0,
+											"visa_no": "",
+											"niutr_no": "",
+											"pass_page": "",
+											"visa_page": "",
+											"sia_doc": "",
+											"address_proof": "",
+											"passphoto": "",
+											"phone_verified": 0,
+											"added": 0,
+											"spent": 0,
+											"doc_verified": 0,
+											"company": {
+												"id": 31,
+												"shop_name": "Koglee LLC",
+												"address": "job",
+												"city": "",
+												"pin_code": "",
+												"country": "",
+												"state": "",
+												"shop_phone_no": "9199250413",
+												"description": "tesst",
+												"shop_date": "",
+												"start_time": "",
+												"end_time": "",
+												"cover_photo": "",
+												"profile_photo": "",
+												"seller_email": "support@cajastudios.com",
+												"user_id": 21,
+												"featured": "no",
+												"status": "approved",
+												"admin_email_status": "0",
+												"booking_opening_days": "",
+												"booking_per_hour": "",
+												"business_categoryid": 3,
+												"company_email": "support@cajastudios.com"
+											}
+										},
+										"industory": {
+											"id": 3,
+											"name": "Bar"
+										},
+										"schedules": []
+									}
+								}
 
-Type: post
-
-Response:
-
-Array of objects for job location and user details.
-
-=========================================
-Get Security Category List
-=========================================
-
-URL:
-api/security-categories
-
-Type: get
-
-Response:
-
-Array of objects for security categories
-
-=========================================
-Get Business Category List
-=========================================
-
-URL:
-api/business-categories
-
-Type: get
-
-Response:
-
-Array of objects for business categories

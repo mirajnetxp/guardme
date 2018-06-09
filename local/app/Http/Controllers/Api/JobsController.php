@@ -356,10 +356,7 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public
-	function markHired(
-		$application_id
-	) {
+	public function markHired($application_id ) {
 
 		// check if user is authorized to mark this application as hired.
 		$job_application     = new JobApplication();
@@ -384,10 +381,7 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public
-	function addMoney(
-		Request $request
-	) {
+	public function addMoney( Request $request ) {
 		$return_data   = [ 'Unknown Error' ];
 		$return_status = 500;
 		$posted_data   = $request->all();
@@ -544,10 +538,7 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public
-	function jobDetailsLocation(
-		Request $request
-	) {
+	public function jobDetailsLocation( Request $request ) {
 		$this->validate( $request, [
 			'job_id'  => 'required',
 			'user_id' => 'required'
@@ -1161,6 +1152,13 @@ class JobsController extends Controller {
 
 		return response()
 			->json( $return_data, $return_status );
+	}
+
+	public function paymentRequests() {
+		$pr = new PaymentRequest();
+		$payment_requests = $pr->getPaymentRequestsByEmployer();
+
+		return response()->json($payment_requests);
 	}
 
 

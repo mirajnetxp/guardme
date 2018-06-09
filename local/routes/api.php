@@ -84,6 +84,8 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 
 	Route::post('create/payment/request', 'JobsController@createPaymentRequest')->name('api.create.payment.request');
 	Route::post('approve/payment/request/{payment_request_id}', 'JobsController@approvePaymentRequest')->name('api.approve.payment.request');
+	Route::get('api/jobs/payment/request/list', 'JobsController@paymentRequests');
+
 
 	Route::post('/pause/{job_id}', 'JobsController@pauseJob')->name('api.pause.job');
 	Route::post('/restart/{job_id}', 'JobsController@restartJob')->name('api.restart.job');

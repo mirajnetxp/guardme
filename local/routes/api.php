@@ -132,6 +132,10 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 
 	Route::get( '/open/job/applications', 'FreelancerJobsController@openJobApplications' );
 
+
+	Route::get( '/settings/visibility', 'FreelancerJobsController@visibility' );
+	Route::post( '/settings/visibility/toggle', 'FreelancerJobsController@SetVisibility' );
+
 } );
 
 Route::group( [ 'prefix' => 'employer', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {

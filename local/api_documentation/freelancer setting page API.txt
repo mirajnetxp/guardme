@@ -1,0 +1,34 @@
+
+
+1. Retriving the Profile Visibility status
+=============================================
+		Api:  api/freelancer/settings/visibility   
+		Type: GET
+		Requirements : Authorization ,
+		Respose:  
+				{
+					"visibility": "public"
+				}
+				
+				--- OR ---
+				
+				{
+					"visibility": "private"
+				}
+
+				
+2. Retriving the Profile Visibility status
+=============================================
+		Api:  api/freelancer/settings/visibility   
+		Type: GET
+		Requirements : Authorization ,
+		Respose:  
+				{
+					"visibility": "public"
+				}
+				
+				--- OR ---
+				
+				{
+					"visibility": "private"
+				}				

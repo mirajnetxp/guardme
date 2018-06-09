@@ -93,11 +93,49 @@ Decline award API endpoint needed for freelancer
 		Respose:  
 				[
 					{
-						"job_id": 1,
-						"title": "Caja Security",
-						"updated_at": "2018-05-25 23:31:55"
+						"application_id": 6,
+						"job_id": 4,
+						"title": "Saturday test job",
+						"number_of_freelancers": 5,
+						"updated_at": "2018-06-03 18:10:34",
+						"amount": 129.6,
+						"schedules": [
+							{
+								"start_time": "2018-05-31 09:30:00",
+								"end_time": "2018-05-31 12:30:00"
+							},
+							{
+								"start_time": "2018-06-01 09:30:00",
+								"end_time": "2018-06-01 12:30:00"
+							},
+							{
+								"start_time": "2018-06-02 09:30:00",
+								"end_time": "2018-06-02 12:30:00"
+							},
+							{
+								"start_time": "2018-06-03 09:30:00",
+								"end_time": "2018-06-03 12:30:00"
+							},
+							{
+								"start_time": "2018-06-04 08:30:00",
+								"end_time": "2018-06-04 11:30:00"
+							},
+							{
+								"start_time": "2018-06-05 09:30:00",
+								"end_time": "2018-06-05 12:30:00"
+							}
+						]
+					},
+					{
+						"application_id": 5,
+						"job_id": 3,
+						"title": "Saturday test job",
+						"number_of_freelancers": 1,
+						"updated_at": "2018-05-27 11:46:03",
+						"amount": 0,
+						"schedules": []
 					}
-				]	
+				]
 				
 				
 1. All applications for a particular job

@@ -1,0 +1,33 @@
+Login:
+API Uri: /api/account/login
+Request method: post
+Request payload: email, password
+Return type: json
+Expected data returned on success:
+{"success":{"token":"the token here..."}}
+
+Expected data returned on failure:
+{"error":"Unauthorised"}
+========================================================================
+
+Social login:
+API Uri: /api/account/auth/social
+Request method: post
+Request payload: email
+Return type: json
+Expected data returned on success:
+{"success":{"token":"the token here..."}}
+
+
+==========================================================================
+	Register:
+
+			API Uri: /api/account/register
+			Request method: post
+			Request payload: email, password, gender, phoneno, usertype
+			Return type: json
+			Expected data returned on success:
+			{"success":{"token":"the token here..."}}
+
+			Expected data returned on failure:
+			{"error":"Unauthorised"}

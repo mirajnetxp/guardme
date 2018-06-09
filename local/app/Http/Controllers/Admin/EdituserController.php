@@ -157,7 +157,7 @@ class EdituserController extends Controller
 		$lastname = $data['lastname'];
 		// $dob = $data['dob'];
 		$phone = $data['phone'];
-        $gender = $data['gender'];
+        //$gender = $data['gender'];
 
 		
 		

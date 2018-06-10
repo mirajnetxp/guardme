@@ -1,0 +1,50 @@
+=========================================
+1. Get Security Category List
+=========================================
+
+		Api:
+		api/security-categories
+		Type: GET
+
+		Response:
+					[
+						{
+							"id": 1,
+							"name": "Close Protection"
+						},
+						{
+							"id": 2,
+							"name": "Secutiy Guard"
+						},
+						{
+							"id": 3,
+							"name": "Door Supervisor"
+						}
+					]
+
+=========================================
+2. Get Business Category List
+=========================================
+
+			Api: api/business-categories
+			Type: GET
+			Response:
+
+						[
+							{
+								"id": 1,
+								"name": "Hospital"
+							},
+							{
+								"id": 2,
+								"name": "Club"
+							},
+							{
+								"id": 3,
+								"name": "Bar"
+							},
+							{
+								"id": 4,
+								"name": "Shop"
+							}
+						]

@@ -143,12 +143,12 @@ $setts = DB::table('settings')
                         </div>
 
                         <div class="col-md-6">
-                            <h3 class="">1. Tell us what you need</h3>
-                            <p class="">First, select required professional service about what type of pro you’re looking for.</p>
-                            <h3 class="">2. Review service providers</h3>
-                            <p class="">Within seconds, you’ll receive expert service providers profile with their ratings. choose one among them.</p>
-                            <h3 class="">3. Hire the right pro</h3>
-                            <p class="">Compare prices, profiles, and reviews, then hire the pro that’s right for you.</p>
+                            <h3 class="">1. Register or login to your account</h3>
+                            <p class="">Update your company information and create your first job. Creating a job is easy and payment is a breeze!</p>
+                            <h3 class="">2. Award the job to experienced security personnel</h3>
+                            <p class="">In only a few minutes or hours, you’ll receive applications from hundreds of security personnel. Use the filter to choose by location or feedback rating.</p>
+                            <h3 class="">3. Sit back and relax!</h3>
+                            <p class="">The process is simple. Your staff will arrive on time and you can also check the GuardME app for tracking information.</p>
 
                         </div>
                     </div>
@@ -163,7 +163,7 @@ $setts = DB::table('settings')
 
     <div class="section workshop-traning">
         <div class="section-title">
-            <h4>Customers use to get millions of projects done quickly and easily</h4>
+            <h4>Security personnel and companies who love the GuardME app...</h4>
             <a href="#" class="btn btn-primary">See all</a> 
         </div>
         <div class="row">

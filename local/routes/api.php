@@ -84,7 +84,11 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 
 	Route::post('create/payment/request', 'JobsController@createPaymentRequest')->name('api.create.payment.request');
 	Route::post('approve/payment/request/{payment_request_id}', 'JobsController@approvePaymentRequest')->name('api.approve.payment.request');
+	Route::get('api/jobs/payment/request/list', 'JobsController@paymentRequests');
 
+
+	Route::post('/pause/{job_id}', 'JobsController@pauseJob')->name('api.pause.job');
+	Route::post('/restart/{job_id}', 'JobsController@restartJob')->name('api.restart.job');
 
 } );
 
@@ -99,8 +103,12 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/search', 'SearchController@getpersonnelsearch' );
 
 	Route::post( '/toggle/favourite/{freelancer_id}', 'JobsController@toggleFavouriteFreelancer' )->name( 'api.toggle.favourite.freelancer' );
+	Route::get('/favourite/freelancers', 'JobsController@favouriteFreelancers');
+	Route::get( '/total/favorites/freelancer', 'JobsController@totaoFF' );
 	// Teams specific routes
 	Route::post( '/team/create', 'TeamsController@create' )->name( 'api.team.create' );
+	Route::get( '/get/teams', 'TeamsController@getAllteam' );
+	Route::get( '/total/team', 'TeamsController@totaoTeam' );
 	Route::post( '/team/add/member', 'TeamsController@addMember' )->name( 'api.add.member.to.team' );
 } );
 
@@ -131,6 +139,10 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 	Route::get( '/average/feedback/{id}', 'FreelancerJobsController@averageFeedback' );
 
 	Route::get( '/open/job/applications', 'FreelancerJobsController@openJobApplications' );
+
+
+	Route::get( '/settings/visibility', 'FreelancerJobsController@visibility' );
+	Route::post( '/settings/visibility/toggle', 'FreelancerJobsController@SetVisibility' );
 
 } );
 

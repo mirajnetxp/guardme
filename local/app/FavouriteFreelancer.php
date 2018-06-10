@@ -12,7 +12,7 @@ class FavouriteFreelancer extends Model
 
     public function getFavourieFreelacers() {
         $user_id = auth()->user()->id;
-       $fav = DB::table($this->table .' as ff')
+        $fav = DB::table($this->table .' as ff')
            ->select('u.*')
            ->join('users as u', 'u.id', '=', 'ff.freelancer_id')
            ->where('employer_id', $user_id)->get();

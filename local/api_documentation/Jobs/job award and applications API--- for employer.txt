@@ -1,0 +1,190 @@
+
+						Note : api 1.1 and 1.2 are same,   but 1.1 check the employer balance . So 1.1 is recommended
+1.1 Mark As hired. (Award job)  (check the balance as well as hireing ability )
+============================================
+		Api: api/jobs/mark/hired/{application_id}
+		Type: post
+
+		Response:
+
+		1) 500
+			eg
+			i) You are not authorized to hire on this application
+
+		2) 200
+
+			Hired Successfully	
+
+
+1.2  Employer can award a job to the applicant  [Note: this api don't check the employer balance, (recommended to use api--1.1 Mark As hired. (Award job) ) ] 
+-----------------------------------------------------------			
+
+		Api:  api/employer/award/job/to/{application_id}
+		Type: POST
+		Requirements : Authorization , user must be an employer,  application_id=which application he like to haire for. 
+		Respose:  
+						{
+							"application_id": "6",
+							"user_id": 19
+						}	
+						
+		Explaination of Respose:		user_id = freelancer id , as well as the freelancer user id(in USERS table) ;
+		
+		
+
+
+		
+	
+		
+		
+		
+		
+2. Mark job as complete
+-----------------------------------------------------------			
+
+		Api:  api/jobs/mark-application-as-complete/{application_id 
+		Type: POST
+		Requirements : Authorization , user must be an employer,  
+		Respose:  
+						[
+							"success"
+						]
+						
+						
+						|
+						OR
+						|
+						
+						
+						[
+							"You are not authorized to perform this action."
+						]						
+								
+3.Cancel award API endpoint (for employer)
+---------------------------------------------------------------------	
+				
+					
+		Api:  api/employer/job/decline/{application_id}
+		Type: GET
+		Requirements : Authorization , user must be an employer
+		Respose:  
+				{
+					"cancel": "200"
+				}										
+4.List of award job for employer
+---------------------------------------------------------------------	
+				
+					
+		Api:  api/employer/awarded/jobs 
+		Type: GET
+		Requirements : Authorization , user must be an employer
+		Respose:  
+				[
+					{
+						"job_id": 1,
+						"title": "Caja Security",
+						"updated_at": "2018-05-25 23:31:55"
+					}
+				]			
+
+5. All applications for a particular job
+---------------------------------------------------------
+		Api:  api/job/{id}/applications/list   
+		Type: GET
+		Requirements : Authorization , {id}= Job id
+		Respose:  
+			        [
+						{
+							"id":"1"
+							"name": "chukwunye",
+							"photo": "1527266852.jpg",
+							"created_at": "2018-05-25 17:19:21",
+							"is_hired": 1,
+							"application_description": "I want the job"
+						},
+						{
+							"id":"2"
+							"name": "seller",
+							"photo": "1497510195.jpg",
+							"created_at": "2018-05-25 17:20:14",
+							"is_hired": 0,
+							"application_description": "want job too"
+						}
+					]				
+					
+					
+6.Get all posted Jobs of an employer.
+--------------------------------------------
+
+		Api:api/jobs/my       --->  example:  http://guarddme.com/api/jobs/my?page_id=1
+		Type: GET
+		Requrements :Authorization ,  page_id = any number start from 1 (use for pagination)
+		Response:
+					{
+						"job_list": {
+							"current_page": 1,
+							"data": [
+								{
+									"id": 2,
+									"title": "Laval Security For Day Time",
+									"description": "Security men for day time",
+									"address_line1": "L Lavala",
+									"address_line2": "Unit B4-B5",
+									"address_line3": "Wellington Road Industrial Estate, Wellington Bridge",
+									"locality": null,
+									"city_town": "Leeds",
+									"post_code": "LS12 2UA",
+									"country": "UK",
+									"latitude": "53.796119",
+									"longitude": "-1.565777",
+									"daily_working_hours": 8,
+									"monthly_working_days": 5,
+									"per_hour_rate": 8,
+									"wallet_debit_frequency": null,
+									"visible_to_all_security_personal": 1,
+									"visible_to_favourite": 0,
+									"specific_area_min": null,
+									"specific_area_max": null,
+									"specific_category_id": "0",
+									"security_category_id": 2,
+									"business_category_id": 2,
+									"created_by": 20,
+									"status": 1,
+									"created_at": "2018-06-09 17:37:48",
+									"updated_at": "2018-06-09 17:51:32",
+									"number_of_freelancers": 1,
+									"start_date_time": null,
+									"end_date_time": null,
+									"applications": [],
+									"industory": {
+										"id": 2,
+										"name": "Club"
+									},
+									"schedules": [
+									
+										{
+											"id": 18,
+											"job_id": 2,
+											"start": "2018-06-13 08:00:00",
+											"end": "2018-06-13 16:00:00"
+										},
+										{
+											"id": 19,
+											"job_id": 2,
+											"start": "2018-06-14 08:00:00",
+											"end": "2018-06-14 16:00:00"
+										}
+									]
+								}
+							],
+							"from": 1,
+							"last_page": 1,
+							"next_page_url": null,
+							"path": "http://guarddme.com/api/jobs/my",
+							"per_page": 10,
+							"prev_page_url": null,
+							"to": 2,
+							"total": 2
+						}
+					}					
+	

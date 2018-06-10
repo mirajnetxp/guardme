@@ -186,21 +186,25 @@
                                         
                                          @php 
                                           $color = $user->verified == 0 ? "danger" : "success";
+                                          $icon = $user->verified == 0 ? "fa-window-close" : "fa-check";
+
                                         @endphp               
                                         <a href="<?php echo $url;?>/admin/email-status/{{ $user->id }}"
                                                        class="btn btn-{{$color}} btn-sm pull-right"
-                                                       onclick="return confirm('Are you sure you want to change status ?')"><i class="fa fa-envelope"></i></a>
+                                                       onclick="return confirm('Are you sure you want to change status ?')"><i class="fa {{$icon}}" aria-hidden="true"></i></a>
                                     </td>
                                     <td><?php echo $user->phone;?>
                                         
                                         @php 
                                           if(! empty($user->phone)) {
                                           $color = $user->phone_verified == 0 ? "danger" : "success";
+                                            $icon = $user->phone_verified == 0 ? "fa-window-close" : "fa-check";
+
 
                                         @endphp               
                                         <a href="<?php echo $url;?>/admin/phone-status/{{ $user->id }}"
                                                        class="btn btn-{{$color}} btn-sm pull-right"
-                                                       onclick="return confirm('Are you sure you want to change status ?')"><i class="fa fa-phone-square"></i></a>
+                                                       onclick="return confirm('Are you sure you want to change status ?')"><i class="fa {{$icon}}"></i></a>
                                          <?php } ?>              
                                     </td>
                                     <td><?php echo $viewst;?></td>

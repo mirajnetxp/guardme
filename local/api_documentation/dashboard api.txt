@@ -1,5 +1,3 @@
-												
-
 15. All Open tickets
 -----------------------------------------------------------			
 
@@ -79,4 +77,30 @@
 								"job_id": 4,
 								"job_title": "Saturday test job"
 							}
-						]										
+						]
+
+19. Total number of Favorites freelancer
+-----------------------------------------------------------
+
+		Api:  api/total/favorites/freelancer
+		Type: GET
+		Requirements : Authorization , Total number of Favorites freelancer of an employer
+
+
+		Respose:
+						{
+							"total_ff": 1
+						}
+
+20.Total number of Team
+-----------------------------------------------------------
+
+		Api:  api/total/Team
+		Type: GET
+		Requirements : Authorization ,
+
+
+		Respose:
+						{
+							"total_team": 1
+						}

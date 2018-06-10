@@ -52,6 +52,7 @@ Update profile of authenticated user:
 								firstname, 
 								lastname,
 								nation_id,    ==================  nation_id should be a numeric value ,  as well as the country id. 
+								niutr_no,      ================== for uk user
 								photo(base64 encoded image), 
 								passphoto(base64 encoded image),
 								sia_doc(base64 encoded image), 

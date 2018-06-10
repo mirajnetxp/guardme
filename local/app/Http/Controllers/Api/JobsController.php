@@ -356,7 +356,7 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function markHired($application_id ) {
+	public function markHired( $application_id ) {
 
 		// check if user is authorized to mark this application as hired.
 		$job_application     = new JobApplication();
@@ -1024,14 +1024,27 @@ class JobsController extends Controller {
 	 */
 	public function favouriteFreelancers() {
 		$user_id = auth()->user()->id;
-		$fav = DB::table('favourite_freelancers as ff')
-		         ->select('u.id','u.name','u.email','u.gender','u.phone','u.photo',
-			         'u.firstname','u.lastname')
-		         ->join('users as u', 'u.id', '=', 'ff.freelancer_id')
-		         ->where('employer_id', $user_id)
-		         ->get();
+		$fav     = DB::table( 'favourite_freelancers as ff' )
+		             ->select( 'u.id', 'u.name', 'u.email', 'u.gender', 'u.phone', 'u.photo',
+			             'u.firstname', 'u.lastname' )
+		             ->join( 'users as u', 'u.id', '=', 'ff.freelancer_id' )
+		             ->where( 'employer_id', $user_id )
+		             ->get();
 
-		return response()->json( $fav  );
+		return response()->json( $fav );
+	}
+
+	public function totaoFF() {
+		$user_id = auth()->user()->id;
+		$fav     = DB::table( 'favourite_freelancers as ff' )
+		             ->select( 'u.id', 'u.name', 'u.email', 'u.gender', 'u.phone', 'u.photo',
+			             'u.firstname', 'u.lastname' )
+		             ->join( 'users as u', 'u.id', '=', 'ff.freelancer_id' )
+		             ->where( 'employer_id', $user_id )
+		             ->get();
+		$total   = count( $fav );
+
+		return response()->json( [ 'total_ff' => $total ] );
 	}
 
 
@@ -1155,10 +1168,10 @@ class JobsController extends Controller {
 	}
 
 	public function paymentRequests() {
-		$pr = new PaymentRequest();
+		$pr               = new PaymentRequest();
 		$payment_requests = $pr->getPaymentRequestsByEmployer();
 
-		return response()->json($payment_requests);
+		return response()->json( $payment_requests );
 	}
 
 

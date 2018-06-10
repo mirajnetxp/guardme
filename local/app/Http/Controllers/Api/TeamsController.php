@@ -57,6 +57,15 @@ class TeamsController extends Controller {
 	public function getAllteam() {
 		$allTeam = new Team();
 		$allTeam = $allTeam->getMyTeams();
+
 		return response()->json( $allTeam );
+	}
+
+	public function totaoTeam() {
+		$allTeam = new Team();
+		$allTeam = $allTeam->getMyTeams();
+		$total   = count( $allTeam );
+
+		return response()->json( [ 'total_team' => $total ] );
 	}
 }

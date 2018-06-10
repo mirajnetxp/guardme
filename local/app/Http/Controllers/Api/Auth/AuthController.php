@@ -132,11 +132,13 @@ class AuthController extends Controller {
 			'latitude'  => $user->address ? $user->address->latitude : null,
 			'longitude' => $user->address ? $user->address->longitude : null,
 
-			'phone'           => $user->phone,
-			'gender'          => $user->gender,
-			'dob'             => $user->dob,
-			'avatar'          => $user->photo ? url( "/local/images/userphoto/" . $user->photo ) : null,
-			'nationality'     => $user->nationality ? $user->nationality->name : null,
+			'phone'       => $user->phone,
+			'gender'      => $user->gender,
+			'dob'         => $user->dob,
+			'avatar'      => $user->photo ? url( "/local/images/userphoto/" . $user->photo ) : null,
+			'nationality' => $user->nationality ? $user->nationality->name : null,
+			'niutr_no'    => $user->niutr_no ? $user->niutr_no : null,
+
 			'visa_number'     => $user->visa_no,
 			'sia_number'      => $user->sia_licence,
 			'sia_expiry_date' => $user->sia_expirydate,
@@ -325,7 +327,7 @@ class AuthController extends Controller {
 			$user->phone         = $phone;
 			$user->photo         = $savefname;
 			$user->nation_id     = isset( $request->nation_id ) ? $request->nation_id : 0;   // Added by miraj
-			$user->niutr_no     = isset( $request->niutr_no ) ? $request->niutr_no : '';   // Added by miraj
+			$user->niutr_no      = isset( $request->niutr_no ) ? $request->niutr_no : '';   // Added by miraj
 			$user->visa_page     = $visapagename;
 			$user->pass_page     = $passpagename;
 			$user->address_proof = $addrproofname;

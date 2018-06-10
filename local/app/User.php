@@ -213,7 +213,7 @@ class User extends Authenticatable {
 						DB::table( 'referrals' )->where( 'id', $referral->id )->update( [ 'points' => 50 ] );
 						$uReferrals [ $key ]['points'] = 50;
 					} elseif ( count( $numOfJobPost ) == 0 && $referral->points == 0 ) {
-						$uReferrals [ $key ]['points'] = 'Not available yeat';
+						$uReferrals [ $key ]['points'] = 'Awaiting first job';
 					} elseif ( $referral->points != 0 ) {
 						$uReferrals [ $key ]['points'] = $referral->points;
 					}
@@ -228,9 +228,9 @@ class User extends Authenticatable {
 
 					if ( count( $hired ) > 0 && $referral->points == 0 ) {
 						DB::table( 'referrals' )->where( 'id', $referral->id )->update( [ 'points' => 10 ] );
-						$uReferrals [ $key ]['points'] = 10;
+						$uReferrals [ $key ]['points'] = 50;
 					} elseif ( count( $hired ) == 0 && $referral->points == 0 ) {
-						$uReferrals [ $key ]['points'] = 'Not available yeat';
+						$uReferrals [ $key ]['points'] = 'Awaiting first job';
 					} elseif ( $referral->points != 0 ) {
 						$uReferrals [ $key ]['points'] = $referral->points;
 					}
@@ -238,7 +238,6 @@ class User extends Authenticatable {
 
 
 			}
-
 
 			return $uReferrals;
 		}

@@ -325,6 +325,7 @@ class AuthController extends Controller {
 			$user->phone         = $phone;
 			$user->photo         = $savefname;
 			$user->nation_id     = isset( $request->nation_id ) ? $request->nation_id : 0;   // Added by miraj
+			$user->niutr_no     = isset( $request->niutr_no ) ? $request->niutr_no : '';   // Added by miraj
 			$user->visa_page     = $visapagename;
 			$user->pass_page     = $passpagename;
 			$user->address_proof = $addrproofname;

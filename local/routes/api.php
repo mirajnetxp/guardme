@@ -22,7 +22,7 @@ Route::group( [ 'prefix' => 'account', 'namespace' => 'Api\Auth' ], function () 
 
 Route::group( [ 'prefix' => '/support/tickets', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
 	Route::get( '/', 'TicketController@index' );
-	Route::post( '/', 'TicketController@store' )->name('api.store.ticket');
+	Route::post( '/', 'TicketController@store' )->name( 'api.store.ticket' );
 	Route::get( '/{id}', 'TicketController@show' )->where( 'id', '[0-9]+' );
 	Route::put( '/{id}', 'TicketController@update' )->where( 'id', '[0-9]+' );
 	Route::get( '/open', 'TicketController@openTickets' );
@@ -73,22 +73,22 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::post( 'leave/feedback/{application_id}', 'JobsController@leaveFeedback' )->name( 'api.leave.feedback' );
 
 	// Tip Api
-	Route::get('/tip/{application_id}', 'JobsController@giveTip');  // Step -1
+	Route::get( '/tip/{application_id}', 'JobsController@giveTip' );  // Step -1
 	Route::post( 'post/tip/{application_id}', 'JobsController@postTip' )->name( 'api.post.tip' ); // Step -2
-	Route::get('/tip/details/{transaction_id}', 'JobsController@tipDetails'); // Step -3
+	Route::get( '/tip/details/{transaction_id}', 'JobsController@tipDetails' ); // Step -3
 	Route::post( 'confirm/tip/{transaction_id}', 'JobsController@confirmTip' )->name( 'api.confirm.tip' );// Step -4
 
 	Route::post( 'cancel/{application_id}', 'JobsController@cancelHiredApplication' )->name( 'api.cancel.job' );
 
 	// payment request from freelancer
 
-	Route::post('create/payment/request', 'JobsController@createPaymentRequest')->name('api.create.payment.request');
-	Route::post('approve/payment/request/{payment_request_id}', 'JobsController@approvePaymentRequest')->name('api.approve.payment.request');
-	Route::get('api/jobs/payment/request/list', 'JobsController@paymentRequests');
+	Route::post( 'create/payment/request', 'JobsController@createPaymentRequest' )->name( 'api.create.payment.request' );
+	Route::post( 'approve/payment/request/{payment_request_id}', 'JobsController@approvePaymentRequest' )->name( 'api.approve.payment.request' );
+	Route::get( 'api/jobs/payment/request/list', 'JobsController@paymentRequests' );
 
 
-	Route::post('/pause/{job_id}', 'JobsController@pauseJob')->name('api.pause.job');
-	Route::post('/restart/{job_id}', 'JobsController@restartJob')->name('api.restart.job');
+	Route::post( '/pause/{job_id}', 'JobsController@pauseJob' )->name( 'api.pause.job' );
+	Route::post( '/restart/{job_id}', 'JobsController@restartJob' )->name( 'api.restart.job' );
 
 } );
 
@@ -103,7 +103,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/search', 'SearchController@getpersonnelsearch' );
 
 	Route::post( '/toggle/favourite/{freelancer_id}', 'JobsController@toggleFavouriteFreelancer' )->name( 'api.toggle.favourite.freelancer' );
-	Route::get('/favourite/freelancers', 'JobsController@favouriteFreelancers');
+	Route::get( '/favourite/freelancers', 'JobsController@favouriteFreelancers' );
 	Route::get( '/total/favorites/freelancer', 'JobsController@totaoFF' );
 	// Teams specific routes
 	Route::post( '/team/create', 'TeamsController@create' )->name( 'api.team.create' );
@@ -170,11 +170,10 @@ Route::group( [ 'prefix' => 'employer', 'namespace' => 'Api', 'middleware' => 'a
 Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
 
 	Route::get( '/job/{id}/applications/list', 'EmployerJobsController@JobApplications' );
-
+	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
 	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
 
-
-	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
+	Route::get( 'referrals/list', 'ReferralController@getReferralList' );
 
 
 } );

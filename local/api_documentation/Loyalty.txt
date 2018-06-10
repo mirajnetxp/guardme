@@ -1,0 +1,21 @@
+1. Retrive referrals list (with total points)
+-----------------------------------------------------------			
+
+		Api:  api/referrals/list
+		Type: GET
+		Requirements : Authorization , 
+		Respose:  
+						{
+							"referrals": [
+								{
+									"email": "sdfgasdfg@sdfv.sadfwer",
+									"points": "Not available yet.'
+								},
+								{
+									"email": "cokwedadi@gmail.com",
+									"points": 10
+								}
+							],
+							
+							"total_point": 20
+						}

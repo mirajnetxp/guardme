@@ -21,6 +21,7 @@ Fetch profile of authenticated user:
 				"dob": "",
 				"avatar": [image link],
 				"nationality": null,
+				"niutr_no": null,
 				"visa_number": "",
 				"sia_number": null,
 				"sia_expiry_date": "",
@@ -31,9 +32,6 @@ Fetch profile of authenticated user:
 				"sia_license": [image link],
 				"address_proof": [image link]
 			}
-			
-			
-			
 			
 			
 Update profile of authenticated user:

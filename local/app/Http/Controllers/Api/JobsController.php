@@ -357,10 +357,11 @@ class JobsController extends Controller {
 	}
 
 	public function markHired( $application_id ) {
-
 		// check if user is authorized to mark this application as hired.
 		$job_application     = new JobApplication();
 		$is_eligible_to_hire = $job_application->isEligibleToMarkHired( $application_id );
+
+
 		if ( $is_eligible_to_hire['status_code'] == 200 ) {
 			$ja = JobApplication::find( $application_id );
 			event( new AwardJob( $ja ) );

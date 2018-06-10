@@ -1,6 +1,5 @@
 1. Retrive referrals list (with total points)
 -----------------------------------------------------------			
-
 		Api:  api/referrals/list
 		Type: GET
 		Requirements : Authorization , 

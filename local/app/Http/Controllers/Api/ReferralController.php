@@ -15,12 +15,6 @@ use Responsive\Url;
 use Responsive\User;
 use Responsive\UserItem;
 
-/**
- * Class ReferralController
- * Controller for referral system on frontend
- *
- * @package Responsive\Http\Controllers
- */
 class ReferralController extends Controller {
 
 	public function getReferralList() {

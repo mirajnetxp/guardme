@@ -9,13 +9,12 @@
 							"referrals": [
 								{
 									"email": "sdfgasdfg@sdfv.sadfwer",
-									"points": "Not available yet.'
+									"points": "Awaiting first job"
 								},
 								{
 									"email": "cokwedadi@gmail.com",
 									"points": 10
 								}
 							],
-							
-							"total_point": 20
+							"total_point": 10
 						}

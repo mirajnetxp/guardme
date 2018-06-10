@@ -37,8 +37,7 @@ class Referral
      * @param  ResponseFactory $response
      * @return void
      */
-    public function __construct(Guard $auth,
-                                ResponseFactory $response)
+    public function __construct(Guard $auth, ResponseFactory $response)
     {
         $this->auth = $auth;
         $this->response = $response;
@@ -60,7 +59,7 @@ class Referral
 
                 $user = User::where('name', $uid)->first();
                 if ($user && $user->id) {
-                    session(['referral' => $name]);
+                    session(['referral' => $user->name]);
                 }
             }
 

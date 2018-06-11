@@ -12,6 +12,7 @@ use Responsive\Job;
 use Responsive\JobApplication;
 use Responsive\PaymentRequest;
 use Responsive\SecurityJobsSchedule;
+use Responsive\Tracking;
 use Responsive\Transaction;
 use Responsive\User;
 use Responsive\Businesscategory;
@@ -554,10 +555,12 @@ class JobsController extends Controller {
 			'schedules'
 
 		] )->where( 'id', $posted_data['job_id'] )->first();
-
+		$tracking = new Tracking();
+		$tracking_info = $tracking->getTracingDataByJobAndUser($posted_data['job_id'], $posted_data['user_id']);
 		return response()->json( [
 			'user_address' => $user_address,
-			'job_details'  => $job_details
+			'job_details'  => $job_details,
+			'tracking_info' => $tracking_info
 		] );
 	}
 

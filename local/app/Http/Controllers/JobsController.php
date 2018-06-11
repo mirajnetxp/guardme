@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use Responsive\Businesscategory;
 use Responsive\FavouriteFreelancer;
 use Responsive\JobApplication;
+use Responsive\PaymentRequest;
 use Responsive\SecurityCategory;
 use Responsive\Job;
 use Responsive\SavedJob;
@@ -351,6 +352,7 @@ class JobsController extends Controller {
                 }
             }
         }
+
       return view('jobs.find', compact('sort_jobs','b_cats','locs'));
     }
 
@@ -617,8 +619,9 @@ class JobsController extends Controller {
         $ja = new JobApplication();
         $application = $ja->getMyApplicationDetails($application_id);
         $job = Job::with(['poster'])->where('id',$job_id)->first();
+        $working_hours = $job->daily_working_hours * $job->monthly_working_days;
 //       dd($application);
-        return view('jobs.my-application-detail', compact('application','job'));
+        return view('jobs.my-application-detail', compact('application','job', 'working_hours'));
     }
 
     public function saveJobsToProfile($id){
@@ -689,5 +692,39 @@ class JobsController extends Controller {
         $favourite_freelancers = $favFreelancers->getFavourieFreelacers();
         $teams = Team::where('created_by', $user_id)->get();
         return view('jobs.favourite-freelancers', ['freelancers' => $favourite_freelancers, 'teams'=> $teams, 'editprofile' => $editprofile]);
+    }
+
+    /**
+     * @param $application_id
+     * @return mixed
+     */
+    public function applicationPaymentRequest($application_id) {
+
+        return view('jobs.add-extra-time', compact('application_id'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function paymentRequests() {
+        $user_id = auth()->user()->id;
+        $editprofile = User::where('id', $user_id)->get();
+        $pr = new PaymentRequest();
+        $payment_requests = $pr->getPaymentRequestsByEmployer();
+        return view('jobs.payment-requests', compact('editprofile', 'payment_requests'));
+    }
+
+    /**
+     * @param $payment_request_id
+     * @return mixed
+     */
+    public function paymentRequestDetails($payment_request_id) {
+        $user_id = auth()->user()->id;
+        $editprofile = User::where('id', $user_id)->get();
+        $pr = new PaymentRequest();
+        $payment_request = $pr->getPaymentRequestsByEmployer($payment_request_id)->first();
+        $wallet = new Transaction();
+        $available_balance = $wallet->getWalletAvailableBalance();
+        return view('jobs.payment-request-details', compact('editprofile', 'payment_request', 'available_balance'));
     }
 }

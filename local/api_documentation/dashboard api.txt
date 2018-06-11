@@ -1,0 +1,106 @@
+15. All Open tickets
+-----------------------------------------------------------			
+
+		Api:  api/support/tickets/open
+		Type: GET
+		Requirements : Authorization , Retrive the authenticate user all open tickets. 
+	
+		
+		Respose:  
+						[
+							{
+								"id": 1,
+								"user_id": 21,
+								"responsible_id": 0,
+								"category_id": 0,
+								"title": "jhvv uh o uioh",
+								"status": 0,
+								"state": 1
+							}
+						]
+												
+
+16. All Open Jobs
+-----------------------------------------------------------			
+
+		Api:  api/jobs/open
+		Type: GET
+		Requirements : Authorization , Retrive the authenticate user open jobs;
+	
+		
+		Respose:  
+						[
+							{
+								"job_id": 4,
+								"job_title": "Saturday test job"
+							},
+							{
+								"job_id": 5,
+								"job_title": "awerfg WEF4235"
+							},
+							{
+								"job_id": 6,
+								"job_title": "asdrfg wsfg"
+							}
+						]
+						
+17. All open job applications of freelancer
+-----------------------------------------------------------			
+
+		Api:  api/freelancer/open/job/applications
+		Type: GET
+		Requirements : Authorization , Retrive the authenticate user open jobs;
+	
+		
+		Respose:  
+						[
+							{
+								"job_id": 4,
+								"job_title": "Saturday test job",
+								"completion_status": 0
+							}
+	
+					]		
+
+18. All freelancers awarded open jobs of an employer
+-----------------------------------------------------------			
+
+		Api:  api/employer/open/awarded/jobs
+		Type: GET
+		Requirements : Authorization , Retrive all awarded open jobs of an employer
+	
+		
+		Respose:  
+						[
+							{
+								"application_id": 6,
+								"job_id": 4,
+								"job_title": "Saturday test job"
+							}
+						]
+
+19. Total number of Favorites freelancer
+-----------------------------------------------------------
+
+		Api:  api/total/favorites/freelancer
+		Type: GET
+		Requirements : Authorization , Total number of Favorites freelancer of an employer
+
+
+		Respose:
+						{
+							"total_ff": 1
+						}
+
+20.Total number of Team
+-----------------------------------------------------------
+
+		Api:  api/total/Team
+		Type: GET
+		Requirements : Authorization ,
+
+
+		Respose:
+						{
+							"total_team": 1
+						}

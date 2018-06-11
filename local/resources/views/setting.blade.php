@@ -108,21 +108,28 @@
                             <div class="row">
 
                             </div>
-                            <table class="display nowrap table">
-                                <tr>
-                                    <td><h3>Profile Visibility</h3></td>
-                                    <td>
-                                        <h3>
-                                            <label class="switch">
-                                                <input id="visibality" name="visibality"
-                                                        type="checkbox">
-                                                <div class="slider round"></div>
-                                            </label>
-                                        </h3>
-                                    </td>
-                                </tr>
-                            </table>
-                            <div><a href="{{URL::to('delete_account')}}" >Close account</a></div>
+                            @if (auth()->user()->admin == 2)
+                                <table class="display nowrap table">
+                                    <tr>
+                                        <td><h3>Profile Visibility</h3></td>
+                                        <td>
+                                            <h3>
+                                                <label class="switch">
+                                                    @if($visible)
+                                                        <input id="visibality" name="visibality"
+                                                                type="checkbox" checked>
+                                                    @else
+                                                        <input id="visibality" name="visibality"
+                                                                type="checkbox">
+                                                    @endif
+                                                    <div class="slider round"></div>
+                                                </label>
+                                            </h3>
+                                        </td>
+                                    </tr>
+                                </table>
+                            @endif
+                            <div><a href="{{URL::to('delete_account')}}" class="btn">Close account</a></div>
                         </div>
                     </div>
                 </div>
@@ -196,8 +203,10 @@
 
                 if (d == '101') {
                     alert('Your profile is now public.')
+                    $(this).attr("checked", "true");
                 } else {
                     alert('Your profile is now private.')
+                    $(this).attr("checked", "false");
                 }
             },
             error: function (xhr, textStatus, errorThrown) {

@@ -297,6 +297,12 @@ jQuery('.date-time-picker').datetimepicker({
 	showMeridian: 1,
 	minuteStep: 5
 });
+$(document).ajaxStart(function(){
+	$(".loading").removeClass("hide");
+});
+$(document).ajaxStop(function(){
+	$(".loading").addClass("hide");
+});
 </script>
 
 	<?php /* ?><script src="{{ asset('js/app.js') }}"></script><?php */?>

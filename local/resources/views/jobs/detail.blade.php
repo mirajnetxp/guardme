@@ -229,14 +229,7 @@
 
 
                     </div>
-                    <ul class="share-social">
-                        <li>Share this ad</li>
-                        <li><a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-tumblr-square" aria-hidden="true"></i></a></li>
-                    </ul>
+                    
                 </div>
             </div>
 
@@ -272,8 +265,7 @@
                                 <li><span class="icon"><i class="fa fa-bolt"
                                                           aria-hidden="true"></i></span>Posted: {{date('M d, Y',strtotime($job->created_at))}}
                                 </li>
-                                <li><span class="icon"><i class="fa fa-user-plus" aria-hidden="true"></i></span> Job
-                                    poster: <a href="#">{{$job->poster->name}}</a></li>
+                                
                                 <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry:
                                     <a href="#">{{$job->industory->name}}</a></li>
                                 <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience:
@@ -282,19 +274,8 @@
                             </ul>
                         </div>
                         <div class="section company-info">
-                            <h1>Company Info</h1>
-                            <ul>
-                                <li>Compnay Name: <a href="#">{{$job->poster->company->shop_name}}</a></li>
-                                <li>Address: @if($job->poster->company->city){{$job->poster->company->city}}@endif
-                                    @if($job->poster->company->state){{', '.$job->poster->company->state}}@endif
-                                    @if($job->poster->company->country){{', '.$job->poster->company->country}}@endif</li>
-                            </ul>
-                            <ul class="share-social">
-                                <li><a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                            </ul>
+                            <h1>Work Schedule</h1>
+                            
                         </div>
                     </div>
                 </div>

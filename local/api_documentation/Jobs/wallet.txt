@@ -1,273 +1,366 @@
+1. Get Wallet data
 ===================================================
-Get Wallet data
-===================================================
 
-URL: api/wallet-data
+		Api: api/wallet-data
+		Type : GET
+		Sample Response:
 
-Type : get
+		200
+		{
+		  "escrow_balance": 247,
+		  "all_transactions": [
+			{
+			  "id": 5,
+			  "user_id": 19,
+			  "job_id": 0,
+			  "debit_credit_type": "debit",
+			  "amount": 133.64,
+			  "type": "add_money",
+			  "title": "Adding balance",
+			  "status": 1,
+			  "credit_payment_status": null,
+			  "paypal_id": "PAY-57086155XS2401702LLRN65A",
+			  "paypal_payment_status": "approved",
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 6,
+			  "user_id": 19,
+			  "job_id": 3,
+			  "debit_credit_type": "credit",
+			  "amount": 99,
+			  "type": "job_fee",
+			  "title": "Job Fee",
+			  "status": 1,
+			  "credit_payment_status": "funded",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 7,
+			  "user_id": 19,
+			  "job_id": 3,
+			  "debit_credit_type": "credit",
+			  "amount": 19.8,
+			  "type": "vat_fee",
+			  "title": "VAT Fee",
+			  "status": 1,
+			  "credit_payment_status": "funded",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 8,
+			  "user_id": 19,
+			  "job_id": 3,
+			  "debit_credit_type": "credit",
+			  "amount": 14.84,
+			  "type": "admin_fee",
+			  "title": "Admin Fee",
+			  "status": 1,
+			  "credit_payment_status": "funded",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 31,
+			  "user_id": 19,
+			  "job_id": 0,
+			  "debit_credit_type": "debit",
+			  "amount": 151.19,
+			  "type": "add_money",
+			  "title": "Adding balance",
+			  "status": 1,
+			  "credit_payment_status": null,
+			  "paypal_id": "PAY-8T601688XP056305ELLYZOXQ",
+			  "paypal_payment_status": "approved",
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 32,
+			  "user_id": 19,
+			  "job_id": 14,
+			  "debit_credit_type": "credit",
+			  "amount": 112,
+			  "type": "job_fee",
+			  "title": "Job Fee",
+			  "status": 1,
+			  "credit_payment_status": "funded",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 33,
+			  "user_id": 19,
+			  "job_id": 14,
+			  "debit_credit_type": "credit",
+			  "amount": 22.4,
+			  "type": "vat_fee",
+			  "title": "VAT Fee",
+			  "status": 1,
+			  "credit_payment_status": "paid",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 34,
+			  "user_id": 19,
+			  "job_id": 14,
+			  "debit_credit_type": "credit",
+			  "amount": 16.79,
+			  "type": "admin_fee",
+			  "title": "Admin Fee",
+			  "status": 1,
+			  "credit_payment_status": "paid",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 85,
+			  "user_id": 19,
+			  "job_id": 0,
+			  "debit_credit_type": "debit",
+			  "amount": 21.6,
+			  "type": "add_money",
+			  "title": "Adding balance",
+			  "status": 1,
+			  "credit_payment_status": null,
+			  "paypal_id": "PAY-33T56755AT3171546LL3HW6A",
+			  "paypal_payment_status": "approved",
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 86,
+			  "user_id": 19,
+			  "job_id": 48,
+			  "debit_credit_type": "credit",
+			  "amount": 16,
+			  "type": "job_fee",
+			  "title": "Job Fee",
+			  "status": 1,
+			  "credit_payment_status": "funded",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 87,
+			  "user_id": 19,
+			  "job_id": 48,
+			  "debit_credit_type": "credit",
+			  "amount": 3.2,
+			  "type": "vat_fee",
+			  "title": "VAT Fee",
+			  "status": 1,
+			  "credit_payment_status": "paid",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 88,
+			  "user_id": 19,
+			  "job_id": 48,
+			  "debit_credit_type": "credit",
+			  "amount": 2.4,
+			  "type": "admin_fee",
+			  "title": "Admin Fee",
+			  "status": 1,
+			  "credit_payment_status": "paid",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 96,
+			  "user_id": 19,
+			  "job_id": 0,
+			  "debit_credit_type": "debit",
+			  "amount": 27,
+			  "type": "add_money",
+			  "title": "Adding balance",
+			  "status": 1,
+			  "credit_payment_status": null,
+			  "paypal_id": "PAY-08992643BF782524TLL4QZ4A",
+			  "paypal_payment_status": "approved",
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 97,
+			  "user_id": 19,
+			  "job_id": 52,
+			  "debit_credit_type": "credit",
+			  "amount": 20,
+			  "type": "job_fee",
+			  "title": "Job Fee",
+			  "status": 1,
+			  "credit_payment_status": "funded",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 98,
+			  "user_id": 19,
+			  "job_id": 52,
+			  "debit_credit_type": "credit",
+			  "amount": 4,
+			  "type": "vat_fee",
+			  "title": "VAT Fee",
+			  "status": 1,
+			  "credit_payment_status": "paid",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			},
+			{
+			  "id": 99,
+			  "user_id": 19,
+			  "job_id": 52,
+			  "debit_credit_type": "credit",
+			  "amount": 3,
+			  "type": "admin_fee",
+			  "title": "Admin Fee",
+			  "status": 1,
+			  "credit_payment_status": "paid",
+			  "paypal_id": null,
+			  "paypal_payment_status": null,
+			  "extra_details": null,
+			  "created_at": null,
+			  "updated_at": null
+			}
+		  ]
+		}
 
-Sample Response:
 
-200
 
-{
-  "escrow_balance": 247,
-  "all_transactions": [
-    {
-      "id": 5,
-      "user_id": 19,
-      "job_id": 0,
-      "debit_credit_type": "debit",
-      "amount": 133.64,
-      "type": "add_money",
-      "title": "Adding balance",
-      "status": 1,
-      "credit_payment_status": null,
-      "paypal_id": "PAY-57086155XS2401702LLRN65A",
-      "paypal_payment_status": "approved",
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 6,
-      "user_id": 19,
-      "job_id": 3,
-      "debit_credit_type": "credit",
-      "amount": 99,
-      "type": "job_fee",
-      "title": "Job Fee",
-      "status": 1,
-      "credit_payment_status": "funded",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 7,
-      "user_id": 19,
-      "job_id": 3,
-      "debit_credit_type": "credit",
-      "amount": 19.8,
-      "type": "vat_fee",
-      "title": "VAT Fee",
-      "status": 1,
-      "credit_payment_status": "funded",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 8,
-      "user_id": 19,
-      "job_id": 3,
-      "debit_credit_type": "credit",
-      "amount": 14.84,
-      "type": "admin_fee",
-      "title": "Admin Fee",
-      "status": 1,
-      "credit_payment_status": "funded",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 31,
-      "user_id": 19,
-      "job_id": 0,
-      "debit_credit_type": "debit",
-      "amount": 151.19,
-      "type": "add_money",
-      "title": "Adding balance",
-      "status": 1,
-      "credit_payment_status": null,
-      "paypal_id": "PAY-8T601688XP056305ELLYZOXQ",
-      "paypal_payment_status": "approved",
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 32,
-      "user_id": 19,
-      "job_id": 14,
-      "debit_credit_type": "credit",
-      "amount": 112,
-      "type": "job_fee",
-      "title": "Job Fee",
-      "status": 1,
-      "credit_payment_status": "funded",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 33,
-      "user_id": 19,
-      "job_id": 14,
-      "debit_credit_type": "credit",
-      "amount": 22.4,
-      "type": "vat_fee",
-      "title": "VAT Fee",
-      "status": 1,
-      "credit_payment_status": "paid",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 34,
-      "user_id": 19,
-      "job_id": 14,
-      "debit_credit_type": "credit",
-      "amount": 16.79,
-      "type": "admin_fee",
-      "title": "Admin Fee",
-      "status": 1,
-      "credit_payment_status": "paid",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 85,
-      "user_id": 19,
-      "job_id": 0,
-      "debit_credit_type": "debit",
-      "amount": 21.6,
-      "type": "add_money",
-      "title": "Adding balance",
-      "status": 1,
-      "credit_payment_status": null,
-      "paypal_id": "PAY-33T56755AT3171546LL3HW6A",
-      "paypal_payment_status": "approved",
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 86,
-      "user_id": 19,
-      "job_id": 48,
-      "debit_credit_type": "credit",
-      "amount": 16,
-      "type": "job_fee",
-      "title": "Job Fee",
-      "status": 1,
-      "credit_payment_status": "funded",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 87,
-      "user_id": 19,
-      "job_id": 48,
-      "debit_credit_type": "credit",
-      "amount": 3.2,
-      "type": "vat_fee",
-      "title": "VAT Fee",
-      "status": 1,
-      "credit_payment_status": "paid",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 88,
-      "user_id": 19,
-      "job_id": 48,
-      "debit_credit_type": "credit",
-      "amount": 2.4,
-      "type": "admin_fee",
-      "title": "Admin Fee",
-      "status": 1,
-      "credit_payment_status": "paid",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 96,
-      "user_id": 19,
-      "job_id": 0,
-      "debit_credit_type": "debit",
-      "amount": 27,
-      "type": "add_money",
-      "title": "Adding balance",
-      "status": 1,
-      "credit_payment_status": null,
-      "paypal_id": "PAY-08992643BF782524TLL4QZ4A",
-      "paypal_payment_status": "approved",
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 97,
-      "user_id": 19,
-      "job_id": 52,
-      "debit_credit_type": "credit",
-      "amount": 20,
-      "type": "job_fee",
-      "title": "Job Fee",
-      "status": 1,
-      "credit_payment_status": "funded",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 98,
-      "user_id": 19,
-      "job_id": 52,
-      "debit_credit_type": "credit",
-      "amount": 4,
-      "type": "vat_fee",
-      "title": "VAT Fee",
-      "status": 1,
-      "credit_payment_status": "paid",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    {
-      "id": 99,
-      "user_id": 19,
-      "job_id": 52,
-      "debit_credit_type": "credit",
-      "amount": 3,
-      "type": "admin_fee",
-      "title": "Admin Fee",
-      "status": 1,
-      "credit_payment_status": "paid",
-      "paypal_id": null,
-      "paypal_payment_status": null,
-      "extra_details": null,
-      "created_at": null,
-      "updated_at": null
-    }
-  ]
-}
+
+
+2.invoice for employer
+-----------------------------------------------------------			
+
+		Api:  api/employer/wallet/invoice/{job_id}
+		Type: GET
+		Requirements : Authorization , user must be an employer
+		Respose:  
+				{
+				"all_transactions": [
+				{
+				"title": "Admin Fee",
+				"id": 10,
+				"created_at": "2018-05-26 16:11:16",
+				"amount": 161.89,
+				"number_of_freelancers": 5,
+				"status": "paid",
+				"type": "admin_fee"
+				},
+				{
+				"title": "Job Fee",
+				"id": 8,
+				"created_at": "2018-05-26 16:11:16",
+				"amount": 1080,
+				"number_of_freelancers": 5,
+				"status": "funded",
+				"type": "job_fee",
+				"user_id": [
+				{
+				"applied_by": 19
+				},
+				{
+				"applied_by": 23
+				}
+				]
+				},
+				{
+				"title": "VAT Fee",
+				"id": 9,
+				"created_at": "2018-05-26 16:11:16",
+				"amount": 216,
+				"number_of_freelancers": 5,
+				"status": "paid",
+				"type": "vat_fee"
+				}
+				],
+				"balance": 1457.8899999999999,
+				"from": {
+				"id": 21,
+				"name": "employer",
+				"email": "support@cajastudios.com",
+				"verified": 0,
+				"gender": "male",
+				"phone": "9199250413",
+				"photo": "",
+				"admin": 0,
+				"created_at": "2018-05-25 22:54:54",
+				"updated_at": "2018-05-25 22:54:54",
+				"firstname": "",
+				"lastname": "",
+				"dob": "",
+				"address_id": 0,
+				"sia_licence": "",
+				"sia_expirydate": "",
+				"work_category": 0,
+				"nation_id": 0,
+				"visa_no": "",
+				"niutr_no": "",
+				"pass_page": "",
+				"visa_page": "",
+				"sia_doc": "",
+				"address_proof": "",
+				"passphoto": "",
+				"phone_verified": 0,
+				"added": 0,
+				"spent": 0,
+				"doc_verified": 0,
+				"date": {
+				"date": "2018-06-01 05:39:37.284923",
+				"timezone_type": 3,
+				"timezone": "UTC"
+				}
+				},
+				"job_id": "4"
+				}
+				
+	
+					
+
+
+
+
+

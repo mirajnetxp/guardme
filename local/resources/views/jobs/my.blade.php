@@ -36,7 +36,12 @@
                 {{ session()->get('error') }}
             </div>
         @endif
+        <div class="alert alert-danger error-message hide" role="alert">
 
+        </div>
+        <div class="alert alert-success success-message hide" role="alert">
+
+        </div>
         @include('shared.message')
         <div class="row">
             <form method="get" action="{{ url('/jobs/myfilter') }}" id="filters">
@@ -80,7 +85,8 @@
                                 <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($job->city_town){{$job->city_town}}, @endif {{$job->country}}</a></li>
                               
                                 <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a></li>
-                                <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory->name}}</a></li>
+
+                                <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory['name']}}</a></li>
                                 <li><a href="#">Applications: <b style="color:#00a651">{{{$arr_count[$job->id]['appcount']}}}</b></a></li>
                                 <li><a href="#">Hires: <b style="color:#00a651">{{{$arr_count[$job->id]['hiredcount']}}}</b></a></li>
                             </ul>
@@ -89,6 +95,13 @@
                     <div class="close-icon">
                         <i class="fa fa-window-close" aria-hidden="true"></i>
                     </div>
+                    <div class="pause-unpause-block pull-right">
+                        @if ($arr_count[$job->id]['hiredcount'] == 0)
+                            <button class="btn btn-danger pause-job-button" data-pause_url="{{ route('api.pause.job', $job->id) }}">Pause Job</button>
+                            <button class="btn btn-success restart-job-button" data-pause_url="{{ route('api.restart.job', $job->id) }}">Restart Job</button>
+                        @endif
+                    </div>
+                    <div class="clearfix"></div>
                 </div><!-- item-info -->
             </div>
             @endforeach
@@ -128,6 +141,37 @@ $(document).ready(function() {
 	    format: 'mm/dd/yyyy',
 	    autoclose: true,
 	});
+    $(".pause-job-button").on("click", function(){
+        var pause_url = $(this).attr('data-pause_url');
+       $.ajax({
+            url: pause_url,
+            type: 'POST',
+            success: function(data){
+                $(".success-message").text(data[0]);
+                $(".success-message").removeClass("hide");
+            },
+            error: function(data){
+                $(".error-message").text(data.responseJSON[0]);
+                $(".error-message").removeClass("hide");
+            }
+        })
+    });
+
+    $(".restart-job-button").on("click", function(){
+        var pause_url = $(this).attr('data-pause_url');
+        $.ajax({
+            url: pause_url,
+            type: 'POST',
+            success: function(data){
+                $(".success-message").text(data[0]);
+                $(".success-message").removeClass("hide");
+            },
+            error: function(data){
+                $(".error-message").text(data.responseJSON[0]);
+                $(".error-message").removeClass("hide");
+            }
+        })
+    });
 } );
 </script>
 @endsection

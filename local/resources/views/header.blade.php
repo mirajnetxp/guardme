@@ -61,7 +61,8 @@ if(isset(Auth::user()->verification)){
             <?php if (Auth::guest()) {?>
 				<!-- Added by Ninja 20180331 start here-->
 				<li class="@if(Route::current()->uri()=='/') {{ 'active' }} @endif"><a href="<?php echo $url;?>/">Home</a></li>
-				<li class="@if(Route::current()->uri()=='search') {{ 'active' }} @endif"><a href="<?php echo $url;?>/search">Hire Security</a></li>
+				<li><a href="http://blog.guarddme.com">Blog</a></li>
+<li class="@if(Route::current()->uri()=='search') {{ 'active' }} @endif"><a href="<?php echo $url;?>/search">Hire Security</a></li>
 				<li><a href="{{ route('find.jobs') }}">Find Jobs</a></li>
 				
 				<!-- Added by Ninja 20180331 end here-->
@@ -75,10 +76,11 @@ if(isset(Auth::user()->verification)){
             ?>
 			<!-- Added by Ninja 20180331 start here-->
 				<li class="@if(Route::current()->uri()=='/') {{ 'active' }} @endif"><a href="<?php echo $url;?>/">Home</a></li>
-                <li class="@if(Route::current()->uri()=='addcompany') {{ 'active' }} @endif"><a href="<?php if($shcount == 0 && Auth::user()->admin == 0){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>">Dashboard</a></li>
+	    <li><a href="http://blog.guarddme.com">Blog</a></li>
+	    <li class="@if(Route::current()->uri()=='addcompany') {{ 'active' }} @endif"><a href="<?php if($shcount == 0 && Auth::user()->admin == 0){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>">Dashboard</a></li>
 				<li><a href="<?php echo $url;?>/search">Hire Security</a></li>
 				<li><a href="{{ route('find.jobs') }}">Find Jobs</a></li>
-				
+
 							
 			<!-- Added by Ninja 20180331 end here-->
 			
@@ -174,3 +176,4 @@ if(isset(Auth::user()->verification)){
 	</style>
 @endif
 </header>
+<div class="loading hide">Loading&#8230;</div>

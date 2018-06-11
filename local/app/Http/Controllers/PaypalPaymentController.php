@@ -154,7 +154,7 @@ class PaypalPaymentController extends Controller
             }
             
             return redirect(route('job.payment.details', ['id' => $job_id]))
-                ->with('success', 'Congratulations, Money has been added to your wallet. Please confirm activate your job now.');
+                ->with('success', 'Congratulations, money has been added to your wallet. Please click confirm to activate the job.');
         }
         return redirect(route('job.payment.details', ['id' => $job_id]))
             ->with('error', 'Payment failed');

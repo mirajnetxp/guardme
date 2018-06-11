@@ -1,0 +1,55 @@
+1. Freelancer make extra payment request
+=============================================
+		Api:  api/jobs/create/payment/request
+		Type: GET
+		Requirements : Authorization ,  
+		Request Paayload:               
+							application_id,
+							number_of_hours,
+							description
+		Respose:  
+					status: 500
+				{
+					'You are not authorized to perform this action'
+				}
+				
+				--- OR ---
+				    status: 200
+				{
+					'Your request has been received successfully'
+				}
+				
+
+
+
+2. Retrive all payment request
+=============================================
+		Api:  api/jobs/payment/request/list
+		Type: GET
+		Requirements : Authorization , 
+		Respose:  
+					
+
+
+				
+2. Approve extra payment request(for employer)
+=============================================
+		Api:  api/jobs/approve/payment/request/{payment_request_id}
+		Type: POST
+		Requirements : Authorization ,  payment_request_id = id from (2. Retrive all payment request) api
+		Respose:  
+					status: 200
+				{
+					'Request has been approved successfully'
+				}
+				
+				--- OR ---
+				    status: 500
+				{
+					'You are not authorized to perform this action'
+				}	
+				--- OR ---
+				    status: 500
+				{
+					'Your don't have enough balance to perform this action. Please load more balance from paypal.
+				}				

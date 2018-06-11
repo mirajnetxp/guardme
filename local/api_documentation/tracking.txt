@@ -1,0 +1,19 @@
+1.Tracking Posting api (add tracking)
+-----------------------------------------------------------			
+
+		Api:  api/post/tracking
+		Type: POST
+		Requirements : Authorization , 
+		Request Payload: 				
+							job_id		
+							user_id
+							location_longitude
+							location_latitude
+							address
+							date_time
+	
+		
+		Respose:  
+						[
+							"Tracking add to DB succesufully"
+						]	

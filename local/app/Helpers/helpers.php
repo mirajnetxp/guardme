@@ -38,3 +38,12 @@ function isFreelancer() {
     }
     return false;
 }
+
+/**
+ * @param $snake
+ * @return string
+ */
+function snakeToString($snake) {
+    $string = str_replace('_', ' ', $snake);
+    return ucwords($string);
+}

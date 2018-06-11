@@ -170,6 +170,64 @@ class WalletController extends Controller {
 			return $pdf->download( 'invoice.pdf' );
 		}
 
-		return view( 'invoice-freelancer', compact( 'all_transactions', 'balance', 'from', 'id' ) );
+		return view( 'invoice-freelancer', compact( 'all_transactions', 'balance', 'from', 'id', 'user_id' ) );
+	}
+
+	public function InvoicePDF( $id ) {
+		$user    					= auth()->user();
+		$user_id          = auth()->user()->id;
+		$all_transactions = array();
+
+		$from       = User::find( $user_id );
+		$from->date = Carbon::now();
+
+		$balance = 0;
+		$directory = storage_path('fonts');
+		if (!is_dir($directory)) {
+			mkdir($directory);
+		}
+		if ( ! empty( $user_id ) ) {
+			if ( $user->admin == 2 ) {
+				$all_transactions = DB::select( 'select security_jobs.title, transactions.id, sum(transactions.amount) as amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = ' . $id . ' group by transactions.type' );
+			} else if ( $user->admin == 0 ) {
+				$all_transactions = DB::select( 'select transactions.title, transactions.id, transactions.created_at, sum(transactions.amount) as amount, security_jobs.number_of_freelancers, transactions.credit_payment_status as status, transactions.type from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.credit_payment_status in ("paid", "funded") and security_jobs.id = ' . $id . ' group by transactions.type' );
+				$applied_by = JobApplication::select( 'applied_by' )->where( 'job_id', $id )->get();
+				foreach ( $all_transactions as $key => $transactions ) {
+					if ( $transactions->title == 'Job Fee' ) {
+						$transactions->user_id = $applied_by;
+					}
+					$balance = $transactions->amount + $balance;
+				}
+			}
+		}
+		if ( ! empty( $all_transactions ) ) {
+			if ( $user->admin == 2 ) {
+					$pdf = PDF::loadView( 'invoice-freelancer', compact( 'all_transactions', 'balance', 'from', 'id' ) );
+					ini_set('memory_limit', '-1');
+					ini_set('max_execution_time', 300);
+					return $pdf->download( 'invoice.pdf' );
+
+			} else if ( $user->admin == 0 ) {
+					$pdf = PDF::loadView( 'invoice-employer', compact( 'all_transactions', 'balance', 'from', 'id' ) );
+					ini_set('memory_limit', '-1');
+					ini_set('max_execution_time', 300);
+					return $pdf->download( 'invoice.pdf' );
+			}
+		}
+	}
+	public function InvoiceChildPDF( $id, $user_id ) {
+		$all_transactions = DB::select( 'select security_jobs.title, transactions.id, sum(transactions.amount) as amount, transactions.created_at, security_jobs.number_of_freelancers, transactions.credit_payment_status as status from security_jobs, transactions where transactions.job_id = security_jobs.id and transactions.status = 1 and transactions.type = "job_fee" and security_jobs.id = ' . $id . ' group by transactions.type' );
+		$from       = User::find( $user_id );
+		$from->date = Carbon::now();
+
+		$balance = 0;
+		$directory = storage_path('fonts');
+		if (!is_dir($directory)) {
+			mkdir($directory);
+		}
+			$pdf = PDF::loadView( 'invoice-freelancer', compact( 'all_transactions', 'balance', 'from', 'id' ) );
+			ini_set('memory_limit', '-1');
+			ini_set('max_execution_time', 300);
+			return $pdf->download( 'invoice.pdf' );
 	}
 }

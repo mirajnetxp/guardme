@@ -1,0 +1,92 @@
+Fetch profile of authenticated user:
+=========================================================================
+			API Uri: /api/account/profile
+			Request method: get
+			Request headers:
+				Authorization ==> Bearer 'authenticated user token here...'
+			Expected data returned:
+			{
+				"username": "demo",
+				"first_name": "",
+				"last_name": "",
+				"email": "demo@demo.com",
+				"address_line1": null,
+				"address_line2": null,
+				"address_line3": null,
+				"address_country": null,
+				"address_postcode": null,
+				"address_town": null,
+				"phone": "4654546",
+				"gender": "male",
+				"dob": "",
+				"avatar": [image link],
+				"nationality": null,
+				"niutr_no": null,
+				"visa_number": "",
+				"sia_number": null,
+				"sia_expiry_date": "",
+				"work_category": null,
+				"passport_photo": [image link],
+				"passport_page": [image link],
+				"visa_page": [image link],
+				"sia_license": [image link],
+				"address_proof": [image link]
+			}
+			
+			
+Update profile of authenticated user:
+==========================================================================
+
+		API Uri: /api/account/profile
+		Method: PUT
+		
+		Request headers:
+			Authorization ==> Bearer 'authenticated user token here...'
+			Request payload: 
+								name, 
+								email, 
+								password, 
+								phone, 
+								firstname, 
+								lastname,
+								nation_id,    ==================  nation_id should be a numeric value ,  as well as the country id. 
+								niutr_no,      ================== for uk user
+								photo(base64 encoded image), 
+								passphoto(base64 encoded image),
+								sia_doc(base64 encoded image), 
+								visa_page(base64 encoded image),
+								address_proof (base64 encoded image), 
+								pass_page(base64 encoded image),
+								postcode, 
+								houseno, 
+								line1, line2, line3, 
+								town, 
+								country, 
+								locality, 
+								latitude, 
+								longitude,
+								sia_expirydate, 
+								sia_license, 
+								visa_no, niutr_no, 
+								nationality, 
+								dob(mm/dd/yyyy),
+								work_category(1 => 'Door Supervisor', 2 => 'Securoty Guard', 3 => 'Close Protection')
+		
+		Response:
+							Expected data returned on success:
+							{
+								"success": true
+							}
+
+							Expected data returned on failure:
+									{
+										"errors": {
+											"email": [
+											  "The email field is already exists"
+											],
+											"username": [
+											  "The username has already been taken."
+											],
+										}
+									}
+

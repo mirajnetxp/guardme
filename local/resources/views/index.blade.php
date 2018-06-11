@@ -132,7 +132,7 @@ $setts = DB::table('settings')
     <div class="container">
     <div class="works section job-category-items">
             
-            <div class="col-md-12" align="center"><h1>How it works</h1></div>
+            <div class="col-md-12" align="center"><h1>How GuardME works</h1></div>
             <div class="height30"></div>
             <div class="row">
                 <div class="col-md-12">

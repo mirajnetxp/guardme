@@ -12,13 +12,18 @@ class Tracking extends Model
 
     /**
      * @param $job_id
-     * @param $user_id
+     * @param null $user_id
      * @return array|\Illuminate\Support\Collection
      */
-    public function getTracingDataByJobAndUser($job_id, $user_id) {
+    public function getTracingDataByJobAndUser($job_id, $user_id = null) {
         $tracking_data = [];
-        if (!empty($user_id) && !empty($job_id)) {
-            $tracking_data = Tracking::where('user_id', $user_id)->where('job_id', $job_id)->get();
+        if (!empty($job_id)) {
+            $query = Tracking::where('job_id', $job_id);
+            if (!empty($user_id)) {
+                $query->where('user_id', $user_id);
+            }
+            $tracking_data = $query->get();
+
         }
         return $tracking_data;
     }

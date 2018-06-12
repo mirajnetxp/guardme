@@ -556,7 +556,7 @@ class JobsController extends Controller {
 
 		] )->where( 'id', $posted_data['job_id'] )->first();
 		$tracking = new Tracking();
-		$tracking_info = $tracking->getTracingDataByJobAndUser($posted_data['job_id'], $posted_data['user_id']);
+		$tracking_info = $tracking->getTracingDataByJobAndUser($posted_data['job_id']);
 		return response()->json( [
 			'user_address' => $user_address,
 			'job_details'  => $job_details,

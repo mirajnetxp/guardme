@@ -268,6 +268,14 @@
                                 
                                 <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry:
                                     <a href="#">{{$job->industory->name}}</a></li>
+                                <li><span class="icon"><i class="fa fa-user"></i></span>Security Personnel needed: 
+                                    <a href="#">{{$job->number_of_freelancers}}</a></li>
+                               <li><span class="icon"><i class="fa fa-clock-o"></i></span>Daily hours: 
+                                    <a href="#">{{$job->daily_working_hours}}</a></li>
+                                <li><span class="icon"><i class="fa fa-money" aria-hidden="true"></i></span>Slots filled: 
+                                    <a href="#">{{$job->getJobTransactions->count()}}</a></li>
+
+
                                 <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience:
                                     <a href="#">Entry level</a></li>
 
@@ -275,6 +283,7 @@
                         </div>
                         <div class="section company-info">
                             <h1>Work Schedule</h1>
+                            <span>  {{ Carbon\Carbon::parse($job->start_date_time)->toFormattedDateString() . " - " . Carbon\Carbon::parse($job->end_date_time)->toFormattedDateString() }} </span>
                             
                         </div>
                     </div>

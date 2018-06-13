@@ -278,7 +278,7 @@
                                <li><span class="icon"><i class="fa fa-clock-o"></i></span>Daily hours: 
                                     <a href="#">{{$job->daily_working_hours}}</a></li>
                                 <li><span class="icon"><i class="fa fa-money" aria-hidden="true"></i></span>Slots filled: 
-                                    <a href="#">{{$job->getJobSloat->count()}}</a></li>
+                                    <a href="#">{{$job->getJobSloat()}}</a></li>
 
 
                                 <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience:

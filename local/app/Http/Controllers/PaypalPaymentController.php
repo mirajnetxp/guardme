@@ -98,8 +98,14 @@ class PaypalPaymentController extends Controller
         return redirect(route('job.payment.details', ['id' => $id]))
             ->with('error', 'Unknown error occurred');
     }
-    public function getPaymentStatus()
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function getPaymentStatus(Request $request)
     {
+        $request_data = $request->all();
         // Get the payment ID and job id before session clear
         $payment_id = session()->get('paypal_payment_id');
         $job_id = session()->get('job_id');
@@ -109,6 +115,9 @@ class PaypalPaymentController extends Controller
         if (empty(request()->get('PayerID')) || empty(request()->get('token'))) {
             return redirect()->route('original.route')
                 ->with('error', 'Payment failed');
+        }
+        if (!$payment_id && $request_data['paymentId']) {
+            $payment_id = $request_data['paymentId'];
         }
         $payment = Payment::get($payment_id, $this->_api_context);
         // PaymentExecution object includes information necessary

@@ -7,6 +7,11 @@
         .job-ad-item .btn.btn-primary {
             margin-right: 0px;
         }
+        .section.company-info span {
+            line-height: 3px;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
     </style>
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyC2C2Tp8wIjckpXAeweMhL7nOGes0Dpv2w"></script>
@@ -273,7 +278,7 @@
                                <li><span class="icon"><i class="fa fa-clock-o"></i></span>Daily hours: 
                                     <a href="#">{{$job->daily_working_hours}}</a></li>
                                 <li><span class="icon"><i class="fa fa-money" aria-hidden="true"></i></span>Slots filled: 
-                                    <a href="#">{{$job->getJobTransactions->count()}}</a></li>
+                                    <a href="#">{{$job->getJobSloat->count()}}</a></li>
 
 
                                 <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience:
@@ -283,7 +288,9 @@
                         </div>
                         <div class="section company-info">
                             <h1>Work Schedule</h1>
-                            <span>  {{ Carbon\Carbon::parse($job->start_date_time)->toFormattedDateString() . " - " . Carbon\Carbon::parse($job->end_date_time)->toFormattedDateString() }} </span>
+                            @foreach($job->schedules as $schedule)
+                            <span>  {{ Carbon\Carbon::parse($schedule->start)->toFormattedDateString() . " - " . Carbon\Carbon::parse($schedule->end)->toFormattedDateString() }} </span><br>
+                            @endforeach
                             
                         </div>
                     </div>

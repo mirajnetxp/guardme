@@ -345,4 +345,8 @@ class Job extends Model {
 	public function getJobTransactions() {
 		return $this->hasMany( Transaction::class );
 	}
+
+	public function getJobSloat() {
+		return $this->hasMany( Transaction::class , 'application_id');
+	}
 }

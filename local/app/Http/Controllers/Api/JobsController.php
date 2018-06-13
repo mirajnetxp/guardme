@@ -1223,7 +1223,7 @@ class JobsController extends Controller {
 			$return_status = 500;
 		} else {
 			// set status of the job to 0 to mark it as inactive or pause
-			$job->status = 0;
+			$job->is_pause = 1;
 			$job->save();
 			$return_data   = [ "Job successfully paused" ];
 			$return_status = 200;
@@ -1241,13 +1241,13 @@ class JobsController extends Controller {
 	public function restartJob( $job_id ) {
 		// check if created by this user
 		$user_id = auth()->user()->id;
-		$job     = Job::find( $job_id )->with( 'schedules' )->first();
+		$job     = Job::find( $job_id );
 		//@TODO revisit the expiration part later on when having more info in the next mile stones
-		$schedules = $job->schedules;
+		$schedules = SecurityJobsSchedule::where('job_id', $job_id)->get();
 		$diff      = 0;
 		if ( ! empty( $schedules ) ) {
-			$first_day         = $schedules[ count( $schedules ) - 1 ];
-			$end_time          = $first_day->end;
+			$last_day         = $schedules[ count( $schedules ) - 1 ];
+			$end_time          = $last_day->end;
 			$current_date_time = date( 'Y-m-d h:i:s' );
 			$diff              = strtotime( $end_time ) - strtotime( $current_date_time );
 		}
@@ -1259,10 +1259,9 @@ class JobsController extends Controller {
 			$return_data   = [ "Sorry, Job has already been expired" ];
 			$return_status = 500;
 		} else {
-			// set status of the job to 1 to mark it as active or start
-			$job_start         = Job::find( $job_id );
-			$job_start->status = 1;
-			$job_start->save();
+			// set is_pause of the job to 0 to mark it as not pause
+			$job->is_pause = 0;
+			$job->save();
 			$return_data   = [ "Job successfully restarted" ];
 			$return_status = 200;
 		}

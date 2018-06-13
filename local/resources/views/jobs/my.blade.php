@@ -97,8 +97,18 @@
                     </div>
                     <div class="pause-unpause-block pull-right">
                         @if ($arr_count[$job->id]['hiredcount'] == 0)
-                            <button class="btn btn-danger pause-job-button" data-pause_url="{{ route('api.pause.job', $job->id) }}">Pause Job</button>
-                            <button class="btn btn-success restart-job-button" data-pause_url="{{ route('api.restart.job', $job->id) }}">Restart Job</button>
+                            @if ($job->is_pause == 0)
+                               <?php
+                                $pause = '';
+                                $restart = 'hide'; ?>
+                            @else
+                                <?php
+                                $pause = 'hide';
+                                $restart = '';
+                                ?>
+                            @endif
+                            <button class="btn btn-success restart-job-button {{ $restart }}" data-pause_url="{{ route('api.restart.job', $job->id) }}">Restart Job</button>
+                            <button class="btn btn-danger pause-job-button {{ $pause }}" data-pause_url="{{ route('api.pause.job', $job->id) }}">Pause Job</button>
                         @endif
                     </div>
                     <div class="clearfix"></div>
@@ -143,12 +153,15 @@ $(document).ready(function() {
 	});
     $(".pause-job-button").on("click", function(){
         var pause_url = $(this).attr('data-pause_url');
+        var elem = $(this);
        $.ajax({
             url: pause_url,
             type: 'POST',
             success: function(data){
                 $(".success-message").text(data[0]);
                 $(".success-message").removeClass("hide");
+                elem.addClass("hide");
+                elem.siblings('.restart-job-button').removeClass('hide');
             },
             error: function(data){
                 $(".error-message").text(data.responseJSON[0]);
@@ -159,12 +172,15 @@ $(document).ready(function() {
 
     $(".restart-job-button").on("click", function(){
         var pause_url = $(this).attr('data-pause_url');
+        var elem = $(this);
         $.ajax({
             url: pause_url,
             type: 'POST',
             success: function(data){
                 $(".success-message").text(data[0]);
                 $(".success-message").removeClass("hide");
+                elem.addClass("hide");
+                elem.siblings('.pause-job-button').removeClass('hide');
             },
             error: function(data){
                 $(".error-message").text(data.responseJSON[0]);

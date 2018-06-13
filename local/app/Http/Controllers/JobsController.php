@@ -271,15 +271,15 @@ class JobsController extends Controller {
                             if( $latitude > 0 && $latitude > 0 )
                                 $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
                             else
-                                $joblist = Job::where('status','1')->paginate(10);
+                                $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
                         } else {
-                            $joblist = Job::where('status','1')->paginate(10);
+                            $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
                         }                
                     } else {
-                        $joblist = Job::where('status','1')->paginate(10);
+                        $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
                     }
                 } else {
-                    $joblist = Job::where('status','1')->paginate(10);
+                    $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
                 }
             }
         } else {
@@ -296,15 +296,15 @@ class JobsController extends Controller {
                         if( $latitude > 0 && $latitude > 0 )
                             $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
                         else
-                            $joblist = Job::where('status','1')->paginate(10);
+                            $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
                     } else {
-                        $joblist = Job::where('status','1')->paginate(10);
+                        $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
                     }                
                 } else {
-                    $joblist = Job::where('status','1')->paginate(10);
+                    $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
                 }
             } else {
-                $joblist = Job::where('status','1')->paginate(10);
+                $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
             }
         }
         if(Auth::check()) {

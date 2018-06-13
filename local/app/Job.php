@@ -345,4 +345,23 @@ class Job extends Model {
 	public function getJobTransactions() {
 		return $this->hasMany( Transaction::class );
 	}
+
+	public function getJobSloat() {
+		
+		$result =DB::table('transactions')->where('job_id',$this->id)->where('application_id','!=',null)
+								->distinct('application_id')->get();
+
+
+		$application = array();
+
+		foreach ($result as $value) {
+			
+			if(! in_array($value->application_id,$application)) {
+
+				 $application[] = $value->application_id;
+			}
+		}
+		return count($application);
+
+	}
 }

@@ -293,7 +293,7 @@ class JobsController extends Controller {
 
 		if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
 		} else {
-			$joblist = $joblist->paginate( 10 );
+			$joblist = $joblist->paginate( 10, ['*'], 'page_id' );
 			foreach ( $joblist as $key => $value ) {
 				$app = DB::table( 'job_applications' )
 				         ->where( 'job_id', $joblist[ $key ]->id )

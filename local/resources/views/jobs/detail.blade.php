@@ -289,7 +289,7 @@
                         <div class="section company-info">
                             <h1>Work Schedule</h1>
                             @foreach($job->schedules as $schedule)
-                            <span>  {{ Carbon\Carbon::parse($schedule->start)->toFormattedDateString() . " - " . Carbon\Carbon::parse($schedule->end)->toFormattedDateString() }} </span><br>
+                            <span>  {{ Carbon\Carbon::parse($schedule->start)->format("M d h.A") . " - " . Carbon\Carbon::parse($schedule->end)->format("M d h.A")  }} </span><br>
                             @endforeach
                             
                         </div>

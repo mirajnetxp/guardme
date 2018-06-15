@@ -19,6 +19,7 @@ trait TicketTrait
         'Security Badge Verification',
         'Job Dispute',
         'General',
+        'Close Account'
     ];
     private $statuses = [
         Ticket::STATUS_PROCESSING             => 'Processing',

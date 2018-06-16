@@ -71,7 +71,7 @@ class TicketController extends Controller
         */
         $errors = $this->ticketStore($request);
         
-        return back()->with('errors', $errors)
+        return redirect('support/tickets')->with('errors', $errors)
             ->with('status', ($errors) ? 500 : 200);
     }
 

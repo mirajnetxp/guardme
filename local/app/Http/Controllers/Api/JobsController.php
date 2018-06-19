@@ -569,6 +569,8 @@ class JobsController extends Controller {
 			'page_id' => 'required'
 		] );
 
+		$order_by = 'created_at';
+		$order_direction = 'desc';
 		$joblist     = [];
 		$posted_data = $request->all();
 		$page_id     = ! empty( $posted_data['page_id'] ) ? $posted_data['page_id'] : '';
@@ -664,7 +666,7 @@ class JobsController extends Controller {
 			}
 		}
 
-		$joblist = $joblist->with( 'schedules' )->paginate( 10 );
+		$joblist = $joblist->with( 'schedules' )->where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate( 10, ['*'], 'page_id' );
 
 		return response()->json( [
 			'job_list' => $joblist

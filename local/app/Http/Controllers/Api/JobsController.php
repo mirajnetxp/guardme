@@ -665,8 +665,9 @@ class JobsController extends Controller {
 				$joblist = Job::where( 'status', '1' );
 			}
 		}
-
-		$joblist = $joblist->with( 'schedules' )->where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate( 10, ['*'], 'page_id' );
+		if (empty($post_code) && empty($latitude) && empty($longitude)) {
+			$joblist = $joblist->with( 'schedules' )->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate( 10, ['*'], 'page_id' );
+		}
 
 		return response()->json( [
 			'job_list' => $joblist

@@ -225,6 +225,8 @@ class JobsController extends Controller {
         $page_id = Input::get("page");
         $data = \request()->all();        
         $b_cats = Businesscategory::all();
+        $order_by = 'created_at';
+        $order_direction = 'desc';
         $locs = Job::select('city_town')->where('city_town','!=',null)->distinct()->get();
         $units = 'kilometers';  
         $latitude = 0;
@@ -271,15 +273,15 @@ class JobsController extends Controller {
                             if( $latitude > 0 && $latitude > 0 )
                                 $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
                             else
-                                $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
+                                $joblist = Job::where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate(10);
                         } else {
-                            $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
+                            $joblist = Job::where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate(10);
                         }                
                     } else {
-                        $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
+                        $joblist = Job::where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate(10);
                     }
                 } else {
-                    $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
+                    $joblist = Job::where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate(10);
                 }
             }
         } else {
@@ -296,15 +298,15 @@ class JobsController extends Controller {
                         if( $latitude > 0 && $latitude > 0 )
                             $joblist = Job::getJobNearByUser($latitude, $longitude, 20, 'kilometers', $page_id);
                         else
-                            $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
+                            $joblist = Job::where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate(10);
                     } else {
-                        $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
+                        $joblist = Job::where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate(10);
                     }                
                 } else {
-                    $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
+                    $joblist = Job::where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate(10);
                 }
             } else {
-                $joblist = Job::where('status','1')->where('is_pause', 0)->paginate(10);
+                $joblist = Job::where('status','1')->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate(10);
             }
         }
         if(Auth::check()) {
@@ -337,9 +339,10 @@ class JobsController extends Controller {
             }
         }
         //sort array
-        $sort_jobs = [];
+        $sort_jobs = $joblist;
+        // going to comment this because we need to add sorting on query level
         $arr_sort = [];
-        if (count($joblist) > 0) {
+        /*if (count($joblist) > 0) {
             foreach ($joblist as $key => $job) {
                 $arr_sort[$key] = $job->updated_at;
             }
@@ -351,9 +354,9 @@ class JobsController extends Controller {
                     }
                 }
             }
-        }
-
-      return view('jobs.find', compact('sort_jobs','b_cats','locs'));
+        }*/
+        $paginationLinksHtml = $joblist->links();
+      return view('jobs.find', compact('sort_jobs','b_cats','locs', 'paginationLinksHtml'));
     }
 
     public function postfindJobs(Request $request) 

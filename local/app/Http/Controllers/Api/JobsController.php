@@ -84,8 +84,9 @@ class JobsController extends Controller {
 		$schedules             = [];
 		foreach ( $start_date_time as $k => $sch ) {
 			$schedule_item['start'] = $sch;
-			// becase date and time format from pick is Y-m-d h:i:s therfore no need of conversion
-			$schedule_item['end'] = $end_date_time[ $k ];
+			// because date and time format from pick is Y-m-d h:i therefore no need of conversion
+			//$schedule_item['end'] = $end_date_time[ $k ];
+			$schedule_item['end'] = date('Y-m-d h:i', strtotime('+'. $working_hours. ' hours', strtotime($sch)));
 			$schedules[]          = $schedule_item;
 		}
 		$job           = Job::find( $id );
@@ -569,6 +570,8 @@ class JobsController extends Controller {
 			'page_id' => 'required'
 		] );
 
+		$order_by = 'created_at';
+		$order_direction = 'desc';
 		$joblist     = [];
 		$posted_data = $request->all();
 		$page_id     = ! empty( $posted_data['page_id'] ) ? $posted_data['page_id'] : '';
@@ -663,8 +666,9 @@ class JobsController extends Controller {
 				$joblist = Job::where( 'status', '1' );
 			}
 		}
-
-		$joblist = $joblist->with( 'schedules' )->paginate( 10 );
+		if (empty($post_code) && empty($latitude) && empty($longitude)) {
+			$joblist = $joblist->with( 'schedules' )->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate( 10, ['*'], 'page_id' );
+		}
 
 		return response()->json( [
 			'job_list' => $joblist

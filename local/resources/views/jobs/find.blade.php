@@ -377,7 +377,8 @@
     <?php } ?>
 
      <div class="text-center">
-            </div>
+         {{ $paginationLinksHtml }}
+     </div>
     </div>
 </div>
 

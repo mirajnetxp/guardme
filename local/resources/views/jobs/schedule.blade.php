@@ -140,7 +140,16 @@
                 $("select[name='working_days']").on("change", function(){
                    $("select[name='pay_per_hour']").trigger('change');
                 });
-               // var lockr_nxturl = Lockr.get('nxturl');
+
+                $("input[name='number_of_freelancers']").on("change", function(){
+                    $("select[name='pay_per_hour']").trigger('change');
+                });
+
+                $("select[name='working_hours']").on("change", function(){
+                    $("select[name='pay_per_hour']").trigger('change');
+                });
+
+        // var lockr_nxturl = Lockr.get('nxturl');
                 if(gm_nxturl != null && gm_nxturl!='{{URL::current()}}')
                 {
                     //alert('lll');

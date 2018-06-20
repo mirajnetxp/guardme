@@ -47,3 +47,42 @@ function snakeToString($snake) {
     $string = str_replace('_', ' ', $snake);
     return ucwords($string);
 }
+
+/**
+ * Sort associative array by value(e.g)
+[149438] => Array
+(
+[Name] => Rients, Hollis
+[score] => 11
+)
+
+[149436] => Array
+(
+[Name] => Pick, Chi
+[score] => 13
+)
+we can sort this type of associative array by key according to value. here score, Name is key and this function will sort according to their value
+ *
+ * @param array $array
+ * @param $key
+ * @param bool|true $asc
+ * @return array
+ */
+function sortByOneKey(array $array, $key, $asc = true)
+{
+    $result = array();
+    $values = array();
+    foreach ($array as $id => $value) {
+        $values[$id] = isset($value[$key]) ? $value[$key] : '';
+    }
+    if ($asc) {
+        asort($values, SORT_NATURAL | SORT_FLAG_CASE);
+    } else {
+        arsort($values, SORT_NATURAL | SORT_FLAG_CASE);
+    }
+    foreach ($values as $index => $value) {
+        $result[$index] = $array[$index];
+    }
+
+    return $result;
+}

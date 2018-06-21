@@ -76,7 +76,7 @@
                             "Insufficient balance"
                         ]
 
-3.Remaining points of a user
+4.Remaining points of a user
 -----------------------------------------------------------
 		Api:  api/remain/points
 		Type: GET
@@ -85,7 +85,7 @@
 		           {
                        "remain_points": 10
                    }
-4.Total point spent by user
+5.Total point spent by user
 -----------------------------------------------------------
 		Api:  api/points/spent
 		Type: GET
@@ -95,7 +95,7 @@
                        "point_spent": 20
                    }
 
-4.Bought Items
+6.Bought Items
 -----------------------------------------------------------
 		Api:  api/items/bought
 		Type: GET

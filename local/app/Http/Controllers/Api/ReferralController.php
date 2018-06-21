@@ -94,7 +94,7 @@ class ReferralController extends Controller {
 		return response()->json( [ 'point_spent' => $user->spent ] );
 	}
 
-	
+
 	/**
 	 * @return mixed
 	 */

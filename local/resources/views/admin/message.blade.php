@@ -276,6 +276,28 @@
         </div>
         @include('admin.footer')
     </div>
+    <div id="myModel" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <form id="sendmessageform" action="{{$url}}/admin/message" method="post">
+      {{csrf_field()}}
+      <div class="modal-header">
+        <h5 class="modal-title">Message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"  >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <textarea name="message" class="form-control" id="" cols="30" rows="10" placeholder="Enter message here" require></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 </div>
 <script src="/js/date-time-picker/bootstrap-datetimepicker.min.js"></script>
 <script src="/js/date-time-picker/bootstrap-datetimepicker.uk.js"></script>
@@ -284,6 +306,7 @@
 <script>
     //    User Filtering
     $(document).ready(function () {
+        var selected_user;
         var table = $('#datatable-asdsd').DataTable();
 
         $('#gender').on('change', function () {
@@ -336,19 +359,26 @@
                 alert("Please select user");
                 return;
             }
+            selected_user = userid;
+            $("#myModel").modal('show');
              
+ 
+        });
+        $("#sendmessageform").submit(function(e) {
+            e.preventDefault();
+            data = $(this).serialize();
+            data += "&user=" + JSON.stringify(selected_user);
            var request = $.ajax(
               {  url:"{{$url}}/admin/message",
-                data: {"users":userid,
-                        "_token":"{{csrf_token()}}"
-                },
+                data: data,
                 method:"POST",}
             );
 
           request.done(function(msg){
 
                alert("Message send successfully");
-          });  
+          }); 
+
         });
         //   End User  Filtering
     });

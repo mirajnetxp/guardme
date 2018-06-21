@@ -45,6 +45,9 @@ class MessageController extends Controller
 
     public function sendMessage(Request $request)
     {
-       dd($request->all());
+       $message = $request->message;
+       $users_id = json_decode($request->user);
+
+       
     }
 }

@@ -63,6 +63,7 @@ class ReferralController extends Controller {
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function redeem( Request $request ) {
+
 		if ( ! Auth::Check() ) {
 			return redirect( '/' );
 		}

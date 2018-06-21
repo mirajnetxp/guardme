@@ -32,7 +32,7 @@ Fetch profile of authenticated user:
 				"sia_license": [image link],
 				"address_proof": [image link]
 			}
-			
+
 			
 Update profile of authenticated user:
 ==========================================================================

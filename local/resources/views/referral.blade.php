@@ -70,6 +70,7 @@
                     <td>#</td>
                     <td>Item name</td>
                     <td>price</td>
+                    <td>Status</td>
                 </tr>
 				<?php $c = 1; ?>
                 @foreach ($items as $item)
@@ -77,6 +78,7 @@
                         <td>{{ $c++ }}</td>
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->price }}</td>
+                        <td>{{ $item->status }}</td>
                     </tr>
                 @endforeach
             </table>

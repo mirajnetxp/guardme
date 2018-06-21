@@ -36,8 +36,19 @@ class ReferralController extends Controller {
 		$userItems = UserItem::where( 'user_id', $user->id )->get();
 		$items     = [];
 
-		foreach ( $userItems as $userItem ) {
-			$items[] = Item::where( 'id', $userItem->item_id )->first();
+		foreach ( $userItems as $key => $userItem ) {
+			$items[ $key ] = Item::where( 'id', $userItem->item_id )->first();
+
+			if ( $userItem->status == false ) {
+				$status = 'Processing';
+			}
+			if ( $userItem->status == 1 ) {
+				$status = 'Delivered';
+			}
+			if ( isset( $userItem->status ) == false ) {
+				$status = 'Cancelled';
+			}
+			$items[ $key ]['status'] = $status;
 		}
 
 

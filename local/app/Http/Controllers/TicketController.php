@@ -62,6 +62,20 @@ class TicketController extends Controller
         return back()->with('errors', $errors)
             ->with('status', ($errors) ? 500 : 200);
     }
+
+    public function close_account_store(Request $request)
+    {
+        /*if (!$this->checkRole([config('guardme.acl.Job_Seeker'), config('guardme.acl.Employer')])) {
+            abort(404);
+        }
+        */
+        $errors = $this->ticketStore($request);
+        
+        return redirect('support/tickets')->with('errors', $errors)
+            ->with('status', ($errors) ? 500 : 200);
+    }
+
+
     public function show($id)
     {
         /*

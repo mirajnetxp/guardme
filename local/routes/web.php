@@ -46,7 +46,7 @@ Route::get( 'dateavailable/{val}', array( 'as' => 'dateavailable', 'uses' => 'Bo
 
 Route::get( '/logout', 'DashboardController@sangvish_logout' );
 Route::get( '/delete_account', 'DashboardController@sangvish_delaccount' );
-Route::get( '/delete-account', 'DashboardController@sangvish_deleteaccount' );
+Route::post( '/delete-account', 'DashboardController@sangvish_deleteaccount' );
 Route::post( '/dashboard', [ 'as' => 'dashboard', 'uses' => 'DashboardController@sangvish_edituserdata' ] );
 
 Route::get( '/account', 'ShopController@sangvish_viewshop' );
@@ -346,6 +346,7 @@ Route::group( [ 'prefix' => '/support/tickets', 'middleware' => 'auth' ], functi
 	Route::get( '/', 'TicketController@index' )->name( 'ticket.index' );
 	Route::get( '/create', 'TicketController@create' )->name( 'ticket.create' );
 	Route::post( '/', 'TicketController@store' )->name( 'ticket.store' );
+	Route::post( '/', 'TicketController@close_account_store' )->name( 'ticket.close_account' );
 	Route::get( '/{id}', 'TicketController@show' )->where( 'id', '[0-9]+' )
 	     ->name( 'ticket.show' );
 	Route::put( '/{id}', 'TicketController@update' )->where( 'id', '[0-9]+' )

@@ -21,7 +21,7 @@ class Team extends Model
      */
     public function getMyTeams() {
         $user_id = auth()->user()->id;
-        $teams = Team::where('created_by', $user_id)->get();
+        $teams = Team::where('created_by', $user_id)->with('freelancers')->get();
         return $teams;
     }
     

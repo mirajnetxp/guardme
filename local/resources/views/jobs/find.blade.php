@@ -221,7 +221,7 @@
                         </div>
                     </div>
                     <!-- recommended-ads -->
-                    <div class="col-sm-8 col-md-7">  
+                    <div class="col-sm-8 col-md-9">  
                         
                      <div class="section job-list-item skeleton">
 
@@ -377,7 +377,8 @@
     <?php } ?>
 
      <div class="text-center">
-            </div>
+         {{ $paginationLinksHtml }}
+     </div>
     </div>
 </div>
 

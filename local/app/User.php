@@ -228,7 +228,7 @@ class User extends Authenticatable {
 
 					if ( count( $hired ) > 0 && $referral->points == 0 ) {
 						DB::table( 'referrals' )->where( 'id', $referral->id )->update( [ 'points' => 10 ] );
-						$uReferrals [ $key ]['points'] = 50;
+						$uReferrals [ $key ]['points'] = 10;
 					} elseif ( count( $hired ) == 0 && $referral->points == 0 ) {
 						$uReferrals [ $key ]['points'] = 'Awaiting first job';
 					} elseif ( $referral->points != 0 ) {

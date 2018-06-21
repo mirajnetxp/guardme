@@ -1,5 +1,5 @@
 1. Retrive referrals list (with total points)
------------------------------------------------------------			
+-----------------------------------------------------------
 		Api:  api/referrals/list
 		Type: GET
 		Requirements : Authorization , 
@@ -17,3 +17,117 @@
 							],
 							"total_point": 10
 						}
+
+2. Retrive all items
+-----------------------------------------------------------
+		Api:  api/redeem
+		Type: GET
+		Requirements : Authorization ,
+		Respose:
+						{
+                            "items": [
+                                {
+                                    "id": 1,
+                                    "title": "GuardME Tee",
+                                    "image": "https://i.pinimg.com/originals/c2/73/50/c27350a823f437397031f2ad75870ee9.jpg",
+                                    "price": 10
+                                },
+                                {
+                                    "id": 2,
+                                    "title": "Headset Holder",
+                                    "image": "https://lbtstore.com/wp-content/uploads/2016/05/IP6CASE.jpg",
+                                    "price": 20
+                                },
+                                {
+                                    "id": 3,
+                                    "title": "ASdfasd asd ewd e",
+                                    "image": "https://payoneer.custhelp.com/ci/fattach/get/3708037/1525336904/track/AvMTBgqvDv8Q~QJUGkQe~yL3GlkqGi75Mv_P~zj~PP9G",
+                                    "price": 10
+                                }
+                            ]
+                        }
+
+3.Bought an item
+-----------------------------------------------------------
+		Api:  api/redeem/{id}
+		Type: GET
+		Requirements : Authorization ,  {id} =use id from "api/redeem"
+		Respose:
+		            1. In case of sussesfull ,ststus 200
+						[
+                            {
+                                "user_id": 20,
+                                "item_id": 3,
+                                "status": false,
+                                "updated_at": "2018-06-21 08:55:26",
+                                "created_at": "2018-06-21 08:55:26",
+                                "id": 8
+                            }
+                        ]
+
+                            |
+                            |
+                            OR
+                            |
+                            |
+                    2.  In case of  "Insufficient balance"  ,ststus 403
+
+                        [
+                            "Insufficient balance"
+                        ]
+
+4.Remaining points of a user
+-----------------------------------------------------------
+		Api:  api/remain/points
+		Type: GET
+		Requirements : Authorization ,
+		Respose:
+		           {
+                       "remain_points": 10
+                   }
+5.Total point spent by user
+-----------------------------------------------------------
+		Api:  api/points/spent
+		Type: GET
+		Requirements : Authorization ,
+		Respose:
+		           {
+                       "point_spent": 20
+                   }
+
+6.Bought Items
+-----------------------------------------------------------
+		Api:  api/items/bought
+		Type: GET
+		Requirements : Authorization ,
+		Respose:
+		           [
+                       {
+                           "id": 3,
+                           "title": "ASdfasd asd ewd e",
+                           "image": "https://payoneer.custhelp.com/ci/fattach/get/3708037/1525336904/track/AvMTBgqvDv8Q~QJUGkQe~yL3GlkqGi75Mv_P~zj~PP9G",
+                           "price": 10,
+                           "status": "Processing"
+                       },
+                       {
+                           "id": 3,
+                           "title": "ASdfasd asd ewd e",
+                           "image": "https://payoneer.custhelp.com/ci/fattach/get/3708037/1525336904/track/AvMTBgqvDv8Q~QJUGkQe~yL3GlkqGi75Mv_P~zj~PP9G",
+                           "price": 10,
+                           "status": "Cancelled"
+                       },
+                       {
+                           "id": 3,
+                           "title": "ASdfasd asd ewd e",
+                           "image": "https://payoneer.custhelp.com/ci/fattach/get/3708037/1525336904/track/AvMTBgqvDv8Q~QJUGkQe~yL3GlkqGi75Mv_P~zj~PP9G",
+                           "price": 10,
+                           "status": "Processing"
+                       },
+                       {
+                           "id": 3,
+                           "title": "ASdfasd asd ewd e",
+                           "image": "https://payoneer.custhelp.com/ci/fattach/get/3708037/1525336904/track/AvMTBgqvDv8Q~QJUGkQe~yL3GlkqGi75Mv_P~zj~PP9G",
+                           "price": 10,
+                           "status": "Delivered"
+                       }
+                   ]

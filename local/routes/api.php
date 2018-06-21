@@ -173,7 +173,14 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
 	Route::get( '/job/transaction/list', 'WalletController@getTransactionsList' );
 
+
 	Route::get( 'referrals/list', 'ReferralController@getReferralList' );
+	//redeem
+	Route::get( '/redeem', 'ReferralController@redeem' );
+	Route::get( '/redeem/{id}', 'ReferralController@checkout' );
+	Route::get( '/remain/points', 'ReferralController@remainPoints' );
+	Route::get( '/points/spent', 'ReferralController@pointsSpend' );
+	Route::get( '/items/bought  ', 'ReferralController@boughtItems' );
 
 
 } );

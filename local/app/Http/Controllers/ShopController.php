@@ -649,7 +649,7 @@ function updatecompany(Request $request)
 
 		$featured="no";
 
-		$status="unapproved";
+		$status="approved";
 
 		$admin_email_status=0;
 

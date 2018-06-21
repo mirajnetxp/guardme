@@ -180,7 +180,7 @@ class Transaction extends Model {
 			}
 
 		}
-		$balance = number_format( $balance, 2 );
+		$balance = round( $balance, 2 );
 
 		return $balance;
 	}

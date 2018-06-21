@@ -21,10 +21,4 @@ class UserItem extends Model
         'user_id', 'item_id'
     ];
 
-    /**
-     * Don't use dates in table
-     *
-     * @var bool
-     */
-    public $timestamps = false;
 }

@@ -359,6 +359,8 @@
                 alert("Please select user");
                 return;
             }
+
+            $("#sendmessageform")[0].reset();
             selected_user = userid;
             $("#myModel").modal('show');
              
@@ -371,11 +373,12 @@
            var request = $.ajax(
               {  url:"{{$url}}/admin/message",
                 data: data,
-                method:"POST",}
+                method:"POST",
+              
+            }
             );
-
           request.done(function(msg){
-
+              $("#myModel").modal('hide');
                alert("Message send successfully");
           }); 
 

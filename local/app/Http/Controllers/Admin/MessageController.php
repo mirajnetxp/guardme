@@ -66,17 +66,4 @@ class MessageController extends Controller
     }
 }
 
-/**
- * 
- */
-class MailQueue extends Mailable
-{
-	
-	public function sendMail($data)
-	{
-		 Mail::queue('admin.email_message',$data, function($message) use ($data)
-			{    
-			    $message->to($data['email'])->subject('Guardme  admin message you');    
-			});
-	}
-}
+

@@ -32,11 +32,7 @@ class ReferralController extends Controller {
 	 * @return mixed
 	 */
 	public function redeem( Request $request ) {
-
-		if ( ! Auth::Check() ) {
-			return redirect( '/' );
-		}
-
+		
 		return response()->json( [ 'items' => Item::all() ] );
 	}
 

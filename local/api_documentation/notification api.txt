@@ -1,0 +1,13 @@
+1. FCM token
+-----------------------------------------------------------
+		Api:  api/fcm/token
+		Type: POST
+		Requirements : Authorization , payload: "fcm_token"
+
+		Respose:  
+						[
+							"success"
+						]
+
+
+

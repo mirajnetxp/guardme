@@ -208,8 +208,8 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	Route::get( '/admin/index', 'Admin\DashboardController@index' );
 
 	/* message */
-	Route::get('admin/message','admin\MessageController@index');
-	Route::post('admin/message','admin\MessageController@sendMessage');
+	Route::get('admin/message','Admin\MessageController@index');
+	Route::post('admin/message','Admin\MessageController@sendMessage');
 	/* end message */
 
 	/* user */

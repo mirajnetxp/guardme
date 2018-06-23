@@ -15,5 +15,6 @@ class FcmController extends Controller {
 		$user->fcm_token = $fcmToken;
 		$user->save();
 
+		return response()->json([ "success" ]);
 	}
 }

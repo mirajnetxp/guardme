@@ -33,10 +33,6 @@ class ReferralController extends Controller {
 	 */
 	public function redeem( Request $request ) {
 
-		if ( ! Auth::Check() ) {
-			return redirect( '/' );
-		}
-
 		return response()->json( [ 'items' => Item::all() ] );
 	}
 
@@ -101,7 +97,7 @@ class ReferralController extends Controller {
 	public function boughtItems() {
 		$user      = Auth::user();
 		$userItems = UserItem::where( 'user_id', $user->id )->get();
-
+		$items='null';
 		foreach ( $userItems as $key => $userItem ) {
 			$items[ $key ] = Item::where( 'id', $userItem->item_id )->first();
 

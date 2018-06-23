@@ -32,7 +32,7 @@ class ReferralController extends Controller {
 	 * @return mixed
 	 */
 	public function redeem( Request $request ) {
-		
+
 		return response()->json( [ 'items' => Item::all() ] );
 	}
 
@@ -112,7 +112,11 @@ class ReferralController extends Controller {
 			}
 			$items[ $key ]['status'] = $status;
 		}
+		if($items){
+			return response()->json( $items );
+		}else{
+			return response()->json( ['Null'] );
+		}
 
-		return response()->json( $items );
 	}
 }

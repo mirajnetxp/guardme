@@ -115,10 +115,23 @@
                                     <li><span class="icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Posted: {{date('M d, Y',strtotime($job->created_at))}}</li>
                                     <li><span class="icon"><i class="fa fa-user-plus" aria-hidden="true"></i></span> Job poster: <a href="#">{{$job->poster->name}}</a></li>
                                     <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry: <a href="#">{{$job->industory->name}}</a></li>
+                                     <!--  <li><span class="icon"><i class="fa fa-user"></i></span>Security Personnel needed: 
+                                    <a href="#">{{$job->number_of_freelancers}}</a></li>
+                                   <li><span class="icon"><i class="fa fa-clock-o"></i></span>Daily hours: 
+                                      <a href="#">{{$job->daily_working_hours}}</a></li>
+                                  <li><span class="icon"><i class="fa fa-money" aria-hidden="true"></i></span>Slots filled: 
+                                    <a href="#">{{$job->getJobSloat()}}</a></li> -->
                                     <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience: <a href="#">Entry level</a></li>
                                     
                                 </ul>
                             </div>
+                             <div class="section company-info">
+                                <h1>Work Schedule</h1>
+                                @foreach($job->schedules as $schedule)
+                                <span>  {{ Carbon\Carbon::parse($schedule->start)->format("M d h.A") . " - " . Carbon\Carbon::parse($schedule->end)->format("M d h.A")  }} </span><br>
+                                @endforeach
+                            
+                              </div>
                             <div class="section company-info">
                                 <h1>Company Info</h1>
                                 <ul>

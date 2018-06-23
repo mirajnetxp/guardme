@@ -26,5 +26,6 @@ $url = URL::to("/");
   <li><a href="<?php echo $url;?>/admin/referral/items"><i class="ti-gift"></i><p>Loyalty</p></a></li>
   <li><a href="<?php echo $url;?>/admin/pages"><i class="ti-files"></i><p> Pages</p> </a></li>
   <li><a href="<?php echo $url;?>/admin/shop"><i class="ti-briefcase"></i><p> Companies </p></a></li>
+  <li><a href="<?php echo $url;?>/admin/message"><i class="fa fa-envelope" aria-hidden="true"></i><p>Message </p></a></li>
   <li><a href="<?php echo $url;?>/admin/settings"><i class="ti-settings"></i> <p>Settings </p></a></li>
 </ul>

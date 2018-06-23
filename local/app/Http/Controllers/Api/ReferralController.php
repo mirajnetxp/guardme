@@ -97,7 +97,7 @@ class ReferralController extends Controller {
 	public function boughtItems() {
 		$user      = Auth::user();
 		$userItems = UserItem::where( 'user_id', $user->id )->get();
-
+		$items=null;
 		foreach ( $userItems as $key => $userItem ) {
 			$items[ $key ] = Item::where( 'id', $userItem->item_id )->first();
 
@@ -112,11 +112,7 @@ class ReferralController extends Controller {
 			}
 			$items[ $key ]['status'] = $status;
 		}
-		if($items){
-			return response()->json( $items );
-		}else{
-			return response()->json( ['Null'] );
-		}
-
+		
+		return response()->json( $items );
 	}
 }

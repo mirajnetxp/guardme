@@ -175,6 +175,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 
 
 	Route::get( 'referrals/list', 'ReferralController@getReferralList' );
+
 	//redeem
 	Route::get( '/redeem', 'ReferralController@redeem' );
 	Route::get( '/redeem/{id}', 'ReferralController@checkout' );
@@ -182,5 +183,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::get( '/points/spent', 'ReferralController@pointsSpend' );
 	Route::get( '/items/bought  ', 'ReferralController@boughtItems' );
 
+	//FCM
+	Route::post( '/fcm/token', 'FcmController@StoreToken' );
 
 } );

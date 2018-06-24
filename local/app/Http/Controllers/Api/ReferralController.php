@@ -25,7 +25,6 @@ class ReferralController extends Controller {
 		return response()->json( [ 'referrals' => $refList, 'total_point' => $totalPoints ] );
 	}
 
-
 	/**
 	 * @param Request $request
 	 *
@@ -90,14 +89,14 @@ class ReferralController extends Controller {
 		return response()->json( [ 'point_spent' => $user->spent ] );
 	}
 
-
 	/**
 	 * @return mixed
 	 */
 	public function boughtItems() {
+
 		$user      = Auth::user();
 		$userItems = UserItem::where( 'user_id', $user->id )->get();
-		$items='null';
+		$items     = [];
 		foreach ( $userItems as $key => $userItem ) {
 			$items[ $key ] = Item::where( 'id', $userItem->item_id )->first();
 

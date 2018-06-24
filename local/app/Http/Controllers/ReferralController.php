@@ -51,7 +51,7 @@ class ReferralController extends Controller {
 			}
 			$items[ $key ]['status'] = $status;
 		}
-
+		$referrals=$user->getReferrals();
 		$totalPoints  = Referral::where( 'to', $user->id )->get()->sum( 'points' );
 		$remainPoints = $totalPoints - $user->spent;
 
@@ -60,7 +60,7 @@ class ReferralController extends Controller {
 			[
 				'user'         => Auth::user(),
 				'editprofile'  => [ 0 => Auth::user() ],
-				'referrals'    => $user->getReferrals(),
+				'referrals'    => $referrals,
 				'total_points' => $remainPoints,
 				'items'        => $items,
 				'wallet_data'  => $wallet_data

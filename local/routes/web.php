@@ -4,6 +4,11 @@ use Responsive\Channels\SMS;
 use Responsive\Http\Repositories\UsersRepository;
 use Responsive\User;
 
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,6 +32,26 @@ Route::get( '/user-de', function (){
 	return response()->json($u);
 });
 
+
+Route::get( '/notification-s', function (){
+	$optionBuilder = new OptionsBuilder();
+	$optionBuilder->setTimeToLive(60*20);
+
+	$notificationBuilder = new PayloadNotificationBuilder('my title');
+	$notificationBuilder->setBody('Hello world from laravel by miraj')
+	                    ->setSound('default');
+
+	$dataBuilder = new PayloadDataBuilder();
+	$dataBuilder->addData(['a_data' => 'my_data']);
+
+	$option = $optionBuilder->build();
+	$notification = $notificationBuilder->build();
+	$data = $dataBuilder->build();
+
+	$token = "eHHzHYMa7U4:APA91bH33HKox5ZVMBDegfHQATB4yraCKrMOVn4F9ojWLeAVKBAcInD1dZ73O0L0LpMnymeHW2DrfM7gWvV_M5TXI7fOKQAorqNxIXk_C532G26FFLEg8fecYkZ5luoStIu6fEdOiQm5";
+
+	$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+});
 
 
 //social login

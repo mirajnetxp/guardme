@@ -17,12 +17,23 @@
     <div class="resume-content">
 
         <div class="profile-details section clearfix">
+
+            @if(session()->has('Insufficient_balance'))
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <p class="text-center">{{ session()->get('Insufficient_balance') }}</p>
+                </div>
+            @endif
+
             <h2>Referrals</h2>
 
             <div class="form-group">
                 {{--<b>Total Earned: </b><span>{{ $user->getBalance() }}</span>--}}
 				<?php use Responsive\Referral; ?>
-                <b>Total Earned: </b><span>{{Referral::where( 'to', auth()->user()->id)->get()->sum( 'points' ) }}</span>
+                <b>Total Earned: </b>
+                <span>
+                    {{$total_points}}
+                </span>
                 <a href="/redeem" class="btn">Redeem</a>
             </div>
             <div class="form-group">

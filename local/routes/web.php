@@ -52,8 +52,7 @@ Route::get( '/notification-s', function (){
 
 	$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
 
-
-
+	
 
 	return response()->json(
 		[

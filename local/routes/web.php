@@ -37,7 +37,7 @@ Route::get( '/notification-s', function (){
 	$optionBuilder->setTimeToLive(60*20);
 
 	$notificationBuilder = new PayloadNotificationBuilder('my title');
-	$notificationBuilder->setBody('Hello world from laravel by miraj')
+	$notificationBuilder->setBody('message from laravel using token')
 	                    ->setSound('default');
 
 	$dataBuilder = new PayloadDataBuilder();
@@ -47,7 +47,7 @@ Route::get( '/notification-s', function (){
 	$notification = $notificationBuilder->build();
 	$data = $dataBuilder->build();
 
-	$token = "eHHzHYMa7U4:APA91bH33HKox5ZVMBDegfHQATB4yraCKrMOVn4F9ojWLeAVKBAcInD1dZ73O0L0LpMnymeHW2DrfM7gWvV_M5TXI7fOKQAorqNxIXk_C532G26FFLEg8fecYkZ5luoStIu6fEdOiQm5";
+	$token = "eHHzHYMa7U4:APA91bGeLwsh8GuAg0c5xHtLoOcpdB4n-FRmkhVR3d04DOpvJ1shGr37c6_LP3Wh34sa7wk2y7eOBhyNX2ShyTXoqCY-fvFUiFiDFBXioG5tYSU7I58a2OC87AlyLet5U9Ab1YyLio1RboPCMsOcMcQPW1Mpn0HyWg";
 
 	$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
 

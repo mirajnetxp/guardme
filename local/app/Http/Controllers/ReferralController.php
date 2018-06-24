@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Responsive\Item;
 
+use Responsive\Referral;
 use Responsive\Transaction;
 use Responsive\Url;
 use Responsive\User;
@@ -51,7 +52,8 @@ class ReferralController extends Controller {
 			$items[ $key ]['status'] = $status;
 		}
 
-
+		$totalPoints  = Referral::where( 'to', $user->id )->get()->sum( 'points' );
+		$remainPoints = $totalPoints - $user->spent;
 
 		return view(
 			'referral',
@@ -59,7 +61,7 @@ class ReferralController extends Controller {
 				'user'         => Auth::user(),
 				'editprofile'  => [ 0 => Auth::user() ],
 				'referrals'    => $user->getReferrals(),
-//				'total_points' => $total_point,
+				'total_points' => $remainPoints,
 				'items'        => $items,
 				'wallet_data'  => $wallet_data
 			]
@@ -98,26 +100,30 @@ class ReferralController extends Controller {
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 */
 	public function checkout( Request $request, $id ) {
+
 		$item = Item::where( 'id', $id )->first();
 		$user = Auth::user();
 
-		//Check if item actually exists
+		$totalPoints = Referral::where( 'to', auth()->user()->id )->get()->sum( 'points' );
+
+		$remainPoints = $totalPoints - $user->spent;
+
 		if ( $item && $item->id ) {
-			//Check if user have enough balance
-			if ( $user->getBalance() >= $item->price ) {
-				DB::transaction( function () use ( $user, $item ) {
-					//Assign item to user
-					$userItem = UserItem::create( [
-						'user_id' => $user->id,
-						'item_id' => $item->id
-					] );
+			if ( $remainPoints < $item->price ) {
 
-					$user->spent = $user->spent + $item->price;
-					$user->save();
-				} );
-
-				return redirect( '/referral' );
+				return redirect( '/referral' )->with('Insufficient_balance', "Insufficient balance.");
 			}
+
+			$userItem = new UserItem();
+
+			$userItem->user_id = $user->id;
+			$userItem->item_id = $item->id;
+			$userItem->status  = false;
+			$userItem->save();
+
+			$user->spent = $user->spent + $item->price;
+			$user->save();
+			return redirect( '/referral' );
 		}
 
 		return redirect( '/redeem' );

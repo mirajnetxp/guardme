@@ -4,7 +4,9 @@ use Responsive\Channels\SMS;
 use Responsive\Http\Repositories\UsersRepository;
 use Responsive\User;
 
-
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
 
 /*
 |--------------------------------------------------------------------------

@@ -86,7 +86,7 @@ class JobsController extends Controller {
 			$schedule_item['start'] = $sch;
 			// because date and time format from pick is Y-m-d h:i therefore no need of conversion
 			//$schedule_item['end'] = $end_date_time[ $k ];
-			$schedule_item['end'] = date('Y-m-d h:i', strtotime('+'. $working_hours. ' hours', strtotime($sch)));
+			$schedule_item['end'] = date( 'Y-m-d h:i', strtotime( '+' . $working_hours . ' hours', strtotime( $sch ) ) );
 			$schedules[]          = $schedule_item;
 		}
 		$job           = Job::find( $id );
@@ -294,7 +294,7 @@ class JobsController extends Controller {
 
 		if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
 		} else {
-			$joblist = $joblist->paginate( 10, ['*'], 'page_id' );
+			$joblist = $joblist->paginate( 10, [ '*' ], 'page_id' );
 			foreach ( $joblist as $key => $value ) {
 				$app = DB::table( 'job_applications' )
 				         ->where( 'job_id', $joblist[ $key ]->id )
@@ -358,7 +358,7 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function markHired($application_id ) {
+	public function markHired( $application_id ) {
 
 		// check if user is authorized to mark this application as hired.
 		$job_application     = new JobApplication();
@@ -492,8 +492,7 @@ class JobsController extends Controller {
 		] );
 	}
 
-	public
-	function totalAppliedJobsForUser() {
+	public function totalAppliedJobsForUser() {
 		/** @var User $user */
 		$user = auth()->user();
 
@@ -506,8 +505,7 @@ class JobsController extends Controller {
 		] );
 	}
 
-	public
-	function totalCreatedJobsForEmployer() {
+	public function totalCreatedJobsForEmployer() {
 		/** @var User $user */
 		$user = auth()->user();
 
@@ -523,8 +521,7 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public
-	function myProposals() {
+	public function myProposals() {
 		$ja        = new JobApplication();
 		$proposals = $ja->getMyProposals();
 
@@ -547,19 +544,20 @@ class JobsController extends Controller {
 		] );
 		$posted_data = $request->all();
 
-		$user_address = User::where( 'id', $posted_data['user_id'] )->with( 'address' )->first();
-		$job_details  = Job::with( [
+		$user_address  = User::where( 'id', $posted_data['user_id'] )->with( 'address' )->first();
+		$job_details   = Job::with( [
 			'poster',
 			'poster.company',
 			'industory',
 			'schedules'
 
 		] )->where( 'id', $posted_data['job_id'] )->first();
-		$tracking = new Tracking();
-		$tracking_info = $tracking->getTracingDataByJobAndUser($posted_data['job_id']);
+		$tracking      = new Tracking();
+		$tracking_info = $tracking->getTracingDataByJobAndUser( $posted_data['job_id'] );
+
 		return response()->json( [
-			'user_address' => $user_address,
-			'job_details'  => $job_details,
+			'user_address'  => $user_address,
+			'job_details'   => $job_details,
 			'tracking_info' => $tracking_info
 		] );
 	}
@@ -569,17 +567,17 @@ class JobsController extends Controller {
 			'page_id' => 'required'
 		] );
 
-		$order_by = 'created_at';
+		$order_by        = 'created_at';
 		$order_direction = 'desc';
-		$joblist     = [];
-		$posted_data = $request->all();
-		$page_id     = ! empty( $posted_data['page_id'] ) ? $posted_data['page_id'] : '';
-		$user_id     = ! empty( $posted_data['user_id'] ) ? $posted_data['user_id'] : '';
-		$post_code   = ! empty( $posted_data['post_code'] ) ? $posted_data['post_code'] : '';
-		$cat_id      = ! empty( $posted_data['cat_id'] ) ? $posted_data['cat_id'] : '';
-		$loc_val     = ! empty( $posted_data['loc_val'] ) ? $posted_data['loc_val'] : '';
-		$keyword     = ! empty( $posted_data['keyword'] ) ? $posted_data['keyword'] : '';
-		$distance    = ! empty( $posted_data['distance'] ) ? $posted_data['distance'] : '';
+		$joblist         = [];
+		$posted_data     = $request->all();
+		$page_id         = ! empty( $posted_data['page_id'] ) ? $posted_data['page_id'] : '';
+		$user_id         = ! empty( $posted_data['user_id'] ) ? $posted_data['user_id'] : '';
+		$post_code       = ! empty( $posted_data['post_code'] ) ? $posted_data['post_code'] : '';
+		$cat_id          = ! empty( $posted_data['cat_id'] ) ? $posted_data['cat_id'] : '';
+		$loc_val         = ! empty( $posted_data['loc_val'] ) ? $posted_data['loc_val'] : '';
+		$keyword         = ! empty( $posted_data['keyword'] ) ? $posted_data['keyword'] : '';
+		$distance        = ! empty( $posted_data['distance'] ) ? $posted_data['distance'] : '';
 
 		if ( $post_code != '' || $cat_id != '' || $loc_val != '' || $keyword != '' || $distance != '' ) {
 			if ( $post_code != '' ) {
@@ -665,8 +663,8 @@ class JobsController extends Controller {
 				$joblist = Job::where( 'status', '1' );
 			}
 		}
-		if (empty($post_code) && empty($latitude) && empty($longitude)) {
-			$joblist = $joblist->with( 'schedules' )->where('is_pause', 0)->orderBy($order_by, $order_direction)->paginate( 10, ['*'], 'page_id' );
+		if ( empty( $post_code ) && empty( $latitude ) && empty( $longitude ) ) {
+			$joblist = $joblist->with( 'schedules' )->where( 'is_pause', 0 )->orderBy( $order_by, $order_direction )->paginate( 10, [ '*' ], 'page_id' );
 		}
 
 		return response()->json( [
@@ -1025,20 +1023,32 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
+	public function totaoFF() {
+		$user_id = auth()->user()->id;
+		$fav     = DB::table( 'favourite_freelancers as ff' )
+		             ->select( 'u.id', 'u.name', 'u.email', 'u.gender', 'u.phone', 'u.photo',
+			             'u.firstname', 'u.lastname' )
+		             ->join( 'users as u', 'u.id', '=', 'ff.freelancer_id' )
+		             ->where( 'employer_id', $user_id )
+		             ->get();
+		$total   = count( $fav );
+
+		return response()->json( [ 'total_ff' => $total ] );
+	}
 
 	/**
 	 * @return mixed
 	 */
 	public function favouriteFreelancers() {
 		$user_id = auth()->user()->id;
-		$fav = DB::table('favourite_freelancers as ff')
-		         ->select('u.id','u.name','u.email','u.gender','u.phone','u.photo',
-			         'u.firstname','u.lastname')
-		         ->join('users as u', 'u.id', '=', 'ff.freelancer_id')
-		         ->where('employer_id', $user_id)
-		         ->get();
+		$fav     = DB::table( 'favourite_freelancers as ff' )
+		             ->select( 'u.id', 'u.name', 'u.email', 'u.gender', 'u.phone', 'u.photo',
+			             'u.firstname', 'u.lastname' )
+		             ->join( 'users as u', 'u.id', '=', 'ff.freelancer_id' )
+		             ->where( 'employer_id', $user_id )
+		             ->get();
 
-		return response()->json( $fav  );
+		return response()->json( $fav );
 	}
 
 
@@ -1162,10 +1172,10 @@ class JobsController extends Controller {
 	}
 
 	public function paymentRequests() {
-		$pr = new PaymentRequest();
+		$pr               = new PaymentRequest();
 		$payment_requests = $pr->getPaymentRequestsByEmployer();
 
-		return response()->json($payment_requests);
+		return response()->json( $payment_requests );
 	}
 
 
@@ -1233,10 +1243,10 @@ class JobsController extends Controller {
 		$user_id = auth()->user()->id;
 		$job     = Job::find( $job_id );
 		//@TODO revisit the expiration part later on when having more info in the next mile stones
-		$schedules = SecurityJobsSchedule::where('job_id', $job_id)->get();
+		$schedules = SecurityJobsSchedule::where( 'job_id', $job_id )->get();
 		$diff      = 0;
 		if ( ! empty( $schedules ) ) {
-			$last_day         = $schedules[ count( $schedules ) - 1 ];
+			$last_day          = $schedules[ count( $schedules ) - 1 ];
 			$end_time          = $last_day->end;
 			$current_date_time = date( 'Y-m-d h:i:s' );
 			$diff              = strtotime( $end_time ) - strtotime( $current_date_time );

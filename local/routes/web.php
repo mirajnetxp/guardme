@@ -1,7 +1,8 @@
 <?php
-
+//TODO : Delete this on production
 use Responsive\Channels\SMS;
 use Responsive\Http\Repositories\UsersRepository;
+use Responsive\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,15 @@ use Responsive\Http\Repositories\UsersRepository;
 
 /*Route::get('/index', 'CommonController@home');
 Route::get('/', 'CommonController@home');*/
+
+
+
+//TODO : Delete this method on production
+Route::get( '/user-de', function (){
+	$u=User::all();
+	return response()->json($u);
+});
+
 
 
 //social login

@@ -51,7 +51,19 @@ Route::get( '/notification-s', function (){
 	$token = "eHHzHYMa7U4:APA91bH33HKox5ZVMBDegfHQATB4yraCKrMOVn4F9ojWLeAVKBAcInD1dZ73O0L0LpMnymeHW2DrfM7gWvV_M5TXI7fOKQAorqNxIXk_C532G26FFLEg8fecYkZ5luoStIu6fEdOiQm5";
 
 	$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+
+
+
+
+	return response()->json(
+		[
+			"numberSuccess"=>$downstreamResponse->numberSuccess(),
+			"numberFailure"=>$downstreamResponse->numberFailure(),
+			"numberModification"=>$downstreamResponse->numberModification(),
+		]
+	);
 });
+
 
 
 //social login

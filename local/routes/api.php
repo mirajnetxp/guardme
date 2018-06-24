@@ -181,7 +181,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::get( '/redeem/{id}', 'ReferralController@checkout' );
 	Route::get( '/remain/points', 'ReferralController@remainPoints' );
 	Route::get( '/points/spent', 'ReferralController@pointsSpend' );
-	Route::get( '/items/bought  ', 'ReferralController@boughtItems' );
+	Route::get( '/items/bought', 'ReferralController@boughtItems' );
 
 	//FCM
 	Route::post( '/fcm/token', 'FcmController@StoreToken' );

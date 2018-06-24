@@ -97,6 +97,7 @@ class ReferralController extends Controller {
 		$user      = Auth::user();
 		$userItems = UserItem::where( 'user_id', $user->id )->get();
 		$items     = [];
+
 		foreach ( $userItems as $key => $userItem ) {
 			$items[ $key ] = Item::where( 'id', $userItem->item_id )->first();
 

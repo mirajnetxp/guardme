@@ -4,10 +4,7 @@ use Responsive\Channels\SMS;
 use Responsive\Http\Repositories\UsersRepository;
 use Responsive\User;
 
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
-use FCM;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +49,7 @@ Route::get( '/notification-s', function (){
 
 	$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
 
-	
+
 
 	return response()->json(
 		[

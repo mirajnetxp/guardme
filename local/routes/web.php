@@ -4,9 +4,7 @@ use Responsive\Channels\SMS;
 use Responsive\Http\Repositories\UsersRepository;
 use Responsive\User;
 
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,43 +22,19 @@ use LaravelFCM\Message\PayloadNotificationBuilder;
 Route::get('/', 'CommonController@home');*/
 
 
-
-//TODO : Delete this method on production
-Route::get( '/user-de', function (){
-	$u=User::all();
-	return response()->json($u);
-});
-
-
-Route::get( '/notification-s', function (){
-	$optionBuilder = new OptionsBuilder();
-	$optionBuilder->setTimeToLive(60*20);
-
-	$notificationBuilder = new PayloadNotificationBuilder('my title');
-	$notificationBuilder->setBody('message from laravel using token')
-	                    ->setSound('default');
-
-	$dataBuilder = new PayloadDataBuilder();
-	$dataBuilder->addData(['a_data' => 'my_data']);
-
-	$option = $optionBuilder->build();
-	$notification = $notificationBuilder->build();
-	$data = $dataBuilder->build();
-
-	$token = "eHHzHYMa7U4:APA91bGeLwsh8GuAg0c5xHtLoOcpdB4n-FRmkhVR3d04DOpvJ1shGr37c6_LP3Wh34sa7wk2y7eOBhyNX2ShyTXoqCY-fvFUiFiDFBXioG5tYSU7I58a2OC87AlyLet5U9Ab1YyLio1RboPCMsOcMcQPW1Mpn0HyWg";
-
-	$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
-
-
-
-	return response()->json(
-		[
-			"numberSuccess"=>$downstreamResponse->numberSuccess(),
-			"numberFailure"=>$downstreamResponse->numberFailure(),
-			"numberModification"=>$downstreamResponse->numberModification(),
-		]
-	);
-});
+//Route::get( '/notification-s', function (){
+//
+//
+//
+//
+//	return response()->json(
+//		[
+//			"numberSuccess"=>$downstreamResponse->numberSuccess(),
+//			"numberFailure"=>$downstreamResponse->numberFailure(),
+//			"numberModification"=>$downstreamResponse->numberModification(),
+//		]
+//	);
+//});
 
 
 

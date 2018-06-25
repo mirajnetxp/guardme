@@ -374,6 +374,8 @@ class JobsController extends Controller {
 			$return_status = 500;
 		}
 
+		SendNotification();
+
 		return response()
 			->json( $return_data, $return_status );
 	}

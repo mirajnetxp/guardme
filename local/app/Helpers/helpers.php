@@ -1,5 +1,9 @@
 <?php
 
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+
 
 function getUserType() {
     return auth()->user()->admin;
@@ -85,4 +89,29 @@ function sortByOneKey(array $array, $key, $asc = true)
     }
 
     return $result;
+}
+
+
+/**
+ * @param $title
+ * @param $body
+ * @param $token
+ */
+function SendNotification($title,$body,$token){
+
+	$optionBuilder = new OptionsBuilder();
+	$optionBuilder->setTimeToLive(60*20);
+
+	$notificationBuilder = new PayloadNotificationBuilder($title);
+	$notificationBuilder->setBody($body)
+	                    ->setSound('default');
+
+	$dataBuilder = new PayloadDataBuilder();
+	$dataBuilder->addData(['a_data' => 'my_data']);
+
+	$option = $optionBuilder->build();
+	$notification = $notificationBuilder->build();
+	$data = $dataBuilder->build();
+
+	$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
 }

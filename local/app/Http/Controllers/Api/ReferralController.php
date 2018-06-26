@@ -20,9 +20,11 @@ class ReferralController extends Controller {
 	public function getReferralList() {
 		$user        = Auth::user();
 		$refList     = $user->getReferrals();
-		$totalPoints = Referral::where( 'to', auth()->user()->id )->get()->sum( 'points' );
 
-		return response()->json( [ 'referrals' => $refList, 'total_point' => $totalPoints ] );
+		$totalPoints = Referral::where( 'to', auth()->user()->id )->get()->sum( 'points' );
+		$remainPoints = $totalPoints - $user->spent;
+
+		return response()->json( [ 'referrals' => $refList, 'total_point' => $remainPoints ] );
 	}
 
 	/**

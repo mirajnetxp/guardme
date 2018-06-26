@@ -50,7 +50,6 @@ class MessageController extends Controller
     {
        $message = $request->message;
        $users_id = json_decode($request->user);
-       $sendMail = new MailQueue();
 
        $emails = $users = DB::table('users')->get();
 

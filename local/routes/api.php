@@ -192,6 +192,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 
 Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
 
-	Route::get( '/job/decline/{application_id} ', 'EmployerJobsController@JobDecline' );
+	Route::get( '/unread ', 'NotificationController@unread' );
+	Route::get( '/mark/as/read ', 'NotificationController@markAsRead' );
 
 } );

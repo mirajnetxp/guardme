@@ -3334,7 +3334,10 @@ input, select, a, .transition,
 /*Style for notification Div*/
 
 #notification-div {
-
+    min-width: 320px !important;
+}
+#notification-div li > a {
+    white-space: normal !important;
 }
 
 #notification-div > li {

@@ -24,7 +24,7 @@ class TrackingController extends Controller {
 			'location_latitude'  => 'required',
 			'address'            => 'required',
 			'date_time'          => 'required',
-			'date_time'          => 'schedule_id',
+			'schedule_id'          => 'required',
 		] );
 
 		DB::table( 'tracking' )->insert(

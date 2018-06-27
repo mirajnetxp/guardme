@@ -684,8 +684,7 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public
-	function getSecurityCategories() {
+	public function getSecurityCategories() {
 		$ja                 = new JobApplication();
 		$securityCategories = SecurityCategory::all();
 
@@ -697,8 +696,7 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public
-	function getBusinessCategories() {
+	public function getBusinessCategories() {
 		$ja                 = new JobApplication();
 		$businessCategories = Businesscategory::all();
 

@@ -188,3 +188,11 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/fcm/token', 'FcmController@StoreToken' );
 
 } );
+
+
+Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
+
+	Route::get( '/unread ', 'NotificationController@unread' );
+	Route::get( '/mark/as/read ', 'NotificationController@markAsRead' );
+
+} );

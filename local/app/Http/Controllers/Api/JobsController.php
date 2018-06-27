@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
 use Responsive\JobApplication;
+use Responsive\Notifications\JobCreated;
 use Responsive\PaymentRequest;
 use Responsive\SecurityJobsSchedule;
 use Responsive\Tracking;
@@ -198,6 +199,11 @@ class JobsController extends Controller {
 			}
 		}
 
+		//TODO: Add job active notification
+		$user=auth()->user();
+
+
+		$user->notify(new JobCreated($job));
 		return response()
 			->json( $returnData, $returnStatus );
 	}
@@ -358,6 +364,11 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
+	/**
+	 * @param $application_id
+	 *
+	 * @return mixed
+	 */
 	public function markHired( $application_id ) {
 
 		// check if user is authorized to mark this application as hired.
@@ -373,6 +384,8 @@ class JobsController extends Controller {
 			$return_data   = [ $error_message ];
 			$return_status = 500;
 		}
+
+		SendNotification();
 
 		return response()
 			->json( $return_data, $return_status );
@@ -440,10 +453,7 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public
-	function fundJobFee(
-		Request $request
-	) {
+	public function fundJobFee( Request $request ) {
 		$return_data   = [ 'Unknown Error' ];
 		$return_status = 500;
 		$posted_data   = $request->all();
@@ -476,8 +486,7 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public
-	function totalUserAwardedJobs() {
+	public function totalUserAwardedJobs() {
 		/** @var User $user */
 		$user = auth()->user();
 

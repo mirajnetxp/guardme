@@ -101,8 +101,20 @@ if(isset(Auth::user()->verification)){
 								
 			
 			<li><a href="{{url('jobs/saved')}}"><i class="fa fa-heart-o"></i></a></li>
-			<li><a href="<?php echo $url;?>/#"><i class="fa fa-envelope-o"></i></a></li>
-			<li><a href="<?php echo $url;?>/#"><i class="fa fa-bell-o"></i></a></li>
+			<li>
+				<div class="btn-group">
+					<span  data-toggle="dropdown">
+						<i class="fa fa-bell">
+						</i>
+					</span>
+					<ul id="notification-div" class="dropdown-menu dropdown-menu-right" role="menu">
+						<li><a href="#">Action</a></li>
+						<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else hwsdfs asdfv vav awv arvawfv awdfv ere</a></li>
+					</ul>
+				</div>
+			</li>
+
 			<li class="dropdown li-last">
               <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">  Hi, {{ Auth::user()->name }}<b class="caret"></b></a>
               <ul class="dropdown-menu">

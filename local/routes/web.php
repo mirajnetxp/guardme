@@ -386,7 +386,9 @@ Route::group( [ 'prefix' => '/support/tickets', 'middleware' => 'auth' ], functi
 Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' => 'auth' ], function () {
 
 	Route::get( '/unread ', 'NotificationController@unread' );
+	Route::get( '/unread/count ', 'NotificationController@unreadCount' );
 	Route::get( '/mark/as/read ', 'NotificationController@markAsRead' );
+
 
 } );
 

@@ -370,14 +370,19 @@ Route::group( [ 'middleware' => 'web' ], function () {
 Route::group( [ 'prefix' => '/support/tickets', 'middleware' => 'auth' ], function () {
 	Route::get( '/', 'TicketController@index' )->name( 'ticket.index' );
 	Route::get( '/create', 'TicketController@create' )->name( 'ticket.create' );
-	Route::post( '/', 'TicketController@store' )->name( 'ticket.store' );
+	Route::post( '/ticket/store', 'TicketController@store' )->name('ticket.store' );
 	Route::post( '/', 'TicketController@close_account_store' )->name( 'ticket.close_account' );
-	Route::get( '/{id}', 'TicketController@show' )->where( 'id', '[0-9]+' )
-	     ->name( 'ticket.show' );
-	Route::put( '/{id}', 'TicketController@update' )->where( 'id', '[0-9]+' )
-	     ->name( 'ticket.update' );
-	Route::post( '/{id}/messages', 'MessageController@store' )->where( 'id', '[0-9]+' )
-	     ->name( 'tickets.messages.store' );
+	Route::get( '/{id}', 'TicketController@show' )->where( 'id', '[0-9]+' )->name( 'ticket.show' );
+	Route::put( '/{id}', 'TicketController@update' )->where( 'id', '[0-9]+' )->name( 'ticket.update' );
+	Route::post( '/{id}/messages', 'MessageController@store' )->where( 'id', '[0-9]+' )->name( 'tickets.messages.store' );
+} );
+
+//notification
+Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' => 'auth' ], function () {
+
+	Route::get( '/unread ', 'NotificationController@unread' );
+	Route::get( '/mark/as/read ', 'NotificationController@markAsRead' );
+
 } );
 
 /*Start Security Jobs Routes*/

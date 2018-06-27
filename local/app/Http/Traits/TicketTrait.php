@@ -1,6 +1,7 @@
 <?php
 namespace Responsive\Http\Traits;
 
+use Responsive\Notifications\TicketCreated;
 use Responsive\User;
 #use \Modules\Account\Models\Role;
 use Illuminate\Support\Facades\Validator;
@@ -43,7 +44,11 @@ trait TicketTrait
         if (!$errors) {
             $ticketId = $this->saveTicket($request);
             $this->saveMessage($request, $ticketId);
-            $this->ticketCreatedMessage($request, $ticketId);
+
+            $user=auth()->user();
+	        $user->notify(new TicketCreated($request->title));
+
+//            $this->ticketCreatedMessage($request, $ticketId);
         }
         return $errors;
     }

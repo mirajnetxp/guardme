@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\DB;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
 use Responsive\JobApplication;
+use Responsive\Notifications\JobAwarded;
 use Responsive\Notifications\JobCreated;
+use Responsive\Notifications\JobMarkedComplete;
+use Responsive\Notifications\ReciveFeedback;
 use Responsive\PaymentRequest;
 use Responsive\SecurityJobsSchedule;
 use Responsive\Tracking;
@@ -200,10 +203,11 @@ class JobsController extends Controller {
 		}
 
 		//TODO: Add job active notification
-		$user=auth()->user();
+		$user = auth()->user();
 
 
-		$user->notify(new JobCreated($job));
+		$user->notify( new JobCreated( $job ) );
+
 		return response()
 			->json( $returnData, $returnStatus );
 	}
@@ -379,13 +383,23 @@ class JobsController extends Controller {
 			event( new AwardJob( $ja ) );
 			$return_data   = [ 'Hired Successfully' ];
 			$return_status = 200;
+
+//	--------------Sending Notifications
+			$job            = Job::find( $ja->job_id );
+			$userFreelancer = User::find( $ja->applied_by );
+			$userFreelancer->notify( new JobAwarded( $job ) );
+
+			if ( $userFreelancer->fcm_token ) {
+				$str = 'You have been awarded a slot on "' . $job->title . '"';
+				SendNotification( 'Congratulations!', $str, $userFreelancer->fcm_token );
+			}
+//	--------------Sending Notifications end
 		} else {
 			$error_message = $is_eligible_to_hire['error_message'];
 			$return_data   = [ $error_message ];
 			$return_status = 500;
 		}
 
-		SendNotification();
 
 		return response()
 			->json( $return_data, $return_status );
@@ -684,8 +698,7 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public
-	function getSecurityCategories() {
+	public function getSecurityCategories() {
 		$ja                 = new JobApplication();
 		$securityCategories = SecurityCategory::all();
 
@@ -697,8 +710,7 @@ class JobsController extends Controller {
 	/**
 	 * @return mixed
 	 */
-	public
-	function getBusinessCategories() {
+	public function getBusinessCategories() {
 		$ja                 = new JobApplication();
 		$businessCategories = Businesscategory::all();
 
@@ -714,7 +726,8 @@ class JobsController extends Controller {
 	 */
 	public function markApplicationAsComplete( $application_id ) {
 		$application   = JobApplication::find( $application_id );
-		$user_id       = auth()->user()->id;
+		$user          = auth()->user();
+		$user_id       = $user->id;
 		$return_status = 200;
 		$return_data   = [ "success" ];
 		$job           = Job::find( $application->job_id );
@@ -724,6 +737,10 @@ class JobsController extends Controller {
 		}
 
 		if ( $return_status == 200 ) {
+			$userFreelancer = User::find( $application->applied_by );
+			$userFreelancer->notify( new JobMarkedComplete( $job ) );
+
+//			$user->notify( new JobMarkedComplete( $job ) );
 
 			event( new JobHiredApplicationMarkedAsComplete( $application ) );
 		}
@@ -763,6 +780,11 @@ class JobsController extends Controller {
 				$feedback->message            = ! empty( $posted_data['feedback_message'] ) ? ( $posted_data['feedback_message'] ) : null;
 				$ret                          = $feedback->save();
 				if ( $ret ) {
+					$score = ( $feedback->appearance + $feedback->punctuality + $feedback->customer_focused + $feedback->security_conscious ) / 4;
+
+
+					$userFreelancer = User::find( $application->applied_by );
+					$userFreelancer->notify( new ReciveFeedback( $job, $score ) );
 					$return_data   = [ 'Feedback Submitted successfully' ];
 					$return_status = 200;
 				}

@@ -189,9 +189,8 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 
 } );
 
-
+	//notification
 Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
-
 	Route::get( '/unread ', 'NotificationController@unread' );
 	Route::get( '/mark/as/read ', 'NotificationController@markAsRead' );
 

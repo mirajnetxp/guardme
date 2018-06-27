@@ -130,6 +130,12 @@ Route::post( '/wallet', [ 'as' => 'wallet', 'uses' => 'WalletController@sangvish
 Route::get( '/settings', 'SettingController@show' );
 Route::get( '/settings/visibality', 'SettingController@visibality' );
 
+
+// Notification
+Route::get( '/all/notifications', 'NotificationController@all' );
+
+
+
 /* Authentication routes */
 Auth::routes();
 

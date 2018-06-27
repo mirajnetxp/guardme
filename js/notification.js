@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // Checking unread message
 
-    setInterval(function () {
+    // setInterval(function () {
         $.ajax({
             url: "http://guarddme.fork/api/notification/unread",
             method: "GET",
@@ -38,11 +38,11 @@ $(document).ready(function () {
                 $.each(d.notifications, function (i, v) {
                     $("#notification-div").append("<li><a href=\"#\">" + v + "</a></li>")
                 })
-                $("#notification-div").prepend("<li><a href=\"#\">sadfasdv</a></li>")
+                $("#notification-div").append("<li><a style='color: #8BC34A;font-weight: bold;' href=\"#\">See all notifications</a></li>")
             }
         });
 
-    }, 2000)
+    // }, 2000)
 
 
 });

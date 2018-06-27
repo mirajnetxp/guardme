@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     // setInterval(function () {
         $.ajax({
-            url: "http://guarddme.fork/api/notification/unread",
+            url: "/api/notification/unread",
             method: "GET",
             dataType: 'json',
             global: false,
@@ -17,7 +17,7 @@ $(document).ready(function () {
                     $(".fa-bell").click(function () {
 
                         $.ajax({
-                            url: "http://guarddme.fork/api/notification/mark/as/read",
+                            url: "/api/notification/mark/as/read",
                             method: "GET",
                             dataType: 'json',
                             global: false,

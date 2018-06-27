@@ -16,9 +16,11 @@ class TicketAnswered extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($ticket,$isAdmin)
     {
         //
+	    $this->ticket=$ticket;
+	    $this->admin=$isAdmin;
     }
 
     /**
@@ -29,7 +31,7 @@ class TicketAnswered extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -54,8 +56,12 @@ class TicketAnswered extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            //
-        ];
+
+    	if($this->admin){
+		    $str='Ticket "'.$this->ticket->title.' (ID:#'.$this->ticket->id.')" has been updated';
+	    }else{
+		    $str='Your ticket "'.$this->ticket->title.' (ID:#'.$this->ticket->id.')" has been updated';
+	    }
+        return $str;
     }
 }

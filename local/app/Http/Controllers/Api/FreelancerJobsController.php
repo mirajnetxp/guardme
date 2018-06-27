@@ -87,7 +87,7 @@ class FreelancerJobsController extends Controller {
 
 			$sech                           = DB::table( 'security_jobs_schedule' )
 			                                    ->where( 'job_id', $awardedJobs[ $key ]->job_id )
-			                                    ->select( 'start as start_time', 'end as end_time' )
+			                                    ->select( 'id as schedule_id','start as start_time', 'end as end_time' )
 			                                    ->get();
 			$awardedJobs[ $key ]->schedules = $sech;
 

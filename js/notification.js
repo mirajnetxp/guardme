@@ -38,7 +38,7 @@ $(document).ready(function () {
                 $.each(d.notifications, function (i, v) {
                     $("#notification-div").append("<li><a href=\"#\">" + v + "</a></li>")
                 })
-
+                $("#notification-div").prepend("<li><a href=\"#\">sadfasdv</a></li>")
             }
         });
 

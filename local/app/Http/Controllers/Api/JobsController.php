@@ -178,13 +178,15 @@ class JobsController extends Controller {
 			if ( $job->created_by == $user_id ) {
 				$job_details       = Job::calculateJobAmount( $job_id );
 				$trans             = new Transaction();
-				$available_balance = $trans->getWalletAvailableBalance();
-				if ( $job_details['grand_total'] > $available_balance ) {
+				$debit_transaction = $trans->getDebitTransactionForJob($job_id);
+
+				if ( $job_details['grand_total'] > $debit_transaction->amount ) {
 					$returnStatus = 500;
 					$returnData   = "Your available balance is less than the balance required for this job";
 				} else {
 					// add 3 credit entries to activate job
 					$parms['job_id'] = $job_id;
+					$parms['paypal_id'] = $debit_transaction->paypal_id;
 					$parms['amount'] = $job_details['basic_total'];
 					$parms['status'] = 1;
 					$trans->fundJobFee( $parms );
@@ -419,6 +421,7 @@ class JobsController extends Controller {
 			'paypal_id'             => 'required',
 			'amount'                => 'required',
 			'paypal_payment_status' => 'required',
+			'job_id'                => 'required',
 			'status'                => 'required',
 		] );
 
@@ -427,6 +430,7 @@ class JobsController extends Controller {
 			'amount'                => $posted_data['amount'],
 			'user_id'               => $user_id,
 			'paypal_payment_status' => $posted_data['paypal_payment_status'],
+			'job_id'                => $posted_data['job_id'],
 			'status'                => $posted_data['status']
 		];
 
@@ -476,6 +480,7 @@ class JobsController extends Controller {
 			'paypal_id'             => 'required',
 			'amount'                => 'required',
 			'paypal_payment_status' => 'required',
+			'job_id'                => 'required',
 			'status'                => 'required',
 		] );
 
@@ -484,7 +489,8 @@ class JobsController extends Controller {
 			'amount'                => $posted_data['amount'],
 			'user_id'               => $user_id,
 			'paypal_payment_status' => $posted_data['paypal_payment_status'],
-			'status'                => $posted_data['status']
+			'status'                => $posted_data['status'],
+			'job_id'                => $posted_data['job_id']
 		];
 
 		// add money

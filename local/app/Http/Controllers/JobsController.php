@@ -69,7 +69,10 @@ class JobsController extends Controller {
         //$available_balance = $trans->getWalletAvailableBalance();
         $trans = new Transaction();
         $debit_transaction = $trans->getDebitTransactionForJob($id);
-        $job_available_balance = $debit_transaction->amount;
+        $job_available_balance = 0;
+        if (!empty($debit_transaction)) {
+            $job_available_balance = $debit_transaction->amount;
+        }
         $jobDetails = Job::calculateJobAmount($id);
         return view('jobs.payment-details', compact('jobDetails', 'id', 'job_available_balance'));
     }

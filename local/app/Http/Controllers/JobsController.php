@@ -66,10 +66,12 @@ class JobsController extends Controller {
         if (!isEmployer()) {
             return abort(403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.');
         }
+        //$available_balance = $trans->getWalletAvailableBalance();
         $trans = new Transaction();
-        $available_balance = $trans->getWalletAvailableBalance();
+        $debit_transaction = $trans->getDebitTransactionForJob($id);
+        $job_available_balance = $debit_transaction->amount;
         $jobDetails = Job::calculateJobAmount($id);
-        return view('jobs.payment-details', compact('jobDetails', 'id', 'available_balance'));
+        return view('jobs.payment-details', compact('jobDetails', 'id', 'job_available_balance'));
     }
     public function confirmation() {
         if (!isEmployer()) {

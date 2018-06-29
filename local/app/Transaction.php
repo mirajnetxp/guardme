@@ -16,7 +16,7 @@ class Transaction extends Model {
 
 	/*
 	 * user_id -> id of the user the amount relates to
-	 * job_id -> relates to the job (for which payment is funded or paid to), only necessary if debit_credit_type = credit
+	 * job_id -> relates to the job (for which payment is funded or paid to)
 	 * debit_credit_type: possible values = ['debit' or 'credit']
 	 * amount: float value of amount
 	 * type: possible values 'admin_fee', 'vat_fee' or job_fee only needed for credit

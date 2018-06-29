@@ -53,7 +53,8 @@ class Job extends Model {
 			'admin_fee'                     => floatval( $admin_fee ),
 			'grand_total'                   => floatval( $grand_total ),
 			'number_of_freelancers'         => $number_of_freelancers,
-			'single_freelancer_fee'         => floatval( $basic_total / $number_of_freelancers )
+			'single_freelancer_fee'         => floatval( $basic_total / $number_of_freelancers ),
+			'job_activation_status'			=> $job->status
 		];
 
 		return $return_data;

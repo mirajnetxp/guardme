@@ -179,8 +179,10 @@ class JobsController extends Controller {
 				$job_details       = Job::calculateJobAmount( $job_id );
 				$trans             = new Transaction();
 				$debit_transaction = $trans->getDebitTransactionForJob($job_id);
-
-				if ( $job_details['grand_total'] > $debit_transaction->amount ) {
+				if (!empty($job->status)) {
+					$returnStatus = 500;
+					$returnData   = "Job is already active";
+				} else if ( $job_details['grand_total'] > $debit_transaction->amount ) {
 					$returnStatus = 500;
 					$returnData   = "Your available balance is less than the balance required for this job";
 				} else {

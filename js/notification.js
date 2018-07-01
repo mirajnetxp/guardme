@@ -36,7 +36,7 @@ $(document).ready(function () {
             $.each(d.notifications, function (i, v) {
                 $("#notification-div").append("<li><a href=\"#\">" + v + "</a></li>")
             })
-            $("#notification-div").append("<li><a style='color: #8BC34A;font-weight: bold;' href=\"#\">See all notifications</a></li>")
+            $("#notification-div").append("<li><a style='color: #8BC34A;font-weight: bold;'  href=\"/all/notifications\" >See all notifications</a></li>")
         }
     });
     setInterval(function () {
@@ -76,7 +76,7 @@ $(document).ready(function () {
                 $.each(d.notifications, function (i, v) {
                     $("#notification-div").append("<li><a href=\"#\">" + v + "</a></li>")
                 })
-                $("#notification-div").append("<li><a style='color: #8BC34A;font-weight: bold;' href=\"#\">See all notifications</a></li>")
+                $("#notification-div").append("<li><a style='color: #8BC34A;font-weight: bold;' href=\"/all/notifications\">See all notifications</a></li>")
             }
         });
     }, 20000);

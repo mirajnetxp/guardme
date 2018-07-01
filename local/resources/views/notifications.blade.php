@@ -91,45 +91,32 @@
         <div class="breadcrumb-section">
             <ol class="breadcrumb">
                 <li><a href="{{URL::to('/')}}">Home</a></li>
-                <li>Settings</li>
+                <li>Notifications</li>
             </ol>
             <h2 class="title">Settings</h2>
         </div>
 
 
         <div class="adpost-details post-resume">
-
-
             <div class="row">
                 <div class="col-md-8">
                     <div class="section postdetails">
                         <div class="description-info">
-                            <h2>Notification goes hear</h2>
+
                             <div class="row">
 
-                            </div>
-                            @if (auth()->user()->admin == 2)
-                                <table class="display nowrap table">
-                                    <tr>
-                                        <td><h3>Profile Visibility</h3></td>
-                                        <td>
-                                            <h3>
-                                                <label class="switch">
-                                                    @if($visible)
-                                                        <input id="visibality" name="visibality"
-                                                                type="checkbox" checked>
-                                                    @else
-                                                        <input id="visibality" name="visibality"
-                                                                type="checkbox">
-                                                    @endif
-                                                    <div class="slider round"></div>
-                                                </label>
-                                            </h3>
-                                        </td>
-                                    </tr>
+                                <table class="table">
+                                    @foreach(auth()->user()->notifications as $notification)
+                                        <tr>
+                                            <td>
+                                                {{$notification->data}}
+                                            </td>
+                                            <td >{{date('d M',strtotime($notification->created_at)) }}</td>
+                                        </tr>
+                                    @endforeach
+                                    @php(auth()->user()->unreadNotifications->markAsRead())
                                 </table>
-                            @endif
-                            <div><a href="{{URL::to('delete_account')}}" class="btn">Close account</a></div>
+                            </div>
                         </div>
                     </div>
                 </div>

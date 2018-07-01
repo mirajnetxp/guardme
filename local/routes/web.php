@@ -232,6 +232,11 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	] );
 	Route::get( '/admin/index', 'Admin\DashboardController@index' );
 
+	/* message */
+	Route::get('admin/message','Admin\MessageController@index');
+	Route::post('admin/message','Admin\MessageController@sendMessage');
+	/* end message */
+
 	/* user */
 	Route::get( '/admin/users', 'Admin\UsersController@index' );
 	Route::get( '/admin/adduser', 'Admin\AdduserController@formview' );

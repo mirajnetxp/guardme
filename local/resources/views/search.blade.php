@@ -469,15 +469,6 @@
 					</div>
 				</div>
 
-
-				<div class="col-md-2 hidden-xs hidden-sm">
-					<div class="advertisement text-center">
-						<a href="#"><img src="images/ads/1.jpg" alt="" class="img-responsive"></a>
-					</div>
-				</div>
-
-
-
 			</div>
 		</div>
 

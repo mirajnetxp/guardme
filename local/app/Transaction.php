@@ -16,7 +16,7 @@ class Transaction extends Model {
 
 	/*
 	 * user_id -> id of the user the amount relates to
-	 * job_id -> relates to the job (for which payment is funded or paid to), only necessary if debit_credit_type = credit
+	 * job_id -> relates to the job (for which payment is funded or paid to)
 	 * debit_credit_type: possible values = ['debit' or 'credit']
 	 * amount: float value of amount
 	 * type: possible values 'admin_fee', 'vat_fee' or job_fee only needed for credit
@@ -37,14 +37,16 @@ class Transaction extends Model {
 	 * @return bool
 	 */
 	public function addMoney( $params ) {
+		$type = $defaults['type'] = ! empty( $params['type'] ) ? ( $params['type'] ) : 'add_money';
 		$defaults                          = [
 			'debit_credit_type' => 'debit',
-			'type'              => 'add_money'
+			'type'              => $type
 		];
 		$defaults['title']                 = ! empty( $params['title'] ) ? ( $params['title'] ) : 'Adding balance';
 		$defaults['amount']                = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
 		$defaults['paypal_id']             = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : 0;
 		$defaults['user_id']               = ! empty( $params['user_id'] ) ? ( $params['user_id'] ) : 0;
+		$defaults['job_id']               = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
 		$defaults['status']                = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
 		$defaults['paypal_payment_status'] = ! empty( $params['paypal_payment_status'] ) ? ( $params['paypal_payment_status'] ) : null;
 
@@ -66,6 +68,7 @@ class Transaction extends Model {
 		$defaults['job_id'] = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
 		$defaults['amount'] = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
 		$defaults['status'] = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
+		$defaults['paypal_id'] = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : null;
 
 		return $this->insertTransaction( $defaults );
 	}
@@ -85,6 +88,7 @@ class Transaction extends Model {
 		$defaults['job_id'] = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
 		$defaults['amount'] = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
 		$defaults['status'] = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
+		$defaults['paypal_id'] = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : null;
 
 		return $this->insertTransaction( $defaults );
 	}
@@ -104,6 +108,7 @@ class Transaction extends Model {
 		$defaults['job_id'] = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
 		$defaults['amount'] = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
 		$defaults['status'] = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
+		$defaults['paypal_id'] = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : null;
 
 		return $this->insertTransaction( $defaults );
 	}
@@ -372,5 +377,14 @@ class Transaction extends Model {
 		}
 
 		return array_values( $all_transactions );
+	}
+
+	/**
+	 * @param $job_id
+	 * @return mixed
+	 */
+	public function getDebitTransactionForJob($job_id) {
+		$transaction = Transaction::where('job_id', $job_id)->where('debit_credit_type', 'debit')->orderBy('id', 'desc')->get()->first();
+		return $transaction;
 	}
 }

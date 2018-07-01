@@ -77,18 +77,18 @@
         </tr>
         </tbody>
     </table>
-
-    @if($available_balance < $jobDetails['grand_total'])
-        <form action="{{ route('create.paypal.payment', ['id' => $id]) }}" method="post">
-            {{ csrf_field() }}
-            <input type="submit" class="btn pull-right btn-success" value="Pay with Paypal">
-        </form>
-    @else
-        <form method="post" id="activate_job" action="{{ route('api.activate.job', ['id' => $id]) }}">
-            <input type="submit" class="btn pull-right btn-success" value="Activate Job">
-        </form>
+    @if(!$jobDetails['job_activation_status'])
+        @if($job_available_balance < $jobDetails['grand_total'])
+            <form action="{{ route('create.paypal.payment', ['id' => $id]) }}" method="post">
+                {{ csrf_field() }}
+                <input type="submit" class="btn pull-right btn-success" value="Pay with Paypal">
+            </form>
+        @else
+            <form method="post" id="activate_job" action="{{ route('api.activate.job', ['id' => $id]) }}">
+                <input type="submit" class="btn pull-right btn-success" value="Activate Job">
+            </form>
+        @endif
     @endif
-
 @endsection
 
 @section('script')

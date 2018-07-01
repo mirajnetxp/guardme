@@ -14,6 +14,8 @@ use Responsive\Notifications\JobAwarded;
 use Responsive\Notifications\JobCreated;
 use Responsive\Notifications\JobMarkedComplete;
 use Responsive\Notifications\ReciveFeedback;
+use Responsive\Notifications\RecivesBonus;
+use Responsive\Notifications\RecivesPayment;
 use Responsive\PaymentRequest;
 use Responsive\SecurityJobsSchedule;
 use Responsive\Tracking;
@@ -737,12 +739,14 @@ class JobsController extends Controller {
 		}
 
 		if ( $return_status == 200 ) {
+			event( new JobHiredApplicationMarkedAsComplete( $application ) );
+
 			$userFreelancer = User::find( $application->applied_by );
 			$userFreelancer->notify( new JobMarkedComplete( $job ) );
+			$userFreelancer->notify( new RecivesPayment( $job ) );
 
 //			$user->notify( new JobMarkedComplete( $job ) );
 
-			event( new JobHiredApplicationMarkedAsComplete( $application ) );
 		}
 
 		return response()
@@ -1014,6 +1018,14 @@ class JobsController extends Controller {
 				$transaction->status                = 1;
 				$transaction->credit_payment_status = 'paid';
 				$transaction->save();
+
+				$Application=JobApplication::find($transaction->application_id);
+				$freelancerId=$Application->applied_by;
+				$user=User::find($freelancerId);
+
+				$job=Job::find($Application->job_id);
+				$user->notify(new RecivesBonus($job));
+
 				$return_status = 200;
 				$return_data   = [ "Your tip has been successfully added." ];
 			}

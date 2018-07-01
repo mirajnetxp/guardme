@@ -91,20 +91,18 @@
         <div class="breadcrumb-section">
             <ol class="breadcrumb">
                 <li><a href="{{URL::to('/')}}">Home</a></li>
-                <li>Settings</li>
+                <li>Notifications</li>
             </ol>
             <h2 class="title">Settings</h2>
         </div>
 
 
         <div class="adpost-details post-resume">
-
-
             <div class="row">
                 <div class="col-md-8">
                     <div class="section postdetails">
                         <div class="description-info">
-                            <h2>Notifications</h2>
+
                             <div class="row">
 
                                 <table class="table">
@@ -116,6 +114,7 @@
                                             <td >{{date('d M',strtotime($notification->created_at)) }}</td>
                                         </tr>
                                     @endforeach
+                                    @php(auth()->user()->unreadNotifications->markAsRead())
                                 </table>
                             </div>
                         </div>

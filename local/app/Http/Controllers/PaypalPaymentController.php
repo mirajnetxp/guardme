@@ -175,6 +175,7 @@ class PaypalPaymentController extends Controller
      */
     public function addMoneyPaypal(Request $request)
     {
+
         $this->validate( $request, [
             'amount' => 'required',
             'success_url' => 'required',

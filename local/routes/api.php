@@ -62,6 +62,7 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 
 	// add balance to wallet
 	Route::post( 'add-money', 'JobsController@addMoney' )->name( 'api.add.money' );
+
 	// activate job, it will add 3 credit entries i) job fee ii) admin fee iii) vat fee
 	Route::post( 'activate-job/{id}', 'JobsController@activateJob' )->name( 'api.activate.job' );
 	Route::post( 'apply/{id}', 'JobsController@applyJob' )->name( 'api.apply.job' );
@@ -195,3 +196,5 @@ Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' =
 	Route::get( '/mark/as/read ', 'NotificationController@markAsRead' );
 
 } );
+
+Route::post( '/add-balance-via-paypal', 'PaypalPaymentController@addMoneyPaypal' );

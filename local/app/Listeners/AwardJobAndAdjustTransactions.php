@@ -45,6 +45,7 @@ class AwardJobAndAdjustTransactions
         if ($vacant_positions > 0) {
             DB::transaction(function () use ($application, $reserved_amount_transaction, $job){
                 $old_amount = $reserved_amount_transaction->amount;
+                $paypal_id = $reserved_amount_transaction->paypal_id;
                 $job_details = Job::calculateJobAmountWithJobObject($job);
                 $application_job_fee_amount = $job_details['single_freelancer_fee'];
                 $new_amount = $old_amount - $application_job_fee_amount;
@@ -64,6 +65,7 @@ class AwardJobAndAdjustTransactions
                 $trans->job_id = $application->job_id;
                 $trans->title = 'Job Fee';
                 $trans->user_id = $employer_id;
+                $trans->paypal_id = $paypal_id;
                 $trans->save();
                 $application->is_hired = 1;
                 $application->save();

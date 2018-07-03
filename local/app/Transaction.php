@@ -387,4 +387,149 @@ class Transaction extends Model {
 		$transaction = Transaction::where('job_id', $job_id)->where('debit_credit_type', 'debit')->orderBy('id', 'desc')->get()->first();
 		return $transaction;
 	}
+
+	/**
+	 * @param \Responsive\Job $job
+	 * @return array
+	 */
+	public function giveRefund(Job $job) {
+		$job_id = $job->id;
+		$schedules = $job->schedules()->get();
+		$first_date = $schedules[0];
+		$start_date_time = $first_date->start;
+		$current_date_time = new \DateTime();
+		$schedule_date_time = new \DateTime($start_date_time);
+		// get list of hired applications on the job
+		$hired_applications = JobApplication::where('job_id', $job_id)->where('is_hired', 1)->get();
+		if ($current_date_time >= $schedule_date_time && count($hired_applications) > 0) {
+			$return_data   = [ "You can not cancel this job" ];
+			$return_status = 500;
+		} else {
+			$interval = $current_date_time->diff($schedule_date_time);
+			$days_left = $interval->format('%d');
+			$months_left = $interval->format('%m');
+			$years_left = $interval->format('%y');
+			if ($days_left > 0 || $months_left > 0 || $years_left > 0) {
+				// make a full refund
+				$this->processRefund($job);
+			} else if (count($hired_applications) == 0) {
+				// make a full refund
+				$this->processRefund($job);
+			} else {
+				/* have to do partial refund */
+				$this->processRefund($job, 'partial');
+
+			}
+			$return_data   = [ "Job canceled successfully" ];
+			$return_status = 200;
+		}
+		return ['return_data' => $return_data, 'return_status' => $return_status];
+	}
+
+	/**
+	 * @param $job
+	 * @param string $type
+	 */
+	private function processRefund($job, $type = 'full') {
+		$job_id = $job->id;
+		if ($type == 'full') {
+			DB::transaction(function () use ($job_id) {
+				$full_debit_transaction = $this->getDebitTransactionForJob($job_id);
+				// disable all old credit transactions for the job
+				DB::table($this->table)
+					->where('job_id', $job_id)
+					->where('debit_credit_type',  'credit')
+					->update(['status' => 0]);
+
+				// create new credit entry for refund to equalize the debit funds
+				$transaction_params = [
+					'debit_credit_type' => 'credit',
+					'type' => 'refund',
+					'title' => 'full refund for the job',
+					'job_id' => $job_id,
+					'user_id' => auth()->user()->id,
+					'paypal_id' => $full_debit_transaction->paypal_id,
+					'status' => 1,
+					'amount' => $full_debit_transaction->amount,
+					'credit_payment_status' => 'paid',
+					'extra_details' => 'full refund of the amount ' . $full_debit_transaction->amount . ' is made for canceling the job with job id '. $job_id
+				];
+				DB::table( $this->table )->insert( $transaction_params );
+				DB::table('security_jobs')->where('id', $job_id)->update(['status' => 0]);
+			});
+		} else {
+			/*criteria ---> deduct 10% from the vat fee,
+									10% from admin fee, and
+									10% from job fee for each hired freelancer
+			rest of the amount will be refunded to the employer by creating an equalent credit entry in transactions*/
+			// calculate total amount to be refunded
+			$total_refund_amounts = [];
+
+			// get all credit entries
+			$credit_entries = Transaction::where('job_id', $job_id)->where('debit_credit_type', 'credit')->get();
+
+			if (!empty($credit_entries)) {
+				$refund_paypal_id = $credit_entries[0]->paypal_id;
+				foreach ($credit_entries as $key => $credit_row) {
+					if ($credit_row->type == 'job_fee' && empty($credit_row->application_id)) {
+						 if ($credit_row->amount > 0) {
+							 $total_refund_amounts['full amount for un awarded vacancies'] = $credit_row->amount;
+						 }
+					} else {
+						if ($credit_row->amount > 0) {
+							$penalty_value = ($credit_row->amount * 10)/100;
+							$credit_value = $credit_row->amount - $penalty_value;
+							if ($credit_row->type == 'job_fee') {
+								$total_refund_amounts['amount after 10% penalty for job fee for application_id ' . $credit_row->application_id] = $credit_value;
+							} else {
+								$total_refund_amounts['amount after 10% penalty for ' . $credit_row->type . ' for job_id ' . $credit_row->job_id] = $credit_value;
+							}
+							$penalty_rows[] = [
+								'user_id' => $credit_row->user_id,
+								'job_id' => $credit_row->job_id,
+								'debit_credit_type' => $credit_row->debit_credit_type,
+								'amount' => $penalty_value,
+								'type' => $credit_row->type,
+								'title' => '10% penalty',
+								'status' => 1,
+								'credit_payment_status' => 'paid',
+								'paypal_id' => $credit_row->paypal_id,
+								'application_id' => $credit_row->application_id
+							];
+						}
+					}
+
+					if (!empty($total_refund_amounts)) {
+						// add refund row
+						$refund_row = [
+							'user_id' => auth()->user()->id,
+							'job_id' => $job_id,
+							'debit_credit_type' => 'credit',
+							'amount' => array_sum($total_refund_amounts),
+							'type' => 'refund',
+							'title' => 'amont after deducting 10% penalty',
+							'status' => 1,
+							'credit_payment_status' => 'paid',
+							'extra_details' => json_encode($total_refund_amounts),
+							'paypal_id' => $refund_paypal_id
+						];
+					}
+				}
+			}
+
+
+			DB::transaction(function () use ($job_id, $penalty_rows, $refund_row) {
+				// disable credit rows for the job
+				DB::table($this->table)->where('job_id', $job_id)->where('debit_credit_type', 'credit')->update(['status' => 0, 'title' => 'canceled']);
+				// add penalty rows //TODO add both of them to the same query
+				DB::table($this->table)->insert($penalty_rows);
+				// add refund row
+				DB::table($this->table)->insert($refund_row);
+				// make job inactive
+				DB::table('security_jobs')->where('id', $job_id)->update(['status' => 0]);
+			});
+		}
+
+	}
+
 }

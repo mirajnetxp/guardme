@@ -229,10 +229,10 @@ public function sangvish_viewshop_old()
 
 
 
-    function editcompany()
-    {
-        $userid = Auth::user()->id;
-        $editprofile = User::where('id',$userid)->with(['address','company','company.bcategory'])->get();
+    function editcompany(){
+
+	    $userid = Auth::user()->id;
+	    $editprofile = User::where('id',$userid)->with(['address','company','company.bcategory'])->get();
 
         $useraddress = $editprofile[0]->address;
 

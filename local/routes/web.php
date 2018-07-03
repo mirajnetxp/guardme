@@ -77,6 +77,7 @@ Route::get( '/addcompany', 'ShopController@sangvish_addshop' );
 
 Route::get( '/editshop/{id}', 'ShopController@sangvish_editshop' );
 
+//Company Route
 Route::get( '/company', 'ShopController@editcompany' );
 Route::post( '/updatecompany', [ 'as' => 'update-company', 'uses' => 'ShopController@updatecompany' ] );
 
@@ -231,6 +232,11 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	                                           'uses' => 'Admin\ReferralController@balance'
 	] );
 	Route::get( '/admin/index', 'Admin\DashboardController@index' );
+
+	/* message */
+	Route::get('admin/message','Admin\MessageController@index');
+	Route::post('admin/message','Admin\MessageController@sendMessage');
+	/* end message */
 
 	/* user */
 	Route::get( '/admin/users', 'Admin\UsersController@index' );

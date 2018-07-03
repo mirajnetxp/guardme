@@ -1,0 +1,95 @@
+1. Get The Company details
+-----------------------------------------------------------
+
+		Api:  api/get/company/details
+		Type: GET
+		Requirements : Authorization
+
+		Respose:
+						{
+                            "address": {
+                                "id": 1,
+                                "user_id": 19,
+                                "postcode": "L1 1QE",
+                                "houseno": "",
+                                "line1": "The Leather Shop",
+                                "line2": "16-18 Lyceum Place",
+                                "line3": "Ranelagh Street",
+                                "line4": "",
+                                "locality": "",
+                                "citytown": "Liverpool",
+                                "country": "UK",
+                                "latitude": "53.4047966003418",
+                                "longitude": "-2.9799249172210693",
+                                "created_at": "2018-06-21 13:26:13",
+                                "updated_at": "2018-06-21 13:30:04"
+                            },
+                            "company": {
+                                "id": 31,
+                                "shop_name": "Caja Studios",
+                                "address": "The Leather Shop, 16-18 Lyceum Place, Ranelagh Street, Liverpool - L1 1QE, UK",
+                                "city": "",
+                                "pin_code": "",
+                                "country": "",
+                                "state": "",
+                                "shop_phone_no": "5874518451",
+                                "description": "Sample company",
+                                "shop_date": "",
+                                "start_time": "",
+                                "end_time": "",
+                                "cover_photo": "",
+                                "profile_photo": "",
+                                "seller_email": "employer@employer.com",
+                                "user_id": 19,
+                                "featured": "no",
+                                "status": "approved",
+                                "admin_email_status": "0",
+                                "booking_opening_days": "",
+                                "booking_per_hour": "",
+                                "business_categoryid": 3,
+                                "company_email": "employer@employer.com"
+                            }
+                        }
+
+
+1. Update Company details
+-----------------------------------------------------------
+
+		Api:  api/update/company/details
+		Type: POST
+		Requirements : Authorization ,
+		Pay load:
+		            shop_name
+		            business_categoryid
+		            shop_phone_no
+		            company_email
+		            address
+		            status
+		            description
+
+		Respose:    You will get a an updated company details.
+						{
+                            "id": 31,
+                            "shop_name": "jhgvf yg",
+                            "address": null,
+                            "city": "",
+                            "pin_code": "",
+                            "country": "",
+                            "state": "",
+                            "shop_phone_no": null,
+                            "description": null,
+                            "shop_date": "",
+                            "start_time": "",
+                            "end_time": "",
+                            "cover_photo": "",
+                            "profile_photo": "",
+                            "seller_email": "employer@employer.com",
+                            "user_id": 19,
+                            "featured": "no",
+                            "status": "approved",
+                            "admin_email_status": "0",
+                            "booking_opening_days": "",
+                            "booking_per_hour": "",
+                            "business_categoryid": null,
+                            "company_email": null
+                        }

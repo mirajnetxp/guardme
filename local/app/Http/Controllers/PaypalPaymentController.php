@@ -137,7 +137,8 @@ class PaypalPaymentController extends Controller
                 'amount' => $total_amount_paid,
                 'user_id' => $user_id,
                 'paypal_payment_status' => $result->getState(),
-                'status' => 1
+                'job_id' => $job_id,
+                'status' => 1,
             ];
             // add money
             $walletTransaction = new WalletTransaction();

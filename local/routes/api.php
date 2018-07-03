@@ -92,6 +92,9 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::post( '/pause/{job_id}', 'JobsController@pauseJob' )->name( 'api.pause.job' );
 	Route::post( '/restart/{job_id}', 'JobsController@restartJob' )->name( 'api.restart.job' );
 
+	// cancel job
+	Route::post('/cancel-job/{job_id}', 'JobsController@cancelJob')->name('api.cancel.whole.job');
+
 } );
 
 

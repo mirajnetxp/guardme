@@ -77,6 +77,7 @@ Route::get( '/addcompany', 'ShopController@sangvish_addshop' );
 
 Route::get( '/editshop/{id}', 'ShopController@sangvish_editshop' );
 
+//Company Route
 Route::get( '/company', 'ShopController@editcompany' );
 Route::post( '/updatecompany', [ 'as' => 'update-company', 'uses' => 'ShopController@updatecompany' ] );
 

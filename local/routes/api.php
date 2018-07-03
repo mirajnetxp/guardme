@@ -198,3 +198,12 @@ Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' =
 } );
 
 Route::post( '/add-balance-via-paypal', 'PaypalPaymentController@addMoneyPaypal' );
+
+// Company api
+Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
+
+	Route::get( '/get/company/details', 'ShopController@getDetails' );
+	Route::post( '/update/company/details', 'ShopController@updatecompany' );
+
+
+} );

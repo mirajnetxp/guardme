@@ -439,7 +439,7 @@ class Transaction extends Model {
 				DB::table($this->table)
 					->where('job_id', $job_id)
 					->where('debit_credit_type',  'credit')
-					->update(['status' => 0]);
+					->update(['status' => 0, 'title' => 'canceled']);
 
 				// create new credit entry for refund to equalize the debit funds
 				$transaction_params = [

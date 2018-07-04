@@ -357,6 +357,7 @@ public function sangvish_delaccount()
                 $user->work_category = $data['category'];
                 $user->visa_no = $data['visa_no'];
                 $user->niutr_no = $data['niutr_no'];
+                $user->utr_no = $data['utr_no'];
                 $user->nation_id = $data['nationality'];
                 $user->address_proof = $addrproofname;
                 $user->save();

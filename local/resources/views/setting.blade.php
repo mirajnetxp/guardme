@@ -74,6 +74,69 @@
         }
 
         /*--------- END --------*/
+        /* The container */
+        .radio-container {
+            /*display: block;*/
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default radio button */
+        .radio-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .radio-container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .radio-container input:checked ~ .checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .radio-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .radio-container .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
     </style>
 </head>
 <body>
@@ -105,11 +168,9 @@
                     <div class="section postdetails">
                         <div class="description-info">
                             <h2>Settings</h2>
-                            <div class="row">
 
-                            </div>
-                            @if (auth()->user()->admin == 2)
-                                <table class="display nowrap table">
+                            <table class="display nowrap table">
+                                @if (auth()->user()->admin == 2)
                                     <tr>
                                         <td><h3>Profile Visibility</h3></td>
                                         <td>
@@ -117,19 +178,86 @@
                                                 <label class="switch">
                                                     @if($visible)
                                                         <input id="visibality" name="visibality"
-                                                                type="checkbox" checked>
+                                                               type="checkbox" checked>
                                                     @else
                                                         <input id="visibality" name="visibality"
-                                                                type="checkbox">
+                                                               type="checkbox">
                                                     @endif
                                                     <div class="slider round"></div>
                                                 </label>
                                             </h3>
                                         </td>
                                     </tr>
-                                </table>
-                            @endif
-                            <div><a href="{{URL::to('delete_account')}}" class="btn">Close account</a></div>
+                                @endif
+                                <tr>
+                                    <td><h3>Close your account</h3></td>
+                                    <td>
+                                        <h3>
+                                            <a href="{{URL::to('delete_account')}}" class="btn"
+                                               style="margin-left: 0!important">Close account</a>
+                                        </h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h3>Payment Method</h3></td>
+                                    <td>
+                                        @if($paymethod)
+                                            <h3 class="pmm">
+                                                <label class="radio-container">Paypal
+                                                    <input type="radio" value="payple"
+													       <?php if ( $paymethod->method_type == 'payple' )
+														       echo 'checked' ?> name="payment_method">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radio-container">Bank
+                                                    <input type="radio" value="bank"
+													       <?php if ( $paymethod->method_type == 'bank' )
+														       echo 'checked' ?> name="payment_method">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </h3>
+                                        @else
+                                            <h3 class="pmm hidden">
+                                                <label class="radio-container">Paypal
+                                                    <input type="radio" value="payple" name="payment_method">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="radio-container">Bank
+                                                    <input type="radio" value="bank" name="payment_method">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </h3>
+                                        @endif
+                                        {{--Model--}}
+                                        <div class="modal fade" id="payment-method-model" tabindex="-1" role="dialog"
+                                             aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 25px">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+
+                                                        <h4 class="modal-title"></h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="p_method_detail_form" method="POST"
+                                                              action="add/payment/method">
+                                                            <input type="hidden" name="method_type" value="payple">
+
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                        <button type="submit" form="p_method_detail_form"
+                                                                class="btn btn-success">Save
+                                                        </button>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -193,33 +321,65 @@
 
 
 <script>
-    $("#visibality").click(function () {
 
-        $.ajax({
-            url: "{{URL::to('/')}}/settings/visibality",
-            method: "GET",
-            dataType: 'json',
-            success: function (d) {
 
-                if (d == '101') {
-                    alert('Your profile is now public.')
-                    $(this).attr("checked", "true");
-                } else {
-                    alert('Your profile is now private.')
-                    $(this).attr("checked", "false");
-                }
-            },
-            error: function (xhr, textStatus, errorThrown) {
+    $(document).ready(function () {
+        $('.pmm').removeClass('hidden');
+        $('input[type=radio][name=payment_method]').change(function () {
+            if (this.value == 'payple') {
+                $('.modal-title').html('Paypal Email')
+                $('#p_method_detail_form').html('{{csrf_field()}}' + '<input type="hidden" name="method_type" value="payple"><div id="paypalEmail">\n' +
+                    '                                                            <h5><input type="email" name="payple_email" class="form-control"\n' +
+                    '                                                                       placeholder="Paypal email"></h5>\n' +
+                    '                                                        </div>')
+                $('#payment-method-model').modal('show')
 
-                if (typeof xhr.responseText == "undefined") {
-                    root.mess = "Internet Connection is Slow or Disconnect";
-                    root.retry = "Retry";
-                    window.ajaxcurrent = this;
-                    return
-                }
+            }
+            else if (this.value == 'bank') {
+                $('.modal-title').html('Bank Details')
+                $('#p_method_detail_form').html('{{csrf_field()}}' + '<input type="hidden" name="method_type" value="bank"><div id="bankDetail">\n' +
+                    '                                                            <h5><input type="text" class="form-control"\n' +
+                    '                                                                       placeholder="Bank Name" name="bank_name"></h5>\n' +
+                    '                                                            <h5><input type="text" class="form-control"\n' +
+                    '                                                                       placeholder="Account Name" name="ac_name"></h5>\n' +
+                    '                                                            <h5><input type="text" class="form-control"\n' +
+                    '                                                                       placeholder="Sort Code" name="sort_code"></h5>\n' +
+                    '                                                            <h5><input type="text" class="form-control"\n' +
+                    '                                                                       placeholder="Bank Account Number" name="ac_number"></h5>\n' +
+                    '                                                        </div>')
+                $('#payment-method-model').modal('show')
             }
         });
-    })
+
+        $("#visibality").click(function () {
+
+            $.ajax({
+                url: "{{URL::to('/')}}/settings/visibality",
+                method: "GET",
+                dataType: 'json',
+                success: function (d) {
+
+                    if (d == '101') {
+                        alert('Your profile is now public.')
+                        $(this).attr("checked", "true");
+                    } else {
+                        alert('Your profile is now private.')
+                        $(this).attr("checked", "false");
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                    if (typeof xhr.responseText == "undefined") {
+                        root.mess = "Internet Connection is Slow or Disconnect";
+                        root.retry = "Retry";
+                        window.ajaxcurrent = this;
+                        return
+                    }
+                }
+            });
+        })
+
+    });
 </script>
 </body>
 </html>

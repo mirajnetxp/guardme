@@ -209,4 +209,5 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/update/company/details', 'ShopController@updatecompany' );
 
 
-} );
+});
+

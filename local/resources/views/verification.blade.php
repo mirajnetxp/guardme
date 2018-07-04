@@ -58,12 +58,21 @@
                             @endif
                         </select>                               
                     </div>
-                    <div id="niutr_no_field" class="form-group{{ $errors->has('niutr_no') ? ' has-error' : '' }}">
-                        <label for="niutr_no" >NI or UTR Number</label>
+                    <div id="niutr_no_field" class="form-group{{ $errors->has('niutr_no') ? ' has-error' : '' }}" style="display: none">
+                        <label for="niutr_no" >NI Number</label>
                         <input id="niutr_no" type="text" class="form-control text-input" name="niutr_no" value="<?php echo $editprofile[0]->niutr_no;?>">
                         @if ($errors->has('niutr_no'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('niutr_no') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div id="utr_no_field" class="form-group{{ $errors->has('utr_no') ? ' has-error' : '' }}" style="display: none">
+                        <label for="utr_no" >UTR Number</label>
+                        <input id="utr_no" type="text" class="form-control text-input" name="utr_no" value="<?php echo $editprofile[0]->utr_no;?>">
+                        @if ($errors->has('utr_no'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('utr_no') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -112,7 +121,6 @@
                             echo Form::input('date', 'sia_expirydate', old('siaexpiry',$editprofile[0]->sia_expirydate), ['class' => 'trackprogress form-control', 'placeholder' => 'Expiry Date']);
                         ?>
                     </div>
-
                     <div class="form-group">
                         <label for="passphoto" >Passport photograph</label>
                         <input type="file" id="passphoto" name="passphoto" class="trackprogress form-control">
@@ -127,7 +135,6 @@
                             </span>
                         @endif                                
                     </div>
-                        
                     <div class="form-group">
                         <label for="pass_page" >Passport information page</label>
                         <input type="file" id="pass_page" name="pass_page" class="trackprogress form-control">
@@ -218,16 +225,22 @@
             $("#nationality").change(function(){
                 if ($('#nationality option:selected').text() == "United Kingdom") {
                     $("#niutr_no_field").css("display", "block");
+                    $("#utr_no_field").css("display", "block");
                     $("#niutr_no").val("<?php echo $editprofile[0]->niutr_no;?>");
+                    $("#utr_no").val("<?php echo $editprofile[0]->utr_no;?>");
                 }
                 else {
                     $("#niutr_no_field").css("display", "none");
+                    $("#utr_no_field").css("display", "none");
                     $("#niutr_no").val("");
+                    $("#utr_no").val("");
                 }
             });
             if ($('#nationality option:selected').text() == "United Kingdom") {
                 $("#niutr_no_field").css("display", "block");
+                $("#utr_no_field").css("display", "block");
                 $("#niutr_no").val("<?php echo $editprofile[0]->niutr_no;?>");
+                $("#utr_no").val("<?php echo $editprofile[0]->utr_no;?>");
             }
         });
     </script>

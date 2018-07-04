@@ -143,8 +143,7 @@
                                          <template v-if="action === 'unbind'"> Remove phone number</template>
                                          <template v-if="action === 'confirm'"> SMS Confirmation</template>
                                     </h4>
-                           
-                     
+
                                 <div class="form-group phone-input">
                                     <label class="control-label">
                                                      Phone Number <template v-if="action === 'confirm'">(<a href="#" @click.prevent="change">change</a>)</template>

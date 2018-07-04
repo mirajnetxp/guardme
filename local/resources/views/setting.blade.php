@@ -216,6 +216,20 @@
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </h3>
+                                            @if($paymethod->method_type == 'payple')
+                                                Payple Email : {{$paymethod->method_details}}
+                                            @else
+                                                @php($det=json_decode($paymethod->method_details))
+                                            <p class="text-center" style="border-bottom: 1px solid;">Bank details</p>
+
+                                                Bank name : <strong>{{$det->bank_name}}</strong>
+                                                <br>
+                                                Account Name : <strong>{{$det->ac_name}}</strong>
+                                                <br>
+                                                Sort Code : <strong>{{$det->sort_code}}</strong>
+                                                <br>
+                                                Bank Account Number : <strong>{{$det->ac_number}}</strong>
+                                            @endif
                                         @else
                                             <h3 class="pmm hidden">
                                                 <label class="radio-container">Paypal
@@ -228,6 +242,9 @@
                                                 </label>
                                             </h3>
                                         @endif
+                                        <div>
+
+                                        </div>
                                         {{--Model--}}
                                         <div class="modal fade" id="payment-method-model" tabindex="-1" role="dialog"
                                              aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 25px">

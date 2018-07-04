@@ -40,8 +40,10 @@ class SettingController extends Controller {
 		if ( ! Auth::Check() ) {
 			return redirect( '/' );
 		}
-		$visible = auth()->user()->freelancerSettings->visible;
-		return view( 'setting', compact('visible') );
+		$user=auth()->user();
+		$visible = $user->freelancerSettings->visible;
+		$paymethod=$user->paymentmethod;
+		return view( 'setting', compact('visible','paymethod') );
 	}
 
 	public function visibality() {

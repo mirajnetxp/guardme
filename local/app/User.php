@@ -683,5 +683,9 @@ class User extends Authenticatable {
 		return $this->hasMany( SavedJob::class, 'user_id' );
 	}
 
+	public function paymentmethod() {
+		return $this->hasOne( PaymentMethod::class );
+	}
+
 
 }

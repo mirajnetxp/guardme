@@ -121,7 +121,6 @@ class ShopController extends Controller
     public function sangvish_verification()
     {
 
-
     	$userid = Auth::user()->id;
 		$wallet      = new Transaction();
 		$wallet_data = $wallet->getAllTransactionsAndEscrowBalance();

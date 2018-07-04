@@ -5,7 +5,6 @@ use Responsive\Http\Repositories\UsersRepository;
 use Responsive\User;
 
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,7 +34,6 @@ Route::get('/', 'CommonController@home');*/
 //		]
 //	);
 //});
-
 
 
 //social login
@@ -136,7 +134,6 @@ Route::get( '/settings/visibality', 'SettingController@visibality' );
 Route::get( '/all/notifications', 'NotificationController@all' );
 
 
-
 /* Authentication routes */
 Auth::routes();
 
@@ -225,17 +222,19 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 
 	Route::get( '/admin', 'Admin\DashboardController@index' );
 	Route::get( '/admin/referral/items', 'Admin\ReferralController@index' );
-	Route::post( '/admin/referral/item/create', [ 'as'   => 'admin.itemcreate',
-	                                              'uses' => 'Admin\ReferralController@create'
+	Route::post( '/admin/referral/item/create', [
+		'as'   => 'admin.itemcreate',
+		'uses' => 'Admin\ReferralController@create'
 	] );
-	Route::post( '/admin/users/balance/add', [ 'as'   => 'admin.addbalance',
-	                                           'uses' => 'Admin\ReferralController@balance'
+	Route::post( '/admin/users/balance/add', [
+		'as'   => 'admin.addbalance',
+		'uses' => 'Admin\ReferralController@balance'
 	] );
 	Route::get( '/admin/index', 'Admin\DashboardController@index' );
 
 	/* message */
-	Route::get('admin/message','Admin\MessageController@index');
-	Route::post('admin/message','Admin\MessageController@sendMessage');
+	Route::get( 'admin/message', 'Admin\MessageController@index' );
+	Route::post( 'admin/message', 'Admin\MessageController@sendMessage' );
 	/* end message */
 
 	/* user */
@@ -254,13 +253,15 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	/* services */
 	Route::get( '/admin/services', 'Admin\ServicesController@index' );
 	Route::get( '/admin/addservice', 'Admin\AddserviceController@formview' );
-	Route::post( '/admin/addservice', [ 'as'   => 'admin.addservice',
-	                                    'uses' => 'Admin\AddserviceController@addservicedata'
+	Route::post( '/admin/addservice', [
+		'as'   => 'admin.addservice',
+		'uses' => 'Admin\AddserviceController@addservicedata'
 	] );
 	Route::get( '/admin/services/{id}', 'Admin\ServicesController@destroy' );
 	Route::get( '/admin/editservice/{id}', 'Admin\EditserviceController@showform' );
-	Route::post( '/admin/editservice', [ 'as'   => 'admin.editservice',
-	                                     'uses' => 'Admin\EditserviceController@editservicedata'
+	Route::post( '/admin/editservice', [
+		'as'   => 'admin.editservice',
+		'uses' => 'Admin\EditserviceController@editservicedata'
 	] );
 
 	/* end services */
@@ -271,16 +272,18 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	Route::get( '/admin/subservices', 'Admin\SubservicesController@index' );
 	Route::get( '/admin/addsubservice', 'Admin\AddsubserviceController@formview' );
 	Route::get( '/admin/addsubservice', 'Admin\AddsubserviceController@getservice' );
-	Route::post( '/admin/addsubservice', [ 'as'   => 'admin.addsubservice',
-	                                       'uses' => 'Admin\AddsubserviceController@addsubservicedata'
+	Route::post( '/admin/addsubservice', [
+		'as'   => 'admin.addsubservice',
+		'uses' => 'Admin\AddsubserviceController@addsubservicedata'
 	] );
 	Route::get( '/admin/subservices/{id}', 'Admin\SubservicesController@destroy' );
 
 
 	Route::get( '/admin/editsubservice/{id}', 'Admin\EditsubserviceController@edit' );
 
-	Route::post( '/admin/editsubservice', [ 'as'   => 'admin.editsubservice',
-	                                        'uses' => 'Admin\EditsubserviceController@editsubservicedata'
+	Route::post( '/admin/editsubservice', [
+		'as'   => 'admin.editsubservice',
+		'uses' => 'Admin\EditsubserviceController@editsubservicedata'
 	] );
 	/* end sub services */
 
@@ -289,13 +292,15 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 
 	Route::get( '/admin/testimonials', 'Admin\TestimonialsController@index' );
 	Route::get( '/admin/add-testimonial', 'Admin\AddtestimonialController@formview' );
-	Route::post( '/admin/add-testimonial', [ 'as'   => 'admin.add-testimonial',
-	                                         'uses' => 'Admin\AddtestimonialController@addtestimonialdata'
+	Route::post( '/admin/add-testimonial', [
+		'as'   => 'admin.add-testimonial',
+		'uses' => 'Admin\AddtestimonialController@addtestimonialdata'
 	] );
 	Route::get( '/admin/testimonials/{id}', 'Admin\TestimonialsController@destroy' );
 	Route::get( '/admin/edit-testimonial/{id}', 'Admin\EdittestimonialController@showform' );
-	Route::post( '/admin/edit-testimonial', [ 'as'   => 'admin.edit-testimonial',
-	                                          'uses' => 'Admin\EdittestimonialController@testimonialdata'
+	Route::post( '/admin/edit-testimonial', [
+		'as'   => 'admin.edit-testimonial',
+		'uses' => 'Admin\EdittestimonialController@testimonialdata'
 	] );
 
 
@@ -376,7 +381,7 @@ Route::group( [ 'middleware' => 'web' ], function () {
 Route::group( [ 'prefix' => '/support/tickets', 'middleware' => 'auth' ], function () {
 	Route::get( '/', 'TicketController@index' )->name( 'ticket.index' );
 	Route::get( '/create', 'TicketController@create' )->name( 'ticket.create' );
-	Route::post( '/ticket/store', 'TicketController@store' )->name('ticket.store' );
+	Route::post( '/ticket/store', 'TicketController@store' )->name( 'ticket.store' );
 	Route::post( '/', 'TicketController@close_account_store' )->name( 'ticket.close_account' );
 	Route::get( '/{id}', 'TicketController@show' )->where( 'id', '[0-9]+' )->name( 'ticket.show' );
 	Route::put( '/{id}', 'TicketController@update' )->where( 'id', '[0-9]+' )->name( 'ticket.update' );
@@ -433,6 +438,9 @@ Route::group( [ 'middleware' => 'auth' ], function () {
 	Route::get( '/my/teams', 'TeamsController@myTeams' )->name( 'my.teams' );
 	Route::get( '/teams/create', 'TeamsController@createTeam' )->name( 'create.team' );
 	Route::get( '/team/detail/{team_id}', 'TeamsController@showTeam' )->name( 'team.detail' );
+
+	Route::post( 'add/payment/method', 'PaymentMethodController@add' );
+
 } );
 
 Route::post( '/add-balance-via-paypal', 'PaypalPaymentController@addMoneyPaypal' )->name( 'add.money.paypal' )->middleware( 'auth' );

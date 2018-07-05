@@ -532,4 +532,34 @@ class Transaction extends Model {
 
 	}
 
+	public function getEmployerPaymentRecords($transaction_id = null) {
+		$query = Transaction::where('debit_credit_type', 'credit')
+			->where(function ($query){
+				$query->where('credit_payment_status', 'paid');
+				$query->orWhere('credit_payment_status', 'complete');
+			})
+			->where('type', 'refund')
+			->where('transactions.status', 1);
+			if (!empty($transaction_id)) {
+				$query->where('transactions.id', $transaction_id);
+			}
+		$query->join('users', 'users.id', 'transactions.user_id')
+			->join('security_jobs', 'security_jobs.id', 'transactions.job_id')
+			->select(
+				'users.id',
+				'users.name',
+				'users.email',
+				'transactions.id as transaction_id',
+				'transactions.amount',
+				'transactions.type',
+				'transactions.status',
+				'transactions.paypal_id',
+				'transactions.extra_details',
+				'transactions.credit_payment_status',
+				'security_jobs.title as job_title'
+			);
+			$transactions = $query->get();
+		return $transactions;
+	}
+
 }

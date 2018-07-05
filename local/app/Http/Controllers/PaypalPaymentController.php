@@ -271,12 +271,13 @@ class PaypalPaymentController extends Controller
         $execution->setPayerId(request()->get('PayerID'));
         //Execute the payment
         $result = $payment->execute($execution, $this->_api_context);
+        $paypal_id = $result->getId();
         if ($result->getState() == 'approved') { // payment made
             $paypalTransactions = $result->getTransactions();
             $total_amount_paid = $paypalTransactions[0]->getAmount()->getTotal();
             // call add money function to add amount
             $add_money_params = [
-                'paypal_id' => $payment_id,
+                'paypal_id' => $paypal_id,
                 'amount' => $total_amount_paid,
                 'user_id' => $user_id,
                 'paypal_payment_status' => $result->getState(),

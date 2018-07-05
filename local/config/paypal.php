@@ -9,7 +9,7 @@ return array(
     'settings' => array(
         /**
          * Available option 'sandbox' or 'live'
-         */
+         */ 
         'mode' => 'sandbox',
         /**
          * Specify the max request time in seconds

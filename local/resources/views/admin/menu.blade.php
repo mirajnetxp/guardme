@@ -16,6 +16,7 @@ $url = URL::to("/");
   <li>
     <a href="<?php echo $url;?>/admin/users"><i class="ti-user"></i> <p> Users </p></a>
   </li>
+  <li><a href="<?php echo $url;?>/admin/payments/employer"><i class="ti-check"></i><p>Payments</p></a></li>
   <li><a href="<?php echo $url;?>/admin/Verification"><i class="ti-check"></i><p>Verification</p></a></li>
 <!-- <li><a href="<?php echo $url;?>/admin/services"><i class="ti-settings"></i> <p>Services</p> </a></li> -->
 <!-- <li><a href="<?php echo $url;?>/admin/subservices"><i class="ti-settings"></i><p> Sub Services</p> </a></li> -->

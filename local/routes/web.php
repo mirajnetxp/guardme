@@ -326,6 +326,12 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 
 	/* end user doc Verification */
 
+	/*payments routes*/
+	Route::get( '/admin/payments/{type}', 'Admin\PaymentsController@index' );
+	Route::get( '/admin/payment/details/{transaction_id}', 'Admin\PaymentsController@employerPaymentDetails' )->name('employer.payment.details');
+	Route::post( '/admin/complete/refund/{transaction_id}', 'Admin\PaymentsController@completeRefund' )->name('complete.refund');
+	/*payments routes*/
+
 	/* start shop */
 
 	Route::get( '/admin/shop', 'Admin\ShopController@index' );

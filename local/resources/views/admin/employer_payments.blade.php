@@ -86,9 +86,8 @@
                                 <div class="form-group">
                                     <label for="gender" class="control-label">User Type</label>
                                     <select name="user_type" id="user_type" class="form-control">
-                                        <option value="">All</option>
-                                        <option value="1">Freelancers</option>
-                                        <option value="2">Employers</option>
+                                        <option value="1">Employers</option>
+                                        <option value="2">Freelancers</option>
                                     </select>
                                 </div>
                             </form>

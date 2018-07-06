@@ -401,6 +401,12 @@ class Transaction extends Model {
 		$schedule_date_time = new \DateTime($start_date_time);
 		// get list of hired applications on the job
 		$hired_applications = JobApplication::where('job_id', $job_id)->where('is_hired', 1)->get();
+		$completed_applications = [];
+		if (!empty($hired_applications)) {
+			foreach ($hired_applications as $key => $app) {
+				$completed_applications[$app->id] = $app->id;
+			}
+		}
 		if ($current_date_time >= $schedule_date_time && count($hired_applications) > 0) {
 			$return_data   = [ "You can not cancel this job" ];
 			$return_status = 500;
@@ -417,7 +423,7 @@ class Transaction extends Model {
 				$this->processRefund($job);
 			} else {
 				/* have to do partial refund */
-				$this->processRefund($job, 'partial');
+				$this->processRefund($job, $completed_applications, 'partial');
 
 			}
 			$return_data   = [ "Job canceled successfully" ];
@@ -430,7 +436,7 @@ class Transaction extends Model {
 	 * @param $job
 	 * @param string $type
 	 */
-	private function processRefund($job, $type = 'full') {
+	private function processRefund($job, $completed_applications = [], $type = 'full') {
 		$job_id = $job->id;
 		if ($type == 'full') {
 			DB::transaction(function () use ($job_id) {
@@ -471,6 +477,11 @@ class Transaction extends Model {
 			if (!empty($credit_entries)) {
 				$refund_paypal_id = $credit_entries[0]->paypal_id;
 				foreach ($credit_entries as $key => $credit_row) {
+					if (!empty($completed_applications) && !empty($credit_row->application_id)) {
+						if (!empty($completed_applications[$credit_row->application_id])) {
+							continue;
+						}
+					}
 					if ($credit_row->type == 'job_fee' && empty($credit_row->application_id)) {
 						 if ($credit_row->amount > 0) {
 							 $total_refund_amounts['full amount for un awarded vacancies'] = $credit_row->amount;

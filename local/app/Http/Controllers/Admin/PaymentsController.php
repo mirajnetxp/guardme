@@ -67,16 +67,15 @@ class PaymentsController extends Controller
         $sale->setId($sale_id);
         try {
             $refundedSale = $sale->refund($refund, $this->_api_context);
-            dd($refundedSale);
-            Transaction::where('id', $transaction->transaction_id)->update('credit_payment_status', 'complete');
+            Transaction::where('id', $transaction->transaction_id)->update(['credit_payment_status' => 'complete']);
             return response()
                 ->json( ['Refund Completed successfully'], 200 );
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             return response()
-                ->json( ['Error occored'], 500 );
+                ->json( ['Error occurred'], 500 );
         } catch (Exception $ex) {
             return response()
-                ->json( ['Error occored'], 500 );
+                ->json( ['Error occurred'], 500 );
         }
 
     }

@@ -16,6 +16,7 @@
 </head>
 
 <body>
+<div class="loading hide">Loading&#8230;</div>
 <div class="wrapper">
     <!-- <div class="main_container"> -->
     <div class="sidebar" data-background-color="white" data-active-color="danger">
@@ -140,11 +141,6 @@
         </div>
     </div>
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
         //    User Filtering
         $(document).ready(function () {
             $(".complete-refund-button").on("click", function(){

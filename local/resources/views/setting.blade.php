@@ -172,7 +172,18 @@
                             <table class="display nowrap table">
                                 @if (auth()->user()->admin == 2)
                                     <tr>
-                                        <td><h3>Profile Visibility</h3></td>
+                                       <td><h3>Close your account</h3></td>
+                                    <td>
+                                        <h3>
+                                            <a href="{{URL::to('delete_account')}}" class="btn"
+                                               style="margin-left: 0!important">Close account</a>
+                                        </h3>
+                                    </td>
+                                    </tr>
+                                @endif
+                                <tr>
+                               
+				    <td><h3>Profile Visibility</h3></td>
                                         <td>
                                             <h3>
                                                 <label class="switch">
@@ -187,16 +198,6 @@
                                                 </label>
                                             </h3>
                                         </td>
-                                    </tr>
-                                @endif
-                                <tr>
-                                    <td><h3>Close your account</h3></td>
-                                    <td>
-                                        <h3>
-                                            <a href="{{URL::to('delete_account')}}" class="btn"
-                                               style="margin-left: 0!important">Close account</a>
-                                        </h3>
-                                    </td>
                                 </tr>
                                 <tr>
                                     <td><h3>Payment Method</h3></td>

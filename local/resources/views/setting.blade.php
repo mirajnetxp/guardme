@@ -170,36 +170,7 @@
                             <h2>Settings</h2>
 
                             <table class="display nowrap table">
-                                @if (auth()->user()->admin == 2)
-                                    <tr>
-                                       <td><h3>Close your account</h3></td>
-                                    <td>
-                                        <h3>
-                                            <a href="{{URL::to('delete_account')}}" class="btn"
-                                               style="margin-left: 0!important">Close account</a>
-                                        </h3>
-                                    </td>
-                                    </tr>
-                                @endif
-                                <tr>
-                               
-				    <td><h3>Profile Visibility</h3></td>
-                                        <td>
-                                            <h3>
-                                                <label class="switch">
-                                                    @if($visible)
-                                                        <input id="visibality" name="visibality"
-                                                               type="checkbox" checked>
-                                                    @else
-                                                        <input id="visibality" name="visibality"
-                                                               type="checkbox">
-                                                    @endif
-                                                    <div class="slider round"></div>
-                                                </label>
-                                            </h3>
-                                        </td>
-                                </tr>
-                                <tr>
+                                   <tr>
                                     <td><h3>Payment Method</h3></td>
                                     <td>
                                         @if($paymethod)
@@ -275,6 +246,40 @@
                                         </div><!-- /.modal -->
                                     </td>
                                 </tr>
+				
+                                <tr>
+                               
+				    <td><h3>Profile Visibility</h3></td>
+                                        <td>
+                                            <h3>
+                                                <label class="switch">
+                                                    @if($visible)
+                                                        <input id="visibality" name="visibality"
+                                                               type="checkbox" checked>
+                                                    @else
+                                                        <input id="visibality" name="visibality"
+                                                               type="checkbox">
+                                                    @endif
+                                                    <div class="slider round"></div>
+                                                </label>
+                                            </h3>
+                                        </td>
+                                </tr>
+                                @if (auth()->user()->admin == 2)
+                                    <tr>
+                                       <td><h3>Close your account</h3></td>
+                                    <td>
+                                        <h3>
+                                            <a href="{{URL::to('delete_account')}}" class="btn"
+                                               style="margin-left: 0!important">Close account</a>
+                                        </h3>
+					 Please let us know if you are disatisfied with our service before requesting a closure. 
+				After closing your account, we will be unable to retrieve the data. 
+				If you have a problem that the Licensed Partner has not resolved within our SLA (72 hours), 
+				send a message to complaints@guaddme.com.
+                                    </td>
+                                    </tr>
+                                @endif
                             </table>
                         </div>
                     </div>
@@ -299,7 +304,10 @@ Click save when you're done to keep any changes.
                                 All balances will need to be settled before account closure commences.
                             </li>
                             
-                                Please let us know if you are disatisfied with our service before requesting a closure because after closing your account, we cannot retrieve your data. If you have a problem that the Licensed Partner has not resolved wiithin our SLA (72 hours), send a message to complaints@guaddme.com.
+                                Please let us know if you are disatisfied with our service before requesting a closure. 
+				After closing your account, we will be unable to retrieve the data. 
+				If you have a problem that the Licensed Partner has not resolved within our SLA (72 hours), 
+				send a message to complaints@guaddme.com.
                             
                         </ul>
                     </div>

@@ -283,27 +283,24 @@
                 <div class="col-md-4">
                     <div class="section job-short-info center balance">
 Here you can modify your account settings. 
-Don't forget to click save when you're done to keep any changes.
+Click save when you're done to keep any changes.
                     </div>
 
                     <div class="section quick-rules job-postdetails">
-                        <h4>Heading1</h4>
+                        <h4>Close Account</h4>
                         <ul>
                             <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                Our account closure process complies with GDPR regulations.
                             </li>
                             <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                We will close the account within 48 hours of your request.
                             </li>
                             <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                All balances will need to be settled before account closure commences.
                             </li>
-                            <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </li>
-                            <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </li>
+                            
+                                Please let us know if you are disatisfied with our service before requesting a closure because after closing your account, we cannot retrieve your data. If you have a problem that the Licensed Partner has not resolved wiithin our SLA (72 hours), send a message to complaints@guaddme.com.
+                            
                         </ul>
                     </div>
 

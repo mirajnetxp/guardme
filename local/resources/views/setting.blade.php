@@ -245,8 +245,9 @@
                                             </div><!-- /.modal-dialog -->
                                         </div><!-- /.modal -->
                                     </td>
+				    				Add a payment method to your account. We automatically pay every Friday and Monday.
+
                                 </tr>
-				Add a payment method to your account. We automatically pay every Friday and Monday.
                                 <tr>
                                
 				    <td><h4>Profile Visibility</h4></td>

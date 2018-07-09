@@ -171,8 +171,8 @@
 
                             <table class="display nowrap table">
                                    <tr>
-				   <p>Add a payment method to your account. We automatically pay every Friday and Monday.</p>
                                     <td><h4>Payment Method</h4></td>
+				   <p>Add a payment method to your account. We automatically pay every Friday and Monday.</p>
 
                                     <td>
                                         @if($paymethod)
@@ -251,8 +251,9 @@
 
                                 </tr>
                                 <tr>
-                               <p>This setting allows you to make your profile visible or public on the personnel search page.</p>
 				    <td><h4>Profile Visibility</h4></td>
+				                                   <p>This setting allows you to make your profile visible or public on the personnel search page.</p>
+
                                         <td>
                                             <h3>
                                                 <label class="switch">

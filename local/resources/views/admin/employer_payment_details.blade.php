@@ -77,6 +77,12 @@
                                 {{ Session::get('error') }}
                             </div>
                         @endif
+                        <div class="alert alert-danger error-message hide" role="alert">
+
+                        </div>
+                        <div class="alert alert-success success-message hide" role="alert">
+
+                        </div>
                         <div class="header">
                             <h4 class="title">Payment Details</h4>
                             <!-- <p class="category">Here is a subtitle for this table</p> -->
@@ -156,7 +162,7 @@
                         elem.siblings('.pause-job-button').removeClass('hide');
                     },
                     error: function(data){
-                        $(".error-message").text(data.responseJSON[0]);
+                        $(".error-message").text("Error Occurred");
                         $(".error-message").removeClass("hide");
                     }
                 })

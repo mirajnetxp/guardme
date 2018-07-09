@@ -240,12 +240,13 @@
                                                         <button type="submit" form="p_method_detail_form"
                                                                 class="btn btn-success">Save
                                                         </button>
+							Add a payment method to your account. We automatically pay every Friday and Monday.
+
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
                                         </div><!-- /.modal -->
                                     </td>
-				    				Add a payment method to your account. We automatically pay every Friday and Monday.
 
                                 </tr>
                                 <tr>
@@ -280,10 +281,10 @@
                                     </tr>
                                 @endif
                             </table>
-			     Please let us know if you are disatisfied with our service before requesting a closure. 
+			    <p> Please let us know if you are disatisfied with our service before requesting a closure. 
 				After closing your account, we will be unable to retrieve the data. 
 				If you have a problem that the Licensed Partner has not resolved within our SLA (72 hours), 
-				send a message to complaints@guaddme.com.
+				send a message to complaints@guaddme.com.</p>
                         </div>
                     </div>
                 </div>

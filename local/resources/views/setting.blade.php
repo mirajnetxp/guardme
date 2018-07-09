@@ -172,9 +172,10 @@
                             <table class="display nowrap table">
                                    <tr>
                                     <td><h4>Payment Method</h4></td>
-				   <p>Add a payment method to your account. We automatically pay every Friday and Monday.</p>
 
                                     <td>
+				    				   <p>Add a payment method to your account. We automatically pay every Friday and Monday.</p>
+
                                         @if($paymethod)
                                             <h3 class="pmm">
                                                 <label class="radio-container">Paypal
@@ -252,9 +253,10 @@
                                 </tr>
                                 <tr>
 				    <td><h4>Profile Visibility</h4></td>
-				                                   <p>This setting allows you to make your profile visible or public on the personnel search page.</p>
 
                                         <td>
+									                                   <p>This setting allows you to make your profile visible or public on the personnel search page.</p>
+
                                             <h3>
                                                 <label class="switch">
                                                     @if($visible)

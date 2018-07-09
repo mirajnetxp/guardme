@@ -282,7 +282,8 @@
 
                 <div class="col-md-4">
                     <div class="section job-short-info center balance">
-
+Here you can modify your account settings. 
+Don't forget to click save when you're done to keep any changes.
                     </div>
 
                     <div class="section quick-rules job-postdetails">

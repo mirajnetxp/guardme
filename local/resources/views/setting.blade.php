@@ -171,7 +171,9 @@
 
                             <table class="display nowrap table">
                                    <tr>
+				   <p>Add a payment method to your account. We automatically pay every Friday and Monday.</p>
                                     <td><h4>Payment Method</h4></td>
+
                                     <td>
                                         @if($paymethod)
                                             <h3 class="pmm">
@@ -240,7 +242,6 @@
                                                         <button type="submit" form="p_method_detail_form"
                                                                 class="btn btn-success">Save
                                                         </button>
-							Add a payment method to your account. We automatically pay every Friday and Monday.
 
                                                     </div>
                                                 </div><!-- /.modal-content -->

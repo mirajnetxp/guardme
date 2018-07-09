@@ -174,7 +174,7 @@
                                     <td><h4>Payment Method</h4></td>
 
                                     <td>
-				    				   <p>Add your Paypal or Bank details here. We automatically pay every Friday and Monday.</p>
+				    				   <p>Add your Paypal or Bank details here. Payment is made every Friday and Monday.</p>
 
                                         @if($paymethod)
                                             <h3 class="pmm">

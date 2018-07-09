@@ -318,23 +318,14 @@ Click save when you're done to keep any changes.
 
 
                     <div class="section quick-rules job-postdetails">
-                        <h4>Heading2</h4>
+                        <h4>GPS Settings</h4>
                         <ul>
                             <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </li>
+We will respect your privacy by turning off our GPS tracker if you select the option.                            </li>
                             <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </li>
+But this information will be made available to employers.                            </li>
                             <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </li>
-                            <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </li>
-                            <li>
-                                lorem ipsum dolor sit amet, consectetur adipiscing elit
-                            </li>
+Some employers may only want to hire freelancers who have this option activated.                            </li>
 
                         </ul>
                     </div>

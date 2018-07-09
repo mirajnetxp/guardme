@@ -174,7 +174,7 @@
                                     <td><h4>Payment Method</h4></td>
 
                                     <td>
-				    				   <p>Add a payment method to your account. We automatically pay every Friday and Monday.</p>
+				    				   <p>Add your Paypal or Bank details here. We automatically pay every Friday and Monday.</p>
 
                                         @if($paymethod)
                                             <h3 class="pmm">
@@ -255,7 +255,7 @@
 				    <td><h4>Profile Visibility</h4></td>
 
                                         <td>
-									                                   <p>This setting allows you to make your profile visible or public on the personnel search page.</p>
+									                                   <p>Make your profile hidden or visible on the personnel search page.</p>
 
                                             <h3>
                                                 <label class="switch">

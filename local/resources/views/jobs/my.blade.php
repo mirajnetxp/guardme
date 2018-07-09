@@ -95,23 +95,26 @@
                     <div class="close-icon">
                         <i class="fa fa-window-close" aria-hidden="true"></i>
                     </div>
-                    <div class="pause-unpause-block pull-right">
-                        @if ($arr_count[$job->id]['hiredcount'] == 0)
-                            @if ($job->is_pause == 0)
-                               <?php
-                                $pause = '';
-                                $restart = 'hide'; ?>
-                            @else
-                                <?php
-                                $pause = 'hide';
-                                $restart = '';
-                                ?>
+                    @if ($job->status == 1)
+                        <div class="pause-unpause-block pull-right">
+                            @if ($arr_count[$job->id]['hiredcount'] == 0)
+                                @if ($job->is_pause == 0)
+                                   <?php
+                                    $pause = '';
+                                    $restart = 'hide'; ?>
+                                @else
+                                    <?php
+                                    $pause = 'hide';
+                                    $restart = '';
+                                    ?>
+                                @endif
+                                <button class="btn btn-success restart-job-button {{ $restart }}" data-pause_url="{{ route('api.restart.job', $job->id) }}">Restart Job</button>
+                                <button class="btn btn-danger pause-job-button {{ $pause }}" data-pause_url="{{ route('api.pause.job', $job->id) }}">Pause Job</button>
                             @endif
-                            <button class="btn btn-success restart-job-button {{ $restart }}" data-pause_url="{{ route('api.restart.job', $job->id) }}">Restart Job</button>
-                            <button class="btn btn-danger pause-job-button {{ $pause }}" data-pause_url="{{ route('api.pause.job', $job->id) }}">Pause Job</button>
-                        @endif
-                    </div>
-                    <div class="clearfix"></div>
+                        </div>
+                        <button class="btn btn-info pull-right cancel-job-button" style="margin-right: 5px;" data-cancel_url="{{ route('api.cancel.whole.job', $job->id) }}">Cancel Job</button>
+                        <div class="clearfix"></div>
+                    @endif
                 </div><!-- item-info -->
             </div>
             @endforeach
@@ -152,10 +155,28 @@ $(document).ready(function() {
 	    format: 'mm/dd/yyyy',
 	    autoclose: true,
 	});
+    $(".cancel-job-button").on("click", function(){
+        var cancel_url = $(this).attr('data-cancel_url');
+        var elem = $(this);
+       $.ajax({
+            url: cancel_url,
+            type: 'POST',
+            success: function(data){
+                elem.addClass("hide");
+                $(".success-message").text(data[0]);
+                $(".success-message").removeClass("hide");
+            },
+            error: function(data){
+                $(".error-message").text(data.responseJSON[0]);
+                $(".error-message").removeClass("hide");
+            }
+        })
+    });
+
     $(".pause-job-button").on("click", function(){
         var pause_url = $(this).attr('data-pause_url');
         var elem = $(this);
-       $.ajax({
+        $.ajax({
             url: pause_url,
             type: 'POST',
             success: function(data){

@@ -69,12 +69,12 @@
                             <a href="/account/login/facebook" class="btn btn-small btn-block"
                                style="background: #3b5998">
                                 <span class="mif-facebook icon"></span>
-                                <span class="caption uk-text-center">Continue with Facebook</span>
+                                <span class="caption uk-text-center"><i class="fa fa-2x fa-facebook-official"></i>  &nbsp; Continue with Facebook</span>
                             </a>
 
                             <a class="btn btn-small btn-block btn-secondary" href="/account/login/google">
                                 <span class="mif-google icon"></span>
-                                <span class="caption uk-text-center">Continue with Google</span>
+                                <span class="caption uk-text-center"><i class="fa fa-2x fa-google"></i>  &nbsp; Continue with Google</span>
                             </a>
                         </div>
                         <div class="user-option">

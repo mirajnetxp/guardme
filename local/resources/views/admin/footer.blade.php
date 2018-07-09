@@ -38,3 +38,20 @@
   {!!Html::script('local/resources/assets/admin/js/canvasjs.min.js')!!}
 
 	{!!Html::script('local/resources/assets/admin/build/js/custom.min.js')!!}
+ <script>
+     $(document).ready(function(){
+         $(document).ajaxStart(function(){
+             $(".loading").removeClass("hide");
+
+         });
+         $(document).ajaxStop(function(){
+             $(".loading").addClass("hide");
+         });
+
+         $.ajaxSetup({
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             }
+         });
+     })
+ </script>

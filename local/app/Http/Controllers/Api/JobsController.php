@@ -2,6 +2,7 @@
 
 namespace Responsive\Http\Controllers\Api;
 
+use Faker\Provider\DateTime;
 use Responsive\FavouriteFreelancer;
 use Responsive\Feedback;
 use Responsive\Http\Traits\JobsTrait;
@@ -1315,6 +1316,24 @@ class JobsController extends Controller {
 			$job->save();
 			$return_data   = [ "Job successfully restarted" ];
 			$return_status = 200;
+		}
+
+		return response()
+			->json( $return_data, $return_status );
+	}
+
+	public function cancelJob($job_id) {
+		$job = Job::find($job_id);
+		//TODO add created by check so that every one can only cancel his/her created job and can not manipulate it by changing job id.
+		// check if job is active
+		if ($job->status == 1) {
+			$trans = new Transaction();
+			$returned = $trans->giveRefund($job);
+			$return_data   = $returned['return_data'];
+			$return_status = $returned['return_status'];
+		} else {
+			$return_data   = [ "Job is not active already" ];
+			$return_status = 500;
 		}
 
 		return response()

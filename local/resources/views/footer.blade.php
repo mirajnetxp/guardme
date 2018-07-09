@@ -19,7 +19,7 @@ $setid=1;
 						<h3>Quik Links</h3>
 						<ul>
 							<li><a href="<?php echo $url;?>">Home</a></li>
-							<li><a href="https://guarddme.com/about/">About Us</a></li>
+							<li><a href="https://guarddme.com/about-us/">About Us</a></li>
 							<li><a href="<?php echo $url;?>/terms-conditions">Term & Conditions</a></li>
 							<li><a href="<?php echo $url;?>/privacy-policy">Privacy Policy</a></li>
 							<li><a href="<?php echo $url;?>/contact">Contact Us</a></li>

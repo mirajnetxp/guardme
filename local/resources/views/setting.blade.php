@@ -267,7 +267,7 @@
                                 </tr>
                                 @if (auth()->user()->admin == 2)
                                     <tr>
-                                       <td><h3>Close your account</h3></td>
+                                       <td><h4>Close your account</h4></td>
                                     <td>
                                         <h4>
                                             <a href="{{URL::to('delete_account')}}" class="btn"
@@ -275,13 +275,14 @@
                                         </h4>
 					 
                                     </td>
-				    Please let us know if you are disatisfied with our service before requesting a closure. 
-				After closing your account, we will be unable to retrieve the data. 
-				If you have a problem that the Licensed Partner has not resolved within our SLA (72 hours), 
-				send a message to complaints@guaddme.com.
+				   
                                     </tr>
                                 @endif
                             </table>
+			     Please let us know if you are disatisfied with our service before requesting a closure. 
+				After closing your account, we will be unable to retrieve the data. 
+				If you have a problem that the Licensed Partner has not resolved within our SLA (72 hours), 
+				send a message to complaints@guaddme.com.
                         </div>
                     </div>
                 </div>

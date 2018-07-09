@@ -271,6 +271,25 @@
                                             </h3>
                                         </td>
                                 </tr>
+				  <tr>
+				    <td><h4>GPS Tracking</h4></td>
+
+                                        <td>
+					<p>Accept or decline GPS app tracking</p>				      
+                                            <h3>
+                                                <label class="switch">
+                                                    @if($visible)
+                                                        <input id="visibality" name="visibality"
+                                                               type="checkbox" checked>
+                                                    @else
+                                                        <input id="visibality" name="visibality"
+                                                               type="checkbox">
+                                                    @endif
+                                                    <div class="slider round"></div>
+                                                </label>
+                                            </h3>
+                                        </td>
+                                </tr>
                                 @if (auth()->user()->admin == 2)
                                     <tr>
                                        <td><h4>Close your account</h4></td>

@@ -171,7 +171,7 @@
 
                             <table class="display nowrap table">
                                    <tr>
-                                    <td><h3>Payment Method</h3></td>
+                                    <td><h4>Payment Method</h4></td>
                                     <td>
                                         @if($paymethod)
                                             <h3 class="pmm">
@@ -249,7 +249,7 @@
 				
                                 <tr>
                                
-				    <td><h3>Profile Visibility</h3></td>
+				    <td><h4>Profile Visibility</h4></td>
                                         <td>
                                             <h3>
                                                 <label class="switch">
@@ -269,15 +269,16 @@
                                     <tr>
                                        <td><h3>Close your account</h3></td>
                                     <td>
-                                        <h3>
+                                        <h4>
                                             <a href="{{URL::to('delete_account')}}" class="btn"
                                                style="margin-left: 0!important">Close account</a>
-                                        </h3>
-					 Please let us know if you are disatisfied with our service before requesting a closure. 
+                                        </h4>
+					 
+                                    </td>
+				    Please let us know if you are disatisfied with our service before requesting a closure. 
 				After closing your account, we will be unable to retrieve the data. 
 				If you have a problem that the Licensed Partner has not resolved within our SLA (72 hours), 
 				send a message to complaints@guaddme.com.
-                                    </td>
                                     </tr>
                                 @endif
                             </table>
@@ -303,11 +304,7 @@ Click save when you're done to keep any changes.
                             <li>
                                 All balances will need to be settled before account closure commences.
                             </li>
-                            
-                                Please let us know if you are disatisfied with our service before requesting a closure. 
-				After closing your account, we will be unable to retrieve the data. 
-				If you have a problem that the Licensed Partner has not resolved within our SLA (72 hours), 
-				send a message to complaints@guaddme.com.
+                          
                             
                         </ul>
                     </div>

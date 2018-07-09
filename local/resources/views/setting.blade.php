@@ -251,7 +251,7 @@
 
                                 </tr>
                                 <tr>
-                               
+                               <p>This setting allows you to make your profile visible or public on the personnel search page.</p>
 				    <td><h4>Profile Visibility</h4></td>
                                         <td>
                                             <h3>

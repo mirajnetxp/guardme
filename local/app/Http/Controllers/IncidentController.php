@@ -4,7 +4,9 @@ namespace Responsive\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Responsive\IncidentReport;
+use Responsive\Job;
 use Responsive\JobApplication;
+use DB;
 
 class IncidentController extends Controller {
 	public function __construct() {
@@ -20,7 +22,7 @@ class IncidentController extends Controller {
 		                    ->get();
 
 
-		if ( $user->admin != 2 || count($JA)==0 ) {
+		if ( $user->admin != 2 || count( $JA ) == 0 ) {
 			return response()->json( [ 'You are not authorized to perform this task' ], 403 );
 		}
 
@@ -34,5 +36,27 @@ class IncidentController extends Controller {
 		return response()->json( "Report added successfully", 200 );
 
 
+	}
+
+	public function getIncident( $job_id ) {
+		$user = auth()->user();
+		$job  = Job::find( $job_id );
+
+		if ( $user->id !== $job->created_by ) {
+			return response()->json( "Unauthorized", 403 );
+		}
+
+		$incidents = DB::table( 'incident_reports' )
+		               ->select( 'incident_reports.job_id',
+			               'incident_reports.incident_report',
+			               'incident_reports.created_at',
+			               'users.name',
+			               'users.email'
+		               )
+		               ->where( 'job_id', $job_id )
+		               ->join( 'users', 'incident_reports.user_id', '=', 'users.id' )
+		               ->get();
+
+		return response()->json( $incidents );
 	}
 }

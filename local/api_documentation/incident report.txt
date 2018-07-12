@@ -1,0 +1,65 @@
+1. Add Incident (for freelancer )
+-----------------------------------------------------------			
+
+		Api:  api/jobs/add/incident
+		Type: POST
+		Requirements : Authorization ,
+		Payload:   job_id
+                   incident_report  (text fild)
+	
+		
+		Respose:  
+					"Report added successfully"
+
+					OR
+
+                    [
+                        "You are not authorized to perform this task"
+                    ]
+
+2. Add Incident (for freelancer )
+-----------------------------------------------------------
+
+		Api:  api/jobs/get/incident/{job_id}
+		Type: GET
+		Requirements : Authorization , employer
+
+
+		Respose:
+						[
+                            {
+                                "job_id": 7,
+                                "incident_report": "advad ade",
+                                "created_at": "2018-07-12 12:14:28",
+                                "name": "chukwunye",
+                                "email": "cokwedadi@gmail.com"
+                            },
+                            {
+                                "job_id": 7,
+                                "incident_report": "adca scqa",
+                                "created_at": "2018-07-12 12:15:57",
+                                "name": "chukwunye",
+                                "email": "cokwedadi@gmail.com"
+                            },
+                            {
+                                "job_id": 7,
+                                "incident_report": "adscaqsec aqws",
+                                "created_at": "2018-07-12 12:16:58",
+                                "name": "chukwunye",
+                                "email": "cokwedadi@gmail.com"
+                            },
+                            {
+                                "job_id": 7,
+                                "incident_report": "asdv aq",
+                                "created_at": "2018-07-12 12:23:55",
+                                "name": "chukwunye",
+                                "email": "cokwedadi@gmail.com"
+                            },
+                            {
+                                "job_id": 7,
+                                "incident_report": "adc",
+                                "created_at": "2018-07-12 13:44:56",
+                                "name": "chukwunye",
+                                "email": "cokwedadi@gmail.com"
+                            }
+                        ]

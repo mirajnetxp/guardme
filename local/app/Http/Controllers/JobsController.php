@@ -97,6 +97,10 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function myJobs() {
+
+		$trans = new Transaction();
+		$wallet_data['available_balance'] = $trans->getWalletAvailableBalance();
+
 		$userid          = Auth::user()->id;
 		$editprofile     = User::where( 'id', $userid )->get();
 		$jobApplications = new JobApplication();
@@ -131,7 +135,7 @@ class JobsController extends Controller {
 			}
 		}
 
-		return view( 'jobs.my', compact( 'new_jobs', 'editprofile', 'arr_count' ) );
+		return view( 'jobs.my', compact( 'new_jobs', 'editprofile', 'arr_count', 'wallet_data' ) );
 	}
 
 	/**
@@ -728,6 +732,10 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function favouriteFreelancers() {
+
+		$wallet      = new Transaction();
+		$wallet_data['available_balance'] = $wallet->getWalletAvailableBalance();
+
 		$user_id               = auth()->user()->id;
 		$editprofile           = User::where( 'id', $user_id )->get();
 		$favFreelancers        = new FavouriteFreelancer();
@@ -737,7 +745,8 @@ class JobsController extends Controller {
 		return view( 'jobs.favourite-freelancers', [
 			'freelancers' => $favourite_freelancers,
 			'teams'       => $teams,
-			'editprofile' => $editprofile
+			'editprofile' => $editprofile,
+			'wallet_data' => $wallet_data
 		] );
 	}
 
@@ -755,12 +764,16 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function paymentRequests() {
+
+		$wallet      = new Transaction();
+		$wallet_data['available_balance'] = $wallet->getWalletAvailableBalance();
+
 		$user_id          = auth()->user()->id;
 		$editprofile      = User::where( 'id', $user_id )->get();
 		$pr               = new PaymentRequest();
 		$payment_requests = $pr->getPaymentRequestsByEmployer();
 
-		return view( 'jobs.payment-requests', compact( 'editprofile', 'payment_requests' ) );
+		return view( 'jobs.payment-requests', compact( 'editprofile', 'payment_requests', 'wallet_data' ) );
 	}
 
 	/**

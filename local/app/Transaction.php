@@ -163,6 +163,7 @@ class Transaction extends Model {
 				                  ->where( 'user_id', $user_id )
 				                  ->where( 'status', 1 )
 				                  ->where( 'debit_credit_type', 'credit' )
+				                  ->where( 'type', '!=', 'refund' )
 				                  ->get()->first();
 				$total_credit = ! empty( $credit->total ) ? ( $credit->total ) : 0;
 				$balance      = $total_debit - $total_credit;

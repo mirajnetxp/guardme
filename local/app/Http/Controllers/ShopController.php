@@ -110,7 +110,7 @@ class ShopController extends Controller
                         ->where('rshop_id', '=', $shop_id)->orderBy('rid', 'desc')->get();
                         $data = array('time' => $time, 'days' =>  $days, 'daytxt' => $daytxt, 'shopcount' => $shopcount, 'shop' => $shop, 'stime' => $stime,
                             'etime' => $etime, 'lev' => $lev, 'sel' => $sel, 'viewservice' => $viewservice, 'setting' => $setting, 'rating_count' => $rating_count, 'rating' => $rating);
-                        return view('shop', compact('data', 'userid', 'editprofile', 'countries','address'))->with($data);
+                        return view('shop', compact('data', 'userid', 'editprofile', 'countries','address', 'wallet_data'))->with($data);
                     }
                     else{
                         $data = array('rating_count' => 0);
@@ -230,6 +230,9 @@ public function sangvish_viewshop_old()
 
     function editcompany(){
 
+		$trans = new Transaction();
+		$wallet_data['available_balance'] = $trans->getWalletAvailableBalance();
+
 	    $userid = Auth::user()->id;
 	    $editprofile = User::where('id',$userid)->with(['address','company','company.bcategory'])->get();
 
@@ -253,7 +256,7 @@ public function sangvish_viewshop_old()
         $b_cats = Businesscategory::all();
         //$data = array('editprofile' => $editprofile);
         //dd($editprofile);
-        return view('company', compact( 'b_cats','userid', 'editprofile','address'));
+        return view('company', compact( 'b_cats','userid', 'editprofile','address', 'wallet_data'));
     }
 
 function updatecompany(Request $request)

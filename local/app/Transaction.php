@@ -163,10 +163,21 @@ class Transaction extends Model {
 				                  ->where( 'user_id', $user_id )
 				                  ->where( 'status', 1 )
 				                  ->where( 'debit_credit_type', 'credit' )
-				                  ->where( 'type', '!=', 'refund' )
 				                  ->get()->first();
+				// get sum of all active refunds for user which are not complete
+				$refund       = DB::table( $this->table )
+					->select( DB::raw( 'SUM(amount) as total' ) )
+					->groupBy( 'user_id' )
+					->where( 'user_id', $user_id )
+					->where( 'status', 1 )
+					->where( 'debit_credit_type', 'credit' )
+					->where( 'type', 'refund' )
+					->where( 'credit_payment_status','!=' , 'complete' )
+					->get()->first();
+
+				$total_refund = ! empty( $refund->total ) ? ( $refund->total ) : 0;
 				$total_credit = ! empty( $credit->total ) ? ( $credit->total ) : 0;
-				$balance      = $total_debit - $total_credit;
+				$balance      = ($total_refund + $total_debit) - $total_credit;
 			}
 			if ( isFreelancer() ) {
 				// note: type credit for freelancer is not actually credited by freelancer these are actually credit by employer and by using flipping it we will get freelancer transactions

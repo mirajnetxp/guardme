@@ -208,6 +208,7 @@
                 data: form_data,
                 dataType: 'json',
                 success: function (d) {
+                    $('#incidentModel').modal('hide')
                     alert("Report added successfully")
                 },
                 error: function (xhr, textStatus, errorThrown ) {

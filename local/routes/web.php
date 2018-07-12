@@ -438,6 +438,7 @@ Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
 
 	//Incident
 	Route::post( '/add/incident', 'IncidentController@addIncident' );
+
 } );
 //
 Route::group( [ 'middleware' => 'auth' ], function () {

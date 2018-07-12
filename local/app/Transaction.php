@@ -550,7 +550,8 @@ class Transaction extends Model {
 				$query->orWhere('credit_payment_status', 'complete');
 			})
 			->where('type', 'refund')
-			->where('transactions.status', 1);
+			->where('transactions.status', 1)
+			->where('transactions.credit_payment_status', 'paid');
 			if (!empty($transaction_id)) {
 				$query->where('transactions.id', $transaction_id);
 			}

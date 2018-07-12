@@ -116,6 +116,11 @@ class JobsController extends Controller {
         arsort($arr_sort);
         foreach ($arr_sort as $idkey => $val) {
             foreach ($my_jobs as $key => $job) {
+                // Also, we don't want jobs that have ended or with complete slots showing on the list
+                /*if ($job->number_of_freelancers == $arr_count[$job->id]['hiredcount']) {
+                    // exclude this
+                    continue;
+                }*/
                 if ($idkey == $key) {
                     array_push($new_jobs, $job);
                 }

@@ -5,16 +5,21 @@ namespace Responsive\Http\Controllers;
 use Illuminate\Http\Request;
 use Responsive\Team;
 use Responsive\User;
+use Responsive\Transaction;
 
 class TeamsController extends Controller
 {
     //
     public function myTeams() {
+
+        $wallet      = new Transaction();
+        $wallet_data['available_balance'] = $wallet->getWalletAvailableBalance();
+
         $user_id = auth()->user()->id;
         $editprofile = User::where('id', $user_id)->get();
         $team = new Team();
         $teams = $team->getMyTeams();
-        return view('teams.teams', ['teams' => $teams, 'editprofile' => $editprofile]);
+        return view('teams.teams', ['teams' => $teams, 'editprofile' => $editprofile, 'wallet_data' => $wallet_data]);
     }
 
     public function createTeam() {

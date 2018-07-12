@@ -41,6 +41,9 @@ class PaymentsController extends Controller
     public function employerPaymentDetails($transaction_id) {
         $trans = new Transaction();
         $transaction = $trans->getEmployerPaymentRecords($transaction_id)->first();
+        if (empty($transaction)) {
+            return redirect()->route('employer.payment.listing', ['type' => 'employer']);
+        }
         // get sale id of the transactions
         $amount_details = json_decode($transaction->extra_details);
         return view( 'admin.employer_payment_details' )->with( ['payment' => $transaction, 'amount_details' => $amount_details] );

@@ -435,6 +435,9 @@ Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
 	Route::get( '/leave/feedback/{application_id}', 'JobsController@leaveFeedback' )->name( 'leave.feedback' );
 	Route::get( '/tip/{application_id}', 'JobsController@giveTip' )->name( 'give.tip' );
 	Route::get( '/tip/details/{transaction_id}', 'JobsController@tipDetails' )->name( 'tip.details' );
+
+	//Incident
+	Route::post( '/add/incident', 'IncidentController@addIncident' );
 } );
 //
 Route::group( [ 'middleware' => 'auth' ], function () {

@@ -66,7 +66,6 @@
         </div>
     @if(count($proposals) > 0)
     @foreach($proposals as $application)
-                                   
         <div class="job-ad-item">
             <div class="item-info">
                 <div class="item-image-box">

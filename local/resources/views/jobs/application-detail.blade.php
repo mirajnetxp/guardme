@@ -63,7 +63,7 @@
                                     </p>
                                 </address>
                             </div>              
-                            <a class="btn btn-secondary" href="{{ URL::to('/jobs/my') }}">&larr; Back to Jobs</a>    
+                            <a class="btn btn-secondary" href="{{ URL::to('/jobs/my') }}">&larr; Back to Jobs</a>
                         </div>
                         <div class="col-md-4">
                             <div class="career-info profile-info top-22">

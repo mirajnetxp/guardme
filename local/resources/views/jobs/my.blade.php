@@ -165,6 +165,9 @@ $(document).ready(function() {
                 elem.addClass("hide");
                 $(".success-message").text(data[0]);
                 $(".success-message").removeClass("hide");
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
             },
             error: function(data){
                 $(".error-message").text(data.responseJSON[0]);

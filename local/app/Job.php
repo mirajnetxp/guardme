@@ -69,6 +69,7 @@ class Job extends Model {
 		$user_id = auth()->user()->id;
 		$data    = Job::with( [ 'poster', 'poster.company', 'industory', 'schedules', 'applications' ] )
 		              ->where( 'created_by', $user_id )
+		              ->where( 'status', 1 )
 		              ->get();
 
 		return $data;

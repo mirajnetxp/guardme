@@ -388,12 +388,14 @@ class JobsController extends Controller {
 		$cat     = $request->cat_id;
 		$loc     = $request->loc_val;
 		$keyword = $request->keyword;
+		$city    = $request->city;
 
 		$b_cats = Businesscategory::all();
 		$locs   = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
 
-		if ( $cat != '' || $loc != '' || $keyword != '' ) {
+		if ( $cat != '' || $loc != '' || $keyword != '' || $city != '' ) {
 			$jobs = Job::where( 'status', '1' );
+
 			if ( $keyword != '' ) {
 				$jobs->where( 'title', 'like', "$keyword%" );
 
@@ -409,16 +411,17 @@ class JobsController extends Controller {
 
 
 			}
-			$joblist = $jobs->paginate( 10 );
+			if ( $city != '' ) {
+				$jobs->where( 'city_town', 'like', "$city%" );
+			}
+			$sort_jobs = $jobs->paginate( 10 );
 		} else {
-
-			$joblist = Job::where( 'status', '1' )->paginate( 10 );
-
+			$sort_jobs = Job::where( 'status', '1' )->paginate( 10 );
 		}
-		//dd($joblist);
+
 		$request->flash();
 
-		return view( 'jobs.find', compact( 'joblist', 'b_cats', 'locs' ) );
+		return view( 'jobs.find', compact( 'sort_jobs', 'b_cats', 'locs' ) );
 	}
 
 	/**
@@ -533,7 +536,7 @@ class JobsController extends Controller {
 
 
 		//dd($applications);
-		return view( 'jobs.applications', compact( 'applications', 'job', 'editprofile', 'fav_freelancers','incidents') );
+		return view( 'jobs.applications', compact( 'applications', 'job', 'editprofile', 'fav_freelancers', 'incidents' ) );
 	}
 
 	/**

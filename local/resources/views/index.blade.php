@@ -18,9 +18,9 @@ $setts = DB::table( 'settings' )
         .banner-job {
 
             @if(!empty($setts[0]->site_banner))
-      background-image: url({{$url}}/local/images/settings/{{$setts[0]->site_banner}});
+ background-image: url({{$url}}/local/images/settings/{{$setts[0]->site_banner}});
             @else
-      background-image: url({{$url}}/img/banner.jpg);
+ background-image: url({{$url}}/img/banner.jpg);
         @endif
 
 
@@ -74,6 +74,7 @@ $setts = DB::table( 'settings' )
                     {{'Location'}}
                         </span></a>
                 </div><!-- category-change -->
+
 
                 {{--<div class="dropdown category-dropdown language-dropdown">--}}
                 {{--<a data-toggle="dropdown" href="#"><span class="change-text" >--}}
@@ -326,6 +327,14 @@ $setts = DB::table( 'settings' )
                         <span class="pull-left">
                             <span>available on</span>
 
+            <!-- row -->
+            <div class="row">
+                <!-- download-app -->
+                <div class="col-sm-4">
+                    <a href="https://play.google.com/store/apps/details?id=com.guarddme.com" class="download-app">
+                        <img src="images/icon/16.png" alt="Image" class="img-responsive">
+                        <span class="pull-left">
+<span>available on</span>
                             <strong>Google Play</strong>
                         </span>
                     </a>

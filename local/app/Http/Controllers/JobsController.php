@@ -98,7 +98,7 @@ class JobsController extends Controller {
 	 */
 	public function myJobs() {
 
-		$trans = new Transaction();
+		$trans                            = new Transaction();
 		$wallet_data['available_balance'] = $trans->getWalletAvailableBalance();
 
 		$userid          = Auth::user()->id;
@@ -388,21 +388,35 @@ class JobsController extends Controller {
 	}
 
 	public function postfindJobs( Request $request ) {
-		//dd($request->all());
-		$cat     = $request->cat_id;
-		$loc     = $request->loc_val;
-		$keyword = $request->keyword;
-		$city    = $request->city;
+//		dd( $request->all() );
+		$cat         = $request->cat_id;
+		$loc         = $request->loc_val;
+		$keyword     = $request->keyword;
+		$city        = $request->city;
+		$workingDays = $request->workingDays;
+		$min_rate    = $request->min_rate;
+		$max_rate    = $request->max_rate;
+
 
 		$b_cats = Businesscategory::all();
 		$locs   = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
 
-		if ( $cat != '' || $loc != '' || $keyword != '' || $city != '' ) {
+		if ( $cat != '' || $loc != '' || $keyword != '' || $city != '' || $workingDays != '' || $min_rate != '' ) {
 			$jobs = Job::where( 'status', '1' );
 
 			if ( $keyword != '' ) {
 				$jobs->where( 'title', 'like', "$keyword%" );
 
+			}
+			if ( $min_rate != '' ) {
+				$jobs->whereBetween( 'per_hour_rate', [ $min_rate, $max_rate ] );
+			}
+			if ( $workingDays == 'oneDay' ) {
+				$jobs->where( 'monthly_working_days', '=', 1 );
+
+			}
+			if ( $workingDays == 'oneDayPlus' ) {
+				$jobs->where( 'monthly_working_days', '>', 1 );
 			}
 
 			if ( $cat != '' ) {
@@ -736,7 +750,7 @@ class JobsController extends Controller {
 	 */
 	public function favouriteFreelancers() {
 
-		$wallet      = new Transaction();
+		$wallet                           = new Transaction();
 		$wallet_data['available_balance'] = $wallet->getWalletAvailableBalance();
 
 		$user_id               = auth()->user()->id;
@@ -768,7 +782,7 @@ class JobsController extends Controller {
 	 */
 	public function paymentRequests() {
 
-		$wallet      = new Transaction();
+		$wallet                           = new Transaction();
 		$wallet_data['available_balance'] = $wallet->getWalletAvailableBalance();
 
 		$user_id          = auth()->user()->id;

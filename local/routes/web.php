@@ -458,8 +458,11 @@ Route::get( '/get-paypal-payment-status', 'PaypalPaymentController@getPaypalPaym
 
 // Guest route for find job
 Route::get( '/jobs/posted/view', 'JobsController@myJobPostView' )->name( 'posted.jobs.view' );
+
 Route::get( '/jobs/find', 'JobsController@findJobs' )->name( 'find.jobs' );
+
 Route::post( '/jobs/find', 'JobsController@postfindJobs' )->name( 'post.find.jobs' );
+
 Route::get( '/job/{id}', 'JobsController@viewJob' )->name( 'view.job' );
 
 Route::get( '/phone', 'VerificationController@phone' )->middleware( 'auth' );

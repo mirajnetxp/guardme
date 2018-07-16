@@ -49,10 +49,10 @@
             <h2 class="title">Jobs</h2>
         </div>
         <div class="banner-form banner-form-full job-list-form">
-            <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
+            <form method="POST" action="{{ route('post.find.jobs') }}" id="city-search">
                 <!-- category-change -->
                 <div class="dropdown category-dropdown">
-                <!-- {!! csrf_field() !!} -->
+                    {!! csrf_field() !!}
                     <a data-toggle="dropdown" href="#">
                         <span class="change-text">
                             @if(old('cat_val')!=null)
@@ -71,27 +71,26 @@
                 </div><!-- category-change -->
 
                 <!-- language-dropdown -->
-                <div class="dropdown category-dropdown language-dropdown">
-                    <a data-toggle="dropdown" href="#"><span class="change-text">
-                        @if(old('loc_val')!=null)
-                                {{old('loc_val')}}
-                            @else
-                                {{'Location'}}
-                            @endif
-                        </span> <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu category-change language-change loc">
-                        @foreach($locs as $loc)
-                            <li><a href="#" onclick="set_loc('{{$loc->city_town}}')">{{$loc->city_town}}</a></li>
-                        @endforeach
-                    </ul>
+            {{--<div class="dropdown category-dropdown language-dropdown">--}}
+            {{--<a data-toggle="dropdown" href="#"><span class="change-text">--}}
+            {{--@if(old('loc_val')!=null)--}}
+            {{--{{old('loc_val')}}--}}
+            {{--@else--}}
+            {{--{{'Location'}}--}}
+            {{--@endif--}}
+            {{--</span> <i class="fa fa-angle-down"></i></a>--}}
+            {{--<ul class="dropdown-menu category-change language-change loc">--}}
+            {{--@foreach($locs as $loc)--}}
+            {{--<li><a href="#" onclick="set_loc('{{$loc->city_town}}')">{{$loc->city_town}}</a></li>--}}
+            {{--@endforeach--}}
+            {{--</ul>--}}
 
-                    <input type="hidden" name="loc_val" value="{{old('loc_val')}}" id="loc_val">
-                </div><!-- language-dropdown -->
-
-                <input type="text" class="form-control" placeholder="Job search" name="keyword"
-                       value="{{old('keyword')}}">
-                <input type="hidden" class="form-control post_code" placeholder="" name="post_code" id="" value="">
-                <input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="1">
+            {{--<input type="hidden" name="loc_val" value="{{old('loc_val')}}" id="loc_val">--}}
+            {{--</div>--}}
+            <!-- language-dropdown -->
+                <input type="text" class="form-control" placeholder="Type City" name="city" value="{{old('city')}}">
+                {{--<input type="hidden" class="form-control post_code" placeholder="" name="post_code" id="" value="">--}}
+                {{--<input type="hidden" class="form-control distance" placeholder="" name="distance" id="" value="1">--}}
                 <button type="submit" class="btn btn-primary" value="Search">Search</button>
             </form>
         </div>
@@ -100,29 +99,42 @@
             <div class="row">
                 <div class="col-md-3 col-sm-4">
                     <div class="accordion">
-                        <!-- panel-group -->
-                        <div class="panel-group" id="accordion">
+                        <!-- panel-group Freelancer rating-->
+                        {{--<div class="panel-group" id="accordion">--}}
 
-                            <!-- panel -->
-                            <div class="panel panel-default panel-faq">
-                                <!-- panel-heading -->
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#accordion-one">
-                                            <h4>Freelancer Rating<span class="pull-right"><i
-                                                            class="fa fa-minus"></i></span></h4>
-                                        </a>
-                                    </div>
-                                </div><!-- panel-heading -->
-
-                                <div id="accordion-one" class="panel-collapse collapse in">
-                                    <!-- panel-body -->
-                                    <div class="panel-body">
-
-                                    </div><!-- panel-body -->
-                                </div>
-                            </div>
-                        </div>
+                            {{--<!-- panel -->--}}
+                            {{--<div class="panel panel-default panel-faq">--}}
+                                {{--<!-- panel-heading -->--}}
+                                {{--<div class="panel-heading">--}}
+                                    {{--<div class="panel-title">--}}
+                                        {{--<a data-toggle="collapse" data-parent="#accordion" href="#accordion-one">--}}
+                                            {{--<h4>Freelancer Rating<span class="pull-right"><i--}}
+                                                            {{--class="fa fa-minus"></i></span></h4>--}}
+                                        {{--</a>--}}
+                                    {{--</div>--}}
+                                {{--</div><!-- panel-heading -->--}}
+                                {{--<div id="accordion-one" class="panel-collapse collapse in">--}}
+                                    {{--<!-- panel-body -->--}}
+                                    {{--<div class="panel-body">--}}
+                                        {{--<form method="POST" action="{{ route('post.find.jobs') }}">--}}
+                                            {{--{{csrf_field()}}--}}
+                                            {{--<div class="form-group row" style="width:240px; padding-left:18px;">--}}
+                                                {{--<div id="skipstepfreelancerrating"></div>--}}
+                                                {{--<span class="example-val-from" id="skip-value-lowerfree"></span>--}}
+                                                {{--<span class="example-val-to" id="skip-value-upperfree"></span>--}}
+                                                {{--<input type="hidden" name="min_freelancer_rating"--}}
+                                                       {{--id="min_freelancer_rating" value=""--}}
+                                                       {{--class=" form-control">--}}
+                                                {{--<input type="hidden" name="max_freelancer_rating"--}}
+                                                       {{--id="max_freelancer_rating" value=""--}}
+                                                       {{--class=" form-control">--}}
+                                            {{--</div>--}}
+                                            {{--<button type="submit" class="btn btn-info btn-small">Filter</button>--}}
+                                        {{--</form>--}}
+                                    {{--</div><!-- panel-body -->--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
                         <!-- panel -->
                         <div class="panel panel-default panel-faq">
@@ -135,15 +147,28 @@
                                 </div>
                             </div><!-- panel-heading -->
 
-                            <div id="accordion-three" class="panel-collapse collapse">
+                            <div id="accordion-three" class="panel-collapse collapse in">
                                 <!-- panel-body -->
                                 <div class="panel-body">
 
+                                    <form method="POST" action="{{ route('post.find.jobs') }}">
+                                        {{csrf_field()}}
+                                        <div class="form-group row" style="width:240px; padding-left:18px;">
+                                            <div id="skipstep"></div>
+                                            <span class="example-val-from" id="skip-value-lower"></span>
+                                            <span class="example-val-to" id="skip-value-upper"></span>
+                                            <input type="hidden" name="min_rate" id="min_rate" value=""
+                                                   class="min_area form-control">
+                                            <input type="hidden" name="max_rate" id="max_rate" value=""
+                                                   class="max_area form-control">
+                                        </div>
+                                        <button type="submit" class="btn btn-info btn-small">Filter</button>
+                                    </form>
                                 </div><!-- panel-body -->
                             </div>
                         </div>
 
-                        <!-- panel -->
+                        <!-- panel job type  -->
                         <div class="panel panel-default panel-faq">
                             <!-- panel-heading -->
                             <div class="panel-heading">
@@ -154,39 +179,28 @@
                                 </div>
                             </div><!-- panel-heading -->
 
-                            <div id="accordion-four" class="panel-collapse collapse">
+                            <div id="accordion-four" class="panel-collapse collapse in">
                                 <!-- panel-body -->
                                 <div class="panel-body">
-                                    <label for="full-time"><input type="checkbox" name="full-time" id="full-time"> Full
-                                        Time</label>
-                                    <label for="part-time"><input type="checkbox" name="part-time" id="part-time"> Part
-                                        Time</label>
-                                    <label for="contractor"><input type="checkbox" name="contractor" id="contractor">
-                                        Contractor</label>
-                                    <label for="intern"><input type="checkbox" name="intern" id="intern"> Intern</label>
-                                    <label for="seasonal"><input type="checkbox" name="seasonal" id="seasonal"> Seasonal
-                                        / Temp</label>
+                                    <form method="POST" action="{{ route('post.find.jobs') }}" id="city-search">
+                                        {{csrf_field()}}
+                                        <label for="full-time">
+                                            <input type="radio" name="workingDays" value="oneDay"> 1 Day</label>
+
+                                        <label for="part-time">
+                                            <input type="radio" name="workingDays" value="oneDayPlus"> 1 Day+
+                                        </label>
+                                        <button type="submit" class="btn btn-info btn-small">Filter</button>
+                                    </form>
+                                    {{--<label for="contractor"><input type="checkbox" name="contractor" id="contractor">--}}
+                                    {{--Contractor</label>--}}
+                                    {{--<label for="intern"><input type="checkbox" name="intern" id="intern"> Intern</label>--}}
+                                    {{--<label for="seasonal"><input type="checkbox" name="seasonal" id="seasonal"> Seasonal--}}
+                                    {{--/ Temp</label>--}}
                                 </div><!-- panel-body -->
                             </div>
                         </div>
-                        <!-- panel -->
-                        <div class="panel panel-default panel-faq">
-                            <!-- panel-heading -->
-                            <div class="panel-heading">
-                                <div class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#accordion-five">
-                                        <h4>Job duration<span class="pull-right"><i class="fa fa-plus"></i></span></h4>
-                                    </a>
-                                </div>
-                            </div><!-- panel-heading -->
 
-                            <div id="accordion-five" class="panel-collapse collapse">
-                                <!-- panel-body -->
-                                <div class="panel-body">
-
-                                </div><!-- panel-body -->
-                            </div>
-                        </div>
                         <!-- panel -->
                         <div class="panel panel-default panel-faq">
                             <!-- panel-heading -->
@@ -197,7 +211,6 @@
                                     </a>
                                 </div>
                             </div><!-- panel-heading -->
-
                             <div id="accordion-six" class="panel-collapse distance-data collapse">
                                 <form method="get" action="{{ route('post.find.jobs') }}" id="formID">
                                     <ul class="radio">
@@ -418,6 +431,72 @@
                 $('.post_code').val($(this).val());
             }
         });
+
+//================================
+        var skipSlider = document.getElementById('skipstep');
+        noUiSlider.create(skipSlider, {
+            range: {
+                'min': 8,
+                '50%': 10,
+                '60%': 12,
+                '70%': 14,
+                '80%': 16,
+                '90%': 18,
+                'max': 20
+            },
+            snap: true,
+            start: [0, 100]
+        });
+        var skipValues = [
+            document.getElementById('skip-value-lower'),
+            document.getElementById('skip-value-upper')
+        ];
+        var skipInputValues = [
+            document.getElementById('min_rate'),
+            document.getElementById('max_rate')
+        ];
+
+        skipSlider.noUiSlider.on('update', function (values, handle) {
+            skipValues[handle].innerHTML = values[handle];
+            skipInputValues[handle].value = values[handle];
+            //alert(values[handle]);
+        });
+
+//        //////////////////////////////============================
+//        var skipstepfreelancerrating = document.getElementById('skipstepfreelancerrating');
+//        noUiSlider.create(skipstepfreelancerrating, {
+//            range: {
+//                'min': 0,
+//                '20%': 1,
+//                '30%': 1.5,
+//                '35%': 1.75,
+//                '40%': 2,
+//                '50%': 2.5,
+//                '60%': 3,
+//                '70%': 3.5,
+//                '75%': 3.75,
+//                '80%': 4,
+//                '90%': 4.5,
+//                'max': 5
+//            },
+//            snap: true,
+//            start: [0, 100]
+//        });
+//        var skipValuesf = [
+//            document.getElementById('skip-value-lowerfree'),
+//            document.getElementById('skip-value-upperfree')
+//        ];
+//        var skipInputValuesf = [
+//            document.getElementById('min_freelancer_rating'),
+//            document.getElementById('max_freelancer_rating')
+//        ];
+//        skipstepfreelancerrating.noUiSlider.on('update', function (values, handle) {
+//            skipValuesf[handle].innerHTML = values[handle];
+//            skipInputValuesf[handle].value = values[handle];
+//            //alert(values[handle]);
+//        });
+
+
     });
 
     function getDistanceLength(distanceval) {

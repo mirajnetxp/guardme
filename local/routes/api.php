@@ -68,6 +68,7 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::post( 'apply/{id}', 'JobsController@applyJob' )->name( 'api.apply.job' );
 	Route::post( 'mark/hired/{id}', 'JobsController@markHired' )->name( 'api.mark.hired' );
 
+	Route::post( 'hired/by', 'JobsController@HiredBy' )->name( 'job.hair.by.api' );
 
 	Route::get( 'my', 'JobsController@myJobs' )->name( 'api.my.jobs' );
 	Route::get( 'proposals', 'JobsController@myProposals' )->name( 'api.my.proposals' );
@@ -216,5 +217,5 @@ Route::group( [ 'middleware' => 'auth:api' ], function () {
 	//Incident
 	Route::post( 'jobs/add/incident', 'IncidentController@addIncident' );
 
-	Route::get( 'jobs/get/incident/{job_id}', 'IncidentController@getIncident');
+	Route::get( 'jobs/get/incident/{job_id}', 'IncidentController@getIncident' );
 } );

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Responsive\Job;
 use Responsive\User;
 use Responsive\FavouriteFreelancer;
 use Responsive\JobApplication;
@@ -52,7 +53,7 @@ class SearchController extends Controller {
 		//		Users cannot show up on freelancer list unless profile is complete.
 		$query = User::where( 'admin', '=', '2' )
 //		             ->with( [ 'freelancerSettings' ] )
-		             ->where( 'doc_verified', '=', true )
+                     ->where( 'doc_verified', '=', true )
 		             ->leftJoin( 'freelancer_settings', 'users.id', '=', 'freelancer_settings.user_id' )
 		             ->where( 'freelancer_settings.visible', '=', true );
 
@@ -222,11 +223,20 @@ class SearchController extends Controller {
 		] )->find( $id );
 		$ja           = new JobApplication();
 		$work_history = $ja->getApplicantWorkHistory_appliedby( $id );
+		$user         = auth()->user();
+		$openJobs=null;
+		if ( $user->admin == 0 ) {
+			$openJobs = Job::where( 'created_by', $user->id )
+			               ->where( 'status', 1 )
+			               ->get();
+		}
+
+
 		if ( \request()->expectsJson() ) {
 			return response()->json( $person );
 		}
 
-		return view( 'profile', compact( 'person', 'work_history' ) );
+		return view( 'profile', compact( 'person', 'work_history', 'openJobs' ) );
 
 	}
 

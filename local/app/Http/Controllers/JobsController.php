@@ -5,9 +5,11 @@ namespace Responsive\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Responsive\Businesscategory;
+use Responsive\Events\AwardJob;
 use Responsive\FavouriteFreelancer;
 use Responsive\IncidentReport;
 use Responsive\JobApplication;
+use Responsive\Notifications\JobAwarded;
 use Responsive\PaymentRequest;
 use Responsive\SecurityCategory;
 use Responsive\Job;
@@ -97,7 +99,6 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function myJobs() {
-
 		$trans                            = new Transaction();
 		$wallet_data['available_balance'] = $trans->getWalletAvailableBalance();
 
@@ -807,5 +808,52 @@ class JobsController extends Controller {
 		$available_balance = $wallet->getWalletAvailableBalance();
 
 		return view( 'jobs.payment-request-details', compact( 'editprofile', 'payment_request', 'available_balance' ) );
+	}
+	public function HiredBy(Request $request  ) {
+		$freelancer_id=$request->freelancer_id;
+		$job_id=$request->job_id;
+
+		$job  = Job::find( $job_id );
+		$user = auth()->user();
+		if ( $job->created_by != $user->id ) {
+			return;
+		}
+
+		$newApplication                          = new JobApplication();
+		$newApplication->job_id                  = $job_id;
+		$newApplication->applied_by              = $freelancer_id;
+		$newApplication->is_hired                = 0;
+		$newApplication->application_description = 'Invited By ' . $user->name;
+		$newApplication->completion_status       = 0;
+		$newApplication->save();
+
+		// check if user is authorized to mark this application as hired.
+		$job_application     = new JobApplication();
+		$is_eligible_to_hire = $job_application->isEligibleToMarkHired( $newApplication->id );
+		if ( $is_eligible_to_hire['status_code'] == 200 ) {
+			$ja = JobApplication::find( $newApplication->id );
+			event( new AwardJob( $ja ) );
+			$return_data   =  'Hired Successfully';
+			$return_status = 200;
+
+//	--------------Sending Notifications
+			$job            = Job::find( $ja->job_id );
+			$userFreelancer = User::find( $ja->applied_by );
+			$userFreelancer->notify( new JobAwarded( $job ) );
+
+			if ( $userFreelancer->fcm_token ) {
+				$str = 'You have been awarded a slot on "' . $job->title . '"';
+				SendNotification( 'Congratulations!', $str, $userFreelancer->fcm_token );
+			}
+//	--------------Sending Notifications end
+		} else {
+			$error_message = $is_eligible_to_hire['error_message'];
+			$return_data   =  $error_message ;
+			$return_status = 500;
+		}
+
+
+		return response()
+			->json( $return_data, $return_status );
 	}
 }

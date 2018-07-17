@@ -181,8 +181,8 @@ class JobsController extends Controller {
 			if ( $job->created_by == $user_id ) {
 				$job_details       = Job::calculateJobAmount( $job_id );
 				$trans             = new Transaction();
-				$debit_transaction = $trans->getDebitTransactionForJob($job_id);
-				if (!empty($job->status)) {
+				$debit_transaction = $trans->getDebitTransactionForJob( $job_id );
+				if ( ! empty( $job->status ) ) {
 					$returnStatus = 500;
 					$returnData   = "Job is already active";
 				} else if ( $job_details['grand_total'] > $debit_transaction->amount ) {
@@ -190,10 +190,10 @@ class JobsController extends Controller {
 					$returnData   = "Your available balance is less than the balance required for this job";
 				} else {
 					// add 3 credit entries to activate job
-					$parms['job_id'] = $job_id;
+					$parms['job_id']    = $job_id;
 					$parms['paypal_id'] = $debit_transaction->paypal_id;
-					$parms['amount'] = $job_details['basic_total'];
-					$parms['status'] = 1;
+					$parms['amount']    = $job_details['basic_total'];
+					$parms['status']    = 1;
 					$trans->fundJobFee( $parms );
 					// add vat fee
 					$parms['amount'] = $job_details['vat_fee'];
@@ -387,6 +387,51 @@ class JobsController extends Controller {
 		$is_eligible_to_hire = $job_application->isEligibleToMarkHired( $application_id );
 		if ( $is_eligible_to_hire['status_code'] == 200 ) {
 			$ja = JobApplication::find( $application_id );
+			event( new AwardJob( $ja ) );
+			$return_data   = [ 'Hired Successfully' ];
+			$return_status = 200;
+
+//	--------------Sending Notifications
+			$job            = Job::find( $ja->job_id );
+			$userFreelancer = User::find( $ja->applied_by );
+			$userFreelancer->notify( new JobAwarded( $job ) );
+
+			if ( $userFreelancer->fcm_token ) {
+				$str = 'You have been awarded a slot on "' . $job->title . '"';
+				SendNotification( 'Congratulations!', $str, $userFreelancer->fcm_token );
+			}
+//	--------------Sending Notifications end
+		} else {
+			$error_message = $is_eligible_to_hire['error_message'];
+			$return_data   = [ $error_message ];
+			$return_status = 500;
+		}
+
+
+		return response()
+			->json( $return_data, $return_status );
+	}
+
+	public function HiredBy( $freelancer_id, $job_id ) {
+		$job  = Job::find( $job_id );
+		$user = auth()->user();
+		if ( $job->created_by != $user->id ) {
+			return;
+		}
+
+		$newApplication                          = new JobApplication();
+		$newApplication->job_id                  = $job_id;
+		$newApplication->applied_by              = $freelancer_id;
+		$newApplication->is_hired                = 1;
+		$newApplication->application_description = 'Invited By ' . $user->name;
+		$newApplication->completion_status       = 0;
+		$newApplication->save();
+
+		// check if user is authorized to mark this application as hired.
+		$job_application     = new JobApplication();
+		$is_eligible_to_hire = $job_application->isEligibleToMarkHired( $newApplication->id );
+		if ( $is_eligible_to_hire['status_code'] == 200 ) {
+			$ja = JobApplication::find( $newApplication->id );
 			event( new AwardJob( $ja ) );
 			$return_data   = [ 'Hired Successfully' ];
 			$return_status = 200;
@@ -1028,12 +1073,12 @@ class JobsController extends Controller {
 				$transaction->credit_payment_status = 'paid';
 				$transaction->save();
 
-				$Application=JobApplication::find($transaction->application_id);
-				$freelancerId=$Application->applied_by;
-				$user=User::find($freelancerId);
+				$Application  = JobApplication::find( $transaction->application_id );
+				$freelancerId = $Application->applied_by;
+				$user         = User::find( $freelancerId );
 
-				$job=Job::find($Application->job_id);
-				$user->notify(new RecivesBonus($job));
+				$job = Job::find( $Application->job_id );
+				$user->notify( new RecivesBonus( $job ) );
 
 				$return_status = 200;
 				$return_data   = [ "Your tip has been successfully added." ];
@@ -1322,13 +1367,13 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function cancelJob($job_id) {
-		$job = Job::find($job_id);
+	public function cancelJob( $job_id ) {
+		$job = Job::find( $job_id );
 		//TODO add created by check so that every one can only cancel his/her created job and can not manipulate it by changing job id.
 		// check if job is active
-		if ($job->status == 1) {
-			$trans = new Transaction();
-			$returned = $trans->giveRefund($job);
+		if ( $job->status == 1 ) {
+			$trans         = new Transaction();
+			$returned      = $trans->giveRefund( $job );
 			$return_data   = $returned['return_data'];
 			$return_status = $returned['return_status'];
 		} else {

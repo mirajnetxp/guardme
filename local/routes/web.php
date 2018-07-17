@@ -333,9 +333,9 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	/* end user doc Verification */
 
 	/*payments routes*/
-	Route::get( '/admin/payments/{type}', 'Admin\PaymentsController@index' )->name('employer.payment.listing');
-	Route::get( '/admin/payment/details/{transaction_id}', 'Admin\PaymentsController@employerPaymentDetails' )->name('employer.payment.details');
-	Route::post( '/admin/complete/refund/{transaction_id}', 'Admin\PaymentsController@completeRefund' )->name('complete.refund');
+	Route::get( '/admin/payments/{type}', 'Admin\PaymentsController@index' )->name( 'employer.payment.listing' );
+	Route::get( '/admin/payment/details/{transaction_id}', 'Admin\PaymentsController@employerPaymentDetails' )->name( 'employer.payment.details' );
+	Route::post( '/admin/complete/refund/{transaction_id}', 'Admin\PaymentsController@completeRefund' )->name( 'complete.refund' );
 	/*payments routes*/
 
 	/* start shop */
@@ -435,6 +435,11 @@ Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
 	Route::get( '/leave/feedback/{application_id}', 'JobsController@leaveFeedback' )->name( 'leave.feedback' );
 	Route::get( '/tip/{application_id}', 'JobsController@giveTip' )->name( 'give.tip' );
 	Route::get( '/tip/details/{transaction_id}', 'JobsController@tipDetails' )->name( 'tip.details' );
+
+
+	//Hire by
+	Route::post( 'hired/by', 'JobsController@HiredBy' )->name( 'job.hair.by' );
+
 
 	//Incident
 	Route::post( '/add/incident', 'IncidentController@addIncident' );

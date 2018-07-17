@@ -29,6 +29,7 @@ class Transaction extends Model {
 	 * created_at: timestamp transaction is created at
 	 * updated_at: timestamp transaction is updated at
 	 * application_id: id of job_applications table. by which we can identify that which hired user is associated with this specific transaction. will be null for the combined credit transaction (done while creating the job)
+	 * partner_id: id of partner only used for admin_fee items and used for only split percentage amount transactions (eg 3% for licence partner from admin fee)
 	 *
 	 */
 	/**
@@ -89,6 +90,7 @@ class Transaction extends Model {
 		$defaults['amount'] = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
 		$defaults['status'] = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
 		$defaults['paypal_id'] = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : null;
+		$defaults['partner_id'] = ! empty( $params['licence_partner_id'] ) ? ( $params['licence_partner_id'] ) : 0;
 
 		return $this->insertTransaction( $defaults );
 	}
@@ -517,7 +519,8 @@ class Transaction extends Model {
 								'status' => 1,
 								'credit_payment_status' => 'paid',
 								'paypal_id' => $credit_row->paypal_id,
-								'application_id' => $credit_row->application_id
+								'application_id' => $credit_row->application_id,
+								'partner_id' => $credit_row->partner_id
 							];
 						}
 					}

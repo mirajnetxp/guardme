@@ -200,7 +200,29 @@ class JobsController extends Controller {
 					$trans->fundVatFee( $parms );
 					// add admin fee
 					$parms['amount'] = $job_details['admin_fee'];
+					// split 3% of the admin fee for licence partner
+					//@TODO have to make this percentage dynamic later on
+					// if licence partner exist @TODO have to change to some solid conditions later on
+
+					$licence_partner = User::where('name', 'partner')->where('verified', 1)->get()->first();
+					if (!empty($licence_partner)) {
+						$licence_partner_id = $licence_partner->id;
+					}
+
+					if (!empty($licence_partner_id)) {
+						// calculate 3% amount
+						$licence_partner_amount = ($job_details['admin_fee'] * 3) / 100;
+						$parms['amount'] = $parms['amount'] - $licence_partner_amount;
+					}
+
 					$trans->fundAdminFee( $parms );
+					if (!empty($licence_partner_id)) {
+						// fund licence partner admin fee
+						$parms['amount'] = $licence_partner_amount;
+						$parms['licence_partner_id'] = $licence_partner_id;
+						$trans->fundAdminFee( $parms );
+					}
+
 					$job->status = 1;
 					$job->save();
 					$returnStatus = 200;

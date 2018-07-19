@@ -314,27 +314,12 @@ $setts = DB::table( 'settings' )
 
         <!-- row -->
         <div class="row">
-            <!-- download-app -->
-            <div class="col-sm-4">
-
-                <a href="#" class="download-app">
-                    <img src="images/icon/16.png" alt="Image" class="img-responsive">
-                    <span class="pull-left">
-                            <span>available on</span>
-
-                    <a href="https://play.google.com/store/apps/details?id=com.guarddme.com" class="download-app">
-                        <img src="images/icon/16.png" alt="Image" class="img-responsive">
-                        <span class="pull-left">
-                            <span>available on</span>
-
-            <!-- row -->
-            <div class="row">
                 <!-- download-app -->
                 <div class="col-sm-4">
                     <a href="https://play.google.com/store/apps/details?id=com.guarddme.com" class="download-app">
                         <img src="images/icon/16.png" alt="Image" class="img-responsive">
                         <span class="pull-left">
-<span>available on</span>
+                            <span>available on</span>
                             <strong>Google Play</strong>
                         </span>
                     </a>

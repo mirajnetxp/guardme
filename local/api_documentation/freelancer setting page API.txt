@@ -29,4 +29,37 @@
 				
 				{
 					"visibility_set_to": "private"
-				}				
+				}
+
+3. Retriving the GPS status
+=============================================
+		Api:  api/freelancer/settings/gps
+		Type: GET
+		Requirements : Authorization ,
+		Respose:
+				{
+					"gps": "active"
+				}
+
+				--- OR ---
+
+				{
+					"gps": "inactive"
+				}
+
+
+4. Change GPS status
+=============================================
+		Api:  api/freelancer/settings/gps/toggle
+		Type: POST
+		Requirements : Authorization ,
+		Respose:
+				{
+                    "gps": "active"
+                }
+
+                --- OR ---
+
+                {
+                    "gps": "inactive"
+                }

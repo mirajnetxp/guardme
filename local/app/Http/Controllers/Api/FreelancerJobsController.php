@@ -177,7 +177,6 @@ class FreelancerJobsController extends Controller {
 	public function SetVisibility() {
 		$id = auth()->user()->id;
 
-
 		$status = FreelancerSetting::where( 'user_id', $id )->first();
 
 		if ( $status->visible ) {

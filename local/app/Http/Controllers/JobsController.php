@@ -835,7 +835,6 @@ class JobsController extends Controller {
 			event( new AwardJob( $ja ) );
 			$return_data   =  'Hired Successfully';
 			$return_status = 200;
-
 //	--------------Sending Notifications
 			$job            = Job::find( $ja->job_id );
 			$userFreelancer = User::find( $ja->applied_by );

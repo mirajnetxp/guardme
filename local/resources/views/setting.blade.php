@@ -28,7 +28,18 @@
             transition: .4s;
             border-radius: 34px;
         }
-
+        .slider2 {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ca2222;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
         /*.slider:before {*/
         /*position: absolute;*/
         /*content: "";*/
@@ -56,6 +67,20 @@
             transform: translateX(55px);
         }
 
+        input:checked + .slider2 {
+            background-color: #2ab934;
+        }
+
+        input:focus + .slider2 {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider2:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(55px);
+        }
+
         /*------ ADDED CSS ---------*/
         .slider:after {
             content: 'Private';
@@ -71,6 +96,21 @@
 
         input:checked + .slider:after {
             content: 'Public';
+        }
+        .slider2:after {
+            content: 'No Consent';
+            color: white;
+            display: block;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            font-size: 10px;
+            font-family: Verdana, sans-serif;
+        }
+
+        input:checked + .slider2:after {
+            content: 'Consent';
         }
 
         /*--------- END --------*/
@@ -255,7 +295,6 @@
                                 </tr>
                                 <tr>
                                     <td><h4>Profile Visibility</h4></td>
-
                                     <td>
                                         <p>Make your profile hidden or visible on the personnel search page.</p>
 
@@ -279,15 +318,15 @@
                                     <td>
                                         <p>Accept or decline GPS app tracking</p>
                                         <h3>
-                                            <label class="switch">
-                                                @if($visible)
-                                                    <input id="visibality" name="visibality"
+                                            <label class="switch" style="width: 140px">
+                                                @if($settings->gps)
+                                                    <input id="gps" name="gps"
                                                            type="checkbox" checked>
                                                 @else
-                                                    <input id="visibality" name="visibality"
+                                                    <input id="gps" name="gps"
                                                            type="checkbox">
                                                 @endif
-                                                <div class="slider round"></div>
+                                                <div class="slider2 round"></div>
                                             </label>
                                         </h3>
                                     </td>
@@ -408,6 +447,34 @@
                         $(this).attr("checked", "true");
                     } else {
                         alert('Your profile is now private.')
+                        $(this).attr("checked", "false");
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                    if (typeof xhr.responseText == "undefined") {
+                        root.mess = "Internet Connection is Slow or Disconnect";
+                        root.retry = "Retry";
+                        window.ajaxcurrent = this;
+                        return
+                    }
+                }
+            });
+        })
+
+        $("#gps").click(function () {
+
+            $.ajax({
+                url: "/settings/gps",
+                method: "GET",
+                dataType: 'json',
+                success: function (d) {
+
+                    if (d == '101') {
+                        alert('GPS Tracking is Active')
+                        $(this).attr("checked", "true");
+                    } else {
+                        alert('GPS Tracking is Inactive')
                         $(this).attr("checked", "false");
                     }
                 },

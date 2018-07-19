@@ -151,9 +151,11 @@ Route::group( [ 'prefix' => 'freelancer', 'namespace' => 'Api', 'middleware' => 
 
 	Route::get( '/open/job/applications', 'FreelancerJobsController@openJobApplications' );
 
-
-	Route::get( '/settings/visibility', 'FreelancerJobsController@visibility' );
-	Route::post( '/settings/visibility/toggle', 'FreelancerJobsController@SetVisibility' );
+	//Frelancer settings
+	Route::get( '/settings/gps', 'FreelancerSettingsController@gps' );
+	Route::get( '/settings/visibility', 'FreelancerSettingsController@visibility' );
+	Route::post( '/settings/visibility/toggle', 'FreelancerSettingsController@SetVisibility' );
+	Route::post( '/settings/gps/toggle', 'FreelancerSettingsController@SetGps' );
 
 } );
 

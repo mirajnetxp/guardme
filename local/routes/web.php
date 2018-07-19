@@ -454,8 +454,10 @@ Route::group( [ 'middleware' => 'auth' ], function () {
 	Route::get( '/my/teams', 'TeamsController@myTeams' )->name( 'my.teams' );
 	Route::get( '/teams/create', 'TeamsController@createTeam' )->name( 'create.team' );
 	Route::get( '/team/detail/{team_id}', 'TeamsController@showTeam' )->name( 'team.detail' );
+	// Payment Method
 
 	Route::post( 'add/payment/method', 'PaymentMethodController@add' );
+
 
 } );
 

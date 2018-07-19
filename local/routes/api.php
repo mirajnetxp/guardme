@@ -212,7 +212,13 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::post( '/update/company/details', 'ShopController@updatecompany' );
 
 
+//	Payment Method
+
+	Route::post( 'add/payment/method', 'PaymentMethodController@add' );
+	Route::get( 'fatch/payment/method', 'PaymentMethodController@fatch' );
+
 } );
+
 
 Route::group( [ 'middleware' => 'auth:api' ], function () {
 

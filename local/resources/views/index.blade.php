@@ -18,10 +18,13 @@ $setts = DB::table( 'settings' )
         .banner-job {
 
             @if(!empty($setts[0]->site_banner))
- background-image: url({{$url}}/local/images/settings/{{$setts[0]->site_banner}});
+    background-image: url({{$url}}/local/images/settings/{{$setts[0]->site_banner}});
             @else
- background-image: url({{$url}}/img/banner.jpg);
+    background-image: url({{$url}}/img/banner.jpg);
         @endif
+
+
+
 
 
 
@@ -314,17 +317,16 @@ $setts = DB::table( 'settings' )
 
         <!-- row -->
         <div class="row">
-                <!-- download-app -->
-                <div class="col-sm-4">
-                    <a href="https://play.google.com/store/apps/details?id=com.guarddme.com" class="download-app">
-                        <img src="images/icon/16.png" alt="Image" class="img-responsive">
-                        <span class="pull-left">
+            <!-- download-app -->
+            <div class="col-sm-4">
+                <a href="https://play.google.com/store/apps/details?id=com.guarddme.com" class="download-app">
+                    <img src="images/icon/16.png" alt="Image" class="img-responsive">
+                    <span class="pull-left">
                             <span>available on</span>
                             <strong>Google Play</strong>
                         </span>
-                    </a>
+                </a>
             </div><!-- download-app -->
-
             <!-- download-app -->
             <div class="col-sm-4">
                 <a href="#" class="download-app">
@@ -335,7 +337,6 @@ $setts = DB::table( 'settings' )
                         </span>
                 </a>
             </div><!-- download-app -->
-
             <!-- download-app -->
             <div class="col-sm-4">
                 <a href="#" class="download-app">

@@ -137,7 +137,26 @@
             </div>
 
             </div>
+            <div class="col-lg-3 col-sm-6">
+              <div class="card">
+                  <div class="content">
+                      <div class="row">
+                          <div class="col-xs-5">
+                              <div class="icon-big icon-warning text-center">
+                                  <i class="fa fa-money"></i>
+                              </div>
+                          </div>
+                          <div class="col-xs-7" style="padding-left: 0px;">
+                              <div class="numbers">
+                                  <p>Partner Balance</p>
+                                  £ {{ $partner_balance }}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
+            </div>
           </div>
           <!-- /top tiles -->
 

@@ -589,4 +589,22 @@ class Transaction extends Model {
 		return $transactions;
 	}
 
+	/**
+	 * @param $partner_id
+	 * @return mixed
+	 */
+	public function getPartnerBalance() {
+		$data = [];
+		$partner_email = config('general.licence_partner_email');
+		$partner = User::where('name', 'partner')->where('email', $partner_email)->get()->first();
+		if (!empty($partner)) {
+			$data = DB::table($this->table . ' as tr')
+				->where('tr.partner_id', $partner->id)
+				->where('tr.status', 1)
+				->select(DB::raw( 'SUM(amount) as total' ))->get()->first();
+		}
+
+		return $data;
+	}
+
 }

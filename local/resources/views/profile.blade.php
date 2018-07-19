@@ -89,8 +89,10 @@
                         </h1>
                         <address>
                             <p>@if($person->person_address)
-                                    City: {{$person->person_address->citytown}} <br>
+                                    City: {{$person->person_address->citytown}}
                                 @endif
+                                <br>
+                                GPS: {{($person->freelancerSettings->gps==1)?'Active':'Inactive'}}
                                 @if($person->sec_work_category)
                                     Category: {{$person->sec_work_category->name}}
                                 @endif
@@ -224,8 +226,8 @@
                     alert(d)
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                        console.log(xhr.responseText);
-                        alert(xhr.responseText)
+                    console.log(xhr.responseText);
+                    alert(xhr.responseText)
                 }
             });
         })

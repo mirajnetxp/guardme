@@ -1,4 +1,4 @@
-1. Retriving the Profile Visibility status
+Retriving the Profile Visibility status
 =============================================
 		Api:  api/freelancer/settings/visibility   
 		Type: GET
@@ -14,8 +14,8 @@
 					"visibility": "private"
 				}
 
-				
-2. Change Profile Visibility status
+
+Change Profile Visibility status
 =============================================
 		Api:  api/freelancer/settings/visibility/toggle   
 		Type: POST
@@ -31,7 +31,7 @@
 					"visibility_set_to": "private"
 				}
 
-3. Retriving the GPS status
+Retriving the GPS status
 =============================================
 		Api:  api/freelancer/settings/gps
 		Type: GET
@@ -48,7 +48,7 @@
 				}
 
 
-4. Change GPS status
+Change GPS status
 =============================================
 		Api:  api/freelancer/settings/gps/toggle
 		Type: POST
@@ -63,3 +63,42 @@
                 {
                     "gps": "inactive"
                 }
+
+
+
+Add Payment method
+=============================================
+		Api:  api/add/payment/method
+		Type: POST
+		Requirements : Authorization ,
+		Pay load:
+		                    method_type:  'payple' or 'bank'
+		                    payple_email:   'payple email'  // incase method_type:payple
+
+		                    bank_name:'name of the bank'        // incase method_type:bank
+		                    ac_name:'name of the account'        // incase method_type:bank
+		                    sort_code:'short code'        // incase method_type:bank
+		                    ac_number:'account number'        // incase method_type:bank
+		Respose:
+		            If add success this will return the current Payment method
+				{
+                    "id": 1,
+                    "user_id": 36,
+                    "method_type": "payple",
+                    "method_details": "cokwedadi@gmail.com",
+                    "created_at": "2018-07-09 12:12:24",
+                    "updated_at": "2018-07-09 12:12:24"
+                }
+
+
+Fatch Payment method
+=============================================
+		Api:  api/fatch/payment/method
+		Type: GET
+		Requirements : Authorization ,
+		Respose:
+		       {
+                   "method_type": "payple",
+                   "method_details": "cokwedadi@gmail.com",
+                   "updated_at": "2018-07-09 12:12:24"
+               }

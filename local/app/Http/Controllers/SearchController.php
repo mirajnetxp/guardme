@@ -71,6 +71,12 @@ class SearchController extends Controller {
 			$search_gender = isset( $data['gender'] ) ? trim( $data['gender'] ) : null;
 			if ( $search_gender && $search_gender != 'all' ) {
 				$query = $query->where( 'gender', $search_gender );
+				dd($query);
+			}
+			// todo: filter by gps
+
+			if ( isset( $data['gps'] )  ) {
+				$query = $query->where( 'freelancer_settings.gps', '=', $data['gps'] );
 			}
 
 			// todo: search filter, location
@@ -226,7 +232,7 @@ class SearchController extends Controller {
 		$ja           = new JobApplication();
 		$work_history = $ja->getApplicantWorkHistory_appliedby( $id );
 		$user         = auth()->user();
-		$openJobs=null;
+		$openJobs     = null;
 		if ( $user->admin == 0 ) {
 			$openJobs = Job::where( 'created_by', $user->id )
 			               ->where( 'status', 1 )

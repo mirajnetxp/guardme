@@ -239,8 +239,16 @@
                             <div id="accordion-gps" class="panel-collapse collapse">
                                 <!-- panel-body -->
                                 <div class="panel-body">
-                                    <form method="get" action="{{ route('post-personnel-search') }}" id="formID">
+                                    <form method="get" action="{{ route('post-personnel-search') }}">
 
+                                        <label for="full-time">
+                                            <input type="radio" name="gps" value="1"> Active </label>
+
+                                        <label for="part-time">
+                                            <input type="radio" name="gps" value="0"> Inactive
+                                        </label>
+                                        <br>
+                                        <button type="submit" class="btn btn-info btn-small">Filter</button>
                                     </form>
                                 </div><!-- panel-body -->
                             </div>

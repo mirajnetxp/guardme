@@ -202,9 +202,9 @@ class JobsController extends Controller {
 					$parms['amount'] = $job_details['admin_fee'];
 					// split 3% of the admin fee for licence partner
 					//@TODO have to make this percentage dynamic later on
-					// if licence partner exist @TODO have to change to some solid conditions later on
-
-					$licence_partner = User::where('name', 'partner')->where('verified', 1)->get()->first();
+					// if licence partner exist
+					$partner_email = config('general.licence_partner_email');
+					$licence_partner = User::where('name', 'partner')->where('email', $partner_email)->get()->first();
 					if (!empty($licence_partner)) {
 						$licence_partner_id = $licence_partner->id;
 					}

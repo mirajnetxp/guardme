@@ -8,6 +8,7 @@ use App\Photo;
 use App\PhotoAlbum;*/
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
+use Responsive\Transaction;
 
 class DashboardController extends AdminController {
 
@@ -114,18 +115,20 @@ class DashboardController extends AdminController {
 			$testimonials = DB::table('testimonials')
 		         ->orderBy('id','desc')
 				 ->limit(3)->offset(0)
-				 ->get();	
-
-
-       
+				 ->get();
 
 
 
-				 
-		
+
+
+			$trans = new Transaction();
+
+			$partner_balance = $trans->getPartnerBalance();
+			$partner_balance = !empty($partner_balance->total) ? ($partner_balance->total) : 0;
+
 		$data = array('total_seller' => $total_seller, 'total_user' => $total_user, 'total_customer' => $total_customer, 'total_booking' => $total_booking,
 		'today_booking' => $today_booking, 'total_shop' =>  $total_shop, 'javas' => $javas, 'booking' => $booking, 'setting' => $setting, 'users' => $users,
-		'testimonials' => $testimonials);
+		'testimonials' => $testimonials, 'partner_balance' => $partner_balance);
 		
 		return view('admin.index')->with($data);
 		

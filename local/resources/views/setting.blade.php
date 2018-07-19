@@ -170,11 +170,12 @@
                             <h2>Settings</h2>
 
                             <table class="display nowrap table">
-                                   <tr>
+                                <tr>
                                     <td><h4>Payment Method</h4></td>
 
                                     <td>
-				    				   <p>Add your Paypal or Bank details here. Payment is made every Friday and Monday.</p>
+                                        <p>Add your Paypal or Bank details here. Payment is made every Friday and
+                                            Monday.</p>
 
                                         @if($paymethod)
                                             <h3 class="pmm">
@@ -195,7 +196,8 @@
                                                 Payple Email : {{$paymethod->method_details}}
                                             @else
                                                 @php($det=json_decode($paymethod->method_details))
-                                            <p class="text-center" style="border-bottom: 1px solid;">Bank details</p>
+                                                <p class="text-center" style="border-bottom: 1px solid;">Bank
+                                                    details</p>
 
                                                 Bank name : <strong>{{$det->bank_name}}</strong>
                                                 <br>
@@ -252,70 +254,71 @@
 
                                 </tr>
                                 <tr>
-				    <td><h4>Profile Visibility</h4></td>
+                                    <td><h4>Profile Visibility</h4></td>
 
-                                        <td>
-									                                   <p>Make your profile hidden or visible on the personnel search page.</p>
+                                    <td>
+                                        <p>Make your profile hidden or visible on the personnel search page.</p>
 
-                                            <h3>
-                                                <label class="switch">
-                                                    @if($visible)
-                                                        <input id="visibality" name="visibality"
-                                                               type="checkbox" checked>
-                                                    @else
-                                                        <input id="visibality" name="visibality"
-                                                               type="checkbox">
-                                                    @endif
-                                                    <div class="slider round"></div>
-                                                </label>
-                                            </h3>
-                                        </td>
+                                        <h3>
+                                            <label class="switch">
+                                                @if($visible)
+                                                    <input id="visibality" name="visibality"
+                                                           type="checkbox" checked>
+                                                @else
+                                                    <input id="visibality" name="visibality"
+                                                           type="checkbox">
+                                                @endif
+                                                <div class="slider round"></div>
+                                            </label>
+                                        </h3>
+                                    </td>
                                 </tr>
-				  <tr>
-				    <td><h4>GPS Tracking</h4></td>
+                                <tr>
+                                    <td><h4>GPS Tracking</h4></td>
 
-                                        <td>
-					<p>Accept or decline GPS app tracking</p>				      
-                                            <h3>
-                                                <label class="switch">
-                                                    @if($visible)
-                                                        <input id="visibality" name="visibality"
-                                                               type="checkbox" checked>
-                                                    @else
-                                                        <input id="visibality" name="visibality"
-                                                               type="checkbox">
-                                                    @endif
-                                                    <div class="slider round"></div>
-                                                </label>
-                                            </h3>
-                                        </td>
+                                    <td>
+                                        <p>Accept or decline GPS app tracking</p>
+                                        <h3>
+                                            <label class="switch">
+                                                @if($visible)
+                                                    <input id="visibality" name="visibality"
+                                                           type="checkbox" checked>
+                                                @else
+                                                    <input id="visibality" name="visibality"
+                                                           type="checkbox">
+                                                @endif
+                                                <div class="slider round"></div>
+                                            </label>
+                                        </h3>
+                                    </td>
                                 </tr>
                                 @if (auth()->user()->admin == 2)
                                     <tr>
-                                       <td><h4>Close your account</h4></td>
-                                    <td>
-                                        <h4>
-                                            <a href="{{URL::to('delete_account')}}" class="btn"
-                                               style="margin-left: 0!important">Close account</a>
-                                        </h4>
-					 
-                                    </td>
-				   
+                                        <td><h4>Close your account</h4></td>
+                                        <td>
+                                            <h4>
+                                                <a href="{{URL::to('delete_account')}}" class="btn"
+                                                   style="margin-left: 0!important">Close account</a>
+                                            </h4>
+
+                                        </td>
+
                                     </tr>
                                 @endif
                             </table>
-			    <p> Please let us know if you are disatisfied with our service before requesting a closure. 
-				After closing your account, we will be unable to retrieve the data. 
-				If you have a problem that the Licensed Partner has not resolved within our SLA (72 hours), 
-				send a message to complaints@guaddme.com.</p>
+                            <p> Please let us know if you are disatisfied with our service before requesting a closure.
+                                After closing your account, we will be unable to retrieve the data.
+                                If you have a problem that the Licensed Partner has not resolved within our SLA (72
+                                hours),
+                                send a message to complaints@guaddme.com.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="section job-short-info center balance">
-Here you can modify your account settings. 
-Click save when you're done to keep any changes.
+                        Here you can modify your account settings.
+                        Click save when you're done to keep any changes.
                     </div>
 
                     <div class="section quick-rules job-postdetails">
@@ -330,8 +333,8 @@ Click save when you're done to keep any changes.
                             <li>
                                 All balances will need to be settled before account closure commences.
                             </li>
-                          
-                            
+
+
                         </ul>
                     </div>
 
@@ -340,11 +343,14 @@ Click save when you're done to keep any changes.
                         <h4>GPS Settings</h4>
                         <ul>
                             <li>
-We will respect your privacy by turning off our GPS tracker if you select the option.                            </li>
+                                We will respect your privacy by turning off our GPS tracker if you select the option.
+                            </li>
                             <li>
-But this information will be made available to employers.                            </li>
+                                But this information will be made available to employers.
+                            </li>
                             <li>
-Some employers may only want to hire freelancers who have this option activated.                            </li>
+                                Some employers may only want to hire freelancers who have this option activated.
+                            </li>
 
                         </ul>
                     </div>

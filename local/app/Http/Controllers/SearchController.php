@@ -219,7 +219,9 @@ class SearchController extends Controller {
 			'person_address',
 			'sec_work_category',
 			'applications',
-			'myApplications'
+			'myApplications',
+			'freelancerSettings'
+
 		] )->find( $id );
 		$ja           = new JobApplication();
 		$work_history = $ja->getApplicantWorkHistory_appliedby( $id );

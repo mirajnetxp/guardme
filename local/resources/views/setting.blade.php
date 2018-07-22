@@ -275,9 +275,6 @@
 
                                 </div>
                                 <div class="col-md-7">
-                                    <p>Add your Paypal or Bank details here. Payment is made every Friday and
-                                        Monday.</p>
-
                                     @if($paymethod)
                                         <h3 class="pmm">
                                             <label class="radio-container">Paypal
@@ -367,7 +364,6 @@
 
                                 </div>
                                 <div class="col-md-7">
-                                    <p>Make your profile hidden or visible on the personnel search page.</p>
                                     <h3>
                                         <label class="switch">
                                             @if($visible)
@@ -390,13 +386,11 @@
                                     <h4>GPS Tracking
                                         <div class="tooltipc">
                                             <span class="glyphicon glyphicon-question-sign"></span>
-                                            <span class="tooltiptextc">Accept or decline GPS app tracking</span>
+                                            <span class="tooltiptextc">Accept or decline GPS app tracking.</span>
                                         </div>
                                     </h4>
-
                                 </div>
                                 <div class="col-md-7">
-                                    <p>Accept or decline GPS app tracking</p>
                                     <h3>
                                         <label class="switch" style="width: 140px">
                                             @if($settings->gps)

@@ -28,6 +28,7 @@
             transition: .4s;
             border-radius: 34px;
         }
+
         .slider2 {
             position: absolute;
             cursor: pointer;
@@ -40,6 +41,7 @@
             transition: .4s;
             border-radius: 34px;
         }
+
         /*.slider:before {*/
         /*position: absolute;*/
         /*content: "";*/
@@ -97,6 +99,7 @@
         input:checked + .slider:after {
             content: 'Public';
         }
+
         .slider2:after {
             content: 'No Consent';
             color: white;
@@ -177,6 +180,59 @@
             border-radius: 50%;
             background: white;
         }
+
+        /* Tooltip container */
+        .tooltipc {
+            position: relative;
+            /*display: inline-block;*/
+            /*border-bottom: 1px dotted black; !* If you want dots under the hoverable text *!*/
+        }
+
+        /* Tooltip text */
+        .tooltipc .tooltiptextc {
+            visibility: hidden;
+            width: 250px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+
+            /* Position the tooltip text */
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+
+            /* Fade in tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Tooltip arrow */
+        .tooltipc .tooltiptextc::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltipc:hover .tooltiptextc {
+            visibility: visible;
+            opacity: 1;
+        }
+        .divSty{
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -208,12 +264,14 @@
                     <div class="section postdetails">
                         <div class="description-info">
                             <h2>Settings</h2>
-
-                            <table class="display nowrap table">
-                                <tr data-toggle="tooltip" data-placement="top" title="Add your Paypal or Bank details here. Payment is made every Friday and Monday.">
-                                    <td><h4>Payment Method</h4></td>
-
-                                    <td>
+                            {{--Payment Method--}}
+                            <div class="row divSty" >
+                                <div class="tooltipc">
+                                    <span class="tooltiptextc">Add your Paypal or Bank details here. Payment is made every Friday and Monday.</span>
+                                    <div class="col-md-5">
+                                        <h4>Payment Method</h4>
+                                    </div>
+                                    <div class="col-md-7">
                                         <p>Add your Paypal or Bank details here. Payment is made every Friday and
                                             Monday.</p>
 
@@ -260,7 +318,6 @@
                                             </h3>
                                         @endif
                                         <div>
-
                                         </div>
                                         {{--Model--}}
                                         <div class="modal fade" id="payment-method-model" tabindex="-1" role="dialog"
@@ -290,12 +347,18 @@
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
                                         </div><!-- /.modal -->
-                                    </td>
+                                    </div>
 
-                                </tr>
-                                <tr data-toggle="tooltip" data-placement="top" title="Make your profile hidden or visible on the personnel search page.">
-                                    <td><h4>Profile Visibility</h4></td>
-                                    <td>
+                                </div>
+                            </div>
+
+                            <div class="row divSty">
+                                <div class="tooltipc">
+
+                                    <span class="tooltiptextc">Make your profile hidden or visible on the personnel search page.</span>
+
+                                    <div class="col-md-5"><h4>Profile Visibility</h4></div>
+                                    <div class="col-md-7">
                                         <p>Make your profile hidden or visible on the personnel search page.</p>
 
                                         <h3>
@@ -310,12 +373,16 @@
                                                 <div class="slider round"></div>
                                             </label>
                                         </h3>
-                                    </td>
-                                </tr>
-                                <tr data-toggle="tooltip" data-placement="top" title="Accept or decline GPS app tracking">
-                                    <td><h4>GPS Tracking</h4></td>
+                                    </div>
 
-                                    <td>
+                                </div>
+                            </div>
+                            <div class="row divSty">
+                                <div class="tooltipc">
+                                    <span class="tooltiptextc">Accept or decline GPS app tracking</span>
+
+                                    <div class="col-md-5"><h4>GPS Tracking</h4></div>
+                                    <div class="col-md-7">
                                         <p>Accept or decline GPS app tracking</p>
                                         <h3>
                                             <label class="switch" style="width: 140px">
@@ -329,27 +396,30 @@
                                                 <div class="slider2 round"></div>
                                             </label>
                                         </h3>
-                                    </td>
-                                </tr>
-                                @if (auth()->user()->admin == 2)
-                                    <tr>
-                                        <td><h4>Close your account</h4></td>
-                                        <td>
-                                            <h4>
-                                                <a href="{{URL::to('delete_account')}}" class="btn"
-                                                   style="margin-left: 0!important">Close account</a>
-                                            </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (auth()->user()->admin == 2)
+                                <div class="row">
+                                    <div class="col-md-5"><h4>Close your account</h4></div>
+                                    <div class="col-md-7">
 
-                                        </td>
 
-                                    </tr>
-                                @endif
-                            </table>
-                            <p> Please let us know if you are disatisfied with our service before requesting a closure.
-                                After closing your account, we will be unable to retrieve the data.
-                                If you have a problem that the Licensed Partner has not resolved within our SLA (72
-                                hours),
-                                send a message to complaints@guaddme.com.</p>
+                                        <h4>
+                                            <a href="{{URL::to('delete_account')}}" class="btn"
+                                               style="margin-left: 0!important">Close account</a>
+                                        </h4>
+                                        <p> Please let us know if you are disatisfied with our service before requesting
+                                            a closure.
+                                            After closing your account, we will be unable to retrieve the data.
+                                            If you have a problem that the Licensed Partner has not resolved within our
+                                            SLA (72
+                                            hours),
+                                            send a message to complaints@guaddme.com.</p>
+
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -184,7 +184,7 @@
         /* Tooltip container */
         .tooltipc {
             position: relative;
-            /*display: inline-block;*/
+            display: inline-block;
             /*border-bottom: 1px dotted black; !* If you want dots under the hoverable text *!*/
         }
 
@@ -197,15 +197,11 @@
             text-align: center;
             padding: 5px 0;
             border-radius: 6px;
-
-            /* Position the tooltip text */
             position: absolute;
             z-index: 1;
-            bottom: 125%;
+            bottom: 65%;
             left: 50%;
-            margin-left: -60px;
-
-            /* Fade in tooltip */
+            margin-left: -125px;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -227,7 +223,8 @@
             visibility: visible;
             opacity: 1;
         }
-        .divSty{
+
+        .divSty {
             margin-bottom: 25px;
             border-bottom: 1px solid #eee;
             padding-bottom: 5px;
@@ -265,139 +262,155 @@
                         <div class="description-info">
                             <h2>Settings</h2>
                             {{--Payment Method--}}
-                            <div class="row divSty" >
-                                <div class="tooltipc">
-                                    <span class="tooltiptextc">Add your Paypal or Bank details here. Payment is made every Friday and Monday.</span>
-                                    <div class="col-md-5">
-                                        <h4>Payment Method</h4>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <p>Add your Paypal or Bank details here. Payment is made every Friday and
-                                            Monday.</p>
+                            <div class="row divSty">
 
-                                        @if($paymethod)
-                                            <h3 class="pmm">
-                                                <label class="radio-container">Paypal
-                                                    <input type="radio" value="payple"
-													       <?php if ( $paymethod->method_type == 'payple' )
-														       echo 'checked' ?> name="payment_method">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                                <label class="radio-container">Bank
-                                                    <input type="radio" value="bank"
-													       <?php if ( $paymethod->method_type == 'bank' )
-														       echo 'checked' ?> name="payment_method">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </h3>
-                                            @if($paymethod->method_type == 'payple')
-                                                Payple Email : {{$paymethod->method_details}}
-                                            @else
-                                                @php($det=json_decode($paymethod->method_details))
-                                                <p class="text-center" style="border-bottom: 1px solid;">Bank
-                                                    details</p>
-
-                                                Bank name : <strong>{{$det->bank_name}}</strong>
-                                                <br>
-                                                Account Name : <strong>{{$det->ac_name}}</strong>
-                                                <br>
-                                                Sort Code : <strong>{{$det->sort_code}}</strong>
-                                                <br>
-                                                Bank Account Number : <strong>{{$det->ac_number}}</strong>
-                                            @endif
-                                        @else
-                                            <h3 class="pmm hidden">
-                                                <label class="radio-container">Paypal
-                                                    <input type="radio" value="payple" name="payment_method">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                                <label class="radio-container">Bank
-                                                    <input type="radio" value="bank" name="payment_method">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </h3>
-                                        @endif
-                                        <div>
+                                <div class="col-md-5">
+                                    <h4>Payment Method
+                                        <div class="tooltipc">
+                                            <span class="glyphicon glyphicon-question-sign"></span>
+                                            <span class="tooltiptextc">Add your Paypal or Bank details here. Payment is made every Friday and Monday.</span>
                                         </div>
-                                        {{--Model--}}
-                                        <div class="modal fade" id="payment-method-model" tabindex="-1" role="dialog"
-                                             aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 25px">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
 
-                                                        <h4 class="modal-title"></h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form id="p_method_detail_form" method="POST"
-                                                              action="add/payment/method">
-                                                            <input type="hidden" name="method_type" value="payple">
-
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger"
-                                                                data-dismiss="modal">Close
-                                                        </button>
-                                                        <button type="submit" form="p_method_detail_form"
-                                                                class="btn btn-success">Save
-                                                        </button>
-
-                                                    </div>
-                                                </div><!-- /.modal-content -->
-                                            </div><!-- /.modal-dialog -->
-                                        </div><!-- /.modal -->
-                                    </div>
+                                    </h4>
 
                                 </div>
+                                <div class="col-md-7">
+                                    <p>Add your Paypal or Bank details here. Payment is made every Friday and
+                                        Monday.</p>
+
+                                    @if($paymethod)
+                                        <h3 class="pmm">
+                                            <label class="radio-container">Paypal
+                                                <input type="radio" value="payple"
+												       <?php if ( $paymethod->method_type == 'payple' )
+													       echo 'checked' ?> name="payment_method">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="radio-container">Bank
+                                                <input type="radio" value="bank"
+												       <?php if ( $paymethod->method_type == 'bank' )
+													       echo 'checked' ?> name="payment_method">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </h3>
+                                        @if($paymethod->method_type == 'payple')
+                                            Payple Email : {{$paymethod->method_details}}
+                                        @else
+                                            @php($det=json_decode($paymethod->method_details))
+                                            <p class="text-center" style="border-bottom: 1px solid;">Bank
+                                                details</p>
+
+                                            Bank name : <strong>{{$det->bank_name}}</strong>
+                                            <br>
+                                            Account Name : <strong>{{$det->ac_name}}</strong>
+                                            <br>
+                                            Sort Code : <strong>{{$det->sort_code}}</strong>
+                                            <br>
+                                            Bank Account Number : <strong>{{$det->ac_number}}</strong>
+                                        @endif
+                                    @else
+                                        <h3 class="pmm hidden">
+                                            <label class="radio-container">Paypal
+                                                <input type="radio" value="payple" name="payment_method">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="radio-container">Bank
+                                                <input type="radio" value="bank" name="payment_method">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </h3>
+                                    @endif
+                                    <div>
+                                    </div>
+                                    {{--Model--}}
+                                    <div class="modal fade" id="payment-method-model" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 25px">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+
+                                                    <h4 class="modal-title"></h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="p_method_detail_form" method="POST"
+                                                          action="add/payment/method">
+                                                        <input type="hidden" name="method_type" value="payple">
+
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                    <button type="submit" form="p_method_detail_form"
+                                                            class="btn btn-success">Save
+                                                    </button>
+
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </div>
+
+
                             </div>
 
                             <div class="row divSty">
-                                <div class="tooltipc">
 
-                                    <span class="tooltiptextc">Make your profile hidden or visible on the personnel search page.</span>
-
-                                    <div class="col-md-5"><h4>Profile Visibility</h4></div>
-                                    <div class="col-md-7">
-                                        <p>Make your profile hidden or visible on the personnel search page.</p>
-
-                                        <h3>
-                                            <label class="switch">
-                                                @if($visible)
-                                                    <input id="visibality" name="visibality"
-                                                           type="checkbox" checked>
-                                                @else
-                                                    <input id="visibality" name="visibality"
-                                                           type="checkbox">
-                                                @endif
-                                                <div class="slider round"></div>
-                                            </label>
-                                        </h3>
-                                    </div>
+                                <div class="col-md-5">
+                                    <h4>Profile Visibility
+                                        <div class="tooltipc">
+                                            <span class="glyphicon glyphicon-question-sign"></span>
+                                            <span class="tooltiptextc">Make your profile hidden or visible on the personnel search page.</span>
+                                        </div>
+                                    </h4>
 
                                 </div>
+                                <div class="col-md-7">
+                                    <p>Make your profile hidden or visible on the personnel search page.</p>
+                                    <h3>
+                                        <label class="switch">
+                                            @if($visible)
+                                                <input id="visibality" name="visibality"
+                                                       type="checkbox" checked>
+                                            @else
+                                                <input id="visibality" name="visibality"
+                                                       type="checkbox">
+                                            @endif
+                                            <div class="slider round"></div>
+                                        </label>
+                                    </h3>
+                                </div>
+
+
                             </div>
                             <div class="row divSty">
-                                <div class="tooltipc">
-                                    <span class="tooltiptextc">Accept or decline GPS app tracking</span>
 
-                                    <div class="col-md-5"><h4>GPS Tracking</h4></div>
-                                    <div class="col-md-7">
-                                        <p>Accept or decline GPS app tracking</p>
-                                        <h3>
-                                            <label class="switch" style="width: 140px">
-                                                @if($settings->gps)
-                                                    <input id="gps" name="gps"
-                                                           type="checkbox" checked>
-                                                @else
-                                                    <input id="gps" name="gps"
-                                                           type="checkbox">
-                                                @endif
-                                                <div class="slider2 round"></div>
-                                            </label>
-                                        </h3>
-                                    </div>
+                                <div class="col-md-5">
+                                    <h4>GPS Tracking
+                                        <div class="tooltipc">
+                                            <span class="glyphicon glyphicon-question-sign"></span>
+                                            <span class="tooltiptextc">Accept or decline GPS app tracking</span>
+                                        </div>
+                                    </h4>
+
                                 </div>
+                                <div class="col-md-7">
+                                    <p>Accept or decline GPS app tracking</p>
+                                    <h3>
+                                        <label class="switch" style="width: 140px">
+                                            @if($settings->gps)
+                                                <input id="gps" name="gps"
+                                                       type="checkbox" checked>
+                                            @else
+                                                <input id="gps" name="gps"
+                                                       type="checkbox">
+                                            @endif
+                                            <div class="slider2 round"></div>
+                                        </label>
+                                    </h3>
+                                </div>
+
                             </div>
                             @if (auth()->user()->admin == 2)
                                 <div class="row">

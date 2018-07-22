@@ -210,7 +210,7 @@
                             <h2>Settings</h2>
 
                             <table class="display nowrap table">
-                                <tr>
+                                <tr data-toggle="tooltip" data-placement="top" title="Add your Paypal or Bank details here. Payment is made every Friday and Monday.">
                                     <td><h4>Payment Method</h4></td>
 
                                     <td>
@@ -293,7 +293,7 @@
                                     </td>
 
                                 </tr>
-                                <tr>
+                                <tr data-toggle="tooltip" data-placement="top" title="Make your profile hidden or visible on the personnel search page.">
                                     <td><h4>Profile Visibility</h4></td>
                                     <td>
                                         <p>Make your profile hidden or visible on the personnel search page.</p>
@@ -312,7 +312,7 @@
                                         </h3>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-toggle="tooltip" data-placement="top" title="Accept or decline GPS app tracking">
                                     <td><h4>GPS Tracking</h4></td>
 
                                     <td>

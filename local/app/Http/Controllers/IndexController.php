@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Responsive\Newsletter;
 use Responsive\Url;
 use Responsive\Businesscategory;
 use Responsive\Job;
@@ -17,12 +18,6 @@ class IndexController extends Controller {
 	 * @return void
 	 */
 
-
-	/**
-	 * Show the application dashboard.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
 	public function sangvish_index() {
 
 
@@ -139,5 +134,16 @@ class IndexController extends Controller {
 		}
 	}
 
+	public function subscribeToNeswletter( Request $req ) {
 
+		$this->validate( $req, [
+			'email' => 'email|required|unique:newsletters,email'
+		] );
+		$news         = new Newsletter();
+		$news->email  = $req->email;
+		$news->status = 1;
+		$news->save();
+
+		return response()->json('200',200);
+	}
 }

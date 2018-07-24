@@ -54,6 +54,7 @@ Route::get( '/referral', 'ReferralController@index' );
 Route::get( '/redeem', 'ReferralController@redeem' );
 Route::get( '/redeem/{id}', 'ReferralController@checkout' );
 Route::get( '/index', 'IndexController@sangvish_index' );
+Route::POST( '/subscribe-to-neswletter', 'IndexController@subscribeToNeswletter' )->name( 'subscribe.newsletter' );
 
 Route::get( 'searchajax', array( 'as' => 'searchajax', 'uses' => 'IndexController@sangvish_autoComplete' ) );
 
@@ -232,6 +233,12 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 		'uses' => 'Admin\ReferralController@balance'
 	] );
 	Route::get( '/admin/index', 'Admin\DashboardController@index' );
+
+
+	/* Newsletter */
+	Route::get( 'admin/newsletter', 'Admin\NewsletterController@index' );
+
+	/* end newsletter */
 
 	/* message */
 	Route::get( 'admin/message', 'Admin\MessageController@index' );

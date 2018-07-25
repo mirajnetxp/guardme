@@ -7,6 +7,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Responsive\FreelancerSetting;
+use Responsive\Newsletter;
 
 
 class SettingController extends Controller {
@@ -40,12 +41,15 @@ class SettingController extends Controller {
 		if ( ! Auth::Check() ) {
 			return redirect( '/' );
 		}
-		$user      = auth()->user();
-		$visible   = $user->freelancerSettings->visible;
-		$settings  = $user->freelancerSettings;
-		$paymethod = $user->paymentmethod;
 
-		return view( 'setting', compact( 'visible', 'paymethod', 'settings' ) );
+
+		$user       = auth()->user();
+		$visible    = $user->freelancerSettings->visible;
+		$settings   = $user->freelancerSettings;
+		$paymethod  = $user->paymentmethod;
+		$newsletter = Newsletter::where( 'email', $user->email )->first();
+
+		return view( 'setting', compact( 'visible', 'paymethod', 'settings', 'newsletter' ) );
 	}
 
 	public function visibality() {
@@ -85,6 +89,28 @@ class SettingController extends Controller {
 			DB::table( 'freelancer_settings' )
 			  ->where( 'user_id', auth()->user()->id )
 			  ->update( [ 'gps' => 1, 'updated_at' => date( "Y-m-d H:i:s" ) ] );
+
+			return response()->json( '101', 200 );
+		}
+	}
+
+	public function newsletter() {
+
+
+		if ( ! Auth::Check() ) {
+			return redirect( '/' );
+		}
+
+		$news = Newsletter::where( 'email', auth()->user()->email )->first();
+
+		if ( $news->status == 1 ) {
+
+			$news->status = 0;
+			$news->save();
+			return response()->json( '102', 200 );
+		} else {
+			$news->status = 1;
+			$news->save();
 
 			return response()->json( '101', 200 );
 		}

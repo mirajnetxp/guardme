@@ -6,12 +6,10 @@ use Illuminate\Http\Request;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Newsletter;
 
-class NewsletterController extends Controller
-{
-	public function index(  ) {
+class NewsletterController extends Controller {
+	public function index() {
 
-		$allNewsletter=Newsletter::all();
-
-		return view('admin.newsletter',compact('allNewsletter'));
-    }
+		$allNewsletter = Newsletter::where( 'status', 1 )->get();
+		return view( 'admin.newsletter', compact( 'allNewsletter' ) );
+	}
 }

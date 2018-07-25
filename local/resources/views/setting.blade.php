@@ -42,6 +42,19 @@
             border-radius: 34px;
         }
 
+        .sliderNews {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ca2222;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
         /*.slider:before {*/
         /*position: absolute;*/
         /*content: "";*/
@@ -83,6 +96,20 @@
             transform: translateX(55px);
         }
 
+        input:checked + .sliderNews {
+            background-color: #2ab934;
+        }
+
+        input:focus + .sliderNews {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .sliderNews:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(55px);
+        }
+
         /*------ ADDED CSS ---------*/
         .slider:after {
             content: 'Private';
@@ -114,6 +141,22 @@
 
         input:checked + .slider2:after {
             content: 'Consent';
+        }
+
+        .sliderNews:after {
+            content: 'Unsubscribed';
+            color: white;
+            display: block;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            font-size: 10px;
+            font-family: Verdana, sans-serif;
+        }
+
+        input:checked + .sliderNews:after {
+            content: 'Subscribed ';
         }
 
         /*--------- END --------*/
@@ -381,7 +424,6 @@
 
                             </div>
                             <div class="row divSty">
-
                                 <div class="col-md-5">
                                     <h4>GPS Tracking
                                         <div class="tooltipc">
@@ -406,6 +448,28 @@
                                 </div>
 
                             </div>
+                            <div class="row divSty">
+                                <div class="col-md-5">
+                                    <h4>Newsletter
+                                        <div class="tooltipc">
+                                            <span class="glyphicon glyphicon-question-sign"></span>
+                                            <span class="tooltiptextc">Subscribe or Unsubscribe from newsletter</span>
+                                        </div>
+                                    </h4>
+                                </div>
+                                <div class="col-md-7">
+                                    <h3>
+                                        <label class="switch" style="width: 140px">
+                                            <input id="news" name="news"
+                                                   type="checkbox" {{$newsletter->status?'checked':''}}>
+                                            <div class="sliderNews round"></div>
+                                        </label>
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
                             @if (auth()->user()->admin == 2)
                                 <div class="row">
                                     <div class="col-md-5"><h4>Close your account</h4></div>
@@ -470,6 +534,7 @@
 
                         </ul>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -552,6 +617,34 @@
                         $(this).attr("checked", "true");
                     } else {
                         alert('GPS Tracking is Inactive')
+                        $(this).attr("checked", "false");
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                    if (typeof xhr.responseText == "undefined") {
+                        root.mess = "Internet Connection is Slow or Disconnect";
+                        root.retry = "Retry";
+                        window.ajaxcurrent = this;
+                        return
+                    }
+                }
+            });
+        });
+
+
+        $("#news").click(function () {
+            $.ajax({
+                url: "/settings/newsletter",
+                method: "GET",
+                dataType: 'json',
+                success: function (d) {
+
+                    if (d == '101') {
+                        alert('Successfully subscribed to newsletter.')
+                        $(this).attr("checked", "true");
+                    } else {
+                        alert('Successfully unsubscribed from newsletter.')
                         $(this).attr("checked", "false");
                     }
                 },

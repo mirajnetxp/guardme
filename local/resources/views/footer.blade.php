@@ -251,51 +251,40 @@ $setts = DB::table( 'settings' )
         return false;
     });
     $('#postcode_lookup').getAddress({
-            api_key: 'ZTIFqMuvyUy017Bek8SvsA12209',
-            input_id: 'address_id',
-            input_name: 'address_id',
-            input_class: 'form-control validate[required]',
-            button_class: 'btn',
-            dropdown_class: 'form-control',
-        < !--Or
-    use
-    your
-    own
-    endpoint - api_endpoint
-    :
-    https://your-web-site.com/getAddress, -->
-        output_fields:{
+        api_key: 'ZTIFqMuvyUy017Bek8SvsA12209',
+        input_id: 'address_id',
+        input_name: 'address_id',
+        input_class: 'form-control validate[required]',
+        button_class: 'btn',
+        dropdown_class: 'form-control',
+//        <!--Or use your own endpoint - api_endpoint:https://your-web-site.com/getAddress, --!>
+        output_fields: {
             line_1: '#line1',
-                line_2
-        :
-            '#line2',
-                line_3
-        :
-            '#line3',
-                post_town
-        :
-            '#town',
-                county
-        :
-            '#county',
-                postcode
-        :
-            '#postcode'
+            line_2:
+                '#line2',
+            line_3:
+                '#line3',
+            post_town:
+                '#town',
+            county:
+                '#county',
+            postcode:
+                '#postcode'
         }
-    ,
-    <!--  Optionally register callbacks at specific stages -->
-    onLookupSuccess: function (data) {/* Your custom code */
-        console.log(data);
-        $('#addresslat').val(data.latitude);
-        $('#addresslong').val(data.longitude);
-        $('#country').val('UK');
-    }
-    ,
-    onLookupError: function () {/* Your custom code */
-    }
-    ,
-    onAddressSelected: function (elem, index) {/* Your custom code */
-    }
+        ,
+        <!--  Optionally register callbacks at specific stages -->
+        onLookupSuccess: function (data) {/* Your custom code */
+            console.log(data);
+            $('#addresslat').val(data.latitude);
+            $('#addresslong').val(data.longitude);
+            $('#country').val('UK');
+        }
+        ,
+        onLookupError: function () {/* Your custom code */
+        }
+        ,
+        onAddressSelected: function (elem, index) {/* Your custom code */
+        }
     })
     ;
     $("select#nationality").change(function () {

@@ -137,13 +137,22 @@ class IndexController extends Controller {
 	public function subscribeToNeswletter( Request $req ) {
 
 		$this->validate( $req, [
-			'email' => 'email|required|unique:newsletters,email'
+			'email' => 'email|required'
 		] );
-		$news         = new Newsletter();
-		$news->email  = $req->email;
-		$news->status = 1;
-		$news->save();
 
-		return response()->json('200',200);
+
+		$isex = Newsletter::where( 'email', $req->email )->first();
+		if ( $isex ) {
+			$isex->status = 1;
+			$isex->save();
+		} else {
+			$news = new Newsletter();
+			$news->email  = $req->email;
+			$news->status = 1;
+			$news->save();
+		}
+
+
+		return response()->json( '200', 200 );
 	}
 }

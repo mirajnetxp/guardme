@@ -49,6 +49,14 @@ class SettingController extends Controller {
 		$paymethod  = $user->paymentmethod;
 		$newsletter = Newsletter::where( 'email', $user->email )->first();
 
+		if ( ! $newsletter ) {
+			$newsletter         = new Newsletter();
+			$newsletter->email  = $user->email;
+			$newsletter->status = 1;
+			$newsletter->save();
+		}
+
+
 		return view( 'setting', compact( 'visible', 'paymethod', 'settings', 'newsletter' ) );
 	}
 
@@ -107,6 +115,7 @@ class SettingController extends Controller {
 
 			$news->status = 0;
 			$news->save();
+
 			return response()->json( '102', 200 );
 		} else {
 			$news->status = 1;

@@ -119,7 +119,7 @@
 								Please update your bank or Paypal details in the settings page to ensure that you get paid all credit balances.
 							</li>
 							<li>
-								Freelancers receive a job fee only. There is no charge on this fee and it is their responsibility to settle their taxes.
+								Freelancers receive a job fee only. There is no charge on this fee and it is a freelancers' responsibility to file their taxes.
 							</li>
 							<li>
 								All transactions that are paid into the GuardME marketplace is subject to VAT and an admin fee. This is usually paid during the creation of a job. 

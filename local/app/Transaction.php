@@ -590,8 +590,7 @@ class Transaction extends Model {
 	}
 
 	/**
-	 * @param $partner_id
-	 * @return mixed
+	 * @return array
 	 */
 	public function getPartnerBalance() {
 		$data = [];
@@ -607,4 +606,36 @@ class Transaction extends Model {
 		return $data;
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getAdminFee() {
+		$data = [];
+		$partner = User::where('name', 'admin')->get()->first();
+		if (!empty($partner)) {
+			$data = DB::table($this->table . ' as tr')
+				->where('tr.type', 'admin_fee')
+				->where('tr.partner_id', 0)
+				->where('tr.status', 1)
+				->select(DB::raw( 'SUM(amount) as total' ))->get()->first();
+		}
+
+		return $data;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getVatFee() {
+		$data = [];
+		$partner = User::where('name', 'admin')->get()->first();
+		if (!empty($partner)) {
+			$data = DB::table($this->table . ' as tr')
+				->where('tr.type', 'vat_fee')
+				->where('tr.status', 1)
+				->select(DB::raw( 'SUM(amount) as total' ))->get()->first();
+		}
+
+		return $data;
+	}
 }

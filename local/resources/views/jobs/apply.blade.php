@@ -3,7 +3,7 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('style')
-   
+
 </head>
 <body>
 <!-- fixed navigation bar -->
@@ -15,86 +15,95 @@
 @endif
 
 <section class="job-bg page job-details-page">
-        <div class="container">
-            <div class="breadcrumb-section">
-                <ol class="breadcrumb">
-                     <li><a href="{{URL::to('/')}}">Home</a></li>
-                    <li><a href="{{URL::route('find.jobs')}}">Jobs</a></li>
-                    <li>{{$job->title}}</li>
-                </ol><!-- breadcrumb -->                        
-                <h2 class="title">Submit Your Application</h2>
-            </div>
-         <div class="job-details">
-                <div class="section job-ad-item">
-                    <div class="item-info">
-                         @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        @if(session()->has('success'))
-                            <div class="alert alert-success">
-                                {{ session()->get('success') }}
-                            </div>
-                        @endif
-                        @if(session()->has('error'))
-                            <div class="alert alert-danger">
-                                {{ session()->get('error') }}
-                            </div>
-                        @endif
-                        <div class="alert alert-danger hide" role="alert">
+    <div class="container">
+        <div class="breadcrumb-section">
+            <ol class="breadcrumb">
+                <li><a href="{{URL::to('/')}}">Home</a></li>
+                <li><a href="{{URL::route('find.jobs')}}">Jobs</a></li>
+                <li>{{$job->title}}</li>
+            </ol><!-- breadcrumb -->
+            <h2 class="title">Submit Your Application</h2>
+        </div>
+        <div class="job-details">
+            <div class="section job-ad-item">
+                <div class="item-info">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if(session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session()->get('success') }}
+                        </div>
+                    @endif
+                    @if(session()->has('error'))
+                        <div class="alert alert-danger">
+                            {{ session()->get('error') }}
+                        </div>
+                    @endif
+                    <div class="alert alert-danger hide" role="alert">
 
-                        </div>
-                        <div class="alert alert-success hide" role="alert">
+                    </div>
+                    <div class="alert alert-success hide" role="alert">
 
-                        </div>
-                        @include('shared.message')
-                        <div class="item-image-box">
-                            <div class="item-image">
-                                <img src="{{URL::to('/')}}/images/img-placeholder.png" alt="{{$job->title}}" class="img-responsive">
-                            </div><!-- item-image -->
-                        </div>
+                    </div>
+                    @include('shared.message')
+                    <div class="item-image-box">
+                        <div class="item-image">
+                            <img src="{{URL::to('/')}}/images/img-placeholder.png" alt="{{$job->title}}"
+                                 class="img-responsive">
+                        </div><!-- item-image -->
+                    </div>
 
-                        <div class="ad-info">
-                            <span><span><a href="#" class="title">{{$job->title}}</a></span> @ <a href="#"> {{$job->poster->company->shop_name}}</a></span>
-                            <div class="ad-meta">
-                                <ul>
-                                    <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($job->cit_town){{$job->cit_town}},@endif {{$job->country}}</a></li>
-                                    <!-- <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li> -->
-                                    <li><i class="fa fa-money" aria-hidden="true"></i>${{$job->per_hour_rate}}</li>
-                                    <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory->name}}</a></li>
-                                    <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Posted on : {{date('M d, Y',strtotime($job->created_at))}}</li>
-                                </ul>
-                            </div><!-- ad-meta -->                                  
-                        </div><!-- ad-info -->
-                    </div><!-- item-info -->
-                    <div class="social-media">
-                        <div class="button">
-                            <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
-                            <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
-                        </div>
-                    </div>                  
+                    <div class="ad-info">
+                        <span><span><a href="#" class="title">{{$job->title}}</a></span> @ <a
+                                    href="#"> {{$job->poster->company->shop_name}}</a></span>
+                        <div class="ad-meta">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-map-marker"
+                                                   aria-hidden="true"></i>@if($job->cit_town){{$job->cit_town}}
+                                        ,@endif {{$job->country}}</a></li>
+                                <!-- <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Full Time</a></li> -->
+                                <li><i class="fa fa-money" aria-hidden="true"></i>${{$job->per_hour_rate}}</li>
+                                <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory->name}}
+                                    </a></li>
+                                <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Posted on
+                                    : {{date('M d, Y',strtotime($job->created_at))}}</li>
+                            </ul>
+                        </div><!-- ad-meta -->
+                    </div><!-- ad-info -->
+                </div><!-- item-info -->
+                <div class="social-media">
+                    <div class="button">
+                        <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
+                                    class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
+                        <a href="#" class="btn btn-primary bookmark"><i class="fa fa-bookmark-o" aria-hidden="true"></i>Bookmark</a>
+                    </div>
                 </div>
+            </div>
 
-                <div class="job-details-info">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="section job-description">
-                                <div class="description-info">
-                                    <h1>Description</h1>
-                                    <p>{{$job->description}}</p>
-                                </div>
+            <div class="job-details-info">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="section job-description">
+                            <div class="description-info">
+                                <h1>Description</h1>
+                                <p>{{$job->description}}</p>
                             </div>
-                            <div class="section job-description">
-                               <div class="row">
-                                <form action="{{ route('api.apply.job', ['id' => $job->id ]) }}" id="apply_on_job" method="post">
+                        </div>
+                        <div class="section job-description">
+                            <div class="row">
+                                <form action="{{ route('api.apply.job', ['id' => $job->id ]) }}" id="apply_on_job"
+                                      method="post">
                                     <div class="form-group">
                                         <label for="">Application Description</label>
-                                        <textarea class="form-control application_description" name="application_description" rows="10" autofocus=""></textarea>
+                                        <textarea class="form-control application_description"
+                                                  name="application_description" rows="10" autofocus=""></textarea>
                                         <span class="error-span text-danger"></span>
                                     </div>
                                     <div class="form-group">
@@ -105,74 +114,124 @@
                             </div>
 
 
-                            </div>
                         </div>
+                    </div>
 
-                        <div class="col-sm-4">
-                            <div class="section job-short-info">
-                                <h1>Short Info</h1>
-                                <ul>
-                                    <li><span class="icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Posted: {{date('M d, Y',strtotime($job->created_at))}}</li>
-                                    <li><span class="icon"><i class="fa fa-user-plus" aria-hidden="true"></i></span> Job poster: <a href="#">{{$job->poster->name}}</a></li>
-                                    <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry: <a href="#">{{$job->industory->name}}</a></li>
-                                     <!--  <li><span class="icon"><i class="fa fa-user"></i></span>Security Personnel needed: 
+                    <div class="col-sm-4">
+                        <div class="section job-short-info">
+                            <h1>Short Info</h1>
+                            <ul>
+                                <li><span class="icon"><i class="fa fa-bolt"
+                                                          aria-hidden="true"></i></span>Posted: {{date('M d, Y',strtotime($job->created_at))}}
+                                </li>
+                                <li><span class="icon"><i class="fa fa-user-plus" aria-hidden="true"></i></span> Job
+                                    poster: <a href="#">{{$job->poster->name}}</a></li>
+                                <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry:
+                                    <a href="#">{{$job->industory->name}}</a></li>
+                            <!--  <li><span class="icon"><i class="fa fa-user"></i></span>Security Personnel needed:
                                     <a href="#">{{$job->number_of_freelancers}}</a></li>
                                    <li><span class="icon"><i class="fa fa-clock-o"></i></span>Daily hours: 
                                       <a href="#">{{$job->daily_working_hours}}</a></li>
                                   <li><span class="icon"><i class="fa fa-money" aria-hidden="true"></i></span>Slots filled: 
                                     <a href="#">{{$job->getJobSloat()}}</a></li> -->
-                                    <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience: <a href="#">Entry level</a></li>
-                                    
-                                </ul>
-                            </div>
-                             <div class="section company-info">
-                                <h1>Work Schedule</h1>
-                                @foreach($job->schedules as $schedule)
-                                <span>  {{ Carbon\Carbon::parse($schedule->start)->format("M d h.A") . " - " . Carbon\Carbon::parse($schedule->end)->format("M d h.A")  }} </span><br>
-                                @endforeach
-                            
-                              </div>
-                            <div class="section company-info">
-                                <h1>Company Info</h1>
-                                <ul>
-                                    <li>Compnay Name: <a href="#">{{$job->poster->company->shop_name}}</a></li>
-                                    <li>Address: @if($job->poster->company->city){{$job->poster->company->city}}@endif
-                                        @if($job->poster->company->state){{', '.$job->poster->company->state}}@endif
-                                        @if($job->poster->company->country){{', '.$job->poster->company->country}}@endif</li>
-                                </ul>
-                                <ul class="share-social">
-                                    <li><a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                                </ul>                               
-                            </div>
+                                <li><span class="icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>Experience:
+                                    <a href="#">Entry level</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="section company-info">
+                            <h1>Work Schedule</h1>
+                            @foreach($job->schedules as $schedule)
+                                <span>  {{ Carbon\Carbon::parse($schedule->start)->format("M d h.A") . " - " . Carbon\Carbon::parse($schedule->end)->format("M d h.A")  }} </span>
+                                <br>
+                            @endforeach
+
+                        </div>
+                        <div class="section company-info">
+                            <h1>Company Info</h1>
+                            <ul>
+                                <li>Compnay Name: <a href="#">{{$job->poster->company->shop_name}}</a></li>
+                                <li>Address: @if($job->poster->company->city){{$job->poster->company->city}}@endif
+                                    @if($job->poster->company->state){{', '.$job->poster->company->state}}@endif
+                                    @if($job->poster->company->country){{', '.$job->poster->company->country}}@endif</li>
+                            </ul>
+                            <ul class="share-social">
+                                <li><a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
         </div>
-    </section>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true" style="margin-top: 20px">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                    class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Terms and Conditions</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-justify">
+                            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece
+                            of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock,
+                            a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure
+                            Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the
+                            word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from
+                            sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and
+                            Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very
+                            popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit
+                            amet..", comes from a line in section 1.10.32.
+
+                            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those
+                            interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are
+                            also reproduced in their exact original form, accompanied by English versions from the 1914
+                            translation by H. Rackham.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Decline</button>
+                        <button type="button" id="terms-apply-to-job" class="btn btn-success">Accept</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
 
 @include('footer')
 <script>
-    $(document).ready(function(){
-        $("form#apply_on_job").on("submit", function(e){
-            formErrors = new Errors();
+    $(document).ready(function () {
+
+        $("form#apply_on_job").on("submit", function (e) {
+            $('#myModal').modal('show')
+
             e.preventDefault();
+
+        });
+
+        $("#terms-apply-to-job").click(function () {
+
+            formErrors = new Errors();
             $.ajax({
-               url: $(this).attr('action'),
+                url: $("#apply_on_job").attr('action'),
                 type: 'POST',
-                data: $(this).serialize(),
-                success: function(data) {
+                data: $("#apply_on_job").serialize(),
+                success: function (data) {
+                    $('#myModal').modal('hide')
                     $('.alert-success').text("Your application has been received");
                     $('.alert-success').removeClass('hide');
-                    $("html, body").animate({ scrollTop: $('.alert') }, 1000);
+                    $("html, body").animate({scrollTop: $('.alert')}, 1000);
                 },
-                error: function(data) {
+                error: function (data) {
+                    $('#myModal').modal('hide')
                     var statusCode = data.status;
                     var errors = data.responseJSON;
                     if (statusCode == 422) {
@@ -186,12 +245,12 @@
                             $('.alert-danger').text(data.responseJSON[0]);
                             $('.alert-danger').removeClass('hide');
                         }
-                        $("html, body").animate({ scrollTop: $('.alert') }, 1000);
+                        $("html, body").animate({scrollTop: $('.alert')}, 1000);
                     }
 
                 }
             });
-        });
+        })
     });
 </script>
 

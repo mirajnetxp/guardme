@@ -207,7 +207,7 @@
 
 </section>
 
-
+@include('extre.tearms ans condtion --hair')
 @include('footer')
 <script>
     /*read only star rating to display only*/
@@ -215,22 +215,31 @@
     $(document).ready(function () {
         $('.hireBy').submit(function () {
             event.preventDefault();
-            var form_data = $(this).serialize();
+            window.hirebyclick = this;
+            $('#jobATACM').modal('show')
+        })
+        $('#termsA').click(function () {
 
+            var form_data = $(hirebyclick).serialize();
             $.ajax({
                 url: "{{route('job.hair.by')}}",
                 method: "POST",
                 data: form_data,
                 dataType: 'json',
                 success: function (d) {
+                    $('#jobATACM').modal('hide')
                     alert(d)
                 },
                 error: function (xhr, textStatus, errorThrown) {
+                    $('#jobATACM').modal('hide')
                     console.log(xhr.responseText);
                     alert(xhr.responseText)
                 }
             });
         })
+
+
+
     });
 
     $.fn.stars = function () {

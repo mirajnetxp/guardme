@@ -124,11 +124,15 @@ class DashboardController extends AdminController {
 			$trans = new Transaction();
 
 			$partner_balance = $trans->getPartnerBalance();
+			$admin_fee = $trans->getAdminFee();
+			$vat_fee = $trans->getVatFee();
 			$partner_balance = !empty($partner_balance->total) ? ($partner_balance->total) : 0;
+			$vat_fee = !empty($vat_fee->total) ? ($vat_fee->total) : 0;
+			$admin_fee = !empty($admin_fee->total) ? ($admin_fee->total) : 0;
 
 		$data = array('total_seller' => $total_seller, 'total_user' => $total_user, 'total_customer' => $total_customer, 'total_booking' => $total_booking,
 		'today_booking' => $today_booking, 'total_shop' =>  $total_shop, 'javas' => $javas, 'booking' => $booking, 'setting' => $setting, 'users' => $users,
-		'testimonials' => $testimonials, 'partner_balance' => $partner_balance);
+		'testimonials' => $testimonials, 'partner_balance' => $partner_balance, 'admin_fee' => $admin_fee, 'vat_fee' => $vat_fee);
 		
 		return view('admin.index')->with($data);
 		

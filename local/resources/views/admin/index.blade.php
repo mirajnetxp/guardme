@@ -137,7 +137,7 @@
             </div>
 
             </div>
-            <div class="col-lg-3 col-sm-6">
+          <div class="col-lg-3 col-sm-6">
               <div class="card">
                   <div class="content">
                       <div class="row">
@@ -156,7 +156,48 @@
                   </div>
               </div>
 
-            </div>
+          </div>
+            @if (isAdmin())
+                  <div class="col-lg-6 col-sm-6">
+                      <div class="card">
+                          <div class="content">
+                              <div class="row">
+                                  <div class="col-xs-5">
+                                      <div class="icon-big icon-warning text-center">
+                                          <i class="fa fa-money"></i>
+                                      </div>
+                                  </div>
+                                  <div class="col-xs-7" style="padding-left: 0px;">
+                                      <div class="numbers">
+                                          <p>Admin Fee</p>
+                                          £ {{ $admin_fee }}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+                  <div class="col-lg-6 col-sm-6">
+                      <div class="card">
+                          <div class="content">
+                              <div class="row">
+                                  <div class="col-xs-5">
+                                      <div class="icon-big icon-warning text-center">
+                                          <i class="fa fa-money"></i>
+                                      </div>
+                                  </div>
+                                  <div class="col-xs-7" style="padding-left: 0px;">
+                                      <div class="numbers">
+                                          <p>VAT Comissin</p>
+                                          £ {{ $vat_fee }}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+            @endif
           </div>
           <!-- /top tiles -->
 

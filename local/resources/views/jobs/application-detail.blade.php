@@ -76,7 +76,7 @@
                                     <br/>
                                     <p> 
                                         @if (!$application->is_hired)
-                                        <button class="btn btn-info pull-right mark-as-hired">Award Job</button>
+                                        <button class="btn btn-info pull-right mark-as-hired"data-toggle="modal" data-target="#jobATACM" >Award Job</button>
                                             <button class="btn del pull-right right-10">Decline</button>
                                         @elseif ($application->completion_status == 0)
                                             <button class="mark-as-complete btn pull-right right-10">Mark as complete</button>
@@ -131,7 +131,6 @@
                             </div>   
                             <div class="career-info profile-info">
                                 <h3>Security Licence</h3>
-
                                 <address>
                                     <p>Licence Type: SIA <br> 
                                         Valid: @if($person->sia_licence !='')
@@ -188,16 +187,19 @@
     
 
       @include('footer')
+      @include('extre.tearms ans condtion --hair')
+      {{--@include('footer')--}}
 
 
 <script>
     $(document).ready(function(){
-        $(".mark-as-hired").on("click", function(){
+        $("#termsA").on("click", function(){
             var route = "{{ route('api.mark.hired', ['id' => $application->id]) }}";
             $.ajax({
                 url: route,
                 type: 'POST',
                 success: function(data) {
+                    $('#termsA').modal('hide')
                     $('.mark-as-hired').fadeOut('slow');
                     $('.alert-success').text(data[0]);
                     $('.alert-success').removeClass('hide');
@@ -211,6 +213,8 @@
                 }
             })
         });
+
+
         $(".mark-as-complete").on("click", function() {
            $.ajax({
                url: "{{ route('api.mark.application.complete', ['application_id' => $application->id]) }}",

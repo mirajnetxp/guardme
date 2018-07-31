@@ -123,49 +123,31 @@
 					</div>
 
 					<div class="section quick-rules job-postdetails">
-						<h4>Heading1</h4>
+						<h4>Wallet Tips</h4>
 						<ul>
 							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
+								Your Escrow balance is the money you have on hold. It is not available for wihdrawal.
 							</li>
 							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
+								Your credit balance is money available for withdrawal. We run an automatic sweep every Monday and Friday to clear all credit balances.
 							</li>
 							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
+								Please update your bank or Paypal details in the settings page to ensure that you get paid all credit balances.
 							</li>
 							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
+								Freelancers receive a job fee only. There is no charge on this fee and it is their responsibility to settle their taxes.
 							</li>
 							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
+								All transactions that are paid into the GuardME marketplace is subject to VAT and an admin fee. This is usually paid during the creation of a job. 
 							</li>
-							
+							<li>
+								All refunds will include a VAT and admin fees.
+							</li>
 						</ul>
 					</div>
 
 
-					<div class="section quick-rules job-postdetails">
-						<h4>Heading2</h4>
-						<ul>
-							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
-							</li>
-							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
-							</li>
-							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
-							</li>
-							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
-							</li>
-							<li>
-								lorem ipsum dolor sit amet, consectetur adipiscing elit
-							</li>
-							
-						</ul>
-					</div>
+		
 				</div>
 			</div>
 		</div>

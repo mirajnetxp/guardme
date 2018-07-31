@@ -76,26 +76,41 @@
                                 <button class="btn btn-success create-payment-request-button">Create Payment Request
                                 </button>
                                 @if($application->is_hired)
-                                    <button id="incident-but" data-toggle="modal" data-target="#incidentModel" class="btn btn-default">Incident Report</button>
+                                    <button id="incident-but" data-toggle="modal" data-target="#incidentModel"
+                                            class="btn btn-default">Incident Report
+                                    </button>
+                                    <br>
+                                    <button id="contractDown"
+                                            class="mark-as-complete btn pull-right ">view
+                                        contract
+                                    </button>
                                     <!-- Modal -->
-                                    <div style="margin-top: 15px" class="modal fade" id="incidentModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div style="margin-top: 15px" class="modal fade" id="incidentModel" tabindex="-1"
+                                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                    <button type="button" class="close" data-dismiss="modal"><span
+                                                                aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                                    </button>
                                                     <h4 class="modal-title" id="myModalLabel">Incident Report</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <form id="incident-form">
                                                         {{csrf_field()}}
                                                         <input type="hidden" name="job_id" value="{{$job->id}}">
-                                                        <input type="text" class="form-control" name="incident_report" >
+                                                        <input type="text" class="form-control" name="incident_report">
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                    <button form="incident-form" type="submit" class="btn btn-primary">Submit</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <button form="incident-form" type="submit" class="btn btn-primary">
+                                                        Submit
+                                                    </button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -154,6 +169,20 @@
 @include('footer')
 <script>
     $(document).ready(function () {
+        $("#contractDown").on("click", function () {
+
+            $.ajax({
+                url: "{{ route('application.contract', ['id' => $application->id]) }}",
+                type: "GET",
+                success: function (d) {
+                    console.log(d);
+                },
+                error: function (d) {
+
+                }
+            })
+
+        });
         $(".cancel-job-button").on("click", function () {
             $.ajax({
                 url: "{{ route('api.cancel.job', ['application_id' => $application->id]) }}",
@@ -201,9 +230,9 @@
         $("#incident-form").submit(function (event) {
             event.preventDefault()
 
-            var form_data=$("#incident-form").serialize();
+            var form_data = $("#incident-form").serialize();
             $.ajax({
-                url:"/jobs/add/incident",
+                url: "/jobs/add/incident",
                 method: "POST",
                 data: form_data,
                 dataType: 'json',
@@ -211,7 +240,7 @@
                     $('#incidentModel').modal('hide')
                     alert("Report added successfully")
                 },
-                error: function (xhr, textStatus, errorThrown ) {
+                error: function (xhr, textStatus, errorThrown) {
 
                 }
             });

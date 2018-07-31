@@ -83,8 +83,7 @@
                                     <form action="{{ route('application.contract', ['id' => $application->id]) }}"
                                           method="get">
                                         <button type="submit"
-                                                class="mark-as-complete btn pull-right ">view
-                                            contract
+                                                class=" btn pull-right ">Download Contract
                                         </button>
                                     </form>
 

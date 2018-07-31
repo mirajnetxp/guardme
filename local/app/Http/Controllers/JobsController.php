@@ -570,7 +570,14 @@ class JobsController extends Controller {
 		$work_history = $ja->getApplicantWorkHistory( $application_id );
 		$person       = User::with( [ 'person_address', 'sec_work_category' ] )->find( $applicant_id );
 
-		return view( 'jobs.application-detail', compact( 'application', 'person', 'work_history' ) );
+		$data = [
+			'freelancerName'  => $person->firstname . " " . $person->lastname,
+			'employerCompany' => auth()->user()->company->shop_name,
+			'employerName'    => auth()->user()->firstname . " " . auth()->user()->lastname,
+			'date'            => $ja->created_at,
+		];
+
+		return view( 'jobs.application-detail', compact( 'application', 'person', 'work_history', 'data' ) );
 	}
 
 
@@ -597,10 +604,10 @@ class JobsController extends Controller {
 
 
 		$data = [
-			'freelancerName'  => $freelancer->name,
+			'freelancerName'  => $freelancer->firstname . " " . $freelancer->lastname,
 			'employerCompany' => $employer->company->shop_name,
-			'employerName'    => $employer->name,
-			'date'             => $ja->created_at,
+			'employerName'    => $employer->firstname . " " . $employer->lastname,
+			'date'            => $ja->created_at,
 		];
 
 

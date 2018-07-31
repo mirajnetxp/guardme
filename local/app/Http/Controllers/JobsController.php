@@ -21,6 +21,7 @@ use Auth;
 use Input;
 use Responsive\Transaction;
 use DB;
+use PDF;
 
 class JobsController extends Controller {
 	//
@@ -572,6 +573,44 @@ class JobsController extends Controller {
 		return view( 'jobs.application-detail', compact( 'application', 'person', 'work_history' ) );
 	}
 
+
+	/**
+	 * @param $id = application id
+	 */
+	public function Applicationcontract( $id ) {
+
+
+		$ja = JobApplication::find( $id );
+		$j  = Job::find( $ja->job_id );
+		if ( $ja->is_hired == 0 ) {
+			return;
+		}
+
+		$freelancer = User::find( $ja->applied_by );
+		$employer   = User::find( $j->created_by );
+
+		If ( auth()->user()->admin == 2 && auth()->user()->id !== $ja->applied_by ) {
+			return;
+		} elseif ( auth()->user()->admin == 0 && auth()->user()->id !== $j->created_by ) {
+			return;
+		}
+
+
+		$data = [
+			'freelancerName'  => $freelancer->name,
+			'employerCompany' => $employer->company->shop_name,
+			'employerName'    => $employer->name,
+			'date'             => $ja->created_at,
+		];
+
+
+		$pdf = PDF::loadView( 'extre.contract', compact( 'data' ) );
+
+		return $pdf->download( 'EMPLOYER & FREELANCER CONTRACT.pdf' );
+
+	}
+
+
 	public function myProposals() {
 		$user_id     = auth()->user()->id;
 		$wallet      = new Transaction();
@@ -809,9 +848,10 @@ class JobsController extends Controller {
 
 		return view( 'jobs.payment-request-details', compact( 'editprofile', 'payment_request', 'available_balance' ) );
 	}
-	public function HiredBy(Request $request  ) {
-		$freelancer_id=$request->freelancer_id;
-		$job_id=$request->job_id;
+
+	public function HiredBy( Request $request ) {
+		$freelancer_id = $request->freelancer_id;
+		$job_id        = $request->job_id;
 
 		$job  = Job::find( $job_id );
 		$user = auth()->user();
@@ -833,7 +873,7 @@ class JobsController extends Controller {
 		if ( $is_eligible_to_hire['status_code'] == 200 ) {
 			$ja = JobApplication::find( $newApplication->id );
 			event( new AwardJob( $ja ) );
-			$return_data   =  'Hired Successfully';
+			$return_data   = 'Hired Successfully';
 			$return_status = 200;
 //	--------------Sending Notifications
 			$job            = Job::find( $ja->job_id );
@@ -847,7 +887,7 @@ class JobsController extends Controller {
 //	--------------Sending Notifications end
 		} else {
 			$error_message = $is_eligible_to_hire['error_message'];
-			$return_data   =  $error_message ;
+			$return_data   = $error_message;
 			$return_status = 500;
 		}
 

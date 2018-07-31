@@ -24,15 +24,6 @@ Route::get('/', 'CommonController@home');*/
 //Route::get( '/notification-s', function (){
 //
 //
-//
-//
-//	return response()->json(
-//		[
-//			"numberSuccess"=>$downstreamResponse->numberSuccess(),
-//			"numberFailure"=>$downstreamResponse->numberFailure(),
-//			"numberModification"=>$downstreamResponse->numberModification(),
-//		]
-//	);
 //});
 
 
@@ -430,6 +421,7 @@ Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
 	Route::get( '/saved', 'JobsController@savedJobs' )->name( 'saved.jobs' );
 	Route::get( '/my/applications/{id}', 'JobsController@myJobApplications' )->name( 'my.job.applications' );
 	Route::get( '/application/{id}/{u_id}', 'JobsController@viewApplication' )->name( 'view.application' );
+	Route::get( '/application/{id}/contract/pdf', 'JobsController@ApplicationContract' )->name( 'application.contract' );
 
 	Route::get( '/payment/requests', 'JobsController@paymentRequests' )->name( 'payment.requests' );
 	Route::get( '/payment/request/details/{id}', 'JobsController@paymentRequestDetails' )->name( 'payment.request.details' );

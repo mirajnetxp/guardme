@@ -80,10 +80,14 @@
                                             class="btn btn-default">Incident Report
                                     </button>
                                     <br>
-                                    <button id="contractDown"
-                                            class="mark-as-complete btn pull-right ">view
-                                        contract
-                                    </button>
+                                    <form action="{{ route('application.contract', ['id' => $application->id]) }}"
+                                          method="get">
+                                        <button type="submit"
+                                                class="mark-as-complete btn pull-right ">view
+                                            contract
+                                        </button>
+                                    </form>
+
                                     <!-- Modal -->
                                     <div style="margin-top: 15px" class="modal fade" id="incidentModel" tabindex="-1"
                                          role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -169,20 +173,7 @@
 @include('footer')
 <script>
     $(document).ready(function () {
-        $("#contractDown").on("click", function () {
 
-            $.ajax({
-                url: "{{ route('application.contract', ['id' => $application->id]) }}",
-                type: "GET",
-                success: function (d) {
-                    console.log(d);
-                },
-                error: function (d) {
-
-                }
-            })
-
-        });
         $(".cancel-job-button").on("click", function () {
             $.ajax({
                 url: "{{ route('api.cancel.job', ['application_id' => $application->id]) }}",

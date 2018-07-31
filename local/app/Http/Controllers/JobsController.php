@@ -517,15 +517,16 @@ class JobsController extends Controller {
 		$job      = Job::find( $id );
 		$employer = User::find( $job->created_by );
 
+
 		$data = [
 			'freelancerName'  => auth()->user()->firstname . " " . auth()->user()->lastname,
 			'employerCompany' => $employer->company->shop_name,
 			'employerName'    => $employer->firstname . " " . $employer->lastname,
-			'date'            => date('Y'),
+			'date'            => $job->schedules->toArray()
 		];
 
 
-		return view( 'jobs.apply', compact( 'job','data' ) );
+		return view( 'jobs.apply', compact( 'job', 'data' ) );
 	}
 
 	/**
@@ -574,16 +575,19 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function viewApplication( $application_id, $applicant_id ) {
-		$ja           = new JobApplication();
+
+		$ja           = JobApplication::find( $application_id );
 		$application  = $ja->getApplicationDetails( $application_id );
 		$work_history = $ja->getApplicantWorkHistory( $application_id );
 		$person       = User::with( [ 'person_address', 'sec_work_category' ] )->find( $applicant_id );
+
+		$job = Job::find( $ja->job_id );
 
 		$data = [
 			'freelancerName'  => $person->firstname . " " . $person->lastname,
 			'employerCompany' => auth()->user()->company->shop_name,
 			'employerName'    => auth()->user()->firstname . " " . auth()->user()->lastname,
-			'date'            => $ja->created_at,
+			'date'            => $job->schedules->toArray(),
 		];
 
 		return view( 'jobs.application-detail', compact( 'application', 'person', 'work_history', 'data' ) );
@@ -616,7 +620,7 @@ class JobsController extends Controller {
 			'freelancerName'  => $freelancer->firstname . " " . $freelancer->lastname,
 			'employerCompany' => $employer->company->shop_name,
 			'employerName'    => $employer->firstname . " " . $employer->lastname,
-			'date'            => $ja->created_at,
+			'date'            => $j->schedules->toArray(),
 		];
 
 

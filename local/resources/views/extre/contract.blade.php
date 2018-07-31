@@ -160,14 +160,23 @@
 <P>
     Signed by Company representative {{$data['employerName']}}
     <br>
-    Date {{date('d M, Y',strtotime($data['date']))}}
-
+    @if(count($data['date'])>1)
+        Job Date - {{date('d M, Y',strtotime($data['date'][0]['start']))}}
+        to {{date('d M, Y',strtotime(end($data['date'])['start']))}}
+    @else
+        Job Date - {{date('d M, Y',strtotime($data['date'][0]['start']))}}
+    @endif
 </P>
 
 
 <P>
     Signed by Security Personnel {{$data['freelancerName']}}
     <br>
-    Date {{date('d M, Y',strtotime($data['date']))}}
+    @if(count($data['date'])>1)
+        Job Date - {{date('d M, Y',strtotime($data['date'][0]['start']))}}
+        to {{date('d M, Y',strtotime(end($data['date'])['start']))}}
+    @else
+        Job Date - {{date('d M, Y',strtotime($data['date'][0]['start']))}}
+    @endif
 
 </P>

@@ -85,11 +85,13 @@
                                         </button>
                                         <br>
                                         <br>
-                                        <button id="contractDown" class="mark-as-complete btn pull-right right-10">view
-                                            contract
-                                        </button>
-
-                                    @endif
+                                <form action="{{ route('application.contract', ['id' => $application->id]) }}"
+                                      method="get">
+                                    <button type="submit" class="mark-as-complete btn pull-right right-10">view
+                                        contract
+                                    </button>
+                                </form>
+                                @endif
 
 
                                 </p>
@@ -243,20 +245,7 @@
         });
 
 
-        $("#contractDown").on("click", function () {
-
-            $.ajax({
-                url: "{{ route('application.contract', ['id' => $application->id]) }}",
-                type: "GET",
-                success: function (d) {
-                    console.log(d);
-                },
-                error: function (d) {
-
-                }
-            })
-
-        });
+     
     });
     /*read only star rating to display only*/
     $.fn.stars = function () {

@@ -87,12 +87,10 @@
                                         <br>
                                 <form action="{{ route('application.contract', ['id' => $application->id]) }}"
                                       method="get">
-                                    <button type="submit" class="mark-as-complete btn pull-right right-10">view
-                                        contract
+                                    <button type="submit" class=" btn pull-right right-10">Download Contract
                                     </button>
                                 </form>
                                 @endif
-
 
                                 </p>
                             </address>
@@ -241,7 +239,7 @@
         });
 
 
-     
+
     });
     /*read only star rating to display only*/
     $.fn.stars = function () {

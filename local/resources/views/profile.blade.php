@@ -206,8 +206,9 @@
     </div>
 
 </section>
-
+@if(auth()->user()->admin==0)
 @include('extre.tearms ans condtion --hair')
+@endif
 @include('footer')
 <script>
     /*read only star rating to display only*/

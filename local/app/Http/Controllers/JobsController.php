@@ -514,9 +514,18 @@ class JobsController extends Controller {
 
 			return redirect()->back();
 		}
-		$job = Job::find( $id );
+		$job      = Job::find( $id );
+		$employer = User::find( $job->created_by );
 
-		return view( 'jobs.apply', [ 'job' => $job ] );
+		$data = [
+			'freelancerName'  => auth()->user()->firstname . " " . auth()->user()->lastname,
+			'employerCompany' => $employer->company->shop_name,
+			'employerName'    => $employer->firstname . " " . $employer->lastname,
+			'date'            => date('Y'),
+		];
+
+
+		return view( 'jobs.apply', compact( 'job','data' ) );
 	}
 
 	/**

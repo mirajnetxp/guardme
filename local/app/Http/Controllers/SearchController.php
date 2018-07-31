@@ -71,11 +71,11 @@ class SearchController extends Controller {
 			$search_gender = isset( $data['gender'] ) ? trim( $data['gender'] ) : null;
 			if ( $search_gender && $search_gender != 'all' ) {
 				$query = $query->where( 'gender', $search_gender );
-				dd($query);
+				dd( $query );
 			}
 			// todo: filter by gps
 
-			if ( isset( $data['gps'] )  ) {
+			if ( isset( $data['gps'] ) ) {
 				$query = $query->where( 'freelancer_settings.gps', '=', $data['gps'] );
 			}
 
@@ -233,10 +233,20 @@ class SearchController extends Controller {
 		$work_history = $ja->getApplicantWorkHistory_appliedby( $id );
 		$user         = auth()->user();
 		$openJobs     = null;
+		$data         = null;
 		if ( $user->admin == 0 ) {
 			$openJobs = Job::where( 'created_by', $user->id )
 			               ->where( 'status', 1 )
 			               ->get();
+
+
+			$data = [
+				'freelancerName'  => $person->firstname . " " . $person->lastname,
+				'employerCompany' => auth()->user()->company->shop_name,
+				'employerName'    => auth()->user()->firstname . " " . auth()->user()->lastname,
+				'date'            => $ja->created_at,
+			];
+
 		}
 
 
@@ -244,7 +254,8 @@ class SearchController extends Controller {
 			return response()->json( $person );
 		}
 
-		return view( 'profile', compact( 'person', 'work_history', 'openJobs' ) );
+
+		return view( 'profile', compact( 'person', 'work_history', 'openJobs', 'data' ) );
 
 	}
 

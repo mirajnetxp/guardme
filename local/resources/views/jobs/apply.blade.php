@@ -184,7 +184,7 @@
 
         });
 
-        $("#terms-apply-to-job").click(function () {
+        $("#termsA").click(function () {
 
             formErrors = new Errors();
             $.ajax({

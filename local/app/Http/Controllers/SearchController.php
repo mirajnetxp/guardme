@@ -239,12 +239,10 @@ class SearchController extends Controller {
 			               ->where( 'status', 1 )
 			               ->get();
 
-
 			$data = [
 				'freelancerName'  => $person->firstname . " " . $person->lastname,
 				'employerCompany' => auth()->user()->company->shop_name,
 				'employerName'    => auth()->user()->firstname . " " . auth()->user()->lastname,
-				'date'            => $ja->created_at,
 			];
 
 		}

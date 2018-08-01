@@ -51,7 +51,7 @@
             <div class="col-sm-9">
                 <select name="working_days" class="form-control working_days" id="days_per_month">
                     <option value="">Please select number of working days</option>
-                    @for($i = 1; $i <= 30; $i++)
+                    @for($i = 1; $i <= 2; $i++)
                         <option value="{{ $i }}">{{ $i }}</option>
                     @endfor
                 </select>

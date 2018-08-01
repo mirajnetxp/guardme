@@ -199,16 +199,31 @@
 @include('extre.tearms ans condtion --hair')
 {{--@include('footer')--}}
 
-
+<div style="margin-top: 20px" class="modal fade" id="alert-lim" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center text-danger">All slots have been filled. To hire more personnel, edit your job listing or withdraw one of your offers</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         $("#termsA").on("click", function () {
+            $('#jobATACM').modal('hide')
             var route = "{{ route('api.mark.hired', ['id' => $application->id]) }}";
             $.ajax({
                 url: route,
                 type: 'POST',
                 success: function (data) {
-                    $('#termsA').modal('hide')
+
                     $('.mark-as-hired').fadeOut('slow');
                     $('.alert-success').text(data[0]);
                     $('.alert-success').removeClass('hide');
@@ -217,8 +232,11 @@
                     }, 3000);
                 },
                 error: function (data) {
-                    $('.alert-danger').text(data.responseJSON[0]);
-                    $('.alert-danger').removeClass('hide');
+
+                    $('#alert-lim').modal('show')
+                    setTimeout(function () {
+                        $('#alert-lim').modal('hide')
+                    },10000)
                 }
             })
         });

@@ -68,6 +68,45 @@ class JobsController extends Controller {
 			->json( $return, $status_code );
 	}
 
+	public function update( Request $request, $id ) {
+
+		$this->validate( $request, [
+			'title'             => 'required|max:255',
+			'description'       => 'required',
+			'security_category' => 'required',
+			'business_category' => 'required',
+			'town'              => 'required',
+			'country'           => 'required',
+			'postcode'          => 'required',
+		] );
+		$job                       = Job::find( $id );
+		$postedData                = $request->all();
+		$job->title                = ! empty( $postedData['title'] ) ? ( $postedData['title'] ) : null;
+		$job->description          = ! empty( $postedData['description'] ) ? ( $postedData['description'] ) : null;
+		$job->country              = ! empty( $postedData['country'] ) ? ( $postedData['country'] ) : null;
+		$job->city_town            = ! empty( $postedData['town'] ) ? ( $postedData['town'] ) : null;
+		$job->address_line1        = ! empty( $postedData['line1'] ) ? ( $postedData['line1'] ) : null;
+		$job->address_line2        = ! empty( $postedData['line2'] ) ? ( $postedData['line2'] ) : null;
+		$job->address_line3        = ! empty( $postedData['line3'] ) ? ( $postedData['line3'] ) : null;
+		$job->post_code            = ! empty( $postedData['postcode'] ) ? ( $postedData['postcode'] ) : null;
+		$job->latitude             = ! empty( $postedData['addresslat'] ) ? ( $postedData['addresslat'] ) : null;
+		$job->longitude            = ! empty( $postedData['addresslong'] ) ? ( $postedData['addresslong'] ) : null;
+		$job->business_category_id = ! empty( $postedData['business_category'] ) ? ( $postedData['business_category'] ) : null;
+		$job->security_category_id = ! empty( $postedData['security_category'] ) ? ( $postedData['security_category'] ) : null;
+		$job->created_by           = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
+		$isSaved                   = $job->save();
+		if ( $isSaved ) {
+			$return      = [ 'message' => 'Data Saved Successfully', 'id' => $job->id ];
+			$status_code = 200;
+		} else {
+			$return      = [ 'message' => 'Failed to save data' ];
+			$status_code = 500;
+		}
+
+		return response()
+			->json( $return, $status_code );
+	}
+
 	public function schedule( Request $request, $id ) {
 		$this->validate( $request, [
 			'working_hours'         => 'required|integer',
@@ -119,6 +158,57 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
+	public function updateSchedule( Request $request, $id ) {
+
+		$this->validate( $request, [
+			'working_hours'         => 'required|integer',
+			'working_days'          => 'required|integer',
+			'pay_per_hour'          => 'required|integer',
+			'number_of_freelancers' => 'required|integer',
+			'start_date_time.*'     => 'required',
+			'end_date_time.*'       => 'required',
+		],
+			[
+				'end_date_time.*.required'   => 'Start date/time field is required',
+				'start_date_time.*.required' => 'End date/time field is required',
+			] );
+		$posted_data           = $request->all();
+		$working_days          = ! empty( $posted_data['working_days'] ) ? $posted_data['working_days'] : 0;
+		$working_hours         = ! empty( $posted_data['working_hours'] ) ? $posted_data['working_hours'] : 0;
+		$pay_per_hour          = ! empty( $posted_data['pay_per_hour'] ) ? $posted_data['pay_per_hour'] : 0;
+		$number_of_freelancers = ! empty( $posted_data['number_of_freelancers'] ) ? $posted_data['number_of_freelancers'] : 0;
+		$start_date_time       = ! empty( $posted_data['start_date_time'] ) ? $posted_data['start_date_time'] : [];
+		$end_date_time         = ! empty( $posted_data['end_date_time'] ) ? $posted_data['end_date_time'] : [];
+		$schedules             = [];
+		foreach ( $start_date_time as $k => $sch ) {
+			$schedule_item['start'] = $sch;
+			// because date and time format from pick is Y-m-d h:i therefore no need of conversion
+			//$schedule_item['end'] = $end_date_time[ $k ];
+			$schedule_item['end'] = date( 'Y-m-d h:i', strtotime( '+' . $working_hours . ' hours', strtotime( $sch ) ) );
+			$schedules[]          = $schedule_item;
+		}
+		$job           = Job::find( $id );
+		$logged_in_id  = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
+		$return_data   = [ 'Not allowed to perform this action' ];
+		$return_status = 500;
+		if ( ! empty( $job ) && ! empty( $job->created_by ) && $job->created_by == $logged_in_id ) {
+			// save job schedules
+
+			$job->schedules()->createMany( $schedules );
+
+			$job->daily_working_hours   = $working_hours;
+			$job->monthly_working_days  = $working_days;
+			$job->per_hour_rate         = $pay_per_hour;
+			$job->number_of_freelancers = $number_of_freelancers;
+			if ( $job->save() ) {
+				$return_data   = [ 'message' => 'Data saved successfully' ];
+				$return_status = 200;
+			}
+		}
+
+		return response()
+			->json( $return_data, $return_status );
+	}
 	/**
 	 * @param Request $request
 	 * @param $id
@@ -203,22 +293,22 @@ class JobsController extends Controller {
 					// split 3% of the admin fee for licence partner
 					//@TODO have to make this percentage dynamic later on
 					// if licence partner exist
-					$partner_email = config('general.licence_partner_email');
-					$licence_partner = User::where('name', 'partner')->where('email', $partner_email)->get()->first();
-					if (!empty($licence_partner)) {
+					$partner_email   = config( 'general.licence_partner_email' );
+					$licence_partner = User::where( 'name', 'partner' )->where( 'email', $partner_email )->get()->first();
+					if ( ! empty( $licence_partner ) ) {
 						$licence_partner_id = $licence_partner->id;
 					}
 
-					if (!empty($licence_partner_id)) {
+					if ( ! empty( $licence_partner_id ) ) {
 						// calculate 3% amount
-						$licence_partner_amount = ($job_details['admin_fee'] * 3) / 100;
-						$parms['amount'] = $parms['amount'] - $licence_partner_amount;
+						$licence_partner_amount = ( $job_details['admin_fee'] * 3 ) / 100;
+						$parms['amount']        = $parms['amount'] - $licence_partner_amount;
 					}
 
 					$trans->fundAdminFee( $parms );
-					if (!empty($licence_partner_id)) {
+					if ( ! empty( $licence_partner_id ) ) {
 						// fund licence partner admin fee
-						$parms['amount'] = $licence_partner_amount;
+						$parms['amount']             = $licence_partner_amount;
 						$parms['licence_partner_id'] = $licence_partner_id;
 						$trans->fundAdminFee( $parms );
 					}

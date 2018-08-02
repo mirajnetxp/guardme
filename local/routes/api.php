@@ -56,9 +56,19 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 
 
 	Route::post( 'create', 'JobsController@create' )->name( 'api.create.job' );
+
+	Route::post( 'update/{id}', 'JobsController@update' )->name( 'api.update.job' );
+
 	Route::post( 'schedule/{id}', 'JobsController@schedule' )->name( 'api.schedule.job' );
+
+	Route::post( 'schedule/{id}/update', 'JobsController@updateSchedule' )->name( 'api.schedule.update.job' );
+
+
 	Route::post( 'broadcast/{id}', 'JobsController@broadcast' )->name( 'api.broadcast.job' );
 	Route::post( 'calculate-job-amount/{id}', 'JobsController@getJobAmount' )->name( 'api.amount.job' );
+
+
+
 
 	// add balance to wallet
 	Route::post( 'add-money', 'JobsController@addMoney' )->name( 'api.add.money' );

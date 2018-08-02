@@ -407,8 +407,13 @@ Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' =
 /*Start Security Jobs Routes*/
 
 Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
+
 	Route::get( '/create', 'JobsController@create' )->name( 'job.create' );
 	Route::get( '/schedule/{id}', 'JobsController@schedule' )->name( 'job.schedule' );
+
+	Route::get( '/schedule/{id}/update', 'JobsController@UpdateSchedule' )->name( 'job.schedule.update' );
+
+
 	Route::get( '/broadcast/{id}', 'JobsController@broadcast' )->name( 'job.broadcast' );
 	Route::get( '/payment-details/{id}', 'JobsController@paymentDetails' )->name( 'job.payment.details' );
 
@@ -417,6 +422,9 @@ Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
 
 	Route::get( '/job-confirmation', 'JobsController@confirmation' )->name( 'job.confirmation' );
 	Route::get( '/my', 'JobsController@myJobs' )->name( 'my.jobs' );
+	//job updating route
+	Route::get( '/my/{id}/edit', 'JobsController@viewEditJob' )->name( 'edit.job' );
+
 	Route::get( '/myfilter', 'JobsController@myJob' )->name( 'my.job' );
 	Route::get( '/saved', 'JobsController@savedJobs' )->name( 'saved.jobs' );
 	Route::get( '/my/applications/{id}', 'JobsController@myJobApplications' )->name( 'my.job.applications' );

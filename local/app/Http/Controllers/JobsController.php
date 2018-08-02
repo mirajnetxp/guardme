@@ -62,6 +62,14 @@ class JobsController extends Controller {
 
 		return view( 'jobs.schedule', compact( 'id' ) );
 	}
+	public function UpdateSchedule( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		$job=Job::find($id);
+
+		return view( 'jobs.update-schedule', compact( 'id','job' ) );
+	}
 
 	public function broadcast( $id ) {
 		if ( ! isEmployer() ) {
@@ -94,6 +102,18 @@ class JobsController extends Controller {
 		}
 
 		return view( 'jobs.confirm' );
+	}
+
+
+	public function viewEditJob( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		$job=Job::find($id);
+
+		$all_security_categories = SecurityCategory::get();
+		$all_business_categories = Businesscategory::get();
+		return view( 'jobs.edit-job' , compact( 'all_security_categories', 'all_business_categories','job' ));
 	}
 
 	/**
@@ -232,6 +252,7 @@ class JobsController extends Controller {
 
 		return view( 'jobs.myfilter', compact( 'new_jobs', 'editprofile', 'arr_count' ) );
 	}
+
 
 	public function savedJobs() {
 		$userid      = Auth::user()->id;

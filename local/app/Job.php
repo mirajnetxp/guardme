@@ -54,7 +54,7 @@ class Job extends Model {
 			'grand_total'                   => floatval( $grand_total ),
 			'number_of_freelancers'         => $number_of_freelancers,
 			'single_freelancer_fee'         => floatval( $basic_total / $number_of_freelancers ),
-			'job_activation_status'			=> $job->status
+			'job_activation_status'         => $job->status
 		];
 
 		return $return_data;
@@ -349,21 +349,32 @@ class Job extends Model {
 	}
 
 	public function getJobSloat() {
-		
-		$result =DB::table('transactions')->where('job_id',$this->id)->where('application_id','!=',null)
-								->distinct('application_id')->get();
+
+		$result = DB::table( 'transactions' )
+		            ->where( 'job_id', $this->id )
+		            ->where( 'application_id', '!=', null )
+		            ->distinct( 'application_id' )->get();
 
 
 		$application = array();
 
-		foreach ($result as $value) {
-			
-			if(! in_array($value->application_id,$application)) {
+		foreach ( $result as $value ) {
 
-				 $application[] = $value->application_id;
+			if ( ! in_array( $value->application_id, $application ) ) {
+
+				$application[] = $value->application_id;
 			}
 		}
-		return count($application);
 
+		return count( $application );
+
+	}
+
+	public function getJobTotalCost() {
+		$cost = Transaction::where( 'job_id', $this->id )
+		                   ->where( 'debit_credit_type', 'debit' )
+		                   ->first();
+
+		return $cost->amount;
 	}
 }

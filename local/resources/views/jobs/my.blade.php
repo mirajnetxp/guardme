@@ -113,6 +113,8 @@
                             @endif
                         </div>
                         <button class="btn btn-info pull-right cancel-job-button" style="margin-right: 5px;" data-cancel_url="{{ route('api.cancel.whole.job', $job->id) }}">Cancel Job</button>
+
+                        <a class="btn btn-info pull-right cancel-job-button" style="margin-right: 5px;" href="{{route('edit.job',['id'=>$job->id])}}">Edit Job</a>
                         <div class="clearfix"></div>
                     @endif
                 </div><!-- item-info -->

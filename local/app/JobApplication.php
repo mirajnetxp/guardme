@@ -124,11 +124,14 @@ class JobApplication extends Model {
 		$status_code                         = 200;
 		$ja_with_job                         = JobApplication::with( 'job' )
 		                                                     ->where( 'id', $application_id )
-		                                                     ->get()->first();
+		                                                     ->get()
+		                                                     ->first();
+
 		$job                                 = $ja_with_job->job;
 		$total_number_of_freelancers         = $job->number_of_freelancers;
 		$job_hired_applications              = JobApplication::where( 'is_hired', 1 )
-		                                                     ->where( 'job_id', $job->id )->get();
+		                                                     ->where( 'job_id', $job->id )
+		                                                     ->get();
 		$number_of_already_hired_freelancers = count( $job_hired_applications );
 		$vacant_positions                    = $total_number_of_freelancers - $number_of_already_hired_freelancers;
 		$user_id                             = auth()->user()->id;

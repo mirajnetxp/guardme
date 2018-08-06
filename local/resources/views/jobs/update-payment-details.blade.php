@@ -75,6 +75,14 @@
             <td>Grand Total</td>
             <td>{{ $jobDetails['grand_total'] }}</td>
         </tr>
+        <tr>
+            <td>
+                {{($currentCost - $costAfterEdit)<0?'You have to pay extra':''}}
+                {{($currentCost - $costAfterEdit)>0?'You will get refund':''}}
+                {{($currentCost - $costAfterEdit)==0 && ($currentCost - $costAfterEdit)>(-1) && ($currentCost - $costAfterEdit)<(1)? 'Unchanged':''}}
+            </td>
+            <td>{{ abs(round($currentCost - $costAfterEdit))}}</td>
+        </tr>
         </tbody>
     </table>
     @if(!$jobDetails['job_activation_status'])

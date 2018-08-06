@@ -53,6 +53,22 @@ class Transaction extends Model {
 
 		return $this->insertTransaction( $defaults );
 	}
+	public function addExtraMoney( $params ) {
+		$type = $defaults['type'] = ! empty( $params['type'] ) ? ( $params['type'] ) : 'add_money';
+		$defaults                          = [
+			'debit_credit_type' => 'debit',
+			'type'              => $type
+		];
+		$defaults['title']                 = ! empty( $params['title'] ) ? ( $params['title'] ) : 'Adding balance';
+		$defaults['amount']                = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
+		$defaults['paypal_id']             = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : 0;
+		$defaults['user_id']               = ! empty( $params['user_id'] ) ? ( $params['user_id'] ) : 0;
+		$defaults['job_id']               = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
+		$defaults['status']                = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
+		$defaults['paypal_payment_status'] = ! empty( $params['paypal_payment_status'] ) ? ( $params['paypal_payment_status'] ) : null;
+
+		return $this->insertTransaction( $defaults );
+	}
 
 	/**
 	 * @param $params
@@ -398,7 +414,10 @@ class Transaction extends Model {
 	 * @return mixed
 	 */
 	public function getDebitTransactionForJob($job_id) {
-		$transaction = Transaction::where('job_id', $job_id)->where('debit_credit_type', 'debit')->orderBy('id', 'desc')->get()->first();
+		$transaction = Transaction::where('job_id', $job_id)
+		                          ->where('debit_credit_type', 'debit')
+		                          ->orderBy('id', 'desc')
+		                          ->get()->first();
 		return $transaction;
 	}
 

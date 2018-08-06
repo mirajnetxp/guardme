@@ -63,6 +63,17 @@ class JobsController extends Controller {
 		return view( 'jobs.schedule', compact( 'id' ) );
 	}
 
+	public function UpdateSchedule( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		$job              = Job::find( $id );
+		$trans            = new Transaction();
+		$currentTotalCost = $trans->getDebitTransactionForJob( $id )->amount;
+
+		return view( 'jobs.update-schedule', compact( 'id', 'job', 'currentTotalCost' ) );
+	}
+
 	public function broadcast( $id ) {
 		if ( ! isEmployer() ) {
 			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
@@ -72,20 +83,60 @@ class JobsController extends Controller {
 		return view( 'jobs.broadcast', compact( 'id', 'all_security_categories' ) );
 	}
 
+	public function Updatebroadcast( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		$all_security_categories = SecurityCategory::get();
+
+		return view( 'jobs.update-broadcast', compact( 'id', 'all_security_categories' ) );
+	}
+
 	public function paymentDetails( $id ) {
 		if ( ! isEmployer() ) {
 			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
 		}
+
 		//$available_balance = $trans->getWalletAvailableBalance();
-		$trans                 = new Transaction();
-		$debit_transaction     = $trans->getDebitTransactionForJob( $id );
+		$trans             = new Transaction();
+		$debit_transaction = $trans->getDebitTransactionForJob( $id );
+
 		$job_available_balance = 0;
 		if ( ! empty( $debit_transaction ) ) {
 			$job_available_balance = $debit_transaction->amount;
 		}
 		$jobDetails = Job::calculateJobAmount( $id );
 
+
 		return view( 'jobs.payment-details', compact( 'jobDetails', 'id', 'job_available_balance' ) );
+	}
+
+	public function UpdatePaymentDetails( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+
+		//$available_balance = $trans->getWalletAvailableBalance();
+		$trans             = new Transaction();
+		$debit_transaction = $trans->getDebitTransactionForJob( $id );
+
+		$job_available_balance = 0;
+		if ( ! empty( $debit_transaction ) ) {
+			$job_available_balance = $debit_transaction->amount;
+		}
+		$jobDetails = Job::calculateJobAmount( $id );
+
+		$currentCost   = $job_available_balance;
+		$costAfterEdit = $jobDetails['grand_total'];
+
+
+		return view( 'jobs.update-payment-details', compact(
+			'jobDetails',
+			'id',
+			'job_available_balance',
+			'currentCost',
+			'costAfterEdit'
+		) );
 	}
 
 	public function confirmation() {
@@ -94,6 +145,19 @@ class JobsController extends Controller {
 		}
 
 		return view( 'jobs.confirm' );
+	}
+
+
+	public function viewEditJob( $id ) {
+		if ( ! isEmployer() ) {
+			return abort( 403, 'You don\'t have permission to create jobs. Please open an employer account if you plan to hire security personnel.' );
+		}
+		$job = Job::find( $id );
+
+		$all_security_categories = SecurityCategory::get();
+		$all_business_categories = Businesscategory::get();
+
+		return view( 'jobs.edit-job', compact( 'all_security_categories', 'all_business_categories', 'job' ) );
 	}
 
 	/**
@@ -232,6 +296,7 @@ class JobsController extends Controller {
 
 		return view( 'jobs.myfilter', compact( 'new_jobs', 'editprofile', 'arr_count' ) );
 	}
+
 
 	public function savedJobs() {
 		$userid      = Auth::user()->id;

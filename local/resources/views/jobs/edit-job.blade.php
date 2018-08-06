@@ -160,8 +160,8 @@
             <label class="col-sm-3" for="description">Description</label>
             <div class="col-sm-9">
                 <textarea name="description" rows="10" class="form-control description" id="description"
-                          value="{{$job->description}}"
-                          placeholder="Description"></textarea>
+
+                          placeholder="Description">{{$job->description}}</textarea>
                 <span class="error-span text-danger"></span>
             </div>
         </div>

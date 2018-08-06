@@ -158,6 +158,12 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
+	/**
+	 * @param Request $request
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
 	public function updateSchedule( Request $request, $id ) {
 
 		$this->validate( $request, [
@@ -165,13 +171,9 @@ class JobsController extends Controller {
 			'working_days'          => 'required|integer',
 			'pay_per_hour'          => 'required|integer',
 			'number_of_freelancers' => 'required|integer',
-			'start_date_time.*'     => 'required',
-			'end_date_time.*'       => 'required',
-		],
-			[
-				'end_date_time.*.required'   => 'Start date/time field is required',
-				'start_date_time.*.required' => 'End date/time field is required',
-			] );
+		] );
+
+
 		$posted_data           = $request->all();
 		$working_days          = ! empty( $posted_data['working_days'] ) ? $posted_data['working_days'] : 0;
 		$working_hours         = ! empty( $posted_data['working_hours'] ) ? $posted_data['working_hours'] : 0;
@@ -179,7 +181,8 @@ class JobsController extends Controller {
 		$number_of_freelancers = ! empty( $posted_data['number_of_freelancers'] ) ? $posted_data['number_of_freelancers'] : 0;
 		$start_date_time       = ! empty( $posted_data['start_date_time'] ) ? $posted_data['start_date_time'] : [];
 		$end_date_time         = ! empty( $posted_data['end_date_time'] ) ? $posted_data['end_date_time'] : [];
-		$schedules             = [];
+
+		$schedules = [];
 		foreach ( $start_date_time as $k => $sch ) {
 			$schedule_item['start'] = $sch;
 			// because date and time format from pick is Y-m-d h:i therefore no need of conversion
@@ -187,19 +190,32 @@ class JobsController extends Controller {
 			$schedule_item['end'] = date( 'Y-m-d h:i', strtotime( '+' . $working_hours . ' hours', strtotime( $sch ) ) );
 			$schedules[]          = $schedule_item;
 		}
-		$job           = Job::find( $id );
-		$logged_in_id  = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
+
+		$job                    = Job::find( $id );
+		$job_hired_applications = JobApplication::where( 'is_hired', 1 )
+		                                        ->where( 'job_id', $job->id )
+		                                        ->get();
+
+		if ( $job->number_of_freelancers > $number_of_freelancers && $job->number_of_freelancers == count( $job_hired_applications ) ) {
+			return response()->json( [ "number_of_freelancers" => [ "You already hire all number of freelancer, Can't reduce now" ] ], 422 );
+		}
+
+		$logged_in_id = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
+
 		$return_data   = [ 'Not allowed to perform this action' ];
 		$return_status = 500;
 		if ( ! empty( $job ) && ! empty( $job->created_by ) && $job->created_by == $logged_in_id ) {
 			// save job schedules
-
-			$job->schedules()->createMany( $schedules );
+			if ( $request->start_date_time[0] ) {
+				$job->schedules()->delete();
+				$job->schedules()->createMany( $schedules );
+			}
 
 			$job->daily_working_hours   = $working_hours;
 			$job->monthly_working_days  = $working_days;
 			$job->per_hour_rate         = $pay_per_hour;
 			$job->number_of_freelancers = $number_of_freelancers;
+			$job->status                = 0;
 			if ( $job->save() ) {
 				$return_data   = [ 'message' => 'Data saved successfully' ];
 				$return_status = 200;
@@ -209,6 +225,7 @@ class JobsController extends Controller {
 		return response()
 			->json( $return_data, $return_status );
 	}
+
 	/**
 	 * @param Request $request
 	 * @param $id
@@ -216,6 +233,45 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function broadcast( Request $request, $id ) {
+		$this->validate( $request, [
+			'visible_to_all_security_personal' => 'required_without_all:visible_to_favourite,specific_area,specific_category_id',
+			'visible_to_favourite'             => 'required_without_all:visible_to_all_security_personal,specific_area,specific_category_id',
+			'specific_area'                    => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_category_id',
+			'specific_category_id'             => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_area',
+			'min_area'                         => 'required_with:specific_area',
+			'max_area'                         => 'required_with:specific_area',
+			'terms_conditions'                 => 'required',
+		] );
+		$posted_data                      = $request->all();
+		$visible_to_all_security_personal = ! empty( $posted_data['visible_to_all_security_personal'] ) ? $posted_data['visible_to_all_security_personal'] : 0;
+		$visible_to_favourite             = ! empty( $posted_data['visible_to_favourite'] ) ? $posted_data['visible_to_favourite'] : 0;
+		$specific_area                    = ! empty( $posted_data['specific_area'] ) ? $posted_data['specific_area'] : 0;
+		$min_area                         = ! empty( $posted_data['min_area'] ) ? $posted_data['min_area'] : 0;
+		$max_area                         = ! empty( $posted_data['max_area'] ) ? $posted_data['max_area'] : 0;
+		$specific_category_id             = ! empty( $posted_data['specific_category_id'] ) ? $posted_data['specific_category_id'] : 0;
+		$job                              = Job::find( $id );
+		$logged_in_id                     = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
+		$return_data                      = [ 'Not allowed to perform this action' ];
+		$return_status                    = 500;
+		if ( ! empty( $job ) && ! empty( $job->created_by ) && $job->created_by == $logged_in_id ) {
+			$job->visible_to_all_security_personal = $visible_to_all_security_personal;
+			$job->visible_to_favourite             = $visible_to_favourite;
+			$job->specific_category_id             = $specific_category_id;
+			if ( ! empty( $specific_area ) ) {
+				$job->specific_area_min = $min_area;
+				$job->specific_area_max = $max_area;
+			}
+			if ( $job->save() ) {
+				$return_data   = [ 'message' => 'Data saved successfully' ];
+				$return_status = 200;
+			}
+		}
+
+		return response()
+			->json( $return_data, $return_status );
+	}
+
+	public function UpdateBroadcast( Request $request, $id ) {
 		$this->validate( $request, [
 			'visible_to_all_security_personal' => 'required_without_all:visible_to_favourite,specific_area,specific_category_id',
 			'visible_to_favourite'             => 'required_without_all:visible_to_all_security_personal,specific_area,specific_category_id',
@@ -314,6 +370,97 @@ class JobsController extends Controller {
 					}
 
 					$job->status = 1;
+					$job->save();
+					$returnStatus = 200;
+					$returnData   = 'Job Activated successfully';
+				}
+			}
+		}
+
+		//TODO: Add job active notification
+		$user = auth()->user();
+
+
+		$user->notify( new JobCreated( $job ) );
+
+		return response()
+			->json( $returnData, $returnStatus );
+	}
+
+	public function UpdateActivateJob( $job_id ) {
+		$returnData   = "Un-know error occured";
+		$returnStatus = 500;
+		$user_id      = auth()->user()->id;
+
+		if ( $user_id ) {
+
+			$job = Job::find( $job_id );
+			if ( $job->created_by == $user_id ) {
+
+				$job_details       = Job::calculateJobAmount( $job_id );
+				$trans             = new Transaction();
+				$debit_transaction = $trans->getDebitTransactionForJob( $job_id );
+				if ( ! empty( $job->status ) ) {
+					$returnStatus = 500;
+					$returnData   = "Job is already active";
+				} else if ( $job_details['grand_total'] > $debit_transaction->amount ) {
+					$returnStatus = 500;
+					$returnData   = "Your available balance is less than the balance required for this job";
+				} else {
+					// add 3 credit entries to activate job
+
+
+					if ( $job_details['grand_total'] == $debit_transaction->amount ) {
+						$job->status = 1;
+					} elseif ( $job_details['grand_total'] < $debit_transaction->amount ) {
+
+
+						$upVatFee         = Transaction::where( 'job_id', $job_id )
+						                               ->where( 'type', 'vat_fee' )
+						                               ->first();
+						$upVatFee->amount = $job_details['vat_fee'];
+						$upVatFee->save();
+
+						$upAdminFee         = Transaction::where( 'job_id', $job_id )
+						                                 ->where( 'type', 'admin_fee' )
+						                                 ->first();
+						$upAdminFee->amount = $job_details['admin_fee'];
+						$upAdminFee->save();
+
+
+						// job fee update....................................
+						$JobFee   = Transaction::where( 'job_id', $job_id )
+						                       ->where( 'type', 'job_fee' );
+						$basicFee = clone $JobFee;
+						$hireFee  = clone $JobFee;
+
+
+						$job_hired_applications = JobApplication::where( 'is_hired', 1 )
+						                                        ->where( 'job_id', $job->id )
+						                                        ->get();
+						$alreadyHired           = count( $job_hired_applications );
+
+
+						$perFreelancerFee = $job_details['basic_total'] / $job_details['number_of_freelancers'];
+
+
+						$currentBasicFee = $job_details['basic_total'] - ( $perFreelancerFee * $alreadyHired );
+
+
+						$basicFee         = $basicFee->whereNull( 'application_id' )->first();
+						$basicFee->amount = $currentBasicFee;
+						$basicFee->save();
+
+
+						$hireFee = $hireFee->whereNotNull( 'application_id' )->get();
+
+						foreach ( $hireFee as $hireFe ) {
+							$hireFe->amount = $perFreelancerFee;
+							$hireFe->save();
+						}
+						$job->status = 1;
+					}
+
 					$job->save();
 					$returnStatus = 200;
 					$returnData   = 'Job Activated successfully';

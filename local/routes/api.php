@@ -65,6 +65,7 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 
 
 	Route::post( 'broadcast/{id}', 'JobsController@broadcast' )->name( 'api.broadcast.job' );
+	Route::post( 'broadcast/{id}/update', 'JobsController@UpdateBroadcast' )->name( 'api.update.broadcast.job' );
 	Route::post( 'calculate-job-amount/{id}', 'JobsController@getJobAmount' )->name( 'api.amount.job' );
 
 
@@ -75,6 +76,11 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 
 	// activate job, it will add 3 credit entries i) job fee ii) admin fee iii) vat fee
 	Route::post( 'activate-job/{id}', 'JobsController@activateJob' )->name( 'api.activate.job' );
+	Route::post( 'activate-job/{id}/update', 'JobsController@UpdateActivateJob' )->name( 'api.update.activate.job' );
+
+
+
+
 	Route::post( 'apply/{id}', 'JobsController@applyJob' )->name( 'api.apply.job' );
 	Route::post( 'mark/hired/{id}', 'JobsController@markHired' )->name( 'api.mark.hired' );
 

@@ -415,9 +415,15 @@ Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
 
 
 	Route::get( '/broadcast/{id}', 'JobsController@broadcast' )->name( 'job.broadcast' );
+	Route::get( '/broadcast/{id}/update', 'JobsController@Updatebroadcast' )->name( 'job.update.broadcast' );
 	Route::get( '/payment-details/{id}', 'JobsController@paymentDetails' )->name( 'job.payment.details' );
+	Route::get( '/payment-details/{id}/update', 'JobsController@UpdatePaymentDetails' )->name( 'job.update.payment.details' );
 
 	Route::post( '/create-paypal-payment/{id}', 'PaypalPaymentController@postPayment' )->name( 'create.paypal.payment' );
+
+	Route::post( '/create-paypal-payment/{id}/extra', 'PaypalPaymentController@postExtraPayment' )->name( 'create.extra.paypal.payment' );
+
+	Route::get( '/payment-status/extra', 'PaypalPaymentController@getExtraPaymentStatus' )->name( 'extra.payment.status' );
 	Route::get( '/payment-status', 'PaypalPaymentController@getPaymentStatus' )->name( 'payment.status' );
 
 	Route::get( '/job-confirmation', 'JobsController@confirmation' )->name( 'job.confirmation' );

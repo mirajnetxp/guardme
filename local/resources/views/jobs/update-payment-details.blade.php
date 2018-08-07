@@ -81,7 +81,7 @@
                 {{($currentCost - $costAfterEdit)>0?'You will get refund':''}}
                 {{($currentCost - $costAfterEdit)==0 && ($currentCost - $costAfterEdit)>(-1) && ($currentCost - $costAfterEdit)<(1)? 'Unchanged':''}}
             </td>
-            <td>{{ abs(round($currentCost - $costAfterEdit))}}</td>
+            <td>{{ abs($currentCost - $costAfterEdit)}}</td>
         </tr>
         </tbody>
     </table>

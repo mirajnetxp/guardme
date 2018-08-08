@@ -77,7 +77,6 @@
                             <a href="{{ route('my.job.applications', ['id' => $job->id]) }}"><img align="center" class="img-responsive" src="{{ URL::to("/")}}/images/img-placeholder.png" alt="{{$job->title}}"/></a>
                         </div><!-- item-image -->
                     </div>
-
                     <div class="ad-info">
                         <span><a href="{{ route('my.job.applications', ['id' => $job->id]) }}" class="title">{{$job->title}}</a></span>
                         <div class="ad-meta">

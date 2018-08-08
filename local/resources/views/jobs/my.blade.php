@@ -1,15 +1,17 @@
 @extends('layouts.dashboard-template')
-  
 
+<?php
+use Carbon\Carbon;
+?>
 
 @section('bread-crumb')
     <div class="breadcrumb-section">
         <ol class="breadcrumb">
             <li><a href="index.html">Home</a></li>
             <li>Jobs</li>
-        </ol>                       
+        </ol>
         <h2 class="title">
-           My Jobs</h2>
+            My Jobs</h2>
     </div>
 @endsection
 @section('content')
@@ -48,19 +50,21 @@
                 <div class="col-sm-12">
                     <label class="col-sm-1">Transaction Date:</label>
                     <div class="col-sm-2">
-                        <input type="text" class="start_date date-picker form-control" name="start_date" placeholder="Start Date"  value="{{old('start_date')}}">
+                        <input type="text" class="start_date date-picker form-control" name="start_date"
+                               placeholder="Start Date" value="{{old('start_date')}}">
                         <span class="text-danger error-span"></span>
                     </div>
                     <div class="col-sm-2">
-                        <input type="text" class="end_date date-picker form-control" name="end_date" placeholder="End Date"  value="{{old('end_date')}}">
+                        <input type="text" class="end_date date-picker form-control" name="end_date"
+                               placeholder="End Date" value="{{old('end_date')}}">
                         <span class="text-danger error-span"></span>
                     </div>
                     <div class="form-group col-sm-3">
                         <select name="kind" id="kind" class="trackprogress form-control text-input">
                             <option value="1">All</option>
-                            <option value="2">Open</option>       
+                            <option value="2">Open</option>
                             <option value="3">Closed</option>
-                        </select>                               
+                        </select>
                     </div>
                     <div class="col-sm-1">
                         <button type="submit" value="GO" class="btn btn-primary">GO</button>
@@ -69,61 +73,96 @@
             </form>
         </div>
         @if(count($new_jobs) > 0)
-        @foreach($new_jobs as $job)
-            <div class="job-ad-item">
-                <div class="item-info">
-                    <div class="item-image-box">
-                        <div class="item-image">
-                            <a href="{{ route('my.job.applications', ['id' => $job->id]) }}"><img align="center" class="img-responsive" src="{{ URL::to("/")}}/images/img-placeholder.png" alt="{{$job->title}}"/></a>
-                        </div><!-- item-image -->
-                    </div>
-
-                    <div class="ad-info">
-                        <span><a href="{{ route('my.job.applications', ['id' => $job->id]) }}" class="title">{{$job->title}}</a></span>
-                        <div class="ad-meta">
-                            <ul>
-                                <li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>@if($job->city_town){{$job->city_town}}, @endif {{$job->country}}</a></li>
-                              
-                                <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a></li>
-
-                                <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{$job->industory['name']}}</a></li>
-                                <li><a href="#">Applications: <b style="color:#00a651">{{{$arr_count[$job->id]['appcount']}}}</b></a></li>
-                                <li><a href="#">Hires: <b style="color:#00a651">{{{$arr_count[$job->id]['hiredcount']}}}</b></a></li>
-                            </ul>
-                        </div><!-- ad-meta -->                                  
-                    </div><!-- ad-info -->
-                    <div class="close-icon">
-                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                    </div>
-                    @if ($job->status == 1)
-                        <div class="pause-unpause-block pull-right">
-                            @if ($arr_count[$job->id]['hiredcount'] == 0)
-                                @if ($job->is_pause == 0)
-                                   <?php
-                                    $pause = '';
-                                    $restart = 'hide'; ?>
-                                @else
-                                    <?php
-                                    $pause = 'hide';
-                                    $restart = '';
-                                    ?>
-                                @endif
-                                <button class="btn btn-success restart-job-button {{ $restart }}" data-pause_url="{{ route('api.restart.job', $job->id) }}">Restart Job</button>
-                                <button class="btn btn-danger pause-job-button {{ $pause }}" data-pause_url="{{ route('api.pause.job', $job->id) }}">Pause Job</button>
-                            @endif
+            @foreach($new_jobs as $job)
+                <div class="job-ad-item">
+                    <div class="item-info">
+                        <div class="item-image-box">
+                            <div class="item-image">
+                                <a href="{{ route('my.job.applications', ['id' => $job->id]) }}"><img align="center"
+                                                                                                      class="img-responsive"
+                                                                                                      src="{{ URL::to("/")}}/images/img-placeholder.png"
+                                                                                                      alt="{{$job->title}}"/></a>
+                            </div><!-- item-image -->
                         </div>
-                        <button class="btn btn-info pull-right cancel-job-button" style="margin-right: 5px;" data-cancel_url="{{ route('api.cancel.whole.job', $job->id) }}">Cancel Job</button>
+                        <div class="ad-info">
+                            <span><a href="{{ route('my.job.applications', ['id' => $job->id]) }}"
+                                     class="title">{{$job->title}}</a></span>
+                            <div class="ad-meta">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-map-marker"
+                                                       aria-hidden="true"></i>@if($job->city_town){{$job->city_town}}
+                                            , @endif {{$job->country}}</a></li>
 
-                        <a class="btn btn-info pull-right cancel-job-button" style="margin-right: 5px;" href="{{route('edit.job',['id'=>$job->id])}}">Edit Job</a>
-                        <div class="clearfix"></div>
-                    @endif
-                </div><!-- item-info -->
-            </div>
+                                    <li><a href="#"><i class="fa fa-money"
+                                                       aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a></li>
+
+                                    <li><a href="#"><i class="fa fa-tags"
+                                                       aria-hidden="true"></i>{{$job->industory['name']}}</a></li>
+                                    <li><a href="#">Applications: <b
+                                                    style="color:#00a651">{{{$arr_count[$job->id]['appcount']}}}</b></a>
+                                    </li>
+                                    <li><a href="#">Hires: <b
+                                                    style="color:#00a651">{{{$arr_count[$job->id]['hiredcount']}}}</b></a>
+                                    </li>
+                                </ul>
+                            </div><!-- ad-meta -->
+                        </div><!-- ad-info -->
+                        <div class="close-icon">
+                            <i class="fa fa-window-close" aria-hidden="true"></i>
+                        </div>
+
+                        @if ($job->status == 1)
+                            <div class="pause-unpause-block pull-right">
+                                @if ($arr_count[$job->id]['hiredcount'] == 0)
+                                    @if ($job->is_pause == 0)
+										<?php
+										$pause = '';
+										$restart = 'hide'; ?>
+                                    @else
+										<?php
+										$pause = 'hide';
+										$restart = '';
+										?>
+                                    @endif
+                                    <button class="btn btn-success restart-job-button {{ $restart }}"
+                                            data-pause_url="{{ route('api.restart.job', $job->id) }}">Restart Job
+                                    </button>
+                                    <button class="btn btn-danger pause-job-button {{ $pause }}"
+                                            data-pause_url="{{ route('api.pause.job', $job->id) }}">Pause Job
+                                    </button>
+                                @endif
+                            </div>
+
+							<?php
+
+							$present_time = Carbon::now();
+							$jobStartTime = new Carbon( $job->schedules[0]->start );
+							?>
+
+                            @if($present_time->lt( $jobStartTime ) )
+                                <button class="btn btn-info pull-right cancel-job-button" style="margin-right: 5px;"
+                                        data-cancel_url="{{ route('api.cancel.whole.job', $job->id) }}">Cancel Job
+                                </button>
+
+                                <a class="btn btn-info pull-right cancel-job-button" style="margin-right: 5px;"
+                                   href="{{route('edit.job',['id'=>$job->id])}}">Edit Job</a>
+
+                            @else
+                                <button class="btn btn-info pull-right" disabled style="margin-right: 5px;">Cancel Job
+                                </button>
+
+                                <a class="btn btn-info pull-right" disabled style="margin-right: 5px;"
+                                   >Edit Job</a>
+                            @endif
+                            <div class="clearfix"></div>
+                        @endif
+                    </div><!-- item-info -->
+                </div>
             @endforeach
-            @endif
+        @endif
     </div>
 
-                <?php /*<table class="table table-bordered table-responsive">
+	<?php /*<table class="table table-bordered table-responsive">
                         <thead>
                         <tr>
                             <th>Title</th>
@@ -146,75 +185,75 @@
 @endsection
 
 @section('script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-$(document).ready(function() {
-	var date = new Date();
-	
-	$('.date-picker').datepicker({
-	    format: 'mm/dd/yyyy',
-	    autoclose: true,
-	});
-    $(".cancel-job-button").on("click", function(){
-        var cancel_url = $(this).attr('data-cancel_url');
-        var elem = $(this);
-       $.ajax({
-            url: cancel_url,
-            type: 'POST',
-            success: function(data){
-                elem.addClass("hide");
-                $(".success-message").text(data[0]);
-                $(".success-message").removeClass("hide");
-                setTimeout(function(){
-                    location.reload();
-                }, 2000);
-            },
-            error: function(data){
-                $(".error-message").text(data.responseJSON[0]);
-                $(".error-message").removeClass("hide");
-            }
-        })
-    });
+        $(document).ready(function () {
+            var date = new Date();
 
-    $(".pause-job-button").on("click", function(){
-        var pause_url = $(this).attr('data-pause_url');
-        var elem = $(this);
-        $.ajax({
-            url: pause_url,
-            type: 'POST',
-            success: function(data){
-                $(".success-message").text(data[0]);
-                $(".success-message").removeClass("hide");
-                elem.addClass("hide");
-                elem.siblings('.restart-job-button').removeClass('hide');
-            },
-            error: function(data){
-                $(".error-message").text(data.responseJSON[0]);
-                $(".error-message").removeClass("hide");
-            }
-        })
-    });
+            $('.date-picker').datepicker({
+                format: 'mm/dd/yyyy',
+                autoclose: true,
+            });
+            $(".cancel-job-button").on("click", function () {
+                var cancel_url = $(this).attr('data-cancel_url');
+                var elem = $(this);
+                $.ajax({
+                    url: cancel_url,
+                    type: 'POST',
+                    success: function (data) {
+                        elem.addClass("hide");
+                        $(".success-message").text(data[0]);
+                        $(".success-message").removeClass("hide");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    },
+                    error: function (data) {
+                        $(".error-message").text(data.responseJSON[0]);
+                        $(".error-message").removeClass("hide");
+                    }
+                })
+            });
 
-    $(".restart-job-button").on("click", function(){
-        var pause_url = $(this).attr('data-pause_url');
-        var elem = $(this);
-        $.ajax({
-            url: pause_url,
-            type: 'POST',
-            success: function(data){
-                $(".success-message").text(data[0]);
-                $(".success-message").removeClass("hide");
-                elem.addClass("hide");
-                elem.siblings('.pause-job-button').removeClass('hide');
-            },
-            error: function(data){
-                $(".error-message").text(data.responseJSON[0]);
-                $(".error-message").removeClass("hide");
-            }
-        })
-    });
-} );
-</script>
+            $(".pause-job-button").on("click", function () {
+                var pause_url = $(this).attr('data-pause_url');
+                var elem = $(this);
+                $.ajax({
+                    url: pause_url,
+                    type: 'POST',
+                    success: function (data) {
+                        $(".success-message").text(data[0]);
+                        $(".success-message").removeClass("hide");
+                        elem.addClass("hide");
+                        elem.siblings('.restart-job-button').removeClass('hide');
+                    },
+                    error: function (data) {
+                        $(".error-message").text(data.responseJSON[0]);
+                        $(".error-message").removeClass("hide");
+                    }
+                })
+            });
+
+            $(".restart-job-button").on("click", function () {
+                var pause_url = $(this).attr('data-pause_url');
+                var elem = $(this);
+                $.ajax({
+                    url: pause_url,
+                    type: 'POST',
+                    success: function (data) {
+                        $(".success-message").text(data[0]);
+                        $(".success-message").removeClass("hide");
+                        elem.addClass("hide");
+                        elem.siblings('.pause-job-button').removeClass('hide');
+                    },
+                    error: function (data) {
+                        $(".error-message").text(data.responseJSON[0]);
+                        $(".error-message").removeClass("hide");
+                    }
+                })
+            });
+        });
+    </script>
 @endsection

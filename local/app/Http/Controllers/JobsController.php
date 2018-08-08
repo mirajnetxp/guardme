@@ -14,6 +14,7 @@ use Responsive\PaymentRequest;
 use Responsive\SecurityCategory;
 use Responsive\Job;
 use Responsive\SavedJob;
+use Responsive\SecurityJobsSchedule;
 use Responsive\Team;
 use Responsive\User;
 use Responsive\Address;
@@ -22,6 +23,7 @@ use Input;
 use Responsive\Transaction;
 use DB;
 use PDF;
+use Carbon\Carbon;
 
 class JobsController extends Controller {
 	//
@@ -310,12 +312,16 @@ class JobsController extends Controller {
 	 * @return mixed
 	 */
 	public function findJobs() {
+
+
 		$page_id         = Input::get( "page" );
 		$data            = \request()->all();
 		$b_cats          = Businesscategory::all();
 		$order_by        = 'created_at';
 		$order_direction = 'desc';
-		$locs            = Job::select( 'city_town' )->where( 'city_town', '!=', null )->distinct()->get();
+		$locs            = Job::select( 'city_town' )
+		                      ->where( 'city_town', '!=', null )
+		                      ->distinct()->get();
 		$units           = 'kilometers';
 		$latitude        = 0;
 		$longitude       = 0;
@@ -433,7 +439,7 @@ class JobsController extends Controller {
 			}
 		}
 		//sort array
-		$sort_jobs = $joblist;
+
 		// going to comment this because we need to add sorting on query level
 		$arr_sort = [];
 		/*if (count($joblist) > 0) {
@@ -449,6 +455,26 @@ class JobsController extends Controller {
 				}
 			}
 		}*/
+
+		$present_time = Carbon::now();
+		foreach ( $joblist as $key => $val ) {
+
+
+			$job_hired_applications = JobApplication::where( 'is_hired', 1 )
+			                                        ->where( 'job_id', $val->id )
+			                                        ->get();
+			$alreadyHired           = count( $job_hired_applications );
+
+			$jobSch = SecurityJobsSchedule::where( 'job_id', $val->id )->first();
+
+			$jobStartTime = new Carbon( $jobSch->start );
+		
+			if ( $present_time->gt( $jobStartTime ) || $alreadyHired == $val->number_of_freelancers ) {
+				unset( $joblist[ $key ] );
+			}
+		}
+
+		$sort_jobs           = $joblist;
 		$paginationLinksHtml = $joblist->links();
 
 		return view( 'jobs.find', compact( 'sort_jobs', 'b_cats', 'locs', 'paginationLinksHtml' ) );

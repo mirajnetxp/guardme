@@ -76,6 +76,7 @@ class Job extends Model {
 	}
 
 	public static function findJobs() {
+
 		$jobs = Job::where( 'status', 1 )
 		           ->orderBy( 'id', 'DESC' )
 		           ->get();

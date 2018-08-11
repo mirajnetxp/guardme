@@ -677,7 +677,12 @@ class JobsController extends Controller {
 		if ( $job->created_by != $user->id ) {
 			return;
 		}
-
+		$ja = JobApplication::where( 'job_id', $job->id )
+		                    ->where( 'applied_by', $freelancer_id )
+		                    ->get();
+		if ( count( $ja ) > 0 ) {
+			return response()->json( [ 'You already hire this freelancer for this job' ], 422 );
+		}
 		$newApplication                          = new JobApplication();
 		$newApplication->job_id                  = $job_id;
 		$newApplication->applied_by              = $freelancer_id;

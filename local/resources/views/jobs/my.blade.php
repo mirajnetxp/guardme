@@ -148,11 +148,15 @@ use Carbon\Carbon;
                                    href="{{route('edit.job',['id'=>$job->id])}}">Edit Job</a>
 
                             @else
+                                @if($job->id)
+                                    <a href="{{route('job.mark.over',['id'=>$job->id])}}"
+                                       class="btn btn-success pull-right" style="margin-right: 5px;">Job Complete</a>
+                                @endif
                                 <button class="btn btn-info pull-right" disabled style="margin-right: 5px;">Cancel Job
                                 </button>
 
                                 <a class="btn btn-info pull-right" disabled style="margin-right: 5px;"
-                                   >Edit Job</a>
+                                >Edit Job</a>
                             @endif
                             <div class="clearfix"></div>
                         @endif

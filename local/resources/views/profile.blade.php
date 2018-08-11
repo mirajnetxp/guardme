@@ -660,7 +660,8 @@
                                                                                 </p>
                                                                             </div>
                                                                             <div class="modal-footer">
-                                                                                <button style="background-color: #f44336" type="button"
+                                                                                <button style="background-color: #f44336"
+                                                                                        type="button"
                                                                                         class="btn btn-danger"
                                                                                         data-dismiss="modal">Decline
                                                                                 </button>
@@ -737,14 +738,17 @@
 
 </section>
 
-<div style="margin-top: 20px" class="modal fade" id="alert-lim" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div style="margin-top: 20px" class="modal fade" id="alert-lim" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                            class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-                <p class="text-center text-danger">All slots have been filled. To hire more personnel, edit your job listing or withdraw one of your offers</p>
+                <p class="text-center text-success alert-lim-success"></p>
+                <p class="text-center text-danger alert-lim-danger"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -767,23 +771,24 @@
                 data: form_data,
                 dataType: 'json',
                 success: function (d) {
+                    $('.alert-lim-danger').html('')
+                    $('.alert-lim-success').html(d)
 
                     $('#alert-lim').modal('show')
                     setTimeout(function () {
                         $('#alert-lim').modal('hide')
-                    },10000)
+                    }, 10000)
 
                 },
                 error: function (xhr, textStatus, errorThrown) {
-
+                    var err = JSON.parse(xhr.responseText)
+                    $('.alert-lim-success').html('')
+                    $('.alert-lim-danger').html(err)
 
                     $('#alert-lim').modal('show')
                     setTimeout(function () {
                         $('#alert-lim').modal('hide')
-                    },10000)
-
-                    console.log(xhr.responseText);
-                    alert(xhr.responseText)
+                    }, 10000)
                 }
             });
         })

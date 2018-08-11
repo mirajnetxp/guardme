@@ -468,7 +468,7 @@ class JobsController extends Controller {
 			$jobSch = SecurityJobsSchedule::where( 'job_id', $val->id )->first();
 
 			$jobStartTime = new Carbon( $jobSch->start );
-		
+
 			if ( $present_time->gt( $jobStartTime ) || $alreadyHired == $val->number_of_freelancers ) {
 				unset( $joblist[ $key ] );
 			}
@@ -964,11 +964,19 @@ class JobsController extends Controller {
 		$freelancer_id = $request->freelancer_id;
 		$job_id        = $request->job_id;
 
-		$job  = Job::find( $job_id );
+		$job = Job::find( $job_id );
+
 		$user = auth()->user();
 		if ( $job->created_by != $user->id ) {
 			return;
 		}
+		$ja = JobApplication::where( 'job_id', $job->id )
+		                    ->where( 'applied_by', $freelancer_id )
+		                    ->get();
+		if ( count( $ja ) > 0 ) {
+			return response()->json( [ 'You already hire this freelancer for this job' ], 422 );
+		}
+
 
 		$newApplication                          = new JobApplication();
 		$newApplication->job_id                  = $job_id;
@@ -1005,5 +1013,41 @@ class JobsController extends Controller {
 
 		return response()
 			->json( $return_data, $return_status );
+	}
+
+	public function MarkJobOver( $id ) {
+		$job  = Job::find( $id );
+		$user = auth()->user();
+		if ( $job->created_by != $user->id && $job->status = 1 ) {
+			return;
+		}
+		$jobAmount   = $job->calculateJobAmountWithJobObject( $job );
+		$hiredJobApp = JobApplication::where( 'job_id', $job->id )
+		                             ->where( 'is_hired', 1 )
+		                             ->get();
+
+		$requeredNumberOfFree = $jobAmount['number_of_freelancers'];
+
+		$currentHireFreelancer = count( $hiredJobApp );
+
+		if ( $currentHireFreelancer == 0 ) {
+			$trans    = new Transaction();
+			$returned = $trans->giveRefund( $job );
+		} else {
+			$transection         = Transaction::where( 'job_id', $job->id )
+			                                  ->where( 'type', 'job_fee' )
+			                                  ->where( 'debit_credit_type', 'credit' )
+			                                  ->whereNull( 'application_id' )
+			                                  ->first();
+			$vat                 = $transection->amount * ( .2 );
+			$admin               = $transection->amount * ( .1499 );
+			$transection->amount = $vat + $admin + $transection->amount;
+			$transection->type   = 'refund';
+			$transection->save();
+		}
+		$job->status = 0;
+		$job->save();
+
+		return redirect()->back();
 	}
 }

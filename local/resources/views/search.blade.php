@@ -517,8 +517,13 @@
 											$btn_text = "Un-favourite it";
                                             @endphp
                                         @endif
+
+
                                         <button class="btn toggle-favourite {{ $btn_class }}"
-                                                data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $person->id]) }}">{{ $btn_text }}</button>
+                                                data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $person->id]) }}">
+                                            <i class="glyphicon glyphicon-heart"> </i>
+                                            {{--{{ $btn_text }}--}}
+                                        </button>
                                     </div>
                                 @endif
                             </div><!-- item-info -->

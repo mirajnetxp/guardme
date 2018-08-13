@@ -100,43 +100,43 @@
                 <div class="col-md-3 col-sm-4">
                     <div class="accordion">
                         <!-- panel-group Freelancer rating-->
-                        {{--<div class="panel-group" id="accordion">--}}
+                    {{--<div class="panel-group" id="accordion">--}}
 
-                            {{--<!-- panel -->--}}
-                            {{--<div class="panel panel-default panel-faq">--}}
-                                {{--<!-- panel-heading -->--}}
-                                {{--<div class="panel-heading">--}}
-                                    {{--<div class="panel-title">--}}
-                                        {{--<a data-toggle="collapse" data-parent="#accordion" href="#accordion-one">--}}
-                                            {{--<h4>Freelancer Rating<span class="pull-right"><i--}}
-                                                            {{--class="fa fa-minus"></i></span></h4>--}}
-                                        {{--</a>--}}
-                                    {{--</div>--}}
-                                {{--</div><!-- panel-heading -->--}}
-                                {{--<div id="accordion-one" class="panel-collapse collapse in">--}}
-                                    {{--<!-- panel-body -->--}}
-                                    {{--<div class="panel-body">--}}
-                                        {{--<form method="POST" action="{{ route('post.find.jobs') }}">--}}
-                                            {{--{{csrf_field()}}--}}
-                                            {{--<div class="form-group row" style="width:240px; padding-left:18px;">--}}
-                                                {{--<div id="skipstepfreelancerrating"></div>--}}
-                                                {{--<span class="example-val-from" id="skip-value-lowerfree"></span>--}}
-                                                {{--<span class="example-val-to" id="skip-value-upperfree"></span>--}}
-                                                {{--<input type="hidden" name="min_freelancer_rating"--}}
-                                                       {{--id="min_freelancer_rating" value=""--}}
-                                                       {{--class=" form-control">--}}
-                                                {{--<input type="hidden" name="max_freelancer_rating"--}}
-                                                       {{--id="max_freelancer_rating" value=""--}}
-                                                       {{--class=" form-control">--}}
-                                            {{--</div>--}}
-                                            {{--<button type="submit" class="btn btn-info btn-small">Filter</button>--}}
-                                        {{--</form>--}}
-                                    {{--</div><!-- panel-body -->--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
+                    {{--<!-- panel -->--}}
+                    {{--<div class="panel panel-default panel-faq">--}}
+                    {{--<!-- panel-heading -->--}}
+                    {{--<div class="panel-heading">--}}
+                    {{--<div class="panel-title">--}}
+                    {{--<a data-toggle="collapse" data-parent="#accordion" href="#accordion-one">--}}
+                    {{--<h4>Freelancer Rating<span class="pull-right"><i--}}
+                    {{--class="fa fa-minus"></i></span></h4>--}}
+                    {{--</a>--}}
+                    {{--</div>--}}
+                    {{--</div><!-- panel-heading -->--}}
+                    {{--<div id="accordion-one" class="panel-collapse collapse in">--}}
+                    {{--<!-- panel-body -->--}}
+                    {{--<div class="panel-body">--}}
+                    {{--<form method="POST" action="{{ route('post.find.jobs') }}">--}}
+                    {{--{{csrf_field()}}--}}
+                    {{--<div class="form-group row" style="width:240px; padding-left:18px;">--}}
+                    {{--<div id="skipstepfreelancerrating"></div>--}}
+                    {{--<span class="example-val-from" id="skip-value-lowerfree"></span>--}}
+                    {{--<span class="example-val-to" id="skip-value-upperfree"></span>--}}
+                    {{--<input type="hidden" name="min_freelancer_rating"--}}
+                    {{--id="min_freelancer_rating" value=""--}}
+                    {{--class=" form-control">--}}
+                    {{--<input type="hidden" name="max_freelancer_rating"--}}
+                    {{--id="max_freelancer_rating" value=""--}}
+                    {{--class=" form-control">--}}
+                    {{--</div>--}}
+                    {{--<button type="submit" class="btn btn-info btn-small">Filter</button>--}}
+                    {{--</form>--}}
+                    {{--</div><!-- panel-body -->--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
 
-                        <!-- panel -->
+                    <!-- panel -->
                         <div class="panel panel-default panel-faq">
                             <!-- panel-heading -->
                             <div class="panel-heading">
@@ -397,6 +397,16 @@
                                         </ul>
                                     </div><!-- ad-meta -->
                                 </div><!-- ad-info -->
+                                @if(Auth::check() && auth()->user()->admin==2)
+                                    <p class="text-right">
+                                        <button class="btn toggle-favourite"
+                                                data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $job->id]) }}">
+                                            <i class="glyphicon glyphicon-heart"> </i>
+                                            {{--{{ $btn_text }}--}}
+                                        </button>
+
+                                    </p>
+                                @endif
                             </div><!-- item-info -->
                         </div>
 

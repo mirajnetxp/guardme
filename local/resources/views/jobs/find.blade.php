@@ -27,7 +27,17 @@
         });
 
     </script>
+    <style>
+        .job-fav {
+            background: #89ff00;
+            color: #4CAF50;
+        }
 
+        .job-un {
+            background: #89ff00;
+            color: #4CAF50;
+        }
+    </style>
 </head>
 <body>
 
@@ -399,10 +409,9 @@
                                 </div><!-- ad-info -->
                                 @if(Auth::check() && auth()->user()->admin==2)
                                     <p class="text-right">
-                                        <button class="btn toggle-favourite"
-                                                data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $job->id]) }}">
-                                            <i class="glyphicon glyphicon-heart"> </i>
-                                            {{--{{ $btn_text }}--}}
+                                        <button class="btn job-fav job-sav-btn"
+                                                data-action="{{ route('toggle.favourite.job', ['id' => $job->id]) }}">
+                                            <i class="glyphicon {{$saveJobArry->search($job->id)!==false?'glyphicon-heart':'glyphicon-heart-empty'}}"></i>
                                         </button>
 
                                     </p>
@@ -436,6 +445,28 @@
 </section>
 <script type="text/javascript">
     $(document).ready(function ($) {
+
+        $('.job-sav-btn').click(function () {
+
+            var th = this;
+            $.ajax({
+                url: $(this).attr('data-action'),
+                method: "GET",
+                dataType: 'json',
+                success: function (d) {
+                    if (d == '101') {
+                        $(th).html('<i class="glyphicon glyphicon-heart-empty"></i>')
+                    } else {
+                        $(th).html('<i class="glyphicon glyphicon-heart"></i>')
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+        })
+
+
         $('#hidden_post_code').on('blur', function () {
             if ($(this).val() != '') {
                 $('.post_code').val($(this).val());

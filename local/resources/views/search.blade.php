@@ -520,7 +520,6 @@
                                             @endphp
                                         @endif
 
-
                                         <button class="btn toggle-favourite {{ $btn_class }}"
                                                 data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $person->id]) }}">
                                             <i class="glyphicon glyphicon-heart"> </i>
@@ -539,8 +538,6 @@
                         <div class="col-md-12 noservice" align="center">No personnels found!</div>
 
 					<?php } ?>
-
-
 
                     <!-- pagination  -->
                         <div class="text-center">

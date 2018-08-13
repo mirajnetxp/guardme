@@ -27,9 +27,9 @@
         <div class="breadcrumb-section">
             <ol class="breadcrumb">
                 <li><a href="{{URL::to('/')}}">Home</a></li>
-                <li>Saved Jobs</li>
+                <li>Favourite Jobs</li>
             </ol>                       
-            <h2 class="title">Saved Jobs</h2>
+            <h2 class="title">Favourite Jobs</h2>
         </div>
     
     
@@ -37,7 +37,7 @@
 
         <!-- <div class="adpost-details post-resume"> -->
     <div class="section trending-ads latest-jobs-ads">
-        <h4>Saved Jobs</h4>
+        <h4>Favourite Jobs</h4>
 
         @if ($errors->any())
             <div class="alert alert-danger">

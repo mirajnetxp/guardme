@@ -3,35 +3,53 @@
 namespace Responsive\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Responsive\FavouriteFreelancer;
 use Responsive\Team;
 use Responsive\User;
 use Responsive\Transaction;
 
-class TeamsController extends Controller
-{
-    //
-    public function myTeams() {
+class TeamsController extends Controller {
+	//
+	public function myTeams() {
 
-        $wallet      = new Transaction();
-        $wallet_data['available_balance'] = $wallet->getWalletAvailableBalance();
+		$wallet                           = new Transaction();
+		$wallet_data['available_balance'] = $wallet->getWalletAvailableBalance();
 
-        $user_id = auth()->user()->id;
-        $editprofile = User::where('id', $user_id)->get();
-        $team = new Team();
-        $teams = $team->getMyTeams();
-        return view('teams.teams', ['teams' => $teams, 'editprofile' => $editprofile, 'wallet_data' => $wallet_data]);
-    }
+		$user_id     = auth()->user()->id;
+		$editprofile = User::where( 'id', $user_id )->get();
+		$team        = new Team();
+		$teams       = $team->getMyTeams();
 
-    public function createTeam() {
-        $user_id = auth()->user()->id;
-        $editprofile = User::where('id', $user_id)->get();
-        return view('teams.create', ['editprofile' => $editprofile]);
-    }
-    public function showTeam($team_id) {
-        $user_id = auth()->user()->id;
-        $editprofile = User::where('id', $user_id)->get();
-        $tm = new Team();
-        $team = $tm->getTeamWithFreelancers($team_id);
-        return view('teams.detail', ['editprofile' => $editprofile, 'team' => $team]);
-    }
+		return view( 'teams.teams', [
+			'teams'       => $teams,
+			'editprofile' => $editprofile,
+			'wallet_data' => $wallet_data
+		] );
+	}
+
+	public function createTeam() {
+		$user_id     = auth()->user()->id;
+		$editprofile = User::where( 'id', $user_id )->get();
+
+		return view( 'teams.create', [ 'editprofile' => $editprofile ] );
+	}
+
+	public function showTeam( $team_id ) {
+		$user_id     = auth()->user()->id;
+		$editprofile = User::where( 'id', $user_id )->get();
+		$tm          = new Team();
+		$team        = $tm->getTeamWithFreelancers( $team_id );
+
+		return view( 'teams.detail', [ 'editprofile' => $editprofile, 'team' => $team ] );
+	}
+
+	public function FavoriteFreelancers() {
+		$FFLobj = FavouriteFreelancer::where( 'employer_id', auth()->user()->id )->get();
+		$FFLId  = $FFLobj->pluck( 'freelancer_id' )->toArray();
+
+		$FFL = User::whereIn( 'id', $FFLId )->get();
+
+		return view( 'FFL', [ 'FFL' => $FFL ] );
+
+	}
 }

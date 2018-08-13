@@ -89,7 +89,7 @@ if ( isset( Auth::user()->verification ) ) {
                                     href="<?php if($shcount == 0 && Auth::user()->admin == 0){?><?php echo $url;?>/addcompany<?php } else { ?><?php echo $url;?>/account<?php } ?>">Dashboard</a>
                         </li>
                         @if(Auth::user()->admin ==! 2)
-                        <li><a href="<?php echo $url;?>/search">Hire Security</a></li>
+                            <li><a href="<?php echo $url;?>/search">Hire Security</a></li>
                         @endif
                         <li><a href="{{ route('find.jobs') }}">Find Jobs</a></li>
 
@@ -112,7 +112,14 @@ if ( isset( Auth::user()->verification ) ) {
 					<?php }else{?>
 
 
-                    <li><a href="{{url('jobs/saved')}}"><i class="fa fa-heart-o" style="font-size: 20px"></i></a></li>
+                    <li>
+                        @if(auth()->user()->admin==0)
+                            <a href="{{url('/favorite/freelancer')}}"><i class="fa fa-heart-o" style="font-size: 20px"></i></a>
+                        @endif
+                        @if(auth()->user()->admin==2)
+                            <a href="{{url('jobs/favorite')}}"><i class="fa fa-heart-o" style="font-size: 20px"></i></a>
+                        @endif
+                    </li>
                     <li>
                         <div class="btn-group">
 					        <span data-toggle="dropdown">

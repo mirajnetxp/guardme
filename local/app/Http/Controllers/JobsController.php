@@ -301,11 +301,14 @@ class JobsController extends Controller {
 
 
 	public function savedJobs() {
-		$userid      = Auth::user()->id;
-		$editprofile = User::where( 'id', $userid )->get();
-		$my_jobs     = DB::select( 'select security_jobs.* from security_jobs, saved_jobs where saved_jobs.job_id = security_jobs.id and saved_jobs.user_id = ' . $userid );
+		$userid     = Auth::user()->id;
+		$savedJobId = SavedJob::where( 'user_id', $userid )->get();
+		$idInArry   = $savedJobId->pluck( 'job_id' )->toArray();
 
-		return view( 'jobs.saved', compact( 'my_jobs', 'editprofile' ) );
+
+		$my_jobs  = Job::whereIn( 'id', $idInArry )->get();
+
+		return view( 'jobs.saved', compact( 'my_jobs' ) );
 	}
 
 	/**

@@ -164,7 +164,7 @@ $setts = DB::table( 'settings' )
                     self.removeClass(oldClass);
                     self.addClass(newClass);
                     self.addClass('btn');
-                    self.text(btnText);
+//                    self.text(btnText);
                 },
                 error: function (data) {
                     //console.log(data);

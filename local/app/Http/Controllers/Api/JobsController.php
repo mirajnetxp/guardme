@@ -671,8 +671,11 @@ class JobsController extends Controller {
 			->json( $return_data, $return_status );
 	}
 
-	public function HiredBy( $freelancer_id, $job_id ) {
-		$job  = Job::find( $job_id );
+	public function HiredBy( Request $request ) {
+		$freelancer_id = $request->freelancer_id;
+		$job_id        = $request->job_id;
+
+		$job = Job::find( $job_id );
 		$user = auth()->user();
 		if ( $job->created_by != $user->id ) {
 			return;

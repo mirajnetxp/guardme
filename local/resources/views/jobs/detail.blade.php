@@ -7,6 +7,7 @@
         .job-ad-item .btn.btn-primary {
             margin-right: 0px;
         }
+
         .section.company-info span {
             line-height: 3px;
             font-size: 16px;
@@ -18,7 +19,7 @@
     <script type="text/javascript">
 
 
-            <?php if( $user_address ) { ?>
+			<?php if( $user_address ) { ?>
         var markers = [
                 {
                     "title": '{{ $job->title }}',
@@ -34,7 +35,7 @@
                     "description": '{{ @$user_address->name }}, {{ @$user_address->address->line1 }}, {{ @$user_address->address->line2 }}, {{ @$user_address->address->line3 }}'
                 }
             ];
-            <?php } else { ?>
+			<?php } else { ?>
         var markers = [
                 {
                     "title": '{{ $job->title }}',
@@ -43,7 +44,7 @@
                     "description": '{{ $job->title }}, {{ $job->address_line1 }}, {{ $job->address_line2 }}, {{ $job->city_town }}, {{ $job->country }}'
                 }
             ];
-        <?php } ?>
+		<?php } ?>
 
             window.onload = function () {
             var mapOptions = {
@@ -146,44 +147,44 @@
                         <span><span><a href="#" class="title">{{$job->title}}</a></span> @ <a
                                     href="#">
  {{-- $job->poster->company->shop_name --}}
-                                                  @php
-                    if($job->myApplications && count($job->myApplications)>0){
-                    
-                     if($job->myApplications[0]->is_hired == '1'){
-                                            echo $job->poster->company->shop_name;
-                                        }else{
-                                            $arr = explode(' ',$job->poster->company->shop_name);
-                                        foreach($arr as $key=>$row){
-                                            if($key == 0){
-                                                echo $row;
-                                            }else{
-                                                $count = strlen($row);
-                                                echo " ";
-                                                for($c=0;$c< $count;$c++){
-                                                    echo '*';
-                                                }
-                                            }
-                                            }
-                                        }   
+                                @php
+                                    if($job->myApplications && count($job->myApplications)>0){
 
-                }else{
+                                     if($job->myApplications[0]->is_hired == '1'){
+                                                            echo $job->poster->company->shop_name;
+                                                        }else{
+                                                            $arr = explode(' ',$job->poster->company->shop_name);
+                                                        foreach($arr as $key=>$row){
+                                                            if($key == 0){
+                                                                echo $row;
+                                                            }else{
+                                                                $count = strlen($row);
+                                                                echo " ";
+                                                                for($c=0;$c< $count;$c++){
+                                                                    echo '*';
+                                                                }
+                                                            }
+                                                            }
+                                                        }
+
+                                }else{
 
 
-                $arr = explode(' ',$job->poster->company->shop_name);
-                //echo count($arr)
-                foreach($arr as $key=>$row){
-                if($key == 0){
-                echo $row;
-            }else{
-            $count = strlen($row);
-            echo " ";
-            for($c=0;$c< $count;$c++){
-            echo '*';
-        }
-    }
-}
-}
-@endphp
+                                $arr = explode(' ',$job->poster->company->shop_name);
+                                //echo count($arr)
+                                foreach($arr as $key=>$row){
+                                if($key == 0){
+                                echo $row;
+                            }else{
+                            $count = strlen($row);
+                            echo " ";
+                            for($c=0;$c< $count;$c++){
+                            echo '*';
+                        }
+                    }
+                }
+                }
+                                @endphp
                                 </a></span>
                         <div class="ad-meta">
                             <ul>
@@ -199,9 +200,9 @@
                                 <li><i class="fa fa-hourglass-start" aria-hidden="true"></i>Posted on
                                     : {{date('M d, Y',strtotime($job->created_at))}}</li>
                                 <li>@if($job->is_hired)
-                                            <i class="fa fa-check-circle-o ico-30 green"></i>
-                                             Applied Date: {{date('M d, Y',strtotime($job->applied_date))}}
-                                        @endif
+                                        <i class="fa fa-check-circle-o ico-30 green"></i>
+                                        Applied Date: {{date('M d, Y',strtotime($job->applied_date))}}
+                                    @endif
                                 </li>
                             </ul>
                         </div><!-- ad-meta -->
@@ -212,29 +213,32 @@
                     <div class="button">
 
 
- @if($job->myApplications && count($job->myApplications)>0)
-     <span class="btn alert alert-danger">You already have an overlapping booking</span>                                              
- @else
-                @if(!$job->is_hired)
+                        @if($job->myApplications && count($job->myApplications)>0)
+                            <span class="btn alert alert-danger">You already have an overlapping booking</span>
+                        @else
+                            @if(!$job->is_hired)
 
-                            <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
-                                    class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
-                        @endif
-                        <a href="#" class="btn btn-primary"><i class="fa fa-heart-o" aria-hidden="true"></i>
-                            @if($saved_job != null && $saved_job->job_id == $job->id)
-                                <span id="saved">Saved</span>
-                            @else
-                                <span id="saved">Save For Later</span>
+                                <a href="{{URL::route('apply.job', $job->id)}}" class="btn btn-primary"><i
+                                            class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                             @endif
-                        </a>
-@endif
+                            <a href="#" class="btn btn-primary">
+                                @if($saved_job != null && $saved_job->job_id == $job->id)
+                                    <span id="saved">
 
+                                      <i class="fa fa-heart" style="margin-right: 0!important" aria-hidden="true"></i>
 
-
+                                    </span>
+                                @else
+                                    <span id="saved">
+                                        <i class="fa fa-heart-o" style="margin-right: 0!important" aria-hidden="true"></i>
+                                    </span>
+                                @endif
+                            </a>
+                        @endif
 
 
                     </div>
-                    
+
                 </div>
             </div>
 
@@ -270,14 +274,15 @@
                                 <li><span class="icon"><i class="fa fa-bolt"
                                                           aria-hidden="true"></i></span>Posted: {{date('M d, Y',strtotime($job->created_at))}}
                                 </li>
-                                
+
                                 <li><span class="icon"><i class="fa fa-industry" aria-hidden="true"></i></span>Industry:
                                     <a href="#">{{$job->industory->name}}</a></li>
-                                <li><span class="icon"><i class="fa fa-user"></i></span>Security Personnel needed: 
+                                <li><span class="icon"><i class="fa fa-user"></i></span>Security Personnel needed:
                                     <a href="#">{{$job->number_of_freelancers}}</a></li>
-                               <li><span class="icon"><i class="fa fa-clock-o"></i></span>Daily hours: 
+                                <li><span class="icon"><i class="fa fa-clock-o"></i></span>Daily hours:
                                     <a href="#">{{$job->daily_working_hours}}</a></li>
-                                <li><span class="icon"><i class="fa fa-money" aria-hidden="true"></i></span>Slots filled: 
+                                <li><span class="icon"><i class="fa fa-money" aria-hidden="true"></i></span>Slots
+                                    filled:
                                     <a href="#">{{$job->getJobSloat()}}</a></li>
 
 
@@ -289,9 +294,10 @@
                         <div class="section company-info">
                             <h1>Work Schedule</h1>
                             @foreach($job->schedules as $schedule)
-                            <span>  {{ Carbon\Carbon::parse($schedule->start)->format("M d h.A") . " - " . Carbon\Carbon::parse($schedule->end)->format("M d h.A")  }} </span><br>
+                                <span>  {{ Carbon\Carbon::parse($schedule->start)->format("M d h.A") . " - " . Carbon\Carbon::parse($schedule->end)->format("M d h.A")  }} </span>
+                                <br>
                             @endforeach
-                            
+
                         </div>
                     </div>
                 </div>
@@ -305,14 +311,16 @@
 <script type="text/javascript">
     var job = {!! json_encode($job) !!};
     $('#saved').click(function (e) {
-        console.log(job.id);
-        if ($('#saved').text() == "Saved") {
+        console.log($($('#saved').html()).hasClass('fa-heart'));
+
+
+        if ($($('#saved').html()).hasClass('fa-heart')) {
             $.ajax({
                 url: "{{url('/jobs/remove/')}}/" + job.id,
                 type: "GET",
                 success: function (data) {
                     console.log("removed");
-                    $('#saved').text("Save For Later".trim());
+                    $('.fa-heart').addClass('fa-heart-o').removeClass('fa-heart');
                 }
             });
         }
@@ -321,8 +329,7 @@
                 url: "{{url('/jobs/save/')}}/" + job.id,
                 type: "GET",
                 success: function (data) {
-                    console.log("saved");
-                    $('#saved').text("Saved".trim());
+                    $('.fa-heart-o').addClass('fa-heart').removeClass('fa-heart-o');
                 }
             });
         }

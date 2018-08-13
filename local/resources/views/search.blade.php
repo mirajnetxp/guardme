@@ -455,41 +455,43 @@
                                 </div>
 
                                 <div class="ad-info">
-					<span><a href="{{ route('person-profile',$person->id) }}" class="title">
+					                <span><a href="{{ route('person-profile',$person->id) }}" class="title">
 						
 
 					@php  $flag = false;  @endphp
-                            @if(isset(auth()->user()->id))
-                                @foreach($person->applications as $row)
-                                    @if(auth()->user()->id == $row->applied_to &&  $row->is_hired == '1' )
-                                        @php
-                                            $flag = true;
-                                            break;
-                                        @endphp
+                                            @if(isset(auth()->user()->id))
+                                                @foreach($person->applications as $row)
+                                                    @if(auth()->user()->id == $row->applied_to &&  $row->is_hired == '1' )
+                                                        @php
+                                                            $flag = true;
+                                                            break;
+                                                        @endphp
 
-                                    @endif
-                                @endforeach
+                                                    @endif
+                                                @endforeach
 
-                                @if($flag)
-                                    {{$person->firstname.' '.$person->lastname }}
-                                @else
-                                    {{$person->firstname}}
-                                    @if(isset($rating_array[$person->id]))
-                                        <strong style="float: right; font-size: 14px;">{{  $rating_array[$person->id] }}</strong>
-                                        <span class="stars" data-rating="{{ $rating_array[$person->id] }}"
-                                              style="float: right; margin: 0 5px" data-num-stars="5"></span>
-                                    @endif
-                                @endif
+                                                @if($flag)
+                                                    {{$person->firstname.' '.$person->lastname }}
+                                                @else
+                                                    {{$person->firstname}}
+                                                    @if(isset($rating_array[$person->id]))
+                                                        <strong style="float: right; font-size: 14px;">{{  $rating_array[$person->id] }}</strong>
+                                                        <span class="stars"
+                                                              data-rating="{{ $rating_array[$person->id] }}"
+                                                              style="float: right; margin: 0 5px"
+                                                              data-num-stars="5"></span>
+                                                    @endif
+                                                @endif
 
 
-                            @else
-                                {{$person->firstname}}
-                                @if(isset($rating_array[$person->id]))
-                                    <strong style="float: right; font-size: 14px;">{{  $rating_array[$person->id] }}</strong>
-                                    <span class="stars" data-rating="{{ $rating_array[$person->id] }}"
-                                          style="float: right; margin: 0 5px" data-num-stars="5"></span>
-                                @endif
-                            @endif
+                                            @else
+                                                {{$person->firstname}}
+                                                @if(isset($rating_array[$person->id]))
+                                                    <strong style="float: right; font-size: 14px;">{{  $rating_array[$person->id] }}</strong>
+                                                    <span class="stars" data-rating="{{ $rating_array[$person->id] }}"
+                                                          style="float: right; margin: 0 5px" data-num-stars="5"></span>
+                                                @endif
+                                            @endif
 						</a> </span>
                                     <div class="ad-meta">
                                         <ul>
@@ -517,8 +519,13 @@
 											$btn_text = "Un-favourite it";
                                             @endphp
                                         @endif
+
+
                                         <button class="btn toggle-favourite {{ $btn_class }}"
-                                                data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $person->id]) }}">{{ $btn_text }}</button>
+                                                data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $person->id]) }}">
+                                            <i class="glyphicon glyphicon-heart"> </i>
+                                            {{--{{ $btn_text }}--}}
+                                        </button>
                                     </div>
                                 @endif
                             </div><!-- item-info -->

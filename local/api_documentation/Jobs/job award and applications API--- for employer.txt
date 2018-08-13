@@ -188,3 +188,27 @@
 						}
 					}					
 	
+7. hire a freelancer.
+-----------------------------------------------------------			
+
+		Api:  /api/jobs/hired/by
+		Type: POST
+		Payload:   
+									freelancer_id  = the id if the freelancer you want to by,
+									job_id         = the job id 
+		
+		Requirements : Authorization , user must be an employer,  
+		Respose:  
+						[ 
+							'Hired Successfully' 
+						]
+		
+						
+						|
+						OR
+						|
+						
+						[
+							"You already hire this freelancer for this job"
+						]	
+						

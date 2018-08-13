@@ -222,16 +222,15 @@
                                             class="fa fa-briefcase" aria-hidden="true"></i>Apply For This Job</a>
                             @endif
                             <a href="#" class="btn btn-primary">
-                                {{--<i class="fa fa-heart-o" aria-hidden="true"></i>--}}
                                 @if($saved_job != null && $saved_job->job_id == $job->id)
                                     <span id="saved">
 
-                                      <i class="fa fa-heart" aria-hidden="true"></i>
+                                      <i class="fa fa-heart" style="margin-right: 0!important" aria-hidden="true"></i>
 
                                     </span>
                                 @else
                                     <span id="saved">
-                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                        <i class="fa fa-heart-o" style="margin-right: 0!important" aria-hidden="true"></i>
                                     </span>
                                 @endif
                             </a>

@@ -432,7 +432,9 @@ Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
 	Route::get( '/my/{id}/edit', 'JobsController@viewEditJob' )->name( 'edit.job' );
 
 	Route::get( '/myfilter', 'JobsController@myJob' )->name( 'my.job' );
-	Route::get( '/saved', 'JobsController@savedJobs' )->name( 'saved.jobs' );
+	Route::get( '/favorite', 'JobsController@savedJobs' )->name( 'saved.jobs' );
+
+
 	Route::get( '/my/applications/{id}', 'JobsController@myJobApplications' )->name( 'my.job.applications' );
 	Route::get( '/application/{id}/{u_id}', 'JobsController@viewApplication' )->name( 'view.application' );
 	Route::get( '/application/{id}/contract/pdf', 'JobsController@ApplicationContract' )->name( 'application.contract' );
@@ -498,6 +500,7 @@ Route::post( '/jobs/{id}', 'JobsController@postJobs' )->name( 'post.jobs' );
 
 
 Route::get( '/test', 'test@getTransactionsOfJobs' );
+Route::get( '/favorite/freelancer', 'TeamsController@FavoriteFreelancers' );
 Route::get( '/test2/{id}', 'test@getJobTransactionDetails' );
 
 

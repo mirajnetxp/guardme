@@ -188,7 +188,7 @@
 						}
 					}					
 	
-7. Mark job as complete
+7. hire a freelancer.
 -----------------------------------------------------------			
 
 		Api:  /api/jobs/hired/by

@@ -662,23 +662,27 @@ class ShopController extends Controller {
 
 	function updatecompany( Request $request ) {
 
-		$user = Auth::user();
+		$user = auth()->user();
+
 		if ( $user->admin !== 0 ) {
 			return response()->json( [ "Unauthorized" ], 401 );
 		}
 
-		$company = Shop::find( $request->company_id );
+
+		$company = Shop::where( 'user_id', $user->id )->first();
+
+
 
 		$company->shop_name           = $request->shop_name;
-		$company->business_categoryid = $request->shop_category;
-		$company->shop_phone_no       = $request->phone;
+		$company->business_categoryid = $request->business_categoryid;
+		$company->shop_phone_no       = $request->shop_phone_no;
 		$company->company_email       = $request->company_email;
 		$company->address             = $request->address;
 		$company->status              = "approved";
 		$company->description         = $request->description;
 		$company->save();
 
-		return response()->json(  $company , 200 );
+		return response()->json( $company, 200 );
 
 	}
 

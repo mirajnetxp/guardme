@@ -306,7 +306,7 @@ class JobsController extends Controller {
 		$idInArry   = $savedJobId->pluck( 'job_id' )->toArray();
 
 
-		$my_jobs  = Job::whereIn( 'id', $idInArry )->get();
+		$my_jobs = Job::whereIn( 'id', $idInArry )->get();
 
 		return view( 'jobs.saved', compact( 'my_jobs' ) );
 	}
@@ -477,7 +477,12 @@ class JobsController extends Controller {
 			}
 		}
 
-		$sort_jobs           = $joblist;
+		$sort_jobs = $joblist;
+		if ( Auth::check() && auth()->user()->admin == 2 ) {
+
+		}
+
+
 		$paginationLinksHtml = $joblist->links();
 
 		return view( 'jobs.find', compact( 'sort_jobs', 'b_cats', 'locs', 'paginationLinksHtml' ) );

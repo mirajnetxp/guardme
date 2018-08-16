@@ -124,7 +124,7 @@ $setts = DB::table( 'settings' )
 <div class="page">
     <div class="container">
         <div class="section align="center">
-		<div class="section-title">
+		<div class="section-title" align="center">
 					<h1>About the GuardME Marketplace</h1>
 									</div>
 

@@ -137,8 +137,92 @@ $setts = DB::table( 'settings' )
 <iframe width="784" height="441" src="https://www.youtube.com/embed/orR54d5NKZE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
 
-        <div class="section video workshop-traning">
+<div class="section workshop-traning">
+				<div class="section-title">
+					<h4>Featured Jobs</h4>
+					<a href="#" class="btn btn-primary">See all</a>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="workshop">
+							<img src="images/job/5.png" alt="Image" class="img-responsive">
+							<h3><a href="#">Business Process Management Training</a></h3>
+							<h4>Course Duration: 3 Month ( Sat, Mon, Fri)</h4>
+							<div class="workshop-price">
+								<h5>Course instructor: Kim Jon ley</h5>
+								<h5>Course Amount: $200</h5>
+							</div>
+							<div class="ad-meta">
+								<div class="meta-content">
+									<span class="dated"><a href="#">7 Jan 10:10 pm </a></span>
+								</div>
+								<div class="user-option pull-right">
+									<a href="#"><i class="fa fa-map-marker"></i> </a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="workshop">
+							<img src="images/job/6.png" alt="Image" class="img-responsive">
+							<h3><a href="#">Employee Motivation and Engagement</a></h3>
+							<h4>Course Duration: 3 Month ( Sat, Mon, Fri)</h4>
+							<div class="workshop-price">
+								<h5>Course instructor: Kim Jon ley</h5>
+								<h5>Course Amount: $200</h5>
+							</div>
+							<div class="ad-meta">
+								<div class="meta-content">
+									<span class="dated"><a href="#">7 Jan 10:10 pm </a></span>
+								</div>
+								<div class="user-option pull-right">
+									<a href="#"><i class="fa fa-map-marker"></i> </a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!-- workshop-traning -->
 
+			<div class="section cta cta-two text-center">
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="single-cta">
+							<div class="cta-icon icon-jobs">
+								<img src="images/icon/31.png" alt="Icon" class="img-responsive">
+							</div><!-- cta-icon -->
+							<h3>112</h3>
+							<h4>Live Jobs</h4>
+						</div>
+					</div><!-- single-cta -->
+
+					<div class="col-sm-4">
+						<div class="single-cta">
+							<!-- cta-icon -->
+							<div class="cta-icon icon-company">
+								<img src="images/icon/32.png" alt="Icon" class="img-responsive">
+							</div><!-- cta-icon -->
+							<h3>97</h3>
+							<h4>Total Employers</h4>
+						</div>
+					</div><!-- single-cta -->
+
+					<div class="col-sm-4">
+						<div class="single-cta">
+							<div class="cta-icon icon-candidate">
+								<img src="images/icon/33.png" alt="Icon" class="img-responsive">
+							</div><!-- cta-icon -->
+							<h3>204</h3>
+							<h4>Security Contractors</h4>
+						</div>
+					</div><!-- single-cta -->
+				</div><!-- row -->
+			</div><!-- cta -->			
+
+		</div><!-- container -->
+	
+           </div><!-- page -->
+           
             <div class="section-title">
                 <h4>Check out these recent posts from our blog...</h4>
 

@@ -137,16 +137,16 @@ $setts = DB::table( 'settings' )
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="workshop">
-							<img src="images/job/5.png" alt="Image" class="img-responsive">
-							<h3><a href="#">Business Process Management Training</a></h3>
-							<h4>Course Duration: 3 Month ( Sat, Mon, Fri)</h4>
+							<img src="images/user.jpg" alt="Image" class="img-responsive">
+							<h3><a href="#">Corner Shop Security Guard</a></h3>
+							<h4>Job Duration: 3 Weeks ( Sat, Mon, Fri)</h4>
 							<div class="workshop-price">
-								<h5>Course instructor: Kim Jon ley</h5>
-								<h5>Course Amount: $200</h5>
+								<h5>Location: Dewsbury</h5>
+								<h5>Pay Per Hour: £15</h5>
 							</div>
 							<div class="ad-meta">
 								<div class="meta-content">
-									<span class="dated"><a href="#">7 Jan 10:10 pm </a></span>
+									<span class="dated"><a href="#">7 August 10:10 pm </a></span>
 								</div>
 								<div class="user-option pull-right">
 									<a href="#"><i class="fa fa-map-marker"></i> </a>
@@ -156,16 +156,16 @@ $setts = DB::table( 'settings' )
 					</div>
 					<div class="col-sm-6">
 						<div class="workshop">
-							<img src="images/job/6.png" alt="Image" class="img-responsive">
-							<h3><a href="#">Employee Motivation and Engagement</a></h3>
-							<h4>Course Duration: 3 Month ( Sat, Mon, Fri)</h4>
+							<img src="images/user.jpg" alt="Image" class="img-responsive">
+							<h3><a href="#">Night Club Door Man Needed</a></h3>
+							<h4>Job Duration: 2 Months ( Fri, Sat)</h4>
 							<div class="workshop-price">
-								<h5>Course instructor: Kim Jon ley</h5>
-								<h5>Course Amount: $200</h5>
+								<h5>Location: Peckham</h5>
+								<h5>Pay Per Hour: £18</h5>
 							</div>
 							<div class="ad-meta">
 								<div class="meta-content">
-									<span class="dated"><a href="#">7 Jan 10:10 pm </a></span>
+									<span class="dated"><a href="#">17 August 09:24 am </a></span>
 								</div>
 								<div class="user-option pull-right">
 									<a href="#"><i class="fa fa-map-marker"></i> </a>

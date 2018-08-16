@@ -123,8 +123,8 @@ $setts = DB::table( 'settings' )
 
 <div class="page">
     <div class="container">
-	<div class="section text-center">
-	<h1>About the GuardME Marketplace</h1>
+<div class="section cta cta-two text-center">
+<h1>About the GuardME Marketplace</h1>
 
 <p align="center"><iframe width="784" height="441" src="https://www.youtube.com/embed/orR54d5NKZE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></p>
     </div>

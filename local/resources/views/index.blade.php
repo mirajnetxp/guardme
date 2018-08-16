@@ -175,47 +175,8 @@ $setts = DB::table( 'settings' )
         </div>
         <div class="clearfix"></div>
 
-        <div class="section workshop-traning">
-            <div class="section-title">
-                <h4>Companies who love the GuardME app...</h4>
-                <a href="#" class="btn btn-primary">See all</a>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <!--  <div class="col-md-1"></div> -->
-                    <div class="nopadding testimons">
-                        <div id="flexiselDemotesti">
-							<?php foreach($testimonials as $testimonial){?>
-                            <li>
-                                <div class="weightbg">
-                                    <div class="innerbg">
-                                        <p><?php echo $testimonial->description;?></p>
-                                    </div>
-                                    <div class="user">
-										<?php
-										$testimonialphoto = "/testimonialphoto/";
-										$path = '/local/images' . $testimonialphoto . $testimonial->image;
-										if($testimonial->image != ""){
-										?>
-                                        <img src="<?php echo $url . $path;?>" class="img-responsive" alt="">
-										<?php } else {?>
-                                        <img src="<?php echo $url . '/local/images/nophoto.jpg';?>"
-                                             class="img-responsive">
-										<?php } ?>
-                                        <div class="user-txt">
+// Add video
 
-                                            <h5><?php echo $testimonial->name;?></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-							<?php } ?>
-                        </div>
-                    </div>
-                    <div class="col-md-1"></div>
-                </div>
-            </div>
-        </div><!-- workshop-traning -->
 
         <div class="section video workshop-traning">
 

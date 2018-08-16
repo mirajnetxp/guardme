@@ -123,7 +123,11 @@ $setts = DB::table( 'settings' )
 
 <div class="page">
     <div class="container">
-        <div align="center">
+        <div class="section align="center">
+		<div class="section-title">
+					<h1>About the GuardME Marketplace</h1>
+									</div>
+
 <iframe width="784" height="441" src="https://www.youtube.com/embed/orR54d5NKZE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
 

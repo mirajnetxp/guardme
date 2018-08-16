@@ -174,9 +174,11 @@ $setts = DB::table( 'settings' )
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
-
-<iframe width="784" height="441" src="https://www.youtube.com/embed/orR54d5NKZE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
+        
+<div class="section video workshop-traning">
+<div class="brz-image-fix-16-9 css-14qoyso"><iframe class="brz-iframe" src="https://www.youtube.com/embed/orR54d5NKZE?autoplay=0&amp;controls=1&amp;showinfo=0&amp;modestbranding=1&amp;wmode=transparent&amp;enablejsapi=1&amp;loop=0&amp;rel=0"></iframe></div>
+</div>
+  
         <div class="section video workshop-traning">
 
             <div class="section-title">

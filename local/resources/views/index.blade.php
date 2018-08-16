@@ -128,19 +128,8 @@ $setts = DB::table( 'settings' )
 </script>
 
 
-<div class="ashbg">
-
-    <div class="clearfix"></div>
 
 
-    <div class="clearfix"></div>
-
-</div>
-
-<div class="clearfix"></div>
-
-<div class="page">
-    <div class="container">
         <div align="center">
 <iframe width="784" height="441" src="https://www.youtube.com/embed/orR54d5NKZE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>

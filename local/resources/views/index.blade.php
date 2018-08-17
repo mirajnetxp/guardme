@@ -119,8 +119,38 @@ $setts = DB::table( 'settings' )
 
 
 
-<div class="clearfix"></div>
+<div class="container">
+        <div class="works section job-category-items">
 
+            <div class="col-md-12" align="center"><h1>How GuardME works</h1></div>
+            <div class="height30"></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="col-md-6">
+                            <img src="img/how-it-works.png" class="img-responsive" alt="">
+                        </div>
+
+                        <div class="col-md-6">
+                            <h3 class="">1. Register or login to your account</h3>
+                            <p class="">Update your company information and create your first job. Creating a job is
+                                easy and payment is a breeze!</p>
+                            <h3 class="">2. Award the job</h3>
+                            <p class="">In a short time you’ll receive applications from hundreds of security personnel.
+                                Use the filter to choose by location or feedback rating.</p>
+                            <h3 class="">3. Sit back and relax!</h3>
+                            <p class="">The process is simple. Your contracted personnel will arrive on time. You can
+                                also check the GuardME app for tracking information.</p>
+
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+
+                </div>
+
+            </div>
+	
 <div class="page">
     <div class="container">
 <div class="section cta cta-two text-center">

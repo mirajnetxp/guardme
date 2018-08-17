@@ -23,6 +23,16 @@ $setts = DB::table( 'settings' )
     background-image: url({{$url}}/img/banner.jpg);
         @endif
 
+
+
+
+
+
+
+
+
+
+
         }
     </style>
 
@@ -118,8 +128,19 @@ $setts = DB::table( 'settings' )
 </script>
 
 
+<div class="ashbg">
 
-<div class="container">
+    <div class="clearfix"></div>
+
+
+    <div class="clearfix"></div>
+
+</div>
+
+<div class="clearfix"></div>
+
+<div class="page">
+    <div class="container">
         <div class="works section job-category-items">
 
             <div class="col-md-12" align="center"><h1>How GuardME works</h1></div>
@@ -129,8 +150,7 @@ $setts = DB::table( 'settings' )
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
                         <div class="col-md-6">
-			    <iframe class="img-responsive" src="https://www.youtube.com/embed/orR54d5NKZE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
- 
+                            <img src="img/how-it-works.png" class="img-responsive" alt="">
                         </div>
 
                         <div class="col-md-6">
@@ -151,104 +171,138 @@ $setts = DB::table( 'settings' )
                 </div>
 
             </div>
-	
-<div class="page">
-    <div class="container">
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="section workshop-traning">
+            <div class="section-title">
+                <h4>Companies who love the GuardME app...</h4>
+                <a href="#" class="btn btn-primary">See all</a>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--  <div class="col-md-1"></div> -->
+                    <div class="nopadding testimons">
+                        <div id="flexiselDemotesti">
+							<?php foreach($testimonials as $testimonial){?>
+                            <li>
+                                <div class="weightbg">
+                                    <div class="innerbg">
+                                        <p><?php echo $testimonial->description;?></p>
+                                    </div>
+                                    <div class="user">
+										<?php
+										$testimonialphoto = "/testimonialphoto/";
+										$path = '/local/images' . $testimonialphoto . $testimonial->image;
+										if($testimonial->image != ""){
+										?>
+                                        <img src="<?php echo $url . $path;?>" class="img-responsive" alt="">
+										<?php } else {?>
+                                        <img src="<?php echo $url . '/local/images/nophoto.jpg';?>"
+                                             class="img-responsive">
+										<?php } ?>
+                                        <div class="user-txt">
+
+                                            <h5><?php echo $testimonial->name;?></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+							<?php } ?>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+        </div><!-- workshop-traning -->
+
+        <div class="section video workshop-traning">
+
+            <div class="section-title">
+                <h4>Check out these recent posts from our blog...</h4>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-1"></div>
 
 
-<div class="section workshop-traning">
-				<div class="section-title">
-					<h4>Featured Jobs</h4>
-					<a href="#" class="btn btn-primary">See all</a>
-				</div>
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="workshop">
-							<img src="images/user.jpg" alt="Image" class="img-responsive">
-							<h3><a href="#">Corner Shop Security Guard</a></h3>
-							<h4>Job Duration: 3 Weeks ( Sat, Mon, Fri)</h4>
-							<div class="workshop-price">
-								<h5>Location: Dewsbury</h5>
-								<h5>Pay Per Hour: £15</h5>
-							</div>
-							<div class="ad-meta">
-								<div class="meta-content">
-									<span class="dated"><a href="#">7 August 10:10 pm </a></span>
-								</div>
-								<div class="user-option pull-right">
-									<a href="#"><i class="fa fa-map-marker"></i> </a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="workshop">
-							<img src="images/user.jpg" alt="Image" class="img-responsive">
-							<h3><a href="#">Night Club Door Man Needed</a></h3>
-							<h4>Job Duration: 2 Months ( Fri, Sat)</h4>
-							<div class="workshop-price">
-								<h5>Location: Peckham</h5>
-								<h5>Pay Per Hour: £18</h5>
-							</div>
-							<div class="ad-meta">
-								<div class="meta-content">
-									<span class="dated"><a href="#">17 August 09:24 am </a></span>
-								</div>
-								<div class="user-option pull-right">
-									<a href="#"><i class="fa fa-map-marker"></i> </a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div><!-- workshop-traning -->
+                    <div class="col-md-10">
 
-			<div class="section cta cta-two text-center">
-				<div class="row">
-					<div class="col-sm-4">
-						<div class="single-cta">
-							<div class="cta-icon icon-jobs">
-								<img src="images/icon/31.png" alt="Icon" class="img-responsive">
-							</div><!-- cta-icon -->
-							<h3>112</h3>
-							<h4>Live Jobs</h4>
-						</div>
-					</div><!-- single-cta -->
 
-					<div class="col-sm-4">
-						<div class="single-cta">
-							<!-- cta-icon -->
-							<div class="cta-icon icon-company">
-								<img src="images/icon/32.png" alt="Icon" class="img-responsive">
-							</div><!-- cta-icon -->
-							<h3>97</h3>
-							<h4>Total Employers</h4>
-						</div>
-					</div><!-- single-cta -->
+                        @foreach($posts as $key=>$post)
 
-					<div class="col-sm-4">
-						<div class="single-cta">
-							<div class="cta-icon icon-candidate">
-								<img src="images/icon/33.png" alt="Icon" class="img-responsive">
-							</div><!-- cta-icon -->
-							<h3>204</h3>
-							<h4>Security Contractors</h4>
-						</div>
-					</div><!-- single-cta -->
-				</div><!-- row -->
-			</div><!-- cta -->			
+                            @if($key==0)
+                                <a href="{{ $post['link'] }}">
+                                    <div class="col-md-8 paddingoff">
+                                        <img src="{!! $post['image'] !!}" class="img-responsive big firstsize" alt="">
+                                        <div class="titlesection">
+                                            <h3>{!! $post['title'] !!}</h3>
+                                            <span>{!! $post['category'] !!}</span>
+                                        </div>
 
-		</div><!-- container -->
-	
-           </div><!-- page -->
-           
-            
+                                    </div>
+                                </a>
+                                <div class="height10 visible-xs "></div>
+
+                            @endif
+
+                            @if($key==1)
+                                <div class="col-md-4 paddingoff left10">
+                                    <a href="{{ $post['link'] }}">
+                                        <div class="justmove col-md-12 paddingoff"><img src="{!! $post['image'] !!}"
+                                                                                        class="img-responsive" alt="">
+                                            <div class="titlesection">
+                                                <h3>{!! $post['title'] !!}</h3>
+                                                <span>{!! $post['category'] !!}</span>
+                                            </div>
+
+                                        </div>
+                                    </a>
+                                    @endif
+
+                                    @if($key==2)
+                                        <div class="height10 hidden-md"></div>
+                                        <a href="{{ $post['link'] }}">
+                                            <div class="justmove col-md-12 paddingoff"><img src="{!! $post['image'] !!}"
+                                                                                            class="img-responsive"
+                                                                                            alt="">
+                                                <div class="titlesection">
+                                                    <h3>{!! $post['title'] !!}</h3>
+                                                    <span>{!! $post['category'] !!}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                </div>
+                            @endif
+
+
+
+
+
+
+                        @endforeach
+
+                    </div>
+
+
+                </div>
+            </div>
+
 
         </div>
     </div>
 </div>
 
 </div>
+</div>
+<div class="clearfix"></div>
+
+
+<div class="video">
+    <div class="clearfix"></div>
+
 </div>
 
 

@@ -129,7 +129,8 @@ $setts = DB::table( 'settings' )
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
                         <div class="col-md-6">
-                            <img src="img/how-it-works.png" class="img-responsive" alt="">
+			    <iframe class="img-responsive" width="784" height="441" src="https://www.youtube.com/embed/orR54d5NKZE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+ 
                         </div>
 
                         <div class="col-md-6">

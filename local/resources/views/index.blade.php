@@ -175,47 +175,52 @@ $setts = DB::table( 'settings' )
         </div>
         <div class="clearfix"></div>
 
-        <div class="section workshop-traning">
-            <div class="section-title">
-                <h4>Companies who love the GuardME app...</h4>
-                <a href="#" class="btn btn-primary">See all</a>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <!--  <div class="col-md-1"></div> -->
-                    <div class="nopadding testimons">
-                        <div id="flexiselDemotesti">
-							<?php foreach($testimonials as $testimonial){?>
-                            <li>
-                                <div class="weightbg">
-                                    <div class="innerbg">
-                                        <p><?php echo $testimonial->description;?></p>
-                                    </div>
-                                    <div class="user">
-										<?php
-										$testimonialphoto = "/testimonialphoto/";
-										$path = '/local/images' . $testimonialphoto . $testimonial->image;
-										if($testimonial->image != ""){
-										?>
-                                        <img src="<?php echo $url . $path;?>" class="img-responsive" alt="">
-										<?php } else {?>
-                                        <img src="<?php echo $url . '/local/images/nophoto.jpg';?>"
-                                             class="img-responsive">
-										<?php } ?>
-                                        <div class="user-txt">
-
-                                            <h5><?php echo $testimonial->name;?></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-							<?php } ?>
-                        </div>
-                    </div>
-                    <div class="col-md-1"></div>
-                </div>
-            </div>
-        </div><!-- workshop-traning -->
+       <div class="section workshop-traning">
+				<div class="section-title">
+					<h4>Featured Jobs</h4>
+					<a href="#" class="btn btn-primary">See all</a>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="workshop">
+							<img src="images/user.jpg" alt="Image" class="img-responsive">
+							<h3><a href="#">Corner Shop Security Guard</a></h3>
+							<h4>Job Duration: 3 Weeks ( Sat, Mon, Fri)</h4>
+							<div class="workshop-price">
+								<h5>Location: Dewsbury</h5>
+								<h5>Pay Per Hour: £15</h5>
+							</div>
+							<div class="ad-meta">
+								<div class="meta-content">
+									<span class="dated"><a href="#">7 August 10:10 pm </a></span>
+								</div>
+								<div class="user-option pull-right">
+									<a href="#"><i class="fa fa-map-marker"></i> </a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="workshop">
+							<img src="images/user.jpg" alt="Image" class="img-responsive">
+							<h3><a href="#">Night Club Door Man Needed</a></h3>
+							<h4>Job Duration: 2 Months ( Fri, Sat)</h4>
+							<div class="workshop-price">
+								<h5>Location: Peckham</h5>
+								<h5>Pay Per Hour: £18</h5>
+							</div>
+							<div class="ad-meta">
+								<div class="meta-content">
+									<span class="dated"><a href="#">17 August 09:24 am </a></span>
+								</div>
+								<div class="user-option pull-right">
+									<a href="#"><i class="fa fa-map-marker"></i> </a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!-- workshop-traning -->
 
         <div class="section video workshop-traning">
 

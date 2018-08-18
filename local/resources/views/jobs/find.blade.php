@@ -27,7 +27,17 @@
         });
 
     </script>
+    <style>
+        .job-fav {
+            background: #89ff00;
+            color: #4CAF50;
+        }
 
+        .job-un {
+            background: #89ff00;
+            color: #4CAF50;
+        }
+    </style>
 </head>
 <body>
 
@@ -374,7 +384,6 @@
                         
                     </div> 
                 </div> -->
-
                                 <div class="ad-info">
                                     <span><a href="{{ route('view.job',$job->id) }}" class="title">{{$job->title}}</a> </span>
                                     <div class="ad-meta">
@@ -389,20 +398,29 @@
                                             <li><a href="#"><i class="fa fa-money"
                                                                aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a>
                                             </li>
-                                            <li>@if($job->is_hired)
+                                            <li>
+                                                @if($job->is_hired)
                                                     <i class="fa fa-check-circle-o ico-30 green"></i>
                                                     Applied Date: {{date('M d, Y',strtotime($job->applied_date))}}
                                                 @endif
+                                            </li>
+
+                                            <li>
+                                                Start Date
+                                                : {{date('M d, Y',strtotime($job->schedules->first()->start))}}
+                                            </li>
+                                            <li>
+                                                Available
+                                                slot: {{$job->number_of_freelancers-count($job->applications->where('is_hired',1))}}
                                             </li>
                                         </ul>
                                     </div><!-- ad-meta -->
                                 </div><!-- ad-info -->
                                 @if(Auth::check() && auth()->user()->admin==2)
                                     <p class="text-right">
-                                        <button class="btn toggle-favourite"
-                                                data-action="{{ route('api.toggle.favourite.freelancer', ['freelancer_id' => $job->id]) }}">
-                                            <i class="glyphicon glyphicon-heart"> </i>
-                                            {{--{{ $btn_text }}--}}
+                                        <button class="btn job-fav job-sav-btn"
+                                                data-action="{{ route('toggle.favourite.job', ['id' => $job->id]) }}">
+                                            <i class="glyphicon {{$saveJobArry->search($job->id)!==false?'glyphicon-heart':'glyphicon-heart-empty'}}"></i>
                                         </button>
 
                                     </p>
@@ -436,6 +454,28 @@
 </section>
 <script type="text/javascript">
     $(document).ready(function ($) {
+
+        $('.job-sav-btn').click(function () {
+
+            var th = this;
+            $.ajax({
+                url: $(this).attr('data-action'),
+                method: "GET",
+                dataType: 'json',
+                success: function (d) {
+                    if (d == '101') {
+                        $(th).html('<i class="glyphicon glyphicon-heart-empty"></i>')
+                    } else {
+                        $(th).html('<i class="glyphicon glyphicon-heart"></i>')
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+        })
+
+
         $('#hidden_post_code').on('blur', function () {
             if ($(this).val() != '') {
                 $('.post_code').val($(this).val());

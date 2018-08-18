@@ -133,6 +133,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 	Route::get( '/total/team', 'TeamsController@totaoTeam' );
 	Route::post( '/team/add/member', 'TeamsController@addMember' )->name( 'api.add.member.to.team' );
 
+
 	//tracking Route
 	Route::post( '/post/tracking', 'TrackingController@postTracking' );
 

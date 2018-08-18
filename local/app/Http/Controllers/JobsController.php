@@ -477,15 +477,17 @@ class JobsController extends Controller {
 			}
 		}
 
-		$sort_jobs = $joblist;
+		$sort_jobs   = $joblist;
+		$saveJobArry = [];
 		if ( Auth::check() && auth()->user()->admin == 2 ) {
-
+			$savejobs    = SavedJob::where( 'user_id', auth()->user()->id )->get();
+			$saveJobArry = $savejobs->pluck( 'job_id' );
 		}
 
 
 		$paginationLinksHtml = $joblist->links();
 
-		return view( 'jobs.find', compact( 'sort_jobs', 'b_cats', 'locs', 'paginationLinksHtml' ) );
+		return view( 'jobs.find', compact( 'sort_jobs', 'b_cats', 'locs', 'paginationLinksHtml', 'saveJobArry' ) );
 	}
 
 	public function postfindJobs( Request $request ) {
@@ -1057,5 +1059,23 @@ class JobsController extends Controller {
 		$job->save();
 
 		return redirect()->back();
+	}
+
+	public function jobFavToogle( $id ) {
+		$savedJob = SavedJob::where( 'job_id', $id )->first();
+		$res      = '';
+		if ( $savedJob ) {
+			$savedJob->delete();
+			$res = 101;
+		} else {
+			$user_id           = Auth::user()->id;
+			$savedJob          = new SavedJob();
+			$savedJob->user_id = $user_id;
+			$savedJob->job_id  = $id;
+			$savedJob->save();
+			$res = 102;
+		}
+
+		return response()->json( $res, 200 );
 	}
 }

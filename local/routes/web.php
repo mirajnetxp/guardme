@@ -29,6 +29,7 @@ Route::get('/', 'CommonController@home');*/
 
 //social login
 Route::group( [ 'prefix' => 'account', 'namespace' => 'Auth' ], function () {
+
 	Route::get( 'login/{provider}', 'SocialAuthController@socialLogin' )
 	     ->where( 'provider', 'google|facebook' );
 
@@ -449,8 +450,12 @@ Route::group( [ 'prefix' => '/jobs', 'middleware' => 'auth' ], function () {
 	Route::get( '/proposals', 'JobsController@myProposals' )->name( 'my.proposals' );
 	Route::get( '/proposal', 'JobsController@myProposal' )->name( 'my.proposal' );
 	Route::get( '/view/application/{app_id}/{job_id}', 'JobsController@myApplicationView' )->name( 'my.application.view' );
+	//Job fav un fav
 	Route::get( '/save/{id}', 'JobsController@saveJobsToProfile' );
 	Route::get( '/remove/{id}', 'JobsController@removeJobsFromProfile' );
+
+	Route::get( '/fav/toogle/{id}', 'JobsController@jobFavToogle' )->name( 'toggle.favourite.job' );
+
 	Route::get( '/leave/feedback/{application_id}', 'JobsController@leaveFeedback' )->name( 'leave.feedback' );
 	Route::get( '/tip/{application_id}', 'JobsController@giveTip' )->name( 'give.tip' );
 	Route::get( '/tip/details/{transaction_id}', 'JobsController@tipDetails' )->name( 'tip.details' );

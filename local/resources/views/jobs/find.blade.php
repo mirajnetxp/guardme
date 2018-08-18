@@ -384,7 +384,6 @@
                         
                     </div> 
                 </div> -->
-
                                 <div class="ad-info">
                                     <span><a href="{{ route('view.job',$job->id) }}" class="title">{{$job->title}}</a> </span>
                                     <div class="ad-meta">
@@ -399,10 +398,20 @@
                                             <li><a href="#"><i class="fa fa-money"
                                                                aria-hidden="true"></i>&pound;{{$job->per_hour_rate}}</a>
                                             </li>
-                                            <li>@if($job->is_hired)
+                                            <li>
+                                                @if($job->is_hired)
                                                     <i class="fa fa-check-circle-o ico-30 green"></i>
                                                     Applied Date: {{date('M d, Y',strtotime($job->applied_date))}}
                                                 @endif
+                                            </li>
+
+                                            <li>
+                                                Start Date
+                                                : {{date('M d, Y',strtotime($job->schedules->first()->start))}}
+                                            </li>
+                                            <li>
+                                                Available
+                                                slot: {{$job->number_of_freelancers-count($job->applications->where('is_hired',1))}}
                                             </li>
                                         </ul>
                                     </div><!-- ad-meta -->

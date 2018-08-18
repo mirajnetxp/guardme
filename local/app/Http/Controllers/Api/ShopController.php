@@ -663,15 +663,11 @@ class ShopController extends Controller {
 	function updatecompany( Request $request ) {
 
 		$user = auth()->user();
-
 		if ( $user->admin !== 0 ) {
 			return response()->json( [ "Unauthorized" ], 401 );
 		}
 
-
 		$company = Shop::where( 'user_id', $user->id )->first();
-
-
 
 		$company->shop_name           = $request->shop_name;
 		$company->business_categoryid = $request->business_categoryid;

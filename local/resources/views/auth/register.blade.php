@@ -100,8 +100,8 @@
                                 </label>
                             </div>
                             <div class="checkbox">
-                                <label class="pull-left checked">
-                                    <input type="checkbox" checked="checked" name="newsletter" value="true"/>
+                                <label class="pull-left">
+                                    <input type="checkbox" name="newsletter" value="true"/>
                                     Subscribe to newsletter.
 
                                 </label>

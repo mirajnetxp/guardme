@@ -234,21 +234,21 @@ class JobsController extends Controller {
 	 */
 	public function broadcast( Request $request, $id ) {
 		$this->validate( $request, [
-			'visible_to_all_security_personal' => 'required_without_all:visible_to_favourite,specific_area,specific_category_id',
-			'visible_to_favourite'             => 'required_without_all:visible_to_all_security_personal,specific_area,specific_category_id',
-			'specific_area'                    => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_category_id',
-			'specific_category_id'             => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_area',
-			'min_area'                         => 'required_with:specific_area',
-			'max_area'                         => 'required_with:specific_area',
+//			'visible_to_all_security_personal' => 'required_without_all:visible_to_favourite',
+//			'visible_to_favourite'             => 'required_without_all:visible_to_all_security_personal',
+//			'specific_area'                    => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_category_id',
+//			'specific_category_id'             => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_area',
+//			'min_area'                         => 'required_with:specific_area',
+//			'max_area'                         => 'required_with:specific_area',
 			'terms_conditions'                 => 'required',
 		] );
 		$posted_data                      = $request->all();
 		$visible_to_all_security_personal = ! empty( $posted_data['visible_to_all_security_personal'] ) ? $posted_data['visible_to_all_security_personal'] : 0;
 		$visible_to_favourite             = ! empty( $posted_data['visible_to_favourite'] ) ? $posted_data['visible_to_favourite'] : 0;
-		$specific_area                    = ! empty( $posted_data['specific_area'] ) ? $posted_data['specific_area'] : 0;
-		$min_area                         = ! empty( $posted_data['min_area'] ) ? $posted_data['min_area'] : 0;
-		$max_area                         = ! empty( $posted_data['max_area'] ) ? $posted_data['max_area'] : 0;
-		$specific_category_id             = ! empty( $posted_data['specific_category_id'] ) ? $posted_data['specific_category_id'] : 0;
+//		$specific_area                    = ! empty( $posted_data['specific_area'] ) ? $posted_data['specific_area'] : 0;
+//		$min_area                         = ! empty( $posted_data['min_area'] ) ? $posted_data['min_area'] : 0;
+//		$max_area                         = ! empty( $posted_data['max_area'] ) ? $posted_data['max_area'] : 0;
+//		$specific_category_id             = ! empty( $posted_data['specific_category_id'] ) ? $posted_data['specific_category_id'] : 0;
 		$job                              = Job::find( $id );
 		$logged_in_id                     = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
 		$return_data                      = [ 'Not allowed to perform this action' ];
@@ -256,11 +256,11 @@ class JobsController extends Controller {
 		if ( ! empty( $job ) && ! empty( $job->created_by ) && $job->created_by == $logged_in_id ) {
 			$job->visible_to_all_security_personal = $visible_to_all_security_personal;
 			$job->visible_to_favourite             = $visible_to_favourite;
-			$job->specific_category_id             = $specific_category_id;
-			if ( ! empty( $specific_area ) ) {
-				$job->specific_area_min = $min_area;
-				$job->specific_area_max = $max_area;
-			}
+//			$job->specific_category_id             = $specific_category_id;
+//			if ( ! empty( $specific_area ) ) {
+//				$job->specific_area_min = $min_area;
+//				$job->specific_area_max = $max_area;
+//			}
 			if ( $job->save() ) {
 				$return_data   = [ 'message' => 'Data saved successfully' ];
 				$return_status = 200;
@@ -273,21 +273,21 @@ class JobsController extends Controller {
 
 	public function UpdateBroadcast( Request $request, $id ) {
 		$this->validate( $request, [
-			'visible_to_all_security_personal' => 'required_without_all:visible_to_favourite,specific_area,specific_category_id',
-			'visible_to_favourite'             => 'required_without_all:visible_to_all_security_personal,specific_area,specific_category_id',
-			'specific_area'                    => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_category_id',
-			'specific_category_id'             => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_area',
-			'min_area'                         => 'required_with:specific_area',
-			'max_area'                         => 'required_with:specific_area',
+			'visible_to_all_security_personal' => 'required_without_all:visible_to_favourite',
+			'visible_to_favourite'             => 'required_without_all:visible_to_all_security_personal',
+//			'specific_area'                    => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_category_id',
+//			'specific_category_id'             => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_area',
+//			'min_area'                         => 'required_with:specific_area',
+//			'max_area'                         => 'required_with:specific_area',
 			'terms_conditions'                 => 'required',
 		] );
 		$posted_data                      = $request->all();
 		$visible_to_all_security_personal = ! empty( $posted_data['visible_to_all_security_personal'] ) ? $posted_data['visible_to_all_security_personal'] : 0;
 		$visible_to_favourite             = ! empty( $posted_data['visible_to_favourite'] ) ? $posted_data['visible_to_favourite'] : 0;
-		$specific_area                    = ! empty( $posted_data['specific_area'] ) ? $posted_data['specific_area'] : 0;
-		$min_area                         = ! empty( $posted_data['min_area'] ) ? $posted_data['min_area'] : 0;
-		$max_area                         = ! empty( $posted_data['max_area'] ) ? $posted_data['max_area'] : 0;
-		$specific_category_id             = ! empty( $posted_data['specific_category_id'] ) ? $posted_data['specific_category_id'] : 0;
+//		$specific_area                    = ! empty( $posted_data['specific_area'] ) ? $posted_data['specific_area'] : 0;
+//		$min_area                         = ! empty( $posted_data['min_area'] ) ? $posted_data['min_area'] : 0;
+//		$max_area                         = ! empty( $posted_data['max_area'] ) ? $posted_data['max_area'] : 0;
+//		$specific_category_id             = ! empty( $posted_data['specific_category_id'] ) ? $posted_data['specific_category_id'] : 0;
 		$job                              = Job::find( $id );
 		$logged_in_id                     = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
 		$return_data                      = [ 'Not allowed to perform this action' ];
@@ -295,11 +295,11 @@ class JobsController extends Controller {
 		if ( ! empty( $job ) && ! empty( $job->created_by ) && $job->created_by == $logged_in_id ) {
 			$job->visible_to_all_security_personal = $visible_to_all_security_personal;
 			$job->visible_to_favourite             = $visible_to_favourite;
-			$job->specific_category_id             = $specific_category_id;
-			if ( ! empty( $specific_area ) ) {
-				$job->specific_area_min = $min_area;
-				$job->specific_area_max = $max_area;
-			}
+//			$job->specific_category_id             = $specific_category_id;
+//			if ( ! empty( $specific_area ) ) {
+//				$job->specific_area_min = $min_area;
+//				$job->specific_area_max = $max_area;
+//			}
 			if ( $job->save() ) {
 				$return_data   = [ 'message' => 'Data saved successfully' ];
 				$return_status = 200;

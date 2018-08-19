@@ -80,6 +80,10 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::post( 'apply/{id}', 'JobsController@applyJob' )->name( 'api.apply.job' );
 	Route::post( 'mark/hired/{id}', 'JobsController@markHired' )->name( 'api.mark.hired' );
 
+
+
+	Route::post( 'mark/job/as/compelete/{id}', 'JobsController@MarkJobCompelete' )->name( 'api.job.as.compelete' );
+
 	Route::post( 'hired/by', 'JobsController@HiredBy' )->name( 'job.hair.by.api' );
 
 	Route::get( 'my', 'JobsController@myJobs' )->name( 'api.my.jobs' );

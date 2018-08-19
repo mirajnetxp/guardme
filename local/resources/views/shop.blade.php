@@ -317,9 +317,7 @@
                                             @endforeach
                                         </table>
                                         <h3 class="text-center">
-                                            <button
-                                                    data-job-id="{{$ExpJob->id}}"
-                                                    data-url="{{route('api.job.as.compelete',['id'=>$ExpJob->id])}}"
+                                            <button data-url="{{route('api.job.as.compelete',['id'=>$ExpJob->id])}}"
                                                     class="btn btn-success mark-as-c-button">
                                                 Mark this job as complete
                                             </button>
@@ -327,8 +325,8 @@
                                     </div>
                                 </div>
                                 <br>
-                                <hr style="box-shadow: 0 0 1px black;">
                             </div>
+                            <hr style="box-shadow: 0 0 1px black;">
                         @endforeach
                     </div>
                     <div class="modal-footer">
@@ -342,8 +340,6 @@
 
     <script>
         $(document).ready(function () {
-
-
             @if(auth()->user()->admin=='0')
             @if(count($AllExpJobs)>0)
             $('#jobCompeleteAlert').modal('show')
@@ -373,20 +369,14 @@
 
             $('.mark-as-c-button').click(function () {
                 var th = this;
-                var jobId = $(this).attr('data-job-id')
                 $.ajax({
                     url: $(this).attr('data-url'),
                     method: "POST",
                     dataType: 'json',
                     success: function (d) {
                         if (d == '200') {
-
                             $(th).prop('disabled', true);
-                            $('.jobDiv' + jobId).fadeOut('slow')
-                            if ($('.modal-body').html() == '') {
-                                $('#jobCompeleteAlert').modal('hide')
-                            }
-
+                            $(th).html('Job Completed')
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {

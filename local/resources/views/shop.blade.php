@@ -266,7 +266,7 @@
     <!-- Modal -->
     <div class="modal fade" id="jobCompeleteAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true" style="margin-top: 25px">
-        <div class="modal-dialog" style="min-width: 65%">
+        <div class="modal-dialog" style="min-width: 800px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span
@@ -279,36 +279,53 @@
                             <div class="row">
                                 <div class="col-md-6 col-lg-6">
                                     <h3>{{$ExpJob->title}}</h3>
+                                    @php($ExpJobSch=$ExpJob->schedules->toArray())
+                                    @php($jobEndDate=end($ExpJobSch))
+                                    <p>
+                                        <i class="fa fa-clock-o"></i>
+                                        Job End Date : {{date('M d, Y',strtotime($jobEndDate['end']))}}</p>
                                 </div>
-                                <div class="col-md-6 col-lg-6">
-                                    <h3 class="text-right">
+
+                            </div>
+
+                            <div class="row">
+                                <div style="box-shadow: 0 0 1px black;border-radius: 5px;"
+                                     class="col-md-8 col-lg-8 col-lg-offset-2 col-md-offset-2">
+                                    @if(count($ExpJob->ja)==0)
+                                        <p class="text-center">You haven't hired any freelancer for this job.</p>
+                                    @endif
+                                    <table style="width: 100%">
+                                        @foreach($ExpJob->ja as $ja)
+                                            <tr>
+                                                <td style="padding: 10px">{{$ja->user_name}}</td>
+                                                <td style="padding: 10px" class="text-right">
+                                                    @if($ja->completion_status =='2')
+                                                        <button class="btn btn-danger " disabled
+                                                                data-ja-id="{{route('api.fill.dispute',['ja_id'=>$ja->id])}}">
+                                                            Dispute fill for this freelancer
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-danger dispute-button"
+                                                                data-job-title="{{$ExpJob->title}}"
+                                                                data-job-id="{{$ExpJob->id}}"
+                                                                data-ja-id="{{route('api.fill.dispute',['ja_id'=>$ja->id])}}">
+                                                            Dispute
+                                                        </button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                    <h3 class="text-center">
                                         <button class="btn btn-success">
                                             Mark this job as complete
                                         </button>
                                     </h3>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-7 col-lg-7">
-                                    @if(count($ExpJob->ja)==0)
-                                        <p class="text-center">You haven't hired any freelancer for this job.</p>
-                                    @endif
-
-                                    <table style="width: 100%!important">
-                                        @foreach($ExpJob->ja as $ja)
-                                            <tr>
-                                                <td>{{$ja->user_name}}</td>
-                                                <td>
-                                                    <button class="btn btn-danger">Dispute</button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </table>
-
-                                </div>
-                            </div>
+                            <br>
                         </div>
+                        <hr style="box-shadow: 0 0 1px black;">
                     @endforeach
                 </div>
                 <div class="modal-footer">
@@ -322,9 +339,33 @@
 
     <script>
         $(document).ready(function () {
-
             @if(count($AllExpJobs)>0)
             $('#jobCompeleteAlert').modal('show')
+
+
+            $('.dispute-button').click(function () {
+
+                var th = this;
+
+                $.ajax({
+                    url: $(this).attr('data-ja-id'),
+                    method: "POST",
+                    data: {job_title: $(this).attr('data-job-title'), job_id: $(this).attr('data-job-id')},
+                    dataType: 'json',
+                    success: function (d) {
+                        console.log(d);
+                        if (d == '101') {
+                            $(th).prop('disabled', true);
+                            $(th).html('Dispute fill for this freelancer')
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+
+                    }
+                });
+            });
+
+
             @endif
         });
     </script>

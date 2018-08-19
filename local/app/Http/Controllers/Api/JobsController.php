@@ -240,7 +240,7 @@ class JobsController extends Controller {
 //			'specific_category_id'             => 'required_without_all:visible_to_all_security_personal,visible_to_favourite,specific_area',
 //			'min_area'                         => 'required_with:specific_area',
 //			'max_area'                         => 'required_with:specific_area',
-			'terms_conditions'                 => 'required',
+			'terms_conditions' => 'required',
 		] );
 		$posted_data                      = $request->all();
 		$visible_to_all_security_personal = ! empty( $posted_data['visible_to_all_security_personal'] ) ? $posted_data['visible_to_all_security_personal'] : 0;
@@ -249,10 +249,10 @@ class JobsController extends Controller {
 //		$min_area                         = ! empty( $posted_data['min_area'] ) ? $posted_data['min_area'] : 0;
 //		$max_area                         = ! empty( $posted_data['max_area'] ) ? $posted_data['max_area'] : 0;
 //		$specific_category_id             = ! empty( $posted_data['specific_category_id'] ) ? $posted_data['specific_category_id'] : 0;
-		$job                              = Job::find( $id );
-		$logged_in_id                     = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
-		$return_data                      = [ 'Not allowed to perform this action' ];
-		$return_status                    = 500;
+		$job           = Job::find( $id );
+		$logged_in_id  = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
+		$return_data   = [ 'Not allowed to perform this action' ];
+		$return_status = 500;
 		if ( ! empty( $job ) && ! empty( $job->created_by ) && $job->created_by == $logged_in_id ) {
 			$job->visible_to_all_security_personal = $visible_to_all_security_personal;
 			$job->visible_to_favourite             = $visible_to_favourite;
@@ -288,10 +288,10 @@ class JobsController extends Controller {
 //		$min_area                         = ! empty( $posted_data['min_area'] ) ? $posted_data['min_area'] : 0;
 //		$max_area                         = ! empty( $posted_data['max_area'] ) ? $posted_data['max_area'] : 0;
 //		$specific_category_id             = ! empty( $posted_data['specific_category_id'] ) ? $posted_data['specific_category_id'] : 0;
-		$job                              = Job::find( $id );
-		$logged_in_id                     = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
-		$return_data                      = [ 'Not allowed to perform this action' ];
-		$return_status                    = 500;
+		$job           = Job::find( $id );
+		$logged_in_id  = ! empty( auth()->user()->id ) ? ( auth()->user()->id ) : 0;
+		$return_data   = [ 'Not allowed to perform this action' ];
+		$return_status = 500;
 		if ( ! empty( $job ) && ! empty( $job->created_by ) && $job->created_by == $logged_in_id ) {
 			$job->visible_to_all_security_personal = $visible_to_all_security_personal;
 			$job->visible_to_favourite             = $visible_to_favourite;
@@ -675,7 +675,7 @@ class JobsController extends Controller {
 		$freelancer_id = $request->freelancer_id;
 		$job_id        = $request->job_id;
 
-		$job = Job::find( $job_id );
+		$job  = Job::find( $job_id );
 		$user = auth()->user();
 		if ( $job->created_by != $user->id ) {
 			return;
@@ -1650,5 +1650,56 @@ class JobsController extends Controller {
 
 		return response()
 			->json( $return_data, $return_status );
+	}
+
+
+	public function MarkJobCompelete( $id ) {
+		$job  = Job::find( $id );
+		$user = auth()->user();
+		if ( $job->created_by != $user->id && $job->status = 1 ) {
+			return;
+		}
+
+		$approvedApplications = JobApplication::where( 'job_id', $job->id )
+		                                      ->where( 'is_hired', 1 )
+		                                      ->where( 'completion_status', 0 )
+		                                      ->get();
+
+
+		foreach ( $approvedApplications as $approvedAppl ) {
+			event( new JobHiredApplicationMarkedAsComplete( $approvedAppl ) );
+			$userFreelancer = User::find( $approvedAppl->applied_by );
+			$userFreelancer->notify( new JobMarkedComplete( $job ) );
+			$userFreelancer->notify( new RecivesPayment( $job ) );
+		}
+
+
+		$jobAmount   = $job->calculateJobAmountWithJobObject( $job );
+		$hiredJobApp = JobApplication::where( 'job_id', $job->id )
+		                             ->where( 'is_hired', 1 )
+		                             ->get();
+
+		$requeredNumberOfFree  = $jobAmount['number_of_freelancers'];
+		$currentHireFreelancer = count( $hiredJobApp );
+		if ( $currentHireFreelancer == 0 ) {
+			$trans    = new Transaction();
+			$returned = $trans->giveRefund( $job );
+		} else {
+			$transection         = Transaction::where( 'job_id', $job->id )
+			                                  ->where( 'type', 'job_fee' )
+			                                  ->where( 'debit_credit_type', 'credit' )
+			                                  ->whereNull( 'application_id' )
+			                                  ->first();
+			$vat                 = $transection->amount * ( .2 );
+			$admin               = $transection->amount * ( .1499 );
+			$transection->amount = $vat + $admin + $transection->amount;
+			$transection->type   = 'refund';
+			$transection->save();
+		}
+		$job->status = 0;
+		$job->save();
+
+
+		return response()->json( '200', 200 );
 	}
 }

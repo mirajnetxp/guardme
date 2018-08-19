@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Responsive\Http\Controllers\Controller;
 use Responsive\Job;
 use Responsive\JobApplication;
+use Responsive\Ticket;
+use Responsive\TicketMessage;
 use Responsive\Transaction;
 use Responsive\User;
 use Responsive\Businesscategory;
@@ -37,7 +39,7 @@ class EmployerJobsController extends Controller {
 		$applications = DB::table( 'job_applications' )
 		                  ->where( 'job_id', $id )
 		                  ->leftJoin( 'users', 'job_applications.applied_by', '=', 'users.id' )
-		                  ->select( 'job_applications.id', 'job_applications.applied_by', 'users.name', 'users.photo', 'job_applications.created_at', 'job_applications.is_hired', 'job_applications.completion_status','job_applications.application_description' )
+		                  ->select( 'job_applications.id', 'job_applications.applied_by', 'users.name', 'users.photo', 'job_applications.created_at', 'job_applications.is_hired', 'job_applications.completion_status', 'job_applications.application_description' )
 		                  ->get();
 
 		return response()->json( $applications, 200 );
@@ -178,9 +180,36 @@ class EmployerJobsController extends Controller {
 		                 ->where( 'security_jobs.status', 1 )
 //		                 ->rightJoin( 'transactions', 'security_jobs.id', '=', 'transactions.job_id' )
 //		                 ->where( 'transactions.credit_payment_status', '=', 'funded' )
-		                 ->select( 'job_applications.id as application_id', 'job_applications.job_id', 'security_jobs.title as job_title')
+                         ->select( 'job_applications.id as application_id', 'job_applications.job_id', 'security_jobs.title as job_title' )
 		                 ->get();
 
 		return response()->json( $awardedJobs, 200 );
+	}
+
+	public function makeDisput( Request $request, $ja_id ) {
+		// TODO : need to sanatize by miraj
+		$DispuTApplication                    = JobApplication::find( $ja_id );
+		$DispuTApplication->completion_status = 2;
+		$DispuTApplication->save();
+
+
+		$newTicket                 = new Ticket();
+		$newTicket->user_id        = auth()->user()->id;
+		$newTicket->responsible_id = 0;
+		$newTicket->category_id    = 3;
+		$newTicket->title          = $request->job_title;
+		$newTicket->status         = 0;
+		$newTicket->state          = 1;
+		$newTicket->save();
+
+		$newTicketMess                   = new TicketMessage();
+		$newTicketMess->ticket_id        = $newTicket->id;
+		$newTicketMess->user_id          = auth()->user()->id;
+		$newTicketMess->message          = "Disput job_id $request->job_id .And application_id $ja_id";
+		$newTicketMess->date_time_create = Carbon::now();
+		$newTicketMess->save();
+
+		return response()->json( '101', 200 );
+
 	}
 }

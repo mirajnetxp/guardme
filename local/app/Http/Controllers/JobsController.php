@@ -1032,10 +1032,18 @@ class JobsController extends Controller {
 			return;
 		}
 
+		$approvedApplications = JobApplication::where( 'job_id', $job->id )
+		                                      ->where( 'is_hired', 1 )
+		                                      ->where( 'completion_status', 0 )
+		                                      ->get();
 
 
-
-
+		foreach ( $approvedApplications as $approvedAppl ) {
+			event( new JobHiredApplicationMarkedAsComplete( $approvedAppl ) );
+			$userFreelancer = User::find( $approvedAppl->applied_by );
+			$userFreelancer->notify( new JobMarkedComplete( $job ) );
+			$userFreelancer->notify( new RecivesPayment( $job ) );
+		}
 
 
 		$jobAmount   = $job->calculateJobAmountWithJobObject( $job );

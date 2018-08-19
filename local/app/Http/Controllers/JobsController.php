@@ -1031,6 +1031,13 @@ class JobsController extends Controller {
 		if ( $job->created_by != $user->id && $job->status = 1 ) {
 			return;
 		}
+
+
+
+
+
+
+
 		$jobAmount   = $job->calculateJobAmountWithJobObject( $job );
 		$hiredJobApp = JobApplication::where( 'job_id', $job->id )
 		                             ->where( 'is_hired', 1 )

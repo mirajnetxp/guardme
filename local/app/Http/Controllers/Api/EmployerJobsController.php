@@ -205,7 +205,7 @@ class EmployerJobsController extends Controller {
 		$newTicketMess                   = new TicketMessage();
 		$newTicketMess->ticket_id        = $newTicket->id;
 		$newTicketMess->user_id          = auth()->user()->id;
-		$newTicketMess->message          = "Disput job_id $request->job_id .And application_id $ja_id";
+		$newTicketMess->message          = "Dispute for $request->job_title with $request->f_name";
 		$newTicketMess->date_time_create = Carbon::now();
 		$newTicketMess->save();
 

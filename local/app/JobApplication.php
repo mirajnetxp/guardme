@@ -66,7 +66,8 @@ class JobApplication extends Model {
 			             'u.photo as photo',
 			             'u.id as u_id',
 			             'ja.created_at as applied_date',
-			             'ja.applied_by'
+			             'ja.applied_by',
+			             'ja.completion_status'
 		             )
 		             ->join( 'security_jobs as sj', 'sj.id', '=', 'ja.job_id' )
 		             ->join( 'users as u', 'u.id', '=', 'ja.applied_by' )

@@ -14,9 +14,17 @@
     <style>
         .single-end-job-div {
             border-radius:10px ;
+            /*box-shadow: 0 0 1px black;*/
+            margin-bottom: 10px;
         }
         .single-end-job-div:hover {
-            background-color: #eee;
+            box-shadow: 0 0 5px 0px #4CAF50;
+        }
+        .borderless table {
+            border-top-style: none;
+            border-left-style: none;
+            border-right-style: none;
+            border-bottom-style: none;
         }
     </style>
 

@@ -69,16 +69,12 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::post( 'calculate-job-amount/{id}', 'JobsController@getJobAmount' )->name( 'api.amount.job' );
 
 
-
-
 	// add balance to wallet
 	Route::post( 'add-money', 'JobsController@addMoney' )->name( 'api.add.money' );
 
 	// activate job, it will add 3 credit entries i) job fee ii) admin fee iii) vat fee
 	Route::post( 'activate-job/{id}', 'JobsController@activateJob' )->name( 'api.activate.job' );
 	Route::post( 'activate-job/{id}/update', 'JobsController@UpdateActivateJob' )->name( 'api.update.activate.job' );
-
-
 
 
 	Route::post( 'apply/{id}', 'JobsController@applyJob' )->name( 'api.apply.job' );
@@ -136,6 +132,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 
 	//tracking Route
 	Route::post( '/post/tracking', 'TrackingController@postTracking' );
+	Route::post( '/dispute/{ja_id}', 'EmployerJobsController@makeDisput' )->name('api.fill.dispute');
 
 
 } );

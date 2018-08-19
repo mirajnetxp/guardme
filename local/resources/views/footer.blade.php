@@ -16,12 +16,13 @@ $setts = DB::table( 'settings' )
                 <!-- footer-widget -->
                 <div class="col-sm-3">
                     <div class="footer-widget">
-                        <h3>Quik Links</h3>
+                        <h3>Our Links</h3>
                         <ul>
                             <li><a href="<?php echo $url;?>">Home</a></li>
-                            <li><a href="https://guarddme.com/about-us/">About Us</a></li>
-                            <li><a href="<?php echo $url;?>/terms-conditions">Term & Conditions</a></li>
-                            <li><a href="<?php echo $url;?>/privacy-policy">Privacy Policy</a></li>
+                            <li><a href="http://blog.guarddme.com/about-us/">About Us</a></li>
+			    <li><a href="http://blog.guarddme.com/press-media/">Press & Media</a></li>
+			    <li><a href="http://blog.guarddme.com/terms-and-conditions/">Term & Conditions</a></li>
+                            <li><a href="http://blog.guarddme.com/privacy-policy/">Privacy Policy</a></li>
                             <li><a href="<?php echo $url;?>/contact">Contact Us</a></li>
 
                         </ul>
@@ -31,12 +32,12 @@ $setts = DB::table( 'settings' )
                 <!-- footer-widget -->
                 <div class="col-sm-3">
                     <div class="footer-widget">
-                        <h3>Customers</h3>
+                        <h3>About Us</h3>
                         <ul>
-                            <li><a href="<?php echo $url;?>/register">Signup </a></li>
-                            <li><a href="<?php echo $url;?>/login">Login </a></li>
-                            <li><a href="<?php echo $url;?>/how-it-works">How it works </a></li>
-                            <li><a href="<?php echo $url;?>/success-stories">Success stories </a></li>
+                            <li><a href="http://blog.guarddme.com/how-it-works/">How it Works</a></li>
+                            <li><a href="http://blog.guarddme.com/guardme-loyalty-scheme/">Loyalty & Affiliates</a></li>
+                            <li><a href="http://blog.guarddme.com/all-about-guardme-verification/">Contractor Verification</a></li>
+                            <li><a href="http://blog.guarddme.com/guardme-wallet-101/">GuardME Wallet</a></li>
                         </ul>
                     </div>
                 </div><!-- footer-widget -->
@@ -46,13 +47,13 @@ $setts = DB::table( 'settings' )
                     <div class="footer-widget social-widget">
                         <h3>Follow us on</h3>
                         <ul>
-                            <li><a href="<?php echo $setts[0]->site_facebook;?>" target="_blank"><i
+                            <li><a href="https://www.facebook.com/guardmeapp" target="_blank"><i
                                             class="fa fa-facebook-official"></i>Facebook</a></li>
-                            <li><a href="<?php echo $setts[0]->site_twitter;?>" target="_blank"><i
+                            <li><a href="https://twitter.com/GuardMeApp" target="_blank"><i
                                             class="fa fa-twitter-square"></i>Twitter</a></li>
-                            <li><a href="<?php echo $setts[0]->site_gplus;?>" target="_blank"><i
-                                            class="fa fa-google-plus-square"></i>Google+</a></li>
-                            <li><a href="<?php echo $setts[0]->site_pinterest;?>" target="_blank"><i
+                            <li><a href="https://www.youtube.com/channel/UCb4fl07yFavw6YthwktTPKw" target="_blank"><i
+                                            class="fa fa-youtube-play"></i>Google+</a></li>
+                            <li><a href="https://www.instagram.com/guardmeapp/" target="_blank"><i
                                             class="fa fa-instagram"></i>Instagram</a></li>
 
 
@@ -63,7 +64,7 @@ $setts = DB::table( 'settings' )
                 <div class="col-sm-3">
                     <div class="footer-widget news-letter">
                         <h3>Newsletter</h3>
-                        <p>Jobs is Worldest leading Portal platform that brings!</p>
+                        <p>GuardME is UK's leading SIA Security Marketplace!</p>
                         <!-- form -->
                         <form action="{{route('subscribe.newsletter')}}" id="newsletterformasc" method="POST">
                             {{csrf_field()}}

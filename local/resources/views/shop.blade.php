@@ -283,7 +283,7 @@
                                         @php($ExpJobSch=$ExpJob->schedules->toArray())
                                         @php($jobEndDate=end($ExpJobSch))
                                         @php($jobEndDateIncar=new Carbon\Carbon($jobEndDate['end']))
-                                        @php($dist=$presentTime->diffInSeconds($jobEndDateIncar))
+                                        @php($dist=129600-$presentTime->diffInSeconds($jobEndDateIncar))
                                         <p>
                                             <i class="fa fa-clock-o"></i>
                                             Job End Date : {{date('M d, Y',strtotime($jobEndDate['end']))}}</p>

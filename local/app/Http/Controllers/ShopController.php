@@ -198,8 +198,45 @@ class ShopController extends Controller {
 
 			$AllExpJobs = $AllJobsObj->whereIn( 'id', $ExpairJobs )->get();
 			foreach ( $AllExpJobs as $key => $val ) {
-				$jA                     = new JobApplication();
+
+				$jA      = new JobApplication();
 				$val->ja = $jA->getJobApplications( $val->id )->where( 'is_hired', 1 )->all();
+
+
+				if ( $val->notify == '0' ) {
+
+					$companyName = auth()->user()->company->shop_name;
+					$JobTitle    = $val->title;
+
+
+					$msg = <<<EOT
+Dear $companyName,
+Your job $JobTitle has been completed. You have 36 hours to mark the job as complete or it will be done automatically after this time. Please log in to mark the job as completed and leave feedback for the contracted personnel.
+Regards
+GuardME Admin
+EOT;
+					mail( auth()->user()->email, "Job  complete", $msg );
+
+					foreach ( $val->ja as $ja ) {
+						dd( $ja );
+						$freeName = $ja->user_name;
+
+						$msgFree = <<<EOT
+Dear $freeName,
+Thanks for completing your shift(s) for $JobTitle. You will be paid in 36 hours or less. Please mark the job as complete or create an invoice for any overtime.
+We encourage you to fill out the incident report and report any events that occured during the shift.
+Regards
+GuardME Admin
+EOT;
+						mail( "$ja->u_email", "Job  complete", $msgFree );
+					}
+
+					$job         = Job::find( $val->id );
+					$job->notify = true;
+					$job->save();
+
+
+				}
 			}
 
 

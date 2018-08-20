@@ -432,8 +432,6 @@
 
 						<?php }
 						else{?>
-
-
                         <div class="col-md-12 noservice" align="center">No job matching found!</div>
 
 						<?php } ?>

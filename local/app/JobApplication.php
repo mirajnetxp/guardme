@@ -65,6 +65,7 @@ class JobApplication extends Model {
 			             'ja.is_hired',
 			             'u.photo as photo',
 			             'u.id as u_id',
+			             'u.email as u_email',
 			             'ja.created_at as applied_date',
 			             'ja.applied_by',
 			             'ja.completion_status'

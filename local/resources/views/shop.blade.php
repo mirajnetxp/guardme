@@ -273,17 +273,34 @@
                                     aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title" id="myModalLabel">Mark job as completed:</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body ckInHtml">
                         @foreach($AllExpJobs as $ExpJob)
                             <div class="single-end-job-div jobDiv{{$ExpJob->id}}" style="padding: 10px;">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
                                         <h3>{{$ExpJob->title}}</h3>
+                                        @php( $presentTime = Carbon\Carbon::now())
                                         @php($ExpJobSch=$ExpJob->schedules->toArray())
                                         @php($jobEndDate=end($ExpJobSch))
+                                        @php($jobEndDateIncar=new Carbon\Carbon($jobEndDate['end']))
+                                        @php($dist=$presentTime->diffInSeconds($jobEndDateIncar))
                                         <p>
                                             <i class="fa fa-clock-o"></i>
                                             Job End Date : {{date('M d, Y',strtotime($jobEndDate['end']))}}</p>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <h3>
+                                            <div class="countdoun-pre-div">
+                                                <div class="countDown">
+                                                    <div :class="">{{floor($dist / (60 * 60 * 24))}}<span>Days</span>
+                                                    </div>
+                                                    <div :class="">{{floor(($dist % (60 * 60 * 24)) / (60 * 60))}}<span>Hours</span>
+                                                    </div>
+                                                    <div :class="">{{floor($dist % (60 * 60) / ( 60))}}<span>Min</span></div>
+                                                    <div :class="">{{floor($dist % (60))}}<span>Sec</span></div>
+                                                </div>
+                                            </div>
+                                        </h3>
                                     </div>
 
                                 </div>
@@ -296,7 +313,7 @@
                                         @endif
                                         <table style="width: 100%">
                                             @foreach($ExpJob->ja as $ja)
-                                                <tr>
+                                                <tr style="border-bottom: 1px solid #eee">
                                                     <td style="padding: 10px">{{$ja->user_name}}</td>
                                                     <td style="padding: 10px" class="text-right">
                                                         @if($ja->completion_status =='2')
@@ -304,7 +321,11 @@
                                                                     data-ja-id="{{route('api.fill.dispute',['ja_id'=>$ja->id])}}">
                                                                 Dispute fill for this freelancer
                                                             </button>
-                                                        @else
+                                                        @elseif($ja->completion_status =='1')
+                                                            <button class="btn btn-success">
+                                                                <i class="glyphicon glyphicon-ok"></i>
+                                                            </button>
+                                                        @elseif($ja->completion_status =='0')
                                                             <button class="btn btn-danger dispute-button"
                                                                     data-job-title="{{$ExpJob->title}}"
                                                                     data-f-name="{{$ja->user_name}}"
@@ -342,8 +363,21 @@
         $(document).ready(function () {
             @if(auth()->user()->admin=='0')
             @if(count($AllExpJobs)>0)
-            $('#jobCompeleteAlert').modal('show')
 
+
+            //            var secondLeft=100;
+            //            setInterval(function () {
+            //                var distance = --secondLeft;
+            //                // Time calculations for days, hours, minutes and seconds
+            //                self.days = Math.floor(distance / (60 * 60 * 24));
+//                            self.hours = Math.floor((distance % (60 * 60 * 24)) / (60 * 60));
+            //                self.minutes = Math.floor((distance % (60 * 60)) / ( 60));
+            //                self.seconds = Math.floor((distance % (60)));
+            //
+            //            }, 1000)
+
+
+            $('#jobCompeleteAlert').modal('show')
 
             $('.dispute-button').click(function () {
 
@@ -376,7 +410,10 @@
                     success: function (d) {
                         if (d == '200') {
                             $(th).prop('disabled', true);
-                            $(th).html('Job Completed')
+                            $(th).html('Job Completed');
+                            if ($(".ckInHtml:contains('Mark this job as complete')").length == 0) {
+                                $('#jobCompeleteAlert').modal('hide')
+                            }
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {

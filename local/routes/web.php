@@ -21,11 +21,6 @@ use Responsive\User;
 Route::get('/', 'CommonController@home');*/
 
 
-//Route::get( '/notification-s', function (){
-//
-//
-//});
-
 
 //social login
 Route::group( [ 'prefix' => 'account', 'namespace' => 'Auth' ], function () {

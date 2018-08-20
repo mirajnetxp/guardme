@@ -179,7 +179,8 @@ class ShopController extends Controller {
 				'rating'       => $rating
 			);
 
-			$AllJobsObj  = Job::where( 'created_by', $userid )->where( 'status', 1 );
+			$AllJobsObj  = Job::where( 'created_by', $userid )
+			                  ->where( 'status', 1 );
 			$AllJobsIds  = $AllJobsObj->pluck( 'id' );
 			$allSchedule = SecurityJobsSchedule::whereIn( 'job_id', $AllJobsIds )
 			                                   ->get()
@@ -188,10 +189,11 @@ class ShopController extends Controller {
 			$ExpairJobs  = [];
 			$presentTime = Carbon::now();
 			foreach ( $allSchedule as $key => $val ) {
-
 				$timArry    = $val->toArray();
 				$jobEndTime = new Carbon( end( $timArry )['end'] );
 				if ( $presentTime->gt( $jobEndTime ) ) {
+
+
 					$ExpairJobs[] = $key;
 				}
 			}
@@ -200,7 +202,9 @@ class ShopController extends Controller {
 			foreach ( $AllExpJobs as $key => $val ) {
 
 				$jA      = new JobApplication();
-				$val->ja = $jA->getJobApplications( $val->id )->where( 'is_hired', 1 )->all();
+				$val->ja = $jA->getJobApplications( $val->id )
+				              ->where( 'is_hired', 1 )
+				              ->all();
 
 				if ( $val->notify == '0' ) {
 

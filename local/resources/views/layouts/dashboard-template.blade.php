@@ -26,6 +26,36 @@
             border-right-style: none;
             border-bottom-style: none;
         }
+
+        .countdoun-pre-div {
+            text-align: center;
+        }
+
+        .countDown {
+            display: inline-block;
+        }
+
+        .countDown > div {
+            float: left;
+            background-color: #4CAF50;
+            box-shadow: 0 0 2px 0px black;
+            border-radius: 7px;
+            font-weight: 900;
+            color: #fff;
+            text-align: center;
+
+        }
+
+        .countDown div > span {
+            display: block;
+            font-size: 10px;
+        }
+        .countDown > div {
+            padding: 1px 0px 1px 0px;
+            margin: 0 2px;
+            font-size: 20px;
+            min-width: 45px;
+        }
     </style>
 
 </head>

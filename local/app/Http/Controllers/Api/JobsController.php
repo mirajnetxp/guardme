@@ -1231,10 +1231,7 @@ class JobsController extends Controller {
 	 *
 	 * @return mixed
 	 */
-	public
-	function cancelHiredApplication(
-		$application_id
-	) {
+	public function cancelHiredApplication( $application_id ) {
 		$application   = JobApplication::find( $application_id );
 		$job           = Job::find( $application->job_id );
 		$return_data   = [ "Un-known error" ];

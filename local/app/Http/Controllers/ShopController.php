@@ -179,23 +179,33 @@ class ShopController extends Controller {
 				'rating'       => $rating
 			);
 
-			$AllJobsObj  = Job::where( 'created_by', $userid )
-			                  ->where( 'status', 1 );
-			$AllJobsIds  = $AllJobsObj->pluck( 'id' );
+			$AllJobsObj = Job::where( 'created_by', $userid )
+			                 ->where( 'status', 1 );
+			$AllJobsIds = $AllJobsObj->pluck( 'id' );
+
 			$allSchedule = SecurityJobsSchedule::whereIn( 'job_id', $AllJobsIds )
 			                                   ->get()
-			                                   ->groupBy( 'job_id' )->all();
+			                                   ->groupBy( 'job_id' )
+			                                   ->all();
 
 			$ExpairJobs  = [];
 			$presentTime = Carbon::now();
 			foreach ( $allSchedule as $key => $val ) {
-				$timArry    = $val->toArray();
-				$jobEndTime = new Carbon( end( $timArry )['end'] );
-				if ( $presentTime->gt( $jobEndTime ) ) {
 
+				$timArry               = $val->toArray();
+				$jobEndTime            = new Carbon( end( $timArry )['end'] );
+				$jobEndTimeEn          = new Carbon( end( $timArry )['end'] );
+				$jobEndTimePlus36Hours = $jobEndTimeEn->addHour( 36 );
 
+				if ( $presentTime->gt( $jobEndTime ) && $presentTime->lt( $jobEndTimePlus36Hours ) ) {
 					$ExpairJobs[] = $key;
 				}
+
+				if ( $presentTime->gt( $jobEndTimePlus36Hours ) ) {
+					$JC = new \Responsive\Http\Controllers\Api\JobsController();
+					$JC->MarkJobCompelete( $key );
+				}
+
 			}
 
 			$AllExpJobs = $AllJobsObj->whereIn( 'id', $ExpairJobs )->get();

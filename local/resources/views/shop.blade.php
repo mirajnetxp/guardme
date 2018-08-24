@@ -292,12 +292,10 @@
                                         <h3>
                                             <div class="countdoun-pre-div">
                                                 <div class="countDown">
-                                                    <div :class="">{{floor($dist / (60 * 60 * 24))}}<span>Days</span>
-                                                    </div>
-                                                    <div :class="">{{floor(($dist % (60 * 60 * 24)) / (60 * 60))}}<span>Hours</span>
+                                                    <div :class="">{{floor(($dist *(1/3600)))}}<span>Hours</span>
                                                     </div>
                                                     <div :class="">{{floor($dist % (60 * 60) / ( 60))}}<span>Min</span></div>
-                                                    <div :class="">{{floor($dist % (60))}}<span>Sec</span></div>
+
                                                 </div>
                                             </div>
                                         </h3>

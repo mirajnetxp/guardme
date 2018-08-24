@@ -92,11 +92,11 @@ class JobMarkAsComplete extends Command {
 				$trans    = new Transaction();
 				$returned = $trans->giveRefund( $job );
 			} else {
-				$transection         = Transaction::where( 'job_id', $job->id )
-				                                  ->where( 'type', 'job_fee' )
-				                                  ->where( 'debit_credit_type', 'credit' )
-				                                  ->whereNull( 'application_id' )
-				                                  ->first();
+				$transection = Transaction::where( 'job_id', $job->id )
+				                          ->where( 'type', 'job_fee' )
+				                          ->where( 'debit_credit_type', 'credit' )
+				                          ->whereNull( 'application_id' )
+				                          ->first();
 
 				$vat                 = $transection->amount * ( .2 );
 				$admin               = $transection->amount * ( .1499 );

@@ -1198,9 +1198,7 @@ class JobsController extends Controller {
 
 
 	public
-	function create_notification(
-		$notification_type, $applied_by, $details
-	) {
+	function create_notification( $notification_type, $applied_by, $details ) {
 
 		// {notification_by_user_id} hired you for the Job {job_title}
 

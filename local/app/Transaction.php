@@ -2,6 +2,7 @@
 
 namespace Responsive;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -38,7 +39,7 @@ class Transaction extends Model {
 	 * @return bool
 	 */
 	public function addMoney( $params ) {
-		$type = $defaults['type'] = ! empty( $params['type'] ) ? ( $params['type'] ) : 'add_money';
+		$type                              = $defaults['type'] = ! empty( $params['type'] ) ? ( $params['type'] ) : 'add_money';
 		$defaults                          = [
 			'debit_credit_type' => 'debit',
 			'type'              => $type
@@ -47,14 +48,15 @@ class Transaction extends Model {
 		$defaults['amount']                = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
 		$defaults['paypal_id']             = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : 0;
 		$defaults['user_id']               = ! empty( $params['user_id'] ) ? ( $params['user_id'] ) : 0;
-		$defaults['job_id']               = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
+		$defaults['job_id']                = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
 		$defaults['status']                = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
 		$defaults['paypal_payment_status'] = ! empty( $params['paypal_payment_status'] ) ? ( $params['paypal_payment_status'] ) : null;
 
 		return $this->insertTransaction( $defaults );
 	}
+
 	public function addExtraMoney( $params ) {
-		$type = $defaults['type'] = ! empty( $params['type'] ) ? ( $params['type'] ) : 'add_money';
+		$type                              = $defaults['type'] = ! empty( $params['type'] ) ? ( $params['type'] ) : 'add_money';
 		$defaults                          = [
 			'debit_credit_type' => 'debit',
 			'type'              => $type
@@ -63,7 +65,7 @@ class Transaction extends Model {
 		$defaults['amount']                = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
 		$defaults['paypal_id']             = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : 0;
 		$defaults['user_id']               = ! empty( $params['user_id'] ) ? ( $params['user_id'] ) : 0;
-		$defaults['job_id']               = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
+		$defaults['job_id']                = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
 		$defaults['status']                = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
 		$defaults['paypal_payment_status'] = ! empty( $params['paypal_payment_status'] ) ? ( $params['paypal_payment_status'] ) : null;
 
@@ -76,15 +78,15 @@ class Transaction extends Model {
 	 * @return bool
 	 */
 	public function fundJobFee( $params ) {
-		$defaults           = [
+		$defaults              = [
 			'debit_credit_type'     => 'credit',
 			'type'                  => 'job_fee',
 			'credit_payment_status' => 'funded'
 		];
-		$defaults['title']  = ! empty( $params['title'] ) ? ( $params['title'] ) : 'Job Fee';
-		$defaults['job_id'] = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
-		$defaults['amount'] = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
-		$defaults['status'] = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
+		$defaults['title']     = ! empty( $params['title'] ) ? ( $params['title'] ) : 'Job Fee';
+		$defaults['job_id']    = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
+		$defaults['amount']    = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
+		$defaults['status']    = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
 		$defaults['paypal_id'] = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : null;
 
 		return $this->insertTransaction( $defaults );
@@ -96,16 +98,16 @@ class Transaction extends Model {
 	 * @return bool
 	 */
 	public function fundAdminFee( $params ) {
-		$defaults           = [
+		$defaults               = [
 			'debit_credit_type'     => 'credit',
 			'type'                  => 'admin_fee',
 			'credit_payment_status' => 'paid'
 		];
-		$defaults['title']  = ! empty( $params['title'] ) ? ( $params['title'] ) : 'Admin Fee';
-		$defaults['job_id'] = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
-		$defaults['amount'] = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
-		$defaults['status'] = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
-		$defaults['paypal_id'] = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : null;
+		$defaults['title']      = ! empty( $params['title'] ) ? ( $params['title'] ) : 'Admin Fee';
+		$defaults['job_id']     = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
+		$defaults['amount']     = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
+		$defaults['status']     = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
+		$defaults['paypal_id']  = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : null;
 		$defaults['partner_id'] = ! empty( $params['licence_partner_id'] ) ? ( $params['licence_partner_id'] ) : 0;
 
 		return $this->insertTransaction( $defaults );
@@ -117,15 +119,15 @@ class Transaction extends Model {
 	 * @return bool
 	 */
 	public function fundVatFee( $params ) {
-		$defaults           = [
+		$defaults              = [
 			'debit_credit_type'     => 'credit',
 			'type'                  => 'vat_fee',
 			'credit_payment_status' => 'paid'
 		];
-		$defaults['title']  = ! empty( $params['title'] ) ? ( $params['title'] ) : 'VAT Fee';
-		$defaults['job_id'] = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
-		$defaults['amount'] = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
-		$defaults['status'] = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
+		$defaults['title']     = ! empty( $params['title'] ) ? ( $params['title'] ) : 'VAT Fee';
+		$defaults['job_id']    = ! empty( $params['job_id'] ) ? ( $params['job_id'] ) : 0;
+		$defaults['amount']    = ! empty( $params['amount'] ) ? ( $params['amount'] ) : 0;
+		$defaults['status']    = ! empty( $params['status'] ) ? ( $params['status'] ) : 0;
 		$defaults['paypal_id'] = ! empty( $params['paypal_id'] ) ? ( $params['paypal_id'] ) : null;
 
 		return $this->insertTransaction( $defaults );
@@ -175,27 +177,27 @@ class Transaction extends Model {
 				                 ->get()->first();
 				$total_debit = ! empty( $debit->total ) ? ( $debit->total ) : 0;
 				// get sum of all active credits for user
-				$credit       = DB::table( $this->table )
-				                  ->select( DB::raw( 'SUM(amount) as total' ) )
-				                  ->groupBy( 'user_id' )
-				                  ->where( 'user_id', $user_id )
-				                  ->where( 'status', 1 )
-				                  ->where( 'debit_credit_type', 'credit' )
-				                  ->get()->first();
+				$credit = DB::table( $this->table )
+				            ->select( DB::raw( 'SUM(amount) as total' ) )
+				            ->groupBy( 'user_id' )
+				            ->where( 'user_id', $user_id )
+				            ->where( 'status', 1 )
+				            ->where( 'debit_credit_type', 'credit' )
+				            ->get()->first();
 				// get sum of all active refunds for user which are not complete
-				$refund       = DB::table( $this->table )
-					->select( DB::raw( 'SUM(amount) as total' ) )
-					->groupBy( 'user_id' )
-					->where( 'user_id', $user_id )
-					->where( 'status', 1 )
-					->where( 'debit_credit_type', 'credit' )
-					->where( 'type', 'refund' )
-					->where( 'credit_payment_status','!=' , 'complete' )
-					->get()->first();
+				$refund = DB::table( $this->table )
+				            ->select( DB::raw( 'SUM(amount) as total' ) )
+				            ->groupBy( 'user_id' )
+				            ->where( 'user_id', $user_id )
+				            ->where( 'status', 1 )
+				            ->where( 'debit_credit_type', 'credit' )
+				            ->where( 'type', 'refund' )
+				            ->where( 'credit_payment_status', '!=', 'complete' )
+				            ->get()->first();
 
 				$total_refund = ! empty( $refund->total ) ? ( $refund->total ) : 0;
 				$total_credit = ! empty( $credit->total ) ? ( $credit->total ) : 0;
-				$balance      = ($total_refund + $total_debit) - $total_credit;
+				$balance      = ( $total_refund + $total_debit ) - $total_credit;
 			}
 			if ( isFreelancer() ) {
 				// note: type credit for freelancer is not actually credited by freelancer these are actually credit by employer and by using flipping it we will get freelancer transactions
@@ -411,91 +413,95 @@ class Transaction extends Model {
 
 	/**
 	 * @param $job_id
+	 *
 	 * @return mixed
 	 */
-	public function getDebitTransactionForJob($job_id) {
-		$transaction = Transaction::where('job_id', $job_id)
-		                          ->where('debit_credit_type', 'debit')
-		                          ->orderBy('id', 'desc')
+	public function getDebitTransactionForJob( $job_id ) {
+		$transaction = Transaction::where( 'job_id', $job_id )
+		                          ->where( 'debit_credit_type', 'debit' )
+		                          ->orderBy( 'id', 'desc' )
 		                          ->get()->first();
+
 		return $transaction;
 	}
 
 	/**
 	 * @param \Responsive\Job $job
+	 *
 	 * @return array
 	 */
-	public function giveRefund(Job $job) {
-		$job_id = $job->id;
-		$schedules = $job->schedules()->get();
-		$first_date = $schedules[0];
-		$start_date_time = $first_date->start;
-		$current_date_time = new \DateTime();
-		$schedule_date_time = new \DateTime($start_date_time);
+	public function giveRefund( Job $job ) {
+		$job_id             = $job->id;
+		$schedules          = $job->schedules()->get();
+		$first_date         = $schedules[0];
+		$start_date_time    = $first_date->start;
+		$current_date_time  = new \DateTime();
+		$schedule_date_time = new \DateTime( $start_date_time );
 		// get list of hired applications on the job
-		$hired_applications = JobApplication::where('job_id', $job_id)->where('is_hired', 1)->get();
+		$hired_applications     = JobApplication::where( 'job_id', $job_id )->where( 'is_hired', 1 )->get();
 		$completed_applications = [];
-		if (!empty($hired_applications)) {
-			foreach ($hired_applications as $key => $app) {
-				$completed_applications[$app->id] = $app->id;
+		if ( ! empty( $hired_applications ) ) {
+			foreach ( $hired_applications as $key => $app ) {
+				$completed_applications[ $app->id ] = $app->id;
 			}
 		}
-		if ($current_date_time >= $schedule_date_time && count($hired_applications) > 0) {
+		if ( $current_date_time >= $schedule_date_time && count( $hired_applications ) > 0 ) {
 			$return_data   = [ "You can not cancel this job" ];
 			$return_status = 500;
 		} else {
-			$interval = $current_date_time->diff($schedule_date_time);
-			$days_left = $interval->format('%d');
-			$months_left = $interval->format('%m');
-			$years_left = $interval->format('%y');
-			if ($days_left > 0 || $months_left > 0 || $years_left > 0) {
+			$interval    = $current_date_time->diff( $schedule_date_time );
+			$days_left   = $interval->format( '%d' );
+			$months_left = $interval->format( '%m' );
+			$years_left  = $interval->format( '%y' );
+			if ( $days_left > 0 || $months_left > 0 || $years_left > 0 ) {
 				// make a full refund
-				$this->processRefund($job);
-			} else if (count($hired_applications) == 0) {
+				$this->processRefund( $job );
+			} else if ( count( $hired_applications ) == 0 ) {
 				// make a full refund
-				$this->processRefund($job);
+				$this->processRefund( $job );
 			} else {
 				/* have to do partial refund */
-				$this->processRefund($job, $completed_applications, 'partial');
+				$this->processRefund( $job, $completed_applications, 'partial' );
 
 			}
 			$return_data   = [ "Job canceled successfully" ];
 			$return_status = 200;
 		}
-		return ['return_data' => $return_data, 'return_status' => $return_status];
+
+		return [ 'return_data' => $return_data, 'return_status' => $return_status ];
 	}
 
 	/**
 	 * @param $job
 	 * @param string $type
 	 */
-	private function processRefund($job, $completed_applications = [], $type = 'full') {
+	private function processRefund( $job, $completed_applications = [], $type = 'full' ) {
 		$job_id = $job->id;
-		if ($type == 'full') {
-			DB::transaction(function () use ($job_id) {
-				$full_debit_transaction = $this->getDebitTransactionForJob($job_id);
+		if ( $type == 'full' ) {
+			DB::transaction( function () use ( $job_id, $job ) {
+				$full_debit_transaction = $this->getDebitTransactionForJob( $job_id );
 				// disable all old credit transactions for the job
-				DB::table($this->table)
-					->where('job_id', $job_id)
-					->where('debit_credit_type',  'credit')
-					->update(['status' => 0, 'title' => 'canceled']);
+				DB::table( $this->table )
+				  ->where( 'job_id', $job_id )
+				  ->where( 'debit_credit_type', 'credit' )
+				  ->update( [ 'status' => 0, 'title' => 'canceled' ] );
 
 				// create new credit entry for refund to equalize the debit funds
 				$transaction_params = [
-					'debit_credit_type' => 'credit',
-					'type' => 'refund',
-					'title' => 'full refund for the job',
-					'job_id' => $job_id,
-					'user_id' => auth()->user()->id,
-					'paypal_id' => $full_debit_transaction->paypal_id,
-					'status' => 1,
-					'amount' => $full_debit_transaction->amount,
+					'debit_credit_type'     => 'credit',
+					'type'                  => 'refund',
+					'title'                 => 'full refund for the job',
+					'job_id'                => $job_id,
+					'user_id'               => Auth::check() ? auth()->user()->id : $job->created_by,
+					'paypal_id'             => $full_debit_transaction->paypal_id,
+					'status'                => 1,
+					'amount'                => $full_debit_transaction->amount,
 					'credit_payment_status' => 'paid',
-					'extra_details' => 'full refund of the amount ' . $full_debit_transaction->amount . ' is made for canceling the job with job id '. $job_id
+					'extra_details'         => 'full refund of the amount ' . $full_debit_transaction->amount . ' is made for canceling the job with job id ' . $job_id
 				];
 				DB::table( $this->table )->insert( $transaction_params );
-				DB::table('security_jobs')->where('id', $job_id)->update(['status' => 0]);
-			});
+				DB::table( 'security_jobs' )->where( 'id', $job_id )->update( [ 'status' => 0 ] );
+			} );
 		} else {
 			/*criteria ---> deduct 10% from the vat fee,
 									10% from admin fee, and
@@ -505,106 +511,110 @@ class Transaction extends Model {
 			$total_refund_amounts = [];
 
 			// get all credit entries
-			$credit_entries = Transaction::where('job_id', $job_id)->where('debit_credit_type', 'credit')->get();
+			$credit_entries = Transaction::where( 'job_id', $job_id )->where( 'debit_credit_type', 'credit' )->get();
 
-			if (!empty($credit_entries)) {
+			if ( ! empty( $credit_entries ) ) {
 				$refund_paypal_id = $credit_entries[0]->paypal_id;
-				foreach ($credit_entries as $key => $credit_row) {
-					if (!empty($completed_applications) && !empty($credit_row->application_id)) {
-						if (!empty($completed_applications[$credit_row->application_id])) {
+				foreach ( $credit_entries as $key => $credit_row ) {
+					if ( ! empty( $completed_applications ) && ! empty( $credit_row->application_id ) ) {
+						if ( ! empty( $completed_applications[ $credit_row->application_id ] ) ) {
 							continue;
 						}
 					}
-					if ($credit_row->type == 'job_fee' && empty($credit_row->application_id)) {
-						 if ($credit_row->amount > 0) {
-							 $total_refund_amounts['full amount for un awarded vacancies'] = $credit_row->amount;
-						 }
+					if ( $credit_row->type == 'job_fee' && empty( $credit_row->application_id ) ) {
+						if ( $credit_row->amount > 0 ) {
+							$total_refund_amounts['full amount for un awarded vacancies'] = $credit_row->amount;
+						}
 					} else {
-						if ($credit_row->amount > 0) {
-							$penalty_value = ($credit_row->amount * 10)/100;
-							$credit_value = $credit_row->amount - $penalty_value;
-							if ($credit_row->type == 'job_fee') {
-								$total_refund_amounts['amount after 10% penalty for job fee for application_id ' . $credit_row->application_id] = $credit_value;
+						if ( $credit_row->amount > 0 ) {
+							$penalty_value = ( $credit_row->amount * 10 ) / 100;
+							$credit_value  = $credit_row->amount - $penalty_value;
+							if ( $credit_row->type == 'job_fee' ) {
+								$total_refund_amounts[ 'amount after 10% penalty for job fee for application_id ' . $credit_row->application_id ] = $credit_value;
 							} else {
-								$total_refund_amounts['amount after 10% penalty for ' . $credit_row->type . ' for job_id ' . $credit_row->job_id] = $credit_value;
+								$total_refund_amounts[ 'amount after 10% penalty for ' . $credit_row->type . ' for job_id ' . $credit_row->job_id ] = $credit_value;
 							}
 							$penalty_rows[] = [
-								'user_id' => $credit_row->user_id,
-								'job_id' => $credit_row->job_id,
-								'debit_credit_type' => $credit_row->debit_credit_type,
-								'amount' => $penalty_value,
-								'type' => $credit_row->type,
-								'title' => '10% penalty',
-								'status' => 1,
+								'user_id'               => $credit_row->user_id,
+								'job_id'                => $credit_row->job_id,
+								'debit_credit_type'     => $credit_row->debit_credit_type,
+								'amount'                => $penalty_value,
+								'type'                  => $credit_row->type,
+								'title'                 => '10% penalty',
+								'status'                => 1,
 								'credit_payment_status' => 'paid',
-								'paypal_id' => $credit_row->paypal_id,
-								'application_id' => $credit_row->application_id,
-								'partner_id' => $credit_row->partner_id
+								'paypal_id'             => $credit_row->paypal_id,
+								'application_id'        => $credit_row->application_id,
+								'partner_id'            => $credit_row->partner_id
 							];
 						}
 					}
 
-					if (!empty($total_refund_amounts)) {
+					if ( ! empty( $total_refund_amounts ) ) {
 						// add refund row
 						$refund_row = [
-							'user_id' => auth()->user()->id,
-							'job_id' => $job_id,
-							'debit_credit_type' => 'credit',
-							'amount' => array_sum($total_refund_amounts),
-							'type' => 'refund',
-							'title' => 'amont after deducting 10% penalty',
-							'status' => 1,
+							'user_id'               => auth()->user()->id,
+							'job_id'                => $job_id,
+							'debit_credit_type'     => 'credit',
+							'amount'                => array_sum( $total_refund_amounts ),
+							'type'                  => 'refund',
+							'title'                 => 'amont after deducting 10% penalty',
+							'status'                => 1,
 							'credit_payment_status' => 'paid',
-							'extra_details' => json_encode($total_refund_amounts),
-							'paypal_id' => $refund_paypal_id
+							'extra_details'         => json_encode( $total_refund_amounts ),
+							'paypal_id'             => $refund_paypal_id
 						];
 					}
 				}
 			}
 
 
-			DB::transaction(function () use ($job_id, $penalty_rows, $refund_row) {
+			DB::transaction( function () use ( $job_id, $penalty_rows, $refund_row ) {
 				// disable credit rows for the job
-				DB::table($this->table)->where('job_id', $job_id)->where('debit_credit_type', 'credit')->update(['status' => 0, 'title' => 'canceled']);
+				DB::table( $this->table )->where( 'job_id', $job_id )->where( 'debit_credit_type', 'credit' )->update( [
+					'status' => 0,
+					'title'  => 'canceled'
+				] );
 				// add penalty rows //TODO add both of them to the same query
-				DB::table($this->table)->insert($penalty_rows);
+				DB::table( $this->table )->insert( $penalty_rows );
 				// add refund row
-				DB::table($this->table)->insert($refund_row);
+				DB::table( $this->table )->insert( $refund_row );
 				// make job inactive
-				DB::table('security_jobs')->where('id', $job_id)->update(['status' => 0]);
-			});
+				DB::table( 'security_jobs' )->where( 'id', $job_id )->update( [ 'status' => 0 ] );
+			} );
 		}
 
 	}
 
-	public function getEmployerPaymentRecords($transaction_id = null) {
-		$query = Transaction::where('debit_credit_type', 'credit')
-			->where(function ($query){
-				$query->where('credit_payment_status', 'paid');
-				$query->orWhere('credit_payment_status', 'complete');
-			})
-			->where('type', 'refund')
-			->where('transactions.status', 1)
-			->where('transactions.credit_payment_status', 'paid');
-			if (!empty($transaction_id)) {
-				$query->where('transactions.id', $transaction_id);
-			}
-		$query->join('users', 'users.id', 'transactions.user_id')
-			->join('security_jobs', 'security_jobs.id', 'transactions.job_id')
-			->select(
-				'users.id',
-				'users.name',
-				'users.email',
-				'transactions.id as transaction_id',
-				'transactions.amount',
-				'transactions.type',
-				'transactions.status',
-				'transactions.paypal_id',
-				'transactions.extra_details',
-				'transactions.credit_payment_status',
-				'security_jobs.title as job_title'
-			);
-			$transactions = $query->get();
+	public function getEmployerPaymentRecords( $transaction_id = null ) {
+		$query = Transaction::where( 'debit_credit_type', 'credit' )
+		                    ->where( function ( $query ) {
+			                    $query->where( 'credit_payment_status', 'paid' );
+			                    $query->orWhere( 'credit_payment_status', 'complete' );
+		                    } )
+		                    ->where( 'type', 'refund' )
+		                    ->where( 'transactions.status', 1 )
+		                    ->where( 'transactions.credit_payment_status', 'paid' );
+		if ( ! empty( $transaction_id ) ) {
+			$query->where( 'transactions.id', $transaction_id );
+		}
+		$query->join( 'users', 'users.id', 'transactions.user_id' )
+		      ->join( 'security_jobs', 'security_jobs.id', 'transactions.job_id' )
+		      ->select(
+			      'users.id',
+			      'users.name',
+			      'users.email',
+			      'transactions.id as transaction_id',
+			      'transactions.amount',
+			      'transactions.type',
+			      'transactions.status',
+			      'transactions.paypal_id',
+			      'transactions.extra_details',
+			      'transactions.credit_payment_status',
+			      'security_jobs.title as job_title'
+		      );
+		$transactions = $query->get();
+
 		return $transactions;
 	}
 
@@ -612,14 +622,14 @@ class Transaction extends Model {
 	 * @return array
 	 */
 	public function getPartnerBalance() {
-		$data = [];
-		$partner_email = config('general.licence_partner_email');
-		$partner = User::where('name', 'partner')->where('email', $partner_email)->get()->first();
-		if (!empty($partner)) {
-			$data = DB::table($this->table . ' as tr')
-				->where('tr.partner_id', $partner->id)
-				->where('tr.status', 1)
-				->select(DB::raw( 'SUM(amount) as total' ))->get()->first();
+		$data          = [];
+		$partner_email = config( 'general.licence_partner_email' );
+		$partner       = User::where( 'name', 'partner' )->where( 'email', $partner_email )->get()->first();
+		if ( ! empty( $partner ) ) {
+			$data = DB::table( $this->table . ' as tr' )
+			          ->where( 'tr.partner_id', $partner->id )
+			          ->where( 'tr.status', 1 )
+			          ->select( DB::raw( 'SUM(amount) as total' ) )->get()->first();
 		}
 
 		return $data;
@@ -629,14 +639,14 @@ class Transaction extends Model {
 	 * @return array
 	 */
 	public function getAdminFee() {
-		$data = [];
-		$partner = User::where('name', 'admin')->get()->first();
-		if (!empty($partner)) {
-			$data = DB::table($this->table . ' as tr')
-				->where('tr.type', 'admin_fee')
-				->where('tr.partner_id', 0)
-				->where('tr.status', 1)
-				->select(DB::raw( 'SUM(amount) as total' ))->get()->first();
+		$data    = [];
+		$partner = User::where( 'name', 'admin' )->get()->first();
+		if ( ! empty( $partner ) ) {
+			$data = DB::table( $this->table . ' as tr' )
+			          ->where( 'tr.type', 'admin_fee' )
+			          ->where( 'tr.partner_id', 0 )
+			          ->where( 'tr.status', 1 )
+			          ->select( DB::raw( 'SUM(amount) as total' ) )->get()->first();
 		}
 
 		return $data;
@@ -646,13 +656,13 @@ class Transaction extends Model {
 	 * @return array
 	 */
 	public function getVatFee() {
-		$data = [];
-		$partner = User::where('name', 'admin')->get()->first();
-		if (!empty($partner)) {
-			$data = DB::table($this->table . ' as tr')
-				->where('tr.type', 'vat_fee')
-				->where('tr.status', 1)
-				->select(DB::raw( 'SUM(amount) as total' ))->get()->first();
+		$data    = [];
+		$partner = User::where( 'name', 'admin' )->get()->first();
+		if ( ! empty( $partner ) ) {
+			$data = DB::table( $this->table . ' as tr' )
+			          ->where( 'tr.type', 'vat_fee' )
+			          ->where( 'tr.status', 1 )
+			          ->select( DB::raw( 'SUM(amount) as total' ) )->get()->first();
 		}
 
 		return $data;

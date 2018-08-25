@@ -10,4 +10,54 @@
 						]
 
 
+2. Notification list
+-----------------------------------------------------------
+		Api: api/notification/list
+		Type: GET
+		Requirements : Authorization , payload: "fcm_token"
+
+		Respose:
+						[
+                            {
+                                "id": "7b39ea32-27b5-495e-bd19-59218291a853",
+                                "type": "Responsive\\Notifications\\JobCreated",
+                                "notifiable_id": 19,
+                                "notifiable_type": "Responsive\\User",
+                                "data": "Congratulations! You ave successfully created a new job \"98adf96\"",
+                                "read_at": "2018-08-24 09:38:21",
+                                "created_at": "2018-08-24 09:37:09",
+                                "updated_at": "2018-08-24 09:38:21"
+                            },
+                            {
+                                "id": "2933fce2-f463-4f2c-acec-eb370300455a",
+                                "type": "Responsive\\Notifications\\JobCreated",
+                                "notifiable_id": 19,
+                                "notifiable_type": "Responsive\\User",
+                                "data": "Congratulations! You ave successfully created a new job \"adv ad\"",
+                                "read_at": "2018-08-24 09:27:06",
+                                "created_at": "2018-08-24 09:20:48",
+                                "updated_at": "2018-08-24 09:27:06"
+                            },
+                            {
+                                "id": "6983ebd9-efa9-4c39-bc31-c90b031e1cd1",
+                                "type": "Responsive\\Notifications\\JobCreated",
+                                "notifiable_id": 19,
+                                "notifiable_type": "Responsive\\User",
+                                "data": "Congratulations! You ave successfully created a new job \"adv\"",
+                                "read_at": "2018-08-24 09:27:06",
+                                "created_at": "2018-08-24 09:15:15",
+                                "updated_at": "2018-08-24 09:27:06"
+                            },
+                            {
+                                "id": "47a6de84-9087-4de7-84ed-0ec6b4c10017",
+                                "type": "Responsive\\Notifications\\JobCreated",
+                                "notifiable_id": 19,
+                                "notifiable_type": "Responsive\\User",
+                                "data": "Congratulations! You ave successfully created a new job \"asdv\"",
+                                "read_at": "2018-08-24 09:27:06",
+                                "created_at": "2018-08-24 08:50:29",
+                                "updated_at": "2018-08-24 09:27:06"
+                            }
+                        ]
+
 

@@ -23,8 +23,8 @@ class Kernel extends ConsoleKernel {
 	 * @return void
 	 */
 	protected function schedule( Schedule $schedule ) {
-		$schedule->command('JobMarkAsComplete:markjobascomplete')
-		         ->everyMinute();
+		$schedule->command( 'JobMarkAsComplete:markjobascomplete' )
+		         ->hourly();
 	}
 
 	/**

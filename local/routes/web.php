@@ -21,7 +21,6 @@ use Responsive\User;
 Route::get('/', 'CommonController@home');*/
 
 
-
 //social login
 Route::group( [ 'prefix' => 'account', 'namespace' => 'Auth' ], function () {
 
@@ -364,6 +363,13 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	/* end withdraw */
 
 
+	/* withdraw */
+
+	Route::get( '/admin/jobs', 'Admin\JobsController@index' );
+	Route::get( '/admin/pending_withdraw/{id}', 'Admin\WithdrawController@update' );
+	Route::get( '/admin/completed_withdraw', 'Admin\WithdrawController@doneindex' );
+
+	/* end withdraw */
 } );
 
 

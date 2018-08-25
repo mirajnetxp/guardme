@@ -46,4 +46,8 @@ class NotificationController extends Controller {
 
 		return response()->json( [ "count" => $count ] );
 	}
+
+	public function NotificationList() {
+		return response()->json( auth()->user()->notifications );
+	}
 }

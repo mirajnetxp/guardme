@@ -81,7 +81,6 @@ Route::group( [ 'prefix' => 'jobs', 'namespace' => 'Api', 'middleware' => 'auth:
 	Route::post( 'mark/hired/{id}', 'JobsController@markHired' )->name( 'api.mark.hired' );
 
 
-
 	Route::post( 'mark/job/as/compelete/{id}', 'JobsController@MarkJobCompelete' )->name( 'api.job.as.compelete' );
 
 	Route::post( 'hired/by', 'JobsController@HiredBy' )->name( 'job.hair.by.api' );
@@ -136,7 +135,7 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 
 	//tracking Route
 	Route::post( '/post/tracking', 'TrackingController@postTracking' );
-	Route::post( '/dispute/{ja_id}', 'EmployerJobsController@makeDisput' )->name('api.fill.dispute');
+	Route::post( '/dispute/{ja_id}', 'EmployerJobsController@makeDisput' )->name( 'api.fill.dispute' );
 
 
 } );
@@ -218,6 +217,8 @@ Route::group( [ 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () 
 Route::group( [ 'prefix' => 'notification', 'namespace' => 'Api', 'middleware' => 'auth:api' ], function () {
 	Route::get( '/unread ', 'NotificationController@unread' );
 	Route::get( '/mark/as/read ', 'NotificationController@markAsRead' );
+	Route::get( '/list', 'NotificationController@NotificationList' );
+
 
 } );
 

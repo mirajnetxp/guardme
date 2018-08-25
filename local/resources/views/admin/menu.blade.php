@@ -33,6 +33,10 @@ $url = URL::to( "/" );
             <p>Loyalty</p></a></li>
     <li><a href="<?php echo $url;?>/admin/pages"><i class="ti-files"></i>
             <p> Pages</p></a></li>
+    <li><a href="<?php echo $url;?>/admin/jobs">
+            <i class="fa fa-jpy"></i>
+            <p> Jobs</p></a>
+    </li>
     <li><a href="<?php echo $url;?>/admin/shop"><i class="ti-briefcase"></i>
             <p> Companies </p></a></li>
     <li><a href="<?php echo $url;?>/admin/message"><i class="fa fa-envelope" aria-hidden="true"></i>

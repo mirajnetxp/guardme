@@ -53,6 +53,7 @@ class FreelancerPaymentController extends Controller {
 		                      ->map( function ( $item, $key ) {
 			                      $bankObj              = json_decode( $item->method_details );
 			                      $item->method_details = "Bank Name: $bankObj->bank_name , Account Name: $bankObj->ac_name , Short Code: $bankObj->sort_code , Account Number: $bankObj->ac_number";
+
 			                      return $item;
 		                      } );
 
@@ -73,9 +74,9 @@ class FreelancerPaymentController extends Controller {
 			$allFreeLancers[ $key ]->credit = $balance;
 		}
 
-//dd($allFreeLancers);
+
 		$csvExporter = new \Laracsv\Export();
-		$csvExporter->build( $allFreeLancers, [ 'email', 'name', 'method_details' ] )->download();
+		$csvExporter->build( $allFreeLancers, [ 'email', 'name', 'method_details', 'credit' ] )->download();
 	}
 
 }

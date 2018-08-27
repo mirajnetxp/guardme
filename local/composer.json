@@ -17,7 +17,8 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "~5.4",
         "paypal/rest-api-sdk-php": "*",
-        "twilio/sdk": "^5.16"
+        "twilio/sdk": "^5.16",
+        "usmanhalalit/laracsv": "1.*@dev"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

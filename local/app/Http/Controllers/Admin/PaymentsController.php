@@ -94,4 +94,7 @@ class PaymentsController extends Controller
 
         return view( 'admin.payments' )->with( 'transactions', $transactions );
     }
+
+
+
 }

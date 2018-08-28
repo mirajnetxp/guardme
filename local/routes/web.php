@@ -366,10 +366,18 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	/* withdraw */
 
 	Route::get( '/admin/jobs', 'Admin\JobsController@index' );
+
 	Route::get( '/admin/pending_withdraw/{id}', 'Admin\WithdrawController@update' );
 	Route::get( '/admin/completed_withdraw', 'Admin\WithdrawController@doneindex' );
 
 	/* end withdraw */
+
+//		Freelancer Payment method
+	Route::get( '/admin/Payment', 'Admin\FreelancerPaymentController@index' );
+	Route::post( '/admin/freelancer/pay-to-all', 'Admin\FreelancerPaymentController@PayToAll' );
+
+
+
 } );
 
 

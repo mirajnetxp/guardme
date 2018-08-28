@@ -19,7 +19,7 @@ $url = URL::to( "/" );
             <p> Users </p></a>
     </li>
     <li><a href="<?php echo $url;?>/admin/payments/employer"><i class="fa fa-money" aria-hidden="true"></i>
-            <p>Payments</p></a></li>
+            <p>Refund</p></a></li>
     <li>
         <a href="<?php echo $url;?>/admin/Verification"><i class="ti-check"></i>
             <p>Verification</p></a></li>
@@ -36,6 +36,10 @@ $url = URL::to( "/" );
     <li><a href="<?php echo $url;?>/admin/jobs">
             <i class="fa fa-jpy"></i>
             <p> Jobs</p></a>
+    </li>
+    <li><a href="<?php echo $url;?>/admin/Payment">
+            <i class="fa fa-money"></i>
+            <p> Payment</p></a>
     </li>
     <li><a href="<?php echo $url;?>/admin/shop"><i class="ti-briefcase"></i>
             <p> Companies </p></a></li>

@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+use Carbon\Carbon;
+?>
 <head>
 
     @include('admin.title')
@@ -68,15 +71,27 @@
 
                         </div> -->
                         <div class="header">
-                            <h4 class="title">Pages</h4>
-                            <!-- <p class="category">Here is a subtitle for this table</p> -->
+                            <h4 class="title">Job's</h4>
+                            <hr>
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="Jobtype" class="control-label">Type:</label>
+                                    <select name="Jobtype" id="Jobtype" class="form-control">
+                                        <option value="">Pick an option...</option>
+                                        <option value="Open">Open</option>
+                                        <option value="Closed">Closed</option>
+                                        <option value="Pushed">Pushed</option>
+                                    </select>
+                                </div>
+
+                            </form>
                         </div>
 
                         <div class="content table-responsive table-full-width">
                             <div class="content table-responsive table-full-width">
 
 
-                                <table id="datatable-responsive"
+                                <table id="datatable-job"
                                        class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
                                        width="100%">
                                     <thead>
@@ -89,23 +104,56 @@
                                     </thead>
                                     <tbody>
                                     @php($i=0)
+                                    @php($presentTime=Carbon::now())
                                     @foreach($allJobs as $Job)
+
+                                        @php($jobSchArry=$Job->schedules->toArray())
+                                        @php($jobEndTime=new Carbon(end($jobSchArry)['end']))
+                                        @php($jobEnded=$jobEndTime->addHour(36))
+                                        @php($ended=false)
+                                        @if($presentTime->gt($jobEnded))
+                                            @php($ended=true)
+                                        @endif
                                         <tr>
                                             <td>{{++$i}}</td>
                                             <td> {{$Job->title}}</td>
                                             <td>
                                                 @if($Job->is_pause==1)
                                                     Pushed
-                                                @elseif($Job->status==0)
+                                                @elseif($Job->status==0 && !$ended)
                                                     Closed
+                                                @elseif($Job->status==0 && $ended)
+                                                    Ended
                                                 @else
                                                     Open
                                                 @endif
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-success">Mark as compelete</button>
-                                                    <button type="button" class="btn btn-danger">Close</button>
+                                                    @if($ended && $Job->status==1)
+                                                        <button type="button" class="btn btn-success markascomp"
+                                                                data-job-id="{{$Job->id}}"
+                                                        >Mark as compelete
+                                                        </button>
+                                                    @endif
+                                                    @if($Job->is_pause==1 )
+                                                        <button type="button" class="btn btn-info jobclose"
+                                                                data-job-id="{{$Job->id}}"
+                                                        >Resume
+                                                        </button>
+
+                                                    @elseif($Job->status==1)
+                                                        <button type="button" class="btn btn-success jobclose"
+                                                                data-job-id="{{$Job->id}}"
+                                                        >Push
+                                                        </button>
+                                                    @endif
+                                                    @if($Job->status==1)
+                                                        <button type="button" class="btn btn-danger jobclose"
+                                                                data-job-id="{{$Job->id}}"
+                                                        >Close
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -127,6 +175,17 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        var table = $('#datatable-job').DataTable({});
 
+        $('#Jobtype').on('change', function () {
+            table
+                .columns(2)
+                .search(this.value)
+                .draw();
+        });
+    });
+</script>
 </body>
 </html>

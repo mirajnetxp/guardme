@@ -374,8 +374,14 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 
 //		Freelancer Payment method
 	Route::get( '/admin/Payment', 'Admin\FreelancerPaymentController@index' );
-	Route::post( '/admin/freelancer/pay-to-all', 'Admin\FreelancerPaymentController@PayToAll' );
+	Route::post( '/admin/freelancer/pay-to-all', 'Admin\FreelancerPaymentController@PayToAllBank' );
+	Route::get( '/admin/freelancer/pay-to/{id}', 'Admin\FreelancerPaymentController@PayToBank' );
 
+	Route::post( '/admin/freelancer/pay-to-all/payple', 'Admin\PaypalPaymentController@FreelancerPayouts' );
+
+
+	Route::post( 'admin/mark-job-as-compelete', 'Admin\JobsController@MarkJobAsCompelete' );
+	Route::post( 'admin/job/close', 'Admin\JobsController@JobCancel' );
 
 
 } );

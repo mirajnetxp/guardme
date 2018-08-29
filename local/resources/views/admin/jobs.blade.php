@@ -137,13 +137,13 @@ use Carbon\Carbon;
                                                         </button>
                                                     @endif
                                                     @if($Job->is_pause==1 )
-                                                        <button type="button" class="btn btn-info jobclose"
+                                                        <button type="button" class="btn btn-info resume"
                                                                 data-job-id="{{$Job->id}}"
                                                         >Resume
                                                         </button>
 
                                                     @elseif($Job->status==1)
-                                                        <button type="button" class="btn btn-success jobclose"
+                                                        <button type="button" class="btn btn-success push"
                                                                 data-job-id="{{$Job->id}}"
                                                         >Push
                                                         </button>
@@ -185,6 +185,40 @@ use Carbon\Carbon;
                 .search(this.value)
                 .draw();
         });
+
+        $('.markascomp').click(function () {
+            var job_id = $(this).attr('data-job-id');
+            var th=this;
+            $.ajax({
+                url: "/admin/mark-job-as-compelete",
+                method: "POST",
+                data: {"_token": "{{csrf_token()}}", jobId: job_id},
+                dataType: 'json',
+                success: function (d) {
+                    window.location.reload();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+        })
+
+        $('.jobclose').click(function () {
+            var job_id = $(this).attr('data-job-id');
+            var th=this;
+            $.ajax({
+                url: "/admin/job/close",
+                method: "POST",
+                data: {"_token": "{{csrf_token()}}", jobId: job_id},
+                dataType: 'json',
+                success: function (d) {
+                    window.location.reload();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+
+                }
+            });
+        })
     });
 </script>
 </body>

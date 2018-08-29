@@ -492,7 +492,7 @@ class Transaction extends Model {
 					'type'                  => 'refund',
 					'title'                 => 'full refund for the job',
 					'job_id'                => $job_id,
-					'user_id'               => Auth::check() ? auth()->user()->id : $job->created_by,
+					'user_id'               => ( Auth::check() && auth()->user()->admin == '0' ) ? auth()->user()->id : $job->created_by,
 					'paypal_id'             => $full_debit_transaction->paypal_id,
 					'status'                => 1,
 					'amount'                => $full_debit_transaction->amount,

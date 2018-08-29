@@ -99,13 +99,19 @@
                             <form id="paytoallbank" action="/admin/freelancer/pay-to-all" method="post">
                                 {{csrf_field()}}
                             </form>
+                            <form id="paytoallpayple" action="/admin/freelancer/pay-to-all/payple" method="post">
+                                {{csrf_field()}}
+                            </form>
+
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="tab-content">
                                     <div class="tab-pane fade in active" id="home">
                                         <h1 class="text-center">Bank Payment</h1>
                                         <p class="text-center">
 
-                                        <button form="paytoallbank" class="btn btn-success" >Pay to all</button>
+                                            <button form="paytoallbank" id="bank-pay-to-all"
+                                                    class="btn btn-success paytoallbank">Pay to all
+                                            </button>
                                         </p>
                                         <table id="datatable-bank-payment" class="table">
                                             <thead>
@@ -141,7 +147,8 @@
 
                                                         <td>$ &nbsp;{{$free->credit}}</td>
                                                         <td>
-                                                            <button class="btn btn-success">Pay</button>
+                                                            <a href="/admin/freelancer/pay-to/{{$free->id}}"
+                                                               class="btn btn-success bankPay">Pay</a>
                                                         </td>
                                                     </tr>
                                                 @endif
@@ -151,6 +158,11 @@
                                     </div>
                                     <div class="tab-pane fade" id="profile">
                                         <h2 class="text-center">Paypal Payment</h2>
+                                        <p class="text-center">
+                                            <button form="paytoallpayple" id="payple-pay-to-all"
+                                                    class="btn btn-success paytoallpayple">Pay to all
+                                            </button>
+                                        </p>
                                         <table id="datatable-payple-payment" class="table">
                                             <thead>
                                             <tr>
@@ -208,23 +220,12 @@
             });
 
             $('#bank-pay-to-all').click(function () {
-
-                $.ajax({
-                    url: "/admin/freelancer/pay-to-all",
-                    method: "POST",
-                    dataType: 'json',
-                    success: function (d) {
-                        console.log(d);
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        if (typeof xhr.responseText == "undefined") {
-                            root.mess = "Internet Connection is Slow or Disconnect";
-                            root.retry = "Retry";
-                            window.ajaxcurrent = this;
-                            return
-                        }
-                    }
-                });
+                setTimeout(function () {
+                    window.location.replace("http://guarddme.fork/admin/Payment")
+                }, 1000)
+            })
+            $('.bankPay').click(function () {
+                $(this).parent().parent().parent().html('');
             })
         });
 

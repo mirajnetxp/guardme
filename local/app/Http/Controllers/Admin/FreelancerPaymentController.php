@@ -37,27 +37,39 @@ class FreelancerPaymentController extends Controller {
 
 			$balance                        = $credit->total ? $credit->total : 0;
 			$allFreeLancers[ $key ]->credit = $balance;
+
+			if ( $balance == 0 ) {
+				unset( $allFreeLancers[ $key ] );
+			}
 		}
 
 
 		return view( 'admin.freelancer-payment', [ 'allFreeLancers' => $allFreeLancers ] );
 	}
 
-	public function PayToAll() {
+	public function PayToAllBank() {
 
 
 		$allFreeLancers = User::where( 'admin', 2 )
 		                      ->join( 'payment_methods', 'users.id', '=', 'payment_methods.user_id' )
 		                      ->where( 'method_type', 'bank' )
+		                      ->select( 'users.id', 'users.name',
+			                      'users.email',
+			                      'payment_methods.method_type',
+			                      'payment_methods.method_details' )
 		                      ->get()
 		                      ->map( function ( $item, $key ) {
-			                      $bankObj              = json_decode( $item->method_details );
-			                      $item->method_details = "Bank Name: $bankObj->bank_name , Account Name: $bankObj->ac_name , Short Code: $bankObj->sort_code , Account Number: $bankObj->ac_number";
+			                      $bankObj             = json_decode( $item->method_details );
+			                      $item->BankName      = $bankObj->bank_name;
+			                      $item->AccountName   = $bankObj->ac_name;
+			                      $item->ShortCode     = $bankObj->sort_code;
+			                      $item->AccountNumber = $bankObj->ac_number;
 
 			                      return $item;
 		                      } );
 
 		foreach ( $allFreeLancers as $key => $value ) {
+
 			$credit = DB::table( 'transactions as tr' )
 			            ->select( DB::raw( 'SUM(amount) as total' ) )
 			            ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
@@ -69,14 +81,94 @@ class FreelancerPaymentController extends Controller {
 			            ->get()
 			            ->first();
 
-
 			$balance                        = $credit->total ? $credit->total : 0;
 			$allFreeLancers[ $key ]->credit = $balance;
+
+			if ( $balance == 0 ) {
+				unset( $allFreeLancers[ $key ] );
+			} else {
+				DB::table( 'transactions as tr' )
+				  ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
+				  ->where( 'ja.applied_by', $value->id )
+				  ->whereNotNull( 'tr.application_id' )
+				  ->where( 'status', 1 )
+				  ->where( 'debit_credit_type', 'credit' )
+				  ->where( 'credit_payment_status', 'paid' )
+				  ->update( [ 'status' => 0 ] );
+			}
 		}
-
-
+		if ( count( $allFreeLancers ) <= 0 ) {
+			return back();
+		}
 		$csvExporter = new \Laracsv\Export();
-		$csvExporter->build( $allFreeLancers, [ 'email', 'name', 'method_details', 'credit' ] )->download();
+		$csvExporter->build( $allFreeLancers, [
+			'email',
+			'name',
+			'BankName',
+			'AccountName',
+			'ShortCode',
+			'AccountNumber',
+			'credit'
+		] )->download();
+
+
 	}
 
+	public function PayToBank( $id ) {
+
+		$Freelancer = User::where( 'users.id', $id )
+		                  ->join( 'payment_methods', 'users.id', '=', 'payment_methods.user_id' )
+		                  ->where( 'method_type', 'bank' )
+		                  ->select( 'users.id', 'users.name',
+			                  'users.email',
+			                  'payment_methods.method_type',
+			                  'payment_methods.method_details' )
+		                  ->get()
+		                  ->map( function ( $item, $key ) {
+			                  $bankObj             = json_decode( $item->method_details );
+			                  $item->BankName      = $bankObj->bank_name;
+			                  $item->AccountName   = $bankObj->ac_name;
+			                  $item->ShortCode     = $bankObj->sort_code;
+			                  $item->AccountNumber = $bankObj->ac_number;
+
+			                  return $item;
+		                  } );
+
+		$credit = DB::table( 'transactions as tr' )
+		            ->select( DB::raw( 'SUM(amount) as total' ) )
+		            ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
+		            ->where( 'ja.applied_by', $id )
+		            ->whereNotNull( 'tr.application_id' )
+		            ->where( 'status', 1 )
+		            ->where( 'debit_credit_type', 'credit' )
+		            ->where( 'credit_payment_status', 'paid' )
+		            ->get()
+		            ->first();
+
+		$balance = $credit->total ? $credit->total : 0;
+
+		foreach ( $Freelancer as $key => $value ) {
+			$Freelancer[ $key ]->credit = $balance;
+		}
+
+		DB::table( 'transactions as tr' )
+		  ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
+		  ->where( 'ja.applied_by', $id )
+		  ->whereNotNull( 'tr.application_id' )
+		  ->where( 'status', 1 )
+		  ->where( 'debit_credit_type', 'credit' )
+		  ->where( 'credit_payment_status', 'paid' )
+		  ->update( [ 'status' => 0 ] );
+
+		$csvExporter = new \Laracsv\Export();
+		$csvExporter->build( $Freelancer, [
+			'email',
+			'name',
+			'BankName',
+			'AccountName',
+			'ShortCode',
+			'AccountNumber',
+			'credit'
+		] )->download();
+	}
 }

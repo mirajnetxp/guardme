@@ -36,63 +36,63 @@ class PaypalPaymentController extends Controller {
 		$this->_api_context->setConfig( $paypal_conf['settings'] );
 	}
 
-	public function FreelancerPayouts() {
+	public function PayplePayoutsAll() {
 
-		$payouts           = new \PayPal\Api\Payout();
-		$senderBatchHeader = new \PayPal\Api\PayoutSenderBatchHeader();
-
-		$senderBatchHeader->setSenderBatchId( uniqid() )
-		                  ->setEmailSubject( "You have a payment" );
-
-		$senderItem2 = new \PayPal\Api\PayoutItem();
-		$senderItem2->setRecipientType( 'Email' )
-		            ->setNote( 'Thanks you.' )
-		            ->setReceiver( 'shirt-supplier-one@gmail.com' )
-		            ->setSenderItemId( "item_1" . uniqid() )
-		            ->setAmount( new \PayPal\Api\Currency( '{
-                        "value":"0.99",
-                        "currency":"GBP"
-                    }' ) );
-
-		$senderItem1 = new \PayPal\Api\PayoutItem();
-		$senderItem1->setRecipientType( 'Email' )
-		            ->setNote( 'Thanks you.' )
-		            ->setReceiver( 'shirt-supplier-one@gmail.com' )
-		            ->setSenderItemId( "item_1" . uniqid() )
-		            ->setAmount( new \PayPal\Api\Currency( '{
-                        "value":"0.99",
-                        "currency":"GBP"
-                    }' ) );
-
-		$senderItem3 = new \PayPal\Api\PayoutItem(
-			array(
-				"recipient_type" => "EMAIL",
-				"receiver"       => "shirt-supplier-three@mail.com",
-				"note"           => "Thank you.",
-				"sender_item_id" => uniqid(),
-				"amount"         => array(
-					"value"    => "0.90",
-					"currency" => "GBP"
-				)
-
-			)
-		);
-
-		$payouts->setSenderBatchHeader( $senderBatchHeader )
-		        ->addItem( $senderItem1 )->addItem( $senderItem2 )->addItem( $senderItem3 );
-
-
-		$request = clone $payouts;
-		try {
-			$output = $payouts->create( null, $this->_api_context );
-		} catch ( Exception $ex ) {
-			ResultPrinter::printError( "Created Batch Payout", "Payout", null, $request, $ex );
-			exit( 1 );
-		}
-
-		ResultPrinter::printResult( "Created Batch Payout", "Payout", $output->getBatchHeader()->getPayoutBatchId(), $request, $output );
-
-		return $output;
+//		$payouts           = new \PayPal\Api\Payout();
+//		$senderBatchHeader = new \PayPal\Api\PayoutSenderBatchHeader();
+//
+//		$senderBatchHeader->setSenderBatchId( uniqid() )
+//		                  ->setEmailSubject( "You have a payment" );
+//
+//		$senderItem2 = new \PayPal\Api\PayoutItem();
+//		$senderItem2->setRecipientType( 'Email' )
+//		            ->setNote( 'Thanks you.' )
+//		            ->setReceiver( 'shirt-supplier-one@gmail.com' )
+//		            ->setSenderItemId( "item_1" . uniqid() )
+//		            ->setAmount( new \PayPal\Api\Currency( '{
+//                        "value":"0.99",
+//                        "currency":"GBP"
+//                    }' ) );
+//
+//		$senderItem1 = new \PayPal\Api\PayoutItem();
+//		$senderItem1->setRecipientType( 'Email' )
+//		            ->setNote( 'Thanks you.' )
+//		            ->setReceiver( 'shirt-supplier-one@gmail.com' )
+//		            ->setSenderItemId( "item_1" . uniqid() )
+//		            ->setAmount( new \PayPal\Api\Currency( '{
+//                        "value":"0.99",
+//                        "currency":"GBP"
+//                    }' ) );
+//
+//		$senderItem3 = new \PayPal\Api\PayoutItem(
+//			array(
+//				"recipient_type" => "EMAIL",
+//				"receiver"       => "shirt-supplier-three@mail.com",
+//				"note"           => "Thank you.",
+//				"sender_item_id" => uniqid(),
+//				"amount"         => array(
+//					"value"    => "0.90",
+//					"currency" => "GBP"
+//				)
+//
+//			)
+//		);
+//
+//		$payouts->setSenderBatchHeader( $senderBatchHeader )
+//		        ->addItem( $senderItem1 )->addItem( $senderItem2 )->addItem( $senderItem3 );
+//
+//
+//		$request = clone $payouts;
+//		try {
+//			$output = $payouts->create( null, $this->_api_context );
+//		} catch ( Exception $ex ) {
+//			ResultPrinter::printError( "Created Batch Payout", "Payout", null, $request, $ex );
+//			exit( 1 );
+//		}
+//
+//		ResultPrinter::printResult( "Created Batch Payout", "Payout", $output->getBatchHeader()->getPayoutBatchId(), $request, $output );
+//
+//		return $output;
 
 //		$data1 = [
 //			'data1' => 'value_1',

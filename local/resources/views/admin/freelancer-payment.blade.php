@@ -221,7 +221,7 @@
 
             $('#bank-pay-to-all').click(function () {
                 setTimeout(function () {
-                    window.location.replace("http://guarddme.fork/admin/Payment")
+                    window.location.replace("https://guarddme.com/admin/Payment")
                 }, 1000)
             })
             $('.bankPay').click(function () {

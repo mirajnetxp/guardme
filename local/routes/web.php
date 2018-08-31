@@ -377,7 +377,8 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	Route::post( '/admin/freelancer/pay-to-all', 'Admin\FreelancerPaymentController@PayToAllBank' );
 	Route::get( '/admin/freelancer/pay-to/{id}', 'Admin\FreelancerPaymentController@PayToBank' );
 
-	Route::post( '/admin/freelancer/pay-to-all/payple', 'Admin\PaypalPaymentController@FreelancerPayouts' );
+	Route::post( '/admin/freelancer/pay-to-all/payple', 'Admin\FreelancerPaymentController@PayplePayoutsAll' );
+	Route::get( '/admin/freelancer/pay-to/{id}/payple', 'Admin\FreelancerPaymentController@PayplePayout' );
 
 
 	Route::post( 'admin/mark-job-as-compelete', 'Admin\JobsController@MarkJobAsCompelete' );

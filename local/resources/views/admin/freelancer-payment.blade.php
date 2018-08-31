@@ -183,8 +183,8 @@
                                                         <td>{{$free->email}}</td>
                                                         <td>$ &nbsp;{{$free->credit}}</td>
                                                         <td>
-
-                                                            <button class="btn btn-success">Pay</button>
+                                                            <a href="/admin/freelancer/pay-to/{{$free->id}}/payple"
+                                                               class="btn btn-success payplePay">Pay</a>
                                                         </td>
                                                     </tr>
                                                 @endif
@@ -227,6 +227,16 @@
             $('.bankPay').click(function () {
                 $(this).parent().parent().parent().html('');
             })
+            $('.payplePay').click(function () {
+                $(this).parent().parent().parent().html('');
+            })
+            $('#payple-pay-to-all').click(function () {
+                setTimeout(function () {
+                    window.location.replace("https://guarddme.com/admin/Payment")
+                }, 1000)
+            })
+
+
         });
 
 

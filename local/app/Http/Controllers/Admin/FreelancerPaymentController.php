@@ -171,4 +171,128 @@ class FreelancerPaymentController extends Controller {
 			'credit'
 		] )->download();
 	}
+
+	public function PayplePayoutsAll() {
+
+		$allFreeLancers = User::where( 'admin', 2 )
+		                      ->join( 'payment_methods', 'users.id', '=', 'payment_methods.user_id' )
+		                      ->where( 'method_type', 'payple' )
+		                      ->select(
+			                      'users.id',
+			                      'users.name',
+			                      'users.email',
+			                      'payment_methods.method_type',
+			                      'payment_methods.method_details' )
+		                      ->get()
+		                      ->map( function ( $item, $key ) {
+
+			                      $item->currency   = "GBP";
+			                      $item->CustomerID = "ID00$item->id";
+			                      $item->note       = "Thanks $item->name !";
+
+			                      return $item;
+		                      } );
+
+		foreach ( $allFreeLancers as $key => $value ) {
+
+			$credit = DB::table( 'transactions as tr' )
+			            ->select( DB::raw( 'SUM(amount) as total' ) )
+			            ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
+			            ->where( 'ja.applied_by', $value->id )
+			            ->whereNotNull( 'tr.application_id' )
+			            ->where( 'status', 1 )
+			            ->where( 'debit_credit_type', 'credit' )
+			            ->where( 'credit_payment_status', 'paid' )
+			            ->get()
+			            ->first();
+
+			$balance                        = $credit->total ? $credit->total : 0;
+			$allFreeLancers[ $key ]->credit = $balance;
+
+			if ( $balance == 0 ) {
+				unset( $allFreeLancers[ $key ] );
+			} else {
+				DB::table( 'transactions as tr' )
+				  ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
+				  ->where( 'ja.applied_by', $value->id )
+				  ->whereNotNull( 'tr.application_id' )
+				  ->where( 'status', 1 )
+				  ->where( 'debit_credit_type', 'credit' )
+				  ->where( 'credit_payment_status', 'paid' )
+				  ->update( [ 'status' => 0 ] );
+			}
+		}
+		if ( count( $allFreeLancers ) <= 0 ) {
+			return back();
+		}
+		$csvExporter = new \Laracsv\Export();
+		$csvExporter->build( $allFreeLancers, [
+			'method_details' => 'Recipient ID',
+			'credit'         => 'Payment',
+			'currency'       => 'Currency',
+			'CustomerID'     => 'Customer ID',
+			'note'           => 'Note',
+
+
+		] )->download();
+
+	}
+
+	public function PayplePayout( $id ) {
+		$Freelancer = User::where( 'users.id', $id )
+		                  ->join( 'payment_methods', 'users.id', '=', 'payment_methods.user_id' )
+		                  ->where( 'method_type', 'payple' )
+		                  ->select(
+			                  'users.id',
+			                  'users.name',
+			                  'users.email',
+			                  'payment_methods.method_type',
+			                  'payment_methods.method_details' )
+		                  ->get()
+		                  ->map( function ( $item, $key ) {
+			                  $item->currency   = "GBP";
+			                  $item->CustomerID = "ID00$item->id";
+			                  $item->note       = "Thanks $item->name !";
+
+			                  return $item;
+		                  } );
+
+		$credit = DB::table( 'transactions as tr' )
+		            ->select( DB::raw( 'SUM(amount) as total' ) )
+		            ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
+		            ->where( 'ja.applied_by', $id )
+		            ->whereNotNull( 'tr.application_id' )
+		            ->where( 'status', 1 )
+		            ->where( 'debit_credit_type', 'credit' )
+		            ->where( 'credit_payment_status', 'paid' )
+		            ->get()
+		            ->first();
+
+		$balance = $credit->total ? $credit->total : 0;
+
+		foreach ( $Freelancer as $key => $value ) {
+			$Freelancer[ $key ]->credit = $balance;
+		}
+
+		DB::table( 'transactions as tr' )
+		  ->join( 'job_applications as ja', 'ja.id', '=', 'tr.application_id' )
+		  ->where( 'ja.applied_by', $id )
+		  ->whereNotNull( 'tr.application_id' )
+		  ->where( 'status', 1 )
+		  ->where( 'debit_credit_type', 'credit' )
+		  ->where( 'credit_payment_status', 'paid' )
+		  ->update( [ 'status' => 0 ] );
+
+
+		$csvExporter = new \Laracsv\Export();
+		$csvExporter->build( $Freelancer, [
+			'method_details' => 'Recipient ID',
+			'credit'         => 'Payment',
+			'currency'       => 'Currency',
+			'CustomerID'     => 'Customer ID',
+			'note'           => 'Note',
+
+
+		] )->download();
+	}
 }

@@ -209,13 +209,13 @@ class ShopController extends Controller {
 			}
 
 			$AllExpJobs = $AllJobsObj->whereIn( 'id', $ExpairJobs )->get();
+
 			foreach ( $AllExpJobs as $key => $val ) {
 
 				$jA      = new JobApplication();
 				$val->ja = $jA->getJobApplications( $val->id )
 				              ->where( 'is_hired', 1 )
 				              ->all();
-
 				if ( $val->notify == '0' ) {
 
 					$companyName = auth()->user()->company->shop_name;

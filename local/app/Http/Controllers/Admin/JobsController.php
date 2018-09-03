@@ -88,21 +88,34 @@ class JobsController extends Controller {
 		return response()->json( '200', 200 );
 	}
 
-	public function JobCancel( Request $request ) {
-		$job = Job::find( $request->jobId );
+	public function Delete( $id ) {
+		$job = Job::find( $id );
 		//TODO add created by check so that every one can only cancel his/her created job and can not manipulate it by changing job id.
 		// check if job is active
-		if ( $job->status == 1 ) {
-			$trans         = new Transaction();
-			$returned      = $trans->giveRefund( $job );
-			$return_data   = $returned['return_data'];
-			$return_status = $returned['return_status'];
-		} else {
-			$return_data   = [ "Job is not active already" ];
-			$return_status = 500;
-		}
+		$trans         = new Transaction();
+		$returned      = $trans->giveRefund( $job );
 
-		return response()
-			->json( $return_data, $return_status );
+		return back();
+	}
+
+	public function Stop( $id ) {
+		$job = Job::find( $id );
+		//TODO add created by check so that every one can only cancel his/her created job and can not manipulate it by changing job id.
+		$job->status   = 0;
+		$job->is_pause = 1;
+		$job->save();
+
+		return back();
+	}
+
+	public function Start( $id ) {
+		$job = Job::find( $id );
+		//TODO add created by check so that every one can only cancel his/her created job and can not manipulate it by changing job id.
+		$job->status   = 1;
+		$job->is_pause = 0;
+		$job->save();
+
+
+		return back();
 	}
 }

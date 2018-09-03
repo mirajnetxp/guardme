@@ -187,7 +187,7 @@ class EmployerJobsController extends Controller {
 	}
 
 	public function makeDisput( Request $request, $ja_id ) {
-		// TODO : need to sanatize by miraj
+		// TODO : need to sanatize
 		$DispuTApplication                    = JobApplication::find( $ja_id );
 		$DispuTApplication->completion_status = 2;
 		$DispuTApplication->save();
@@ -200,6 +200,7 @@ class EmployerJobsController extends Controller {
 		$newTicket->title          = $request->job_title;
 		$newTicket->status         = 0;
 		$newTicket->state          = 1;
+		$newTicket->job_id         = $DispuTApplication->job_id;
 		$newTicket->save();
 
 		$newTicketMess                   = new TicketMessage();

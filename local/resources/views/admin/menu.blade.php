@@ -41,6 +41,10 @@ $url = URL::to( "/" );
             <i class="fa fa-money"></i>
             <p> Payment</p></a>
     </li>
+    <li><a href="<?php echo $url;?>/admin/job/dispute">
+            <i class="fa fa-shield"></i>
+            <p> job dispute </p></a>
+    </li>
     <li><a href="<?php echo $url;?>/admin/shop"><i class="ti-briefcase"></i>
             <p> Companies </p></a></li>
     <li><a href="<?php echo $url;?>/admin/message"><i class="fa fa-envelope" aria-hidden="true"></i>

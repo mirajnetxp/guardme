@@ -364,9 +364,6 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 
 
 	/* withdraw */
-
-	Route::get( '/admin/jobs', 'Admin\JobsController@index' );
-
 	Route::get( '/admin/pending_withdraw/{id}', 'Admin\WithdrawController@update' );
 	Route::get( '/admin/completed_withdraw', 'Admin\WithdrawController@doneindex' );
 
@@ -381,9 +378,18 @@ Route::group( [ 'middleware' => 'admin' ], function () {
 	Route::get( '/admin/freelancer/pay-to/{id}/payple', 'Admin\FreelancerPaymentController@PayplePayout' );
 
 
-	Route::post( 'admin/mark-job-as-compelete', 'Admin\JobsController@MarkJobAsCompelete' );
-	Route::post( 'admin/job/close', 'Admin\JobsController@JobCancel' );
+	// Admin Job list
 
+	Route::get( '/admin/jobs', 'Admin\JobsController@index' );
+	Route::post( 'admin/mark-job-as-compelete', 'Admin\JobsController@MarkJobAsCompelete' );
+
+	Route::get( 'admin/job/{id}/start', 'Admin\JobsController@Start' )->name('admin.job.start');
+	Route::get( 'admin/job/{id}/stop', 'Admin\JobsController@Stop' )->name('admin.job.stop');
+	Route::get( 'admin/job/{id}/delete', 'Admin\JobsController@Delete' )->name('admin.job.delete');
+
+
+//	Job Disput
+	Route::get( '/admin/job/dispute', 'Admin\JobDisputeController@index' );
 
 } );
 

@@ -500,7 +500,9 @@ class Transaction extends Model {
 					'extra_details'         => 'full refund of the amount ' . $full_debit_transaction->amount . ' is made for canceling the job with job id ' . $job_id
 				];
 				DB::table( $this->table )->insert( $transaction_params );
-				DB::table( 'security_jobs' )->where( 'id', $job_id )->update( [ 'status' => 0 ] );
+				DB::table( 'security_jobs' )
+				  ->where( 'id', $job_id )
+				  ->update( [ 'status' => 0, 'is_pause' => 0, ] );
 			} );
 		} else {
 			/*criteria ---> deduct 10% from the vat fee,

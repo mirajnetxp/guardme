@@ -89,28 +89,44 @@ class JobMarkAsComplete extends Command {
 				$userFreelancer->notify( new RecivesPayment( $val ) );
 			}
 
-			$job         = Job::find( $val->id );
-			$jobAmount   = $job->calculateJobAmountWithJobObject( $job );
-			$hiredJobApp = JobApplication::where( 'job_id', $job->id )
-			                             ->where( 'is_hired', 1 )
-			                             ->get();
-
+			$job                   = Job::find( $val->id );
+			$jobAmount             = $job->calculateJobAmountWithJobObject( $job );
+			$hiredJobApp           = JobApplication::where( 'job_id', $job->id )
+			                                       ->where( 'is_hired', 1 )
+			                                       ->get();
+			$requeredNumberOfFree  = $jobAmount['number_of_freelancers'];
 			$currentHireFreelancer = count( $hiredJobApp );
 			if ( $currentHireFreelancer == 0 ) {
 				$trans    = new Transaction();
 				$returned = $trans->giveRefund( $job );
-			} else {
+			} else if ( $currentHireFreelancer < $requeredNumberOfFree ) {
+
+				$vatFee   = $jobAmount['single_freelancer_fee'] * $currentHireFreelancer * ( .2 );
+				$adminFee = $jobAmount['single_freelancer_fee'] * $currentHireFreelancer * ( .1499 );
+
+
 				$transection = Transaction::where( 'job_id', $job->id )
 				                          ->where( 'type', 'job_fee' )
 				                          ->where( 'debit_credit_type', 'credit' )
 				                          ->whereNull( 'application_id' )
 				                          ->first();
 
-				$vat                 = $transection->amount * ( .2 );
-				$admin               = $transection->amount * ( .1499 );
-				$transection->amount = $vat + $admin + $transection->amount;
-				$transection->type   = 'refund';
+				$transection->type = 'refund';
 				$transection->save();
+
+				$vat         = Transaction::where( 'job_id', $job->id )
+				                          ->where( 'type', 'vat_fee' )
+				                          ->first();
+				$vat->amount = $vatFee;
+				$vat->save();
+
+				$admin         = Transaction::where( 'job_id', $job->id )
+				                            ->where( 'type', 'admin_fee' )
+				                            ->first();
+				$admin->amount = $adminFee;
+				$admin->save();
+
+
 			}
 			$job->status = 0;
 			$job->save();

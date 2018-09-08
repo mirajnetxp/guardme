@@ -1052,23 +1052,39 @@ class JobsController extends Controller {
 		                             ->get();
 
 		$requeredNumberOfFree = $jobAmount['number_of_freelancers'];
-
 		$currentHireFreelancer = count( $hiredJobApp );
 
 		if ( $currentHireFreelancer == 0 ) {
 			$trans    = new Transaction();
 			$returned = $trans->giveRefund( $job );
-		} else {
-			$transection         = Transaction::where( 'job_id', $job->id )
-			                                  ->where( 'type', 'job_fee' )
-			                                  ->where( 'debit_credit_type', 'credit' )
-			                                  ->whereNull( 'application_id' )
-			                                  ->first();
-			$vat                 = $transection->amount * ( .2 );
-			$admin               = $transection->amount * ( .1499 );
-			$transection->amount = $vat + $admin + $transection->amount;
-			$transection->type   = 'refund';
+		} else if ( $currentHireFreelancer < $requeredNumberOfFree ) {
+
+			$vatFee   = $jobAmount['single_freelancer_fee'] * $currentHireFreelancer * ( .2 );
+			$adminFee = $jobAmount['single_freelancer_fee'] * $currentHireFreelancer * ( .1499 );
+
+
+			$transection = Transaction::where( 'job_id', $job->id )
+			                          ->where( 'type', 'job_fee' )
+			                          ->where( 'debit_credit_type', 'credit' )
+			                          ->whereNull( 'application_id' )
+			                          ->first();
+
+			$transection->type = 'refund';
 			$transection->save();
+
+			$vat         = Transaction::where( 'job_id', $job->id )
+			                          ->where( 'type', 'vat_fee' )
+			                          ->first();
+			$vat->amount = $vatFee;
+			$vat->save();
+
+			$admin         = Transaction::where( 'job_id', $job->id )
+			                            ->where( 'type', 'admin_fee' )
+			                            ->first();
+			$admin->amount = $adminFee;
+			$admin->save();
+
+
 		}
 		$job->status = 0;
 		$job->save();

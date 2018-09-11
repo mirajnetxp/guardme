@@ -173,11 +173,18 @@ $url = URL::to( "/" ); ?>
                     @endif
                     <div class="favorites">
                         <a href="bookmark.html">£
-                            @if(empty($wallet_data['available_balance']))
-                                0.00
-                            @else
-                                {{ $wallet_data['available_balance'] }}
+                            @if(isset($admin_fee) && isset($partner_fee))
+                                @if(auth()->user()->admin==1)
+                                    {{round($admin_fee,2)}}
+                                @else
+                                    {{round($partner_fee,2)}}
+                                @endif
                             @endif
+                            {{--@if(empty($wallet_data['available_balance']))--}}
+                                {{--0.00--}}
+                            {{--@else--}}
+                                {{--{{ $wallet_data['available_balance'] }}--}}
+                            {{--@endif--}}
                             <small>Credit Balance</small>
                         </a>
                     </div>

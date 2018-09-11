@@ -36,6 +36,8 @@ class WalletController extends Controller {
 			$jobs = array();
 		}
 
+
+
 		// dd($jobs);
 		return view( 'wallet', compact( 'jobs', 'wallet_data' ) );
 	}
@@ -55,8 +57,25 @@ class WalletController extends Controller {
 			$jobs = array();
 		}
 
+		$trans = new Transaction();
+		// TODO :
+		$partner_balance = $trans->getPartnerBalance();
+		$admin_fee       = $trans->getAdminFee();
+		$partner_fee     = $trans->getAdminFee();
+		$vat_fee         = $trans->getVatFee();
+		$partner_balance = ! empty( $partner_balance->total ) ? ( $partner_balance->total ) : 0;
+		$vat_fee         = ! empty( $vat_fee->total ) ? ( $vat_fee->total ) : 0;
+		$admin_fee       = ! empty( $admin_fee->total ) ? ( $admin_fee->total * ( .97 ) ) : 0;
+		$partner_fee     = ! empty( $partner_fee->total ) ? ( $partner_fee->total * ( .03 ) ) : 0;
+
+		$data = array(
+			'partner_balance' => $partner_balance,
+			'admin_fee'       => $admin_fee,
+			'vat_fee'         => $vat_fee,
+			'partner_fee'     => $partner_fee,
+		);
 		// dd($jobs);
-		return view( 'wallet-dashboard', compact( 'wallet_data', 'editprofile', 'jobs' ) );
+		return view( 'wallet-dashboard', compact( 'wallet_data', 'editprofile', 'jobs' ) )->with( $data );
 	}
 
 	public function searchJobs( Request $request ) {
